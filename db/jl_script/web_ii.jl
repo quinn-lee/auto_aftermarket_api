@@ -3,53 +3,65 @@ using LibPQ,Tables
 using Dates
 # 页面获取
 function fetchpage(url)
-  headers = Dict("User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36")
-  response = HTTP.get(url, headers=headers)
-  if response.status == 200 && parse(Int, Dict(response.headers)["Content-Length"]) > 0
-    String(response.body)
-  else
+  try
+    headers = Dict("User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36")
+    response = HTTP.get(url, headers=headers)
+    if response.status == 200 && parse(Int, Dict(response.headers)["Content-Length"]) > 0
+      String(response.body)
+    else
+      ""
+    end
+  catch e
     ""
   end
 end
 
 # 获取所有品牌数据
 function fetch_brands()
-  url = "http://api.car.bitauto.com/CarInfo/getlefttreejson.ashx?tagtype=chexing&pagetype=masterbrand&objid=0"
-  resp_body = fetchpage(url)
-  if isempty(resp_body)
-    return []
+  try
+    url = "http://api.car.bitauto.com/CarInfo/getlefttreejson.ashx?tagtype=chexing&pagetype=masterbrand&objid=0"
+    resp_body = fetchpage(url)
+    if isempty(resp_body)
+      return []
+    end
+    reg = r"type:.+?(},\{|}])"
+    m = eachmatch(reg,resp_body)
+    reg_name = r"name:\".+?\""
+    reg_url = r"url:\".+?\""
+    [Dict(:name=>split(match(reg_name, brand.match).match, "\"")[2], :url=>split(match(reg_url, brand.match).match, "\"")[2]) for brand in collect(m)]
+  catch e
+    []
   end
-  reg = r"type:.+?(},\{|}])"
-  m = eachmatch(reg,resp_body)
-  reg_name = r"name:\".+?\""
-  reg_url = r"url:\".+?\""
-  [Dict(:name=>split(match(reg_name, brand.match).match, "\"")[2], :url=>split(match(reg_url, brand.match).match, "\"")[2]) for brand in collect(m)]
 end
 
 # url = "http://car.bitauto.com/tree_chexing/mb_9/"
 # url = "http://car.bitauto.com/tree_chexing/mb_26/"
 # 根据品牌页面，获取每个品牌下的所有车型名称和链接
 function extract_models(url)
-  resp_body = fetchpage(url)
-  models = []
-  if isempty(resp_body)
-    return models
-  end
-  dom = parsehtml(resp_body)
-  s=Selector(".p-list .name")
-  tags = eachmatch(s, dom.root)
-  # return [Dict(:href => eachmatch(Selector("a:not(.ico)"), tag)[1].attributes["href"], :title => eachmatch(Selector("a:not(.ico)"), tag)[1].attributes["title"]) for tag in tags]
-  for tag in tags
-    try
-      link = eachmatch(Selector("a:not(.ico)"), tag)[1]
-      href = link.attributes["href"]
-      title = link.attributes["title"]
-      push!(models, Dict(:href=>href, :title=>title))
-    catch e
-      println("extract_models error!!!")
+  try
+    resp_body = fetchpage(url)
+    models = []
+    if isempty(resp_body)
+      return models
     end
+    dom = parsehtml(resp_body)
+    s=Selector(".p-list .name")
+    tags = eachmatch(s, dom.root)
+    # return [Dict(:href => eachmatch(Selector("a:not(.ico)"), tag)[1].attributes["href"], :title => eachmatch(Selector("a:not(.ico)"), tag)[1].attributes["title"]) for tag in tags]
+    for tag in tags
+      try
+        link = eachmatch(Selector("a:not(.ico)"), tag)[1]
+        href = link.attributes["href"]
+        title = link.attributes["title"]
+        push!(models, Dict(:href=>href, :title=>title))
+      catch e
+        println("extract_models error!!!")
+      end
+    end
+    return models
+  catch e
+    []
   end
-  return models
 end
 
 # models = extract_models(url)
@@ -57,19 +69,23 @@ end
 # url = "http://car.bitauto.com/siyucivic/"
 # 根据车型详情页面，获取这个车型下的所有在售和停售年款
 function extract_years(url)
-  resp_body = fetchpage(url)
-  if isempty(resp_body)
-    return []
+  try
+    resp_body = fetchpage(url)
+    if isempty(resp_body)
+      return []
+    end
+    dom = parsehtml(resp_body)
+    s=Selector(".brand-info .list-gapline")
+    years = eachmatch(s, dom.root)
+    if isempty(years)
+      return []
+    end
+    tag_year = years[1]
+    s=Selector("a[href^='/']:not(#carYearList_all)")
+    return [Dict(:year=>nodeText(tag), :href=>tag.attributes["href"]) for tag in eachmatch(s, tag_year)]
+  catch e
+    []
   end
-  dom = parsehtml(resp_body)
-  s=Selector(".brand-info .list-gapline")
-  years = eachmatch(s, dom.root)
-  if isempty(years)
-    return []
-  end
-  tag_year = years[1]
-  s=Selector("a[href^='/']:not(#carYearList_all)")
-  return [Dict(:year=>nodeText(tag), :href=>tag.attributes["href"]) for tag in eachmatch(s, tag_year)]
 end
 
 # years = extract_years(url)
