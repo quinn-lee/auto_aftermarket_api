@@ -111,13 +111,14 @@ for brand in brands
   push!(car_brands_abc, "")
   push!(car_brands_created_at, now())
   push!(car_brands_updated_at, now())
-  LibPQ.load!((id=car_brands_id,brand=car_brands_brand,abc=car_brands_abc,created_at = car_brands_created_at,updated_at = car_brands_updated_at),conn, "insert into car_brands (id,brand,abc,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5);")
+
   global brand_id += 1
 
   # 获取所有车型
   model_url = "http://car.bitauto.com"*brand[:url]
   models = extract_models(model_url)
   for model in models
+    push!(car_brands_models, model[:title])
     println(model)
     # 获取所有年份
     year_url = "http://car.bitauto.com"*model[:href]
@@ -182,6 +183,8 @@ for brand in brands
     end
     LibPQ.load!((id=car_year_id,brand=year_brand,models=year_models,year=year_year,created_at = year_created_at,updated_at = year_updated_at),conn, "insert into car_years (id,brand,models,year,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6);")
   end
+  println(car_brands_models)
+  LibPQ.load!((id=car_brands_id,brand=car_brands_brand,models=[[model for model in car_brands_models]],abc=car_brands_abc,created_at = car_brands_created_at,updated_at = car_brands_updated_at),conn, "insert into car_brands (id,brand,models,abc,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6);")
   execute(conn, "commit;")
 end
 
