@@ -108,7 +108,8 @@ end
 
 
 
-conn = LibPQ.Connection("host=127.0.0.1 port=5432 dbname=europe_time_logistics_development user=fuyuan password=fuyuan")
+# conn = LibPQ.Connection("host=127.0.0.1 port=5432 dbname=europe_time_logistics_development user=fuyuan password=fuyuan")
+conn = LibPQ.Connection("host=127.0.0.1 port=5432 dbname=auto_aftermarket_api_development user=fuyuan password=fuyuan")
 
 brands = fetch_brands()
 brand_id = 1
@@ -194,7 +195,7 @@ for brand in brands
       end
       LibPQ.load!((id=car_model_id,car_year_id=car_model_year_id,model_name=car_model_name,model_version=car_model_version,created_at=car_model_created_at,updated_at=car_model_updated_at),conn, "insert into car_models (id,car_year_id,model_name,model_version,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6);")
 
-      LibPQ.load!((id=car_detail_id,car_model_id=detail_model_id,engine_capacity=detail_engine_capacity,intake_type=detail_intake_type,engine_max_power=detail_engine_max_power,engine_max_torque=detail_engine_max_torque,gearbox=detail_gearbox, lenght=detail_length, width=detail_width, height=detail_height, front_tire_size=detail_front_tire_size, rear_tire_size=detail_rear_tire_size,created_at=detail_ca,updated_at=detail_ua),conn, "insert into car_model_details (id,car_model_id,engine_capacity,intake_type,engine_max_power,engine_max_torque,gearbox, lenght, width, height, front_tire_size, rear_tire_size,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6,\$7,\$8,\$9,\$10,\$11,\$12,\$13,\$14);")
+      LibPQ.load!((id=car_detail_id,car_model_id=detail_model_id,engine_capacity=detail_engine_capacity,intake_type=detail_intake_type,engine_max_power=detail_engine_max_power,engine_max_torque=detail_engine_max_torque,gearbox=detail_gearbox, length=detail_length, width=detail_width, height=detail_height, front_tire_size=detail_front_tire_size, rear_tire_size=detail_rear_tire_size,created_at=detail_ca,updated_at=detail_ua),conn, "insert into car_model_details (id,car_model_id,engine_capacity,intake_type,engine_max_power,engine_max_torque,gearbox, length, width, height, front_tire_size, rear_tire_size,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6,\$7,\$8,\$9,\$10,\$11,\$12,\$13,\$14);")
       global year_id += 1
     end
     LibPQ.load!((id=car_year_id,brand=year_brand,models=year_models,year=year_year,created_at = year_created_at,updated_at = year_updated_at),conn, "insert into car_years (id,brand,models,year,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6);")
