@@ -28,7 +28,7 @@ function fetch_brands()
     m = eachmatch(reg,resp_body)
     reg_name = r"name:\".+?\""
     reg_url = r"url:\".+?\""
-    [Dict(:name=>split(match(reg_name, brand.match).match, "\"")[2], :url=>split(match(reg_url, brand.match).match, "\"")[2]) for brand in collect(m)]
+    [Dict(:name=>split(match(reg_name, brand.match).match, "\"")[2], :url=>split(match(reg_url, brand.match).match, "\"")[2], :imgurl=>"http://image.bitautoimg.com/bt/car/default/images/logo/masterbrand/png/100/"*replace(split(match(reg_url, brand.match).match, "/")[3], "mb_"=>"m_")*"_100.png") for brand in collect(m)]
   catch e
     []
   end
@@ -45,17 +45,39 @@ function extract_models(url)
       return models
     end
     dom = parsehtml(resp_body)
-    s=Selector(".p-list .name")
-    tags = eachmatch(s, dom.root)
-    # return [Dict(:href => eachmatch(Selector("a:not(.ico)"), tag)[1].attributes["href"], :title => eachmatch(Selector("a:not(.ico)"), tag)[1].attributes["title"]) for tag in tags]
-    for tag in tags
-      try
-        link = eachmatch(Selector("a:not(.ico)"), tag)[1]
-        href = link.attributes["href"]
-        title = link.attributes["title"]
-        push!(models, Dict(:href=>href, :title=>title))
-      catch e
-        println("extract_models error!!!")
+    s=Selector("#divCsLevel_0 .h5-sep")
+    manufacturer_tags = eachmatch(s, dom.root)
+    if length(manufacturer_tags) > 0
+      tags = eachmatch(Selector("#divCsLevel_0 .row.block-4col-180"), dom.root)
+      tag_num = 1
+      for tag in tags
+        model_tags = eachmatch(Selector(".p-list .name"), tag)
+        for model_tag in model_tags
+          try
+            f_name = strip(nodeText(eachmatch(Selector("a"), manufacturer_tags[tag_num])[1]), '>')
+            link = eachmatch(Selector("a:not(.ico)"), model_tag)[1]
+            href = link.attributes["href"]
+            title = link.attributes["title"]
+            push!(models, Dict(:href=>href, :title=>title, :manufacturer=>f_name))
+          catch e
+            println("extract_models error!!!")
+          end
+        end
+        tag_num += 1
+      end
+    else
+      s=Selector("#divCsLevel_0 .p-list .name")
+      tags = eachmatch(s, dom.root)
+      # return [Dict(:href => eachmatch(Selector("a:not(.ico)"), tag)[1].attributes["href"], :title => eachmatch(Selector("a:not(.ico)"), tag)[1].attributes["title"]) for tag in tags]
+      for tag in tags
+        try
+          link = eachmatch(Selector("a:not(.ico)"), tag)[1]
+          href = link.attributes["href"]
+          title = link.attributes["title"]
+          push!(models, Dict(:href=>href, :title=>title, :manufacturer=>""))
+        catch e
+          println("extract_models error!!!")
+        end
       end
     end
     return models
@@ -122,12 +144,13 @@ for brand in brands
   # if brand_id > 1
   #   break
   # end
-  car_brands_id, car_brands_brand, car_brands_models, car_brands_abc, car_brands_created_at, car_brands_updated_at = [], [], [], [], [], [], []
+  car_brands_id, car_brands_brand, car_brands_models, car_brands_abc, car_brands_created_at, car_brands_updated_at, car_image_url = [], [], [], [], [], [], [], []
   push!(car_brands_id, brand_id)
   push!(car_brands_brand, brand[:name])
   push!(car_brands_abc, "")
   push!(car_brands_created_at, now())
   push!(car_brands_updated_at, now())
+  push!(car_image_url, brand[:imgurl])
 
   global brand_id += 1
 
@@ -140,12 +163,13 @@ for brand in brands
     # 获取所有年份
     year_url = "http://car.bitauto.com"*model[:href]
     years = extract_years(year_url)
-    car_year_id, year_brand, year_models, year_year, year_created_at, year_updated_at = [],[],[],[],[],[]
+    car_year_id, year_brand, year_models, year_manufacturer, year_year, year_created_at, year_updated_at = [],[],[],[],[],[],[]
     for yy in years
       println(yy)
       push!(car_year_id, year_id)
       push!(year_brand, brand[:name])
       push!(year_models, model[:title])
+      push!(year_manufacturer, model[:manufacturer])
       push!(year_year, yy[:year])
       push!(year_created_at, now())
       push!(year_updated_at, now())
@@ -198,10 +222,10 @@ for brand in brands
       LibPQ.load!((id=car_detail_id,car_model_id=detail_model_id,engine_capacity=detail_engine_capacity,intake_type=detail_intake_type,engine_max_power=detail_engine_max_power,engine_max_torque=detail_engine_max_torque,gearbox=detail_gearbox, length=detail_length, width=detail_width, height=detail_height, front_tire_size=detail_front_tire_size, rear_tire_size=detail_rear_tire_size,created_at=detail_ca,updated_at=detail_ua),conn, "insert into car_model_details (id,car_model_id,engine_capacity,intake_type,engine_max_power,engine_max_torque,gearbox, length, width, height, front_tire_size, rear_tire_size,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6,\$7,\$8,\$9,\$10,\$11,\$12,\$13,\$14);")
       global year_id += 1
     end
-    LibPQ.load!((id=car_year_id,brand=year_brand,models=year_models,year=year_year,created_at = year_created_at,updated_at = year_updated_at),conn, "insert into car_years (id,brand,models,year,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6);")
+    LibPQ.load!((id=car_year_id,brand=year_brand,car_model=year_models,manufacturer=year_manufacturer, year=year_year,created_at = year_created_at,updated_at = year_updated_at),conn, "insert into car_years (id,brand,car_model,manufacturer,year,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6,\$7);")
   end
   println(car_brands_models)
-  LibPQ.load!((id=car_brands_id,brand=car_brands_brand,models=[[model for model in car_brands_models]],abc=car_brands_abc,created_at = car_brands_created_at,updated_at = car_brands_updated_at),conn, "insert into car_brands (id,brand,models,abc,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6);")
+  LibPQ.load!((id=car_brands_id,brand=car_brands_brand,models=[[model for model in car_brands_models]],abc=car_brands_abc, image_url=car_image_url, created_at = car_brands_created_at,updated_at = car_brands_updated_at),conn, "insert into car_brands (id,brand,models,abc,image_url,created_at,updated_at) values (\$1,\$2,\$3,\$4,\$5,\$6,\$7);")
   execute(conn, "commit;")
 end
 

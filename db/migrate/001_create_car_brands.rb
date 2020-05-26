@@ -4,6 +4,7 @@ class CreateCarBrands < ActiveRecord::Migration[5.1]
       t.string :brand
       t.jsonb :models
       t.string :abc
+      t.string :image_url
       t.timestamps null: false
     end
   end

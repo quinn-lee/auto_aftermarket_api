@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 4) do
     t.string "brand"
     t.jsonb "models"
     t.string "abc"
+    t.string "image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -60,7 +61,8 @@ ActiveRecord::Schema.define(version: 4) do
 
   create_table "car_years", force: :cascade do |t|
     t.string "brand"
-    t.string "models"
+    t.string "car_model"
+    t.string "manufacturer"
     t.string "year"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
