@@ -19,6 +19,14 @@ module AutoAftermarketApi
         @request_params = JSON.parse(request_body_read) rescue params
       end
 
+      # 用户认证
+      # 请求header['token']="*"
+      def authenticate
+        unless @customer = Customer.find_by(token: env['HTTP_TOKEN'])
+          raise "token invalid"
+        end
+      end
+
       # 调用外部url统一使用该方法
       def method_url_call(method,url_path,params={},is_spec=nil,timeout=TIMEOUT_NORMAL,token=nil)
         if method.blank? || url_path.blank?
@@ -88,7 +96,7 @@ module AutoAftermarketApi
         end
       end # end method_url_call
 
-
+      # 产生随机token
       def generate_token len = 40
         seed = (0..9).to_a + ('a'..'z').to_a + ('A'..'Z').to_a
         token = ""

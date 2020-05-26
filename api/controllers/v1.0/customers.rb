@@ -8,8 +8,6 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
   # data {"token": ""}
   post :customers, :provides => [:json] do
     api_rescue do
-      # authenticate_access_token
-
       code,body=method_url_call("get","https://api.weixin.qq.com/sns/jscode2session?appid=wxb5ebd7edf0437cdb&secret=986dfb559ebb15402628db871ba6f608&js_code=#{@request_params["code"]}&grant_type=authorization_code",{},"JSON")
       if code!="200"
         logger.info("call api weixin expection , [#{code}]")
