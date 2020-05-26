@@ -51,9 +51,9 @@ ActiveRecord::Schema.define(version: 4) do
 
   create_table "car_models", force: :cascade do |t|
     t.integer "car_year_id"
-    t.string "model_name"
-    t.string "model_version"
-    t.string "model_type"
+    t.string "car_model_name"
+    t.string "car_model_version"
+    t.string "car_model_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

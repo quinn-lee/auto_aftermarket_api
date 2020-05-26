@@ -33,4 +33,6 @@ Padrino.configure_apps do
 end
 
 # Mounts the core application for this project
+
+Padrino.mount('AutoAftermarketApi::Api', :app_file => Padrino.root('api/app.rb')).to('/api')
 Padrino.mount('AutoAftermarketApi::App', :app_file => Padrino.root('app/app.rb')).to('/')
