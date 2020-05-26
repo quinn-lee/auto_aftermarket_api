@@ -9,7 +9,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
   # data [{"brand":"奥迪","abc":"A","image_url":"http://image.bitautoimg.com/bt/car/default/images/logo/masterbrand/png/100/m_9_100.png"}...]
   get :car_brands, :provides => [:json] do
     api_rescue do
-      authenticate
+      # authenticate
 
       @car_brands = CarBrand.order(:id => :asc)
       { status: 'succ', data: @car_brands.map(&:to_api)}.to_json
