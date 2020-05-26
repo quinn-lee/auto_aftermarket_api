@@ -35,10 +35,10 @@ ActiveRecord::Base.configurations[:production] = {
 
 ActiveRecord::Base.configurations[:test] = {
   :adapter   => 'postgresql',
-  :database  => 'api_test_test',
-  :username  => 'root',
-  :password  => '',
-  :host      => 'localhost',
+  :database  => 'auto_aftermarket_api_test',
+  :username  => 'europe_time',
+  :password  => '1qaz@WSX',
+  :host      => '172.105.198.104',
   :port      => 5432
 
 }
