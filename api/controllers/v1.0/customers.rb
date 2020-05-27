@@ -36,8 +36,38 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
       authenticate
 
       @car_model = CarModel.find(@request_params["model_id"])
-      @current_car = Car.create!(customer_id: @customer.id, car_model_id: @car_model.id, car_model_name: "#{@car_model.car_model_name} #{@car_model.car_model_version}", is_current: true)
+      ActiveRecord::Base.transaction do
+        Car.where(customer_id: @customer.id).update_all(is_current: false)
+        @current_car = Car.create!(customer_id: @customer.id, car_model_id: @car_model.id, car_model_name: "#{@car_model.car_model_name} #{@car_model.car_model_version}", is_current: true)
+      end
       { status: 'succ', data: {current: @current_car.car_model_name}}.to_json
+    end
+  end
+
+  # 客户所有车型
+  # params 空
+  # data [{"id": 1,"car_model_id": 1,"car_model_name": "奥迪A4L 2020款 35 TFSI 时尚动感型","is_current": false}...]
+  post :cars, :provides => [:json] do
+    api_rescue do
+      authenticate
+
+      @cars = Car.where(customer_id: @customer.id)
+      { status: 'succ', data: @cars.map(&:to_api)}.to_json
+    end
+  end
+
+  # 修改当前车型
+  # params {"car_id": 2}
+  # data {current: ""}
+  post :change_car, :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        Car.where(customer_id: @customer.id).update_all(is_current: false)
+        @car = Car.find(@request_params["car_id"])
+        @car.update!(is_current: true)
+      end
+      { status: 'succ', data: {current: @car.car_model_name}}.to_json
     end
   end
 end
