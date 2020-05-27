@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 7) do
+ActiveRecord::Schema.define(version: 23) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attributes", force: :cascade do |t|
+    t.string "attr_name"
+    t.string "attr_value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "car_brands", force: :cascade do |t|
     t.string "brand"
@@ -59,6 +66,14 @@ ActiveRecord::Schema.define(version: 7) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "car_sku_mappings", force: :cascade do |t|
+    t.string "sku_code"
+    t.integer "car_year_id"
+    t.integer "car_model_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "car_years", force: :cascade do |t|
     t.string "brand"
     t.string "car_model"
@@ -81,6 +96,15 @@ ActiveRecord::Schema.define(version: 7) do
     t.boolean "is_current"
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.integer "parent_id"
+    t.string "cate_type"
+    t.boolean "is_hidden"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "sex"
@@ -90,6 +114,143 @@ ActiveRecord::Schema.define(version: 7) do
     t.string "openid"
     t.string "unionid"
     t.string "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.string "order_no"
+    t.string "discount_reason"
+    t.decimal "discount_amount", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "features", force: :cascade do |t|
+    t.integer "category_id"
+    t.string "name"
+    t.string "description"
+    t.string "feature_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "goods", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.json "pics"
+    t.string "comment"
+    t.integer "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "goods_attributes", force: :cascade do |t|
+    t.integer "goods_id"
+    t.integer "attribute_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "inventories", force: :cascade do |t|
+    t.integer "merchant_id"
+    t.string "sku_code"
+    t.integer "num"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "merchants", force: :cascade do |t|
+    t.string "name"
+    t.string "password"
+    t.string "email"
+    t.string "mobile"
+    t.string "appid"
+    t.string "appsecret"
+    t.string "mch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "order_skus", force: :cascade do |t|
+    t.string "order_no"
+    t.string "name"
+    t.string "sku_code"
+    t.integer "quantity"
+    t.decimal "price", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "merchant_id"
+    t.datetime "order_date"
+    t.string "order_no"
+    t.decimal "amount", precision: 10, scale: 2
+    t.string "order_name"
+    t.string "order_type"
+    t.decimal "pay_amount", precision: 10, scale: 2
+    t.string "pay_way"
+    t.datetime "pay_time"
+    t.string "tx_num"
+    t.string "status"
+    t.datetime "cancel_time"
+    t.string "cancel_reason"
+    t.datetime "reservation_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "recommends", force: :cascade do |t|
+    t.string "name"
+    t.string "type"
+    t.integer "category_id"
+    t.integer "goods_id"
+    t.integer "sku_id"
+    t.integer "car_year_id"
+    t.integer "car_model_id"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "records", force: :cascade do |t|
+    t.integer "car_id"
+    t.string "order_no"
+    t.datetime "record_date"
+    t.string "order_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shops", force: :cascade do |t|
+    t.integer "merchant_id"
+    t.string "name"
+    t.string "address"
+    t.string "contact_name"
+    t.string "contact_phone"
+    t.jsonb "workstation"
+    t.jsonb "business_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sku_attributes", force: :cascade do |t|
+    t.string "sku_code"
+    t.integer "attribute_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "skus", force: :cascade do |t|
+    t.integer "goods_id"
+    t.string "sku_name"
+    t.string "sku_code"
+    t.decimal "price", precision: 8, scale: 2
+    t.integer "stock_quantity"
+    t.decimal "weight", precision: 8, scale: 2
+    t.json "pics"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
