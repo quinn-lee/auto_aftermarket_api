@@ -1,4 +1,4 @@
-AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
+AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   before do
     load_api_request_params
   end
@@ -7,7 +7,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
   # params {"code": "011EewQl0V6Juq13KWNl01SgQl0EewQ-"}
   # data {"token": ""}
   # 此处获得的token，需要在后续请求中加入到header中，key='token', value='token值'
-  post :customers, :provides => [:json] do
+  post "/", :provides => [:json] do
     api_rescue do
       code,body=method_url_call("get","https://api.weixin.qq.com/sns/jscode2session?appid=#{Settings.wechat.appId}&secret=#{Settings.wechat.appSecret}&js_code=#{@request_params["code"]}&grant_type=authorization_code",{},"JSON")
       if code!="200"
@@ -25,6 +25,19 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
       end
 
       { status: 'succ', data: {token: cus.token}}.to_json
+    end
+  end
+
+  # 新增车型
+  # params {"model_id": 4} 车款id
+  # data {current: ""}
+  post :add_car, :provides => [:json] do
+    api_rescue do
+      authenticate
+
+      @car_model = CarModel.find(@request_params["model_id"])
+      @current_car = Car.create!(customer_id: @customer.id, car_model_id: @car_model.id, car_model_name: "#{@car_model.car_model_name} #{@car_model.car_model_version}", is_current: true)
+      { status: 'succ', data: {current: @current_car.car_model_name}}.to_json
     end
   end
 end
