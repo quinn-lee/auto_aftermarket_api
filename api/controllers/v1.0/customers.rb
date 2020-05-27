@@ -6,6 +6,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
   # 注册或登录
   # params {"code": "011EewQl0V6Juq13KWNl01SgQl0EewQ-"}
   # data {"token": ""}
+  # 此处获得的token，需要在后续请求中加入到header中，key='token', value='token值'
   post :customers, :provides => [:json] do
     api_rescue do
       code,body=method_url_call("get","https://api.weixin.qq.com/sns/jscode2session?appid=wxb5ebd7edf0437cdb&secret=986dfb559ebb15402628db871ba6f608&js_code=#{@request_params["code"]}&grant_type=authorization_code",{},"JSON")
@@ -18,7 +19,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
           raise res['errmsg']
         else
           unless cus = Customer.find_by(openid: res['openid'])
-            cus = Customer.create(openid: res['openid'], unionid: res['unionid'], token: generate_token)
+            cus = Customer.create(openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{generate_token}")
           end
         end
       end
