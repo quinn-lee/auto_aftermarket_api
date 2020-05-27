@@ -30,7 +30,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
 
   # 新增车型
   # params {"model_id": 4} 车款id
-  # data {current: ""}
+  # data {current: "奥迪A4L 2019款 45 TFSI quattro个性运动版 国V"}
   post :add_car, :provides => [:json] do
     api_rescue do
       authenticate
@@ -58,7 +58,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
 
   # 修改当前车型
   # params {"car_id": 2}
-  # data {current: ""}
+  # data {current: "奥迪A4L 2019款 45 TFSI quattro个性运动版 国V"}
   post :change_car, :provides => [:json] do
     api_rescue do
       authenticate
