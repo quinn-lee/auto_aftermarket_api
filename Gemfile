@@ -1,7 +1,7 @@
 source 'https://gems.ruby-china.com'
 
 # Padrino supports Ruby version 2.2.2 and later
-# ruby '2.5.0'
+# ruby '2.5.7'
 
 # Distribute your app as a gem
 # gemspec
@@ -33,3 +33,4 @@ gem 'padrino', '0.14.4'
 #   gem 'padrino-' + g, '0.14.4'
 # end
 gem 'ruby-pinyin'
+gem 'settingslogic', '~> 2.0', '>= 2.0.9'

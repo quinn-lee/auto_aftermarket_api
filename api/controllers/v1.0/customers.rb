@@ -9,7 +9,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
   # 此处获得的token，需要在后续请求中加入到header中，key='token', value='token值'
   post :customers, :provides => [:json] do
     api_rescue do
-      code,body=method_url_call("get","https://api.weixin.qq.com/sns/jscode2session?appid=wxb5ebd7edf0437cdb&secret=986dfb559ebb15402628db871ba6f608&js_code=#{@request_params["code"]}&grant_type=authorization_code",{},"JSON")
+      code,body=method_url_call("get","https://api.weixin.qq.com/sns/jscode2session?appid=#{Settings.wechat.appId}&secret=#{Settings.wechat.appSecret}&js_code=#{@request_params["code"]}&grant_type=authorization_code",{},"JSON")
       if code!="200"
         logger.info("call api weixin expection , [#{code}]")
         raise "call api weixin timeout,please try again"
