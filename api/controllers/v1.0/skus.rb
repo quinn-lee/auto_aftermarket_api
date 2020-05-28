@@ -189,6 +189,238 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
-  
+  # 查找商品
+  # params {"category_id": 1, "name": "美孚"}  后续上线查询支持
+  # data
+=begin
+    [
+        {
+            "id": 2,
+            "description": "新老包装更替中，实物包装可能与图片略有差别",
+            "category": {
+                "id": 2,
+                "parent_id": 1,
+                "name": "机油"
+            },
+            "pics": [
+                "images/260811002.jpg",
+                "images/1336270541.jpg"
+            ],
+            "desc_pics": [],
+            "attributes": [
+                {
+                    "attr_name": "品牌",
+                    "attr_value": "美孚/Mobil"
+                },
+                {
+                    "attr_name": "基础油级别",
+                    "attr_value": "全合成机油"
+                },
+                {
+                    "attr_name": "机油等级",
+                    "attr_value": "SN"
+                },
+                {
+                    "attr_name": "适配发动机",
+                    "attr_value": "汽油发动机"
+                }
+            ],
+            "skus": [
+                {
+                    "id": 1,
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
+                    "sku_code": "AN01224231",
+                    "price": "329.0",
+                    "stock_quantity": 10,
+                    "weight": "3.62",
+                    "pics": [],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "4升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "5W-30"
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （1L装）",
+                    "sku_code": "AN01224232",
+                    "price": "89.0",
+                    "stock_quantity": 10,
+                    "weight": "0.92",
+                    "pics": [],
+                    "attributes": [
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "5W-30"
+                        },
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "1升"
+                        }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （4L装）",
+                    "sku_code": "AN01224233",
+                    "price": "329.0",
+                    "stock_quantity": 10,
+                    "weight": "3.58",
+                    "pics": [],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "4升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "5W-40"
+                        }
+                    ]
+                },
+                {
+                    "id": 4,
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （1L装）",
+                    "sku_code": "AN01224234",
+                    "price": "89.0",
+                    "stock_quantity": 10,
+                    "weight": "0.91",
+                    "pics": [],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "1升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "5W-40"
+                        }
+                    ]
+                },
+                {
+                    "id": 5,
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
+                    "sku_code": "AN01224235",
+                    "price": "599.0",
+                    "stock_quantity": 10,
+                    "weight": "3.56",
+                    "pics": [],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "4升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "0W-20"
+                        }
+                    ]
+                },
+                {
+                    "id": 6,
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
+                    "sku_code": "AN01224236",
+                    "price": "159.0",
+                    "stock_quantity": 10,
+                    "weight": "0.9",
+                    "pics": [],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "1升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "0W-20"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+=end
+  post :goods, :provides => [:json] do
+    api_rescue do
+      authenticate
+
+      @goods = Goods.where(category_id: @request_params['category_id']) if @request_params['category_id'].present?
+      @goods = @goods.where("name like '%#{@request_params['name']}%'") if @request_params['name'].present?
+      { status: 'succ', data: @goods.map(&:to_api)}.to_json
+    end
+  end
+
+
+  # 根据sku_id，查询商品详情
+  # params {"sku_id": 1}
+  # data
+=begin
+    {
+        "id": 2,
+        "goods": {
+            "id": 2,
+            "description": "新老包装更替中，实物包装可能与图片略有差别",
+            "category": {
+                "id": 2,
+                "parent_id": 1,
+                "name": "机油"
+            },
+            "pics": [
+                "images/260811002.jpg",
+                "images/1336270541.jpg"
+            ],
+            "desc_pics": [],
+            "attributes": [
+                {
+                    "attr_name": "品牌",
+                    "attr_value": "美孚/Mobil"
+                },
+                {
+                    "attr_name": "基础油级别",
+                    "attr_value": "全合成机油"
+                },
+                {
+                    "attr_name": "机油等级",
+                    "attr_value": "SN"
+                },
+                {
+                    "attr_name": "适配发动机",
+                    "attr_value": "汽油发动机"
+                }
+            ]
+        },
+        "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （1L装）",
+        "sku_code": "AN01224232",
+        "price": "89.0",
+        "stock_quantity": 10,
+        "weight": "0.92",
+        "pics": [
+            "images/260811002.jpg",
+            "images/1336270541.jpg"
+        ],
+        "attributes": [
+            {
+                "attr_name": "粘稠度",
+                "attr_value": "5W-30"
+            },
+            {
+                "attr_name": "规格",
+                "attr_value": "1升"
+            }
+        ]
+    }
+=end
+  post :sku, :provides => [:json] do
+    api_rescue do
+      authenticate
+
+      @sku = Sku.find(@request_params['sku_id'])
+      { status: 'succ', data: @sku.to_api}.to_json
+    end
+  end
 
 end

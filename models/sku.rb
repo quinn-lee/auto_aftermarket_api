@@ -6,6 +6,7 @@ class Sku < ActiveRecord::Base
 
   def to_api
     {
+      id: id,
       goods: goods.to_api_simple,
       sku_name: sku_name,
       sku_code: sku_code,
@@ -19,6 +20,7 @@ class Sku < ActiveRecord::Base
 
   def to_api_simple
     {
+      id: id,
       sku_name: sku_name,
       sku_code: sku_code,
       price: price,
