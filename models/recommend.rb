@@ -4,6 +4,7 @@ class Recommend < ActiveRecord::Base
     {
       name: name,
       rtype: rtype,
+      quantity: quantity,
       sku: Sku.find(sku_id).to_api
     }
   end

@@ -14,6 +14,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       {
           "name": "大保养推荐套餐",
           "rtype": "默认适配",
+          "quantity": 1,
           "sku": {
               "goods": {
                   "id": 2,
