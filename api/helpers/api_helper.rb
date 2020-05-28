@@ -22,8 +22,12 @@ module AutoAftermarketApi
       # 用户认证
       # 请求header['token']="*"
       def authenticate
+        logger.info env['HTTP_APPID']
         unless @customer = Customer.find_by(token: env['HTTP_TOKEN'])
           raise "token invalid"
+        end
+        unless @merchant = Merchant.find_by(appid: env['HTTP_APPID'])
+          raise "appid invalid"
         end
       end
 
