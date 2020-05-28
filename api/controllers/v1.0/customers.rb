@@ -12,7 +12,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   # 此处获得的token，需要在后续请求中加入到header中，key='token', value='token值'
   post "/", :provides => [:json] do
     api_rescue do
-      code,body=method_url_call("get","https://api.weixin.qq.com/sns/jscode2session?appid=#{Settings.wechat.appId}&secret=#{Settings.wechat.appSecret}&js_code=#{@request_params["code"]}&grant_type=authorization_code",{},"JSON")
+      code,body=WebFunctions.method_url_call("get","https://api.weixin.qq.com/sns/jscode2session?appid=#{Settings.wechat.appId}&secret=#{Settings.wechat.appSecret}&js_code=#{@request_params["code"]}&grant_type=authorization_code",{},"JSON")
       if code!="200"
         logger.info("call api weixin expection , [#{code}]")
         raise "call api weixin timeout,please try again"
@@ -22,7 +22,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
           raise res['errmsg']
         else
           unless cus = Customer.find_by(openid: res['openid'])
-            cus = Customer.create(openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{generate_token}")
+            cus = Customer.create(openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
           end
         end
       end

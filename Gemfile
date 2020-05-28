@@ -36,3 +36,5 @@ gem 'ruby-pinyin'
 gem 'settingslogic', '~> 2.0', '>= 2.0.9'
 # sudo apt-get install imagemagick
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
+
+gem 'nokogiri', '~> 1.10', '>= 1.10.9'
