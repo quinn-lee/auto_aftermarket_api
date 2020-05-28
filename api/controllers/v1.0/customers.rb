@@ -30,7 +30,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
 
   # 新增车型
   # params {"model_id": 4} 车款id
-  # data {current: "奥迪A4L 2019款 45 TFSI quattro个性运动版 国V"}
+  # data {"id": 1,"car_model_id": 1,"car_model_name": "奥迪A4L 2020款 35 TFSI 时尚动感型", "mileage": 9000,"is_current": false, "license_date": "", "color": "白色"}
   post :add_car, :provides => [:json] do
     api_rescue do
       authenticate
@@ -40,13 +40,13 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         Car.where(customer_id: @customer.id).update_all(is_current: false)
         @current_car = Car.create!(customer_id: @customer.id, car_model_id: @car_model.id, car_model_name: "#{@car_model.car_model_name} #{@car_model.car_model_version}", is_current: true)
       end
-      { status: 'succ', data: {current: @current_car.car_model_name}}.to_json
+      { status: 'succ', data: @current_car.to_api}.to_json
     end
   end
 
   # 客户所有车型
   # params 空
-  # data [{"id": 1,"car_model_id": 1,"car_model_name": "奥迪A4L 2020款 35 TFSI 时尚动感型","is_current": false}...]
+  # data [{"id": 1,"car_model_id": 1,"car_model_name": "奥迪A4L 2020款 35 TFSI 时尚动感型", "mileage": 9000,"is_current": false, "license_date": "", "color": "白色"}...]
   post :cars, :provides => [:json] do
     api_rescue do
       authenticate
@@ -58,7 +58,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
 
   # 修改当前车型
   # params {"car_id": 2}
-  # data {current: "奥迪A4L 2019款 45 TFSI quattro个性运动版 国V"}
+  # data {"id": 1,"car_model_id": 1,"car_model_name": "奥迪A4L 2020款 35 TFSI 时尚动感型", "mileage": 9000,"is_current": false, "license_date": "", "color": "白色"}
   post :change_car, :provides => [:json] do
     api_rescue do
       authenticate
@@ -67,7 +67,23 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         @car = Car.find(@request_params["car_id"])
         @car.update!(is_current: true)
       end
-      { status: 'succ', data: {current: @car.car_model_name}}.to_json
+      { status: 'succ', data: @car.to_api}.to_json
+    end
+  end
+
+  # 修改车型当前里程数
+  # params {"car_id": 2, "mileage": 9000, "license_date": "2019-01-01", "color": "黑色"}
+  # data {"id": 1,"car_model_id": 1,"car_model_name": "奥迪A4L 2020款 35 TFSI 时尚动感型", "mileage": 9000,"is_current": false, "license_date": "", "color": "白色"}
+  post :edit_car, :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        @car = Car.find(@request_params["car_id"])
+        mileage_his = @car.mileage_his || []
+        mileage_his << {mileage:  @car.mileage, date: Time.now.strftime("%F")} if @car.mileage.present?
+        @car.update!(mileage_his: mileage_his, mileage: @request_params["mileage"], license_date: @request_params["license_date"], color: @request_params["color"])
+      end
+      { status: 'succ', data: @car.to_api}.to_json
     end
   end
 end
