@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 23) do
+ActiveRecord::Schema.define(version: 28) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,15 @@ ActiveRecord::Schema.define(version: 23) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.string "content"
+    t.integer "customer_id"
+    t.integer "goods_id"
+    t.json "pics"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "sex"
@@ -139,10 +148,10 @@ ActiveRecord::Schema.define(version: 23) do
     t.string "name"
     t.string "description"
     t.json "pics"
-    t.string "comment"
     t.integer "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "desc_pics"
   end
 
   create_table "goods_attributes", force: :cascade do |t|
@@ -204,7 +213,6 @@ ActiveRecord::Schema.define(version: 23) do
 
   create_table "recommends", force: :cascade do |t|
     t.string "name"
-    t.string "type"
     t.integer "category_id"
     t.integer "goods_id"
     t.integer "sku_id"
@@ -213,6 +221,7 @@ ActiveRecord::Schema.define(version: 23) do
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "rtype"
   end
 
   create_table "records", force: :cascade do |t|
