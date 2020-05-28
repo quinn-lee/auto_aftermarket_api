@@ -80,4 +80,12 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
+  post :categories, :provides => [:json] do
+    api_rescue do
+      authenticate
+
+      { status: 'succ', data: Category.all_categories}.to_json
+    end
+  end
+
 end
