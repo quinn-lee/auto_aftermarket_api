@@ -10,73 +10,512 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   # params {"car_id": 1}
   # data
 =begin
-    [
-      {
-          "name": "大保养推荐套餐",
-          "rtype": "默认适配",
-          "quantity": 1,
-          "sku": {
-              "goods": {
-                  "id": 2,
-                  "description": "新老包装更替中，实物包装可能与图片略有差别",
-                  "category": {
-                      "id": 2,
-                      "parent_id": 1,
-                      "name": "机油"
-                  },
-                  "pics": [
-                      "images/260811002.jpg",
-                      "images/1336270541.jpg"
-                  ],
-                  "desc_pics": [],
-                  "attributes": [
-                      {
-                          "attr_name": "品牌",
-                          "attr_value": "美孚/Mobil"
-                      },
-                      {
-                          "attr_name": "基础油级别",
-                          "attr_value": "全合成机油"
-                      },
-                      {
-                          "attr_name": "机油等级",
-                          "attr_value": "SN"
-                      },
-                      {
-                          "attr_name": "适配发动机",
-                          "attr_value": "汽油发动机"
-                      }
-                  ]
-              },
-              "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
-              "sku_code": "AN01224235",
-              "price": "599.0",
-              "stock_quantity": 10,
-              "weight": "3.56",
-              "pics": [
-                  "images/260811002.jpg",
-                  "images/1336270541.jpg"
-              ],
-              "attributes": [
-                  {
-                      "attr_name": "规格",
-                      "attr_value": "4升"
-                  },
-                  {
-                      "attr_name": "粘稠度",
-                      "attr_value": "0W-20"
-                  }
-              ]
-          }
-      }
+  [
+        {
+            "name": "大保养推荐套餐",
+            "rtype": "默认适配",
+            "skus": [
+                {
+                    "id": 5,
+                    "goods": {
+                        "id": 2,
+                        "description": "新老包装更替中，实物包装可能与图片略有差别",
+                        "category": {
+                            "id": 2,
+                            "parent_id": 1,
+                            "name": "机油"
+                        },
+                        "pics": [
+                            "images/260811002.jpg",
+                            "images/1336270541.jpg"
+                        ],
+                        "desc_pics": [],
+                        "attributes": [
+                            {
+                                "attr_name": "品牌",
+                                "attr_value": "美孚/Mobil"
+                            },
+                            {
+                                "attr_name": "基础油级别",
+                                "attr_value": "全合成机油"
+                            },
+                            {
+                                "attr_name": "机油等级",
+                                "attr_value": "SN"
+                            },
+                            {
+                                "attr_name": "适配发动机",
+                                "attr_value": "汽油发动机"
+                            }
+                        ]
+                    },
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
+                    "sku_code": "AN01224235",
+                    "price": "599.0",
+                    "stock_quantity": 10,
+                    "weight": "3.56",
+                    "pics": [
+                        "images/260811002.jpg",
+                        "images/1336270541.jpg"
+                    ],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "4升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "0W-20"
+                        }
+                    ],
+                    "quantity": 1
+                },
+                {
+                    "id": 6,
+                    "goods": {
+                        "id": 2,
+                        "description": "新老包装更替中，实物包装可能与图片略有差别",
+                        "category": {
+                            "id": 2,
+                            "parent_id": 1,
+                            "name": "机油"
+                        },
+                        "pics": [
+                            "images/260811002.jpg",
+                            "images/1336270541.jpg"
+                        ],
+                        "desc_pics": [],
+                        "attributes": [
+                            {
+                                "attr_name": "品牌",
+                                "attr_value": "美孚/Mobil"
+                            },
+                            {
+                                "attr_name": "基础油级别",
+                                "attr_value": "全合成机油"
+                            },
+                            {
+                                "attr_name": "机油等级",
+                                "attr_value": "SN"
+                            },
+                            {
+                                "attr_name": "适配发动机",
+                                "attr_value": "汽油发动机"
+                            }
+                        ]
+                    },
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
+                    "sku_code": "AN01224236",
+                    "price": "159.0",
+                    "stock_quantity": 10,
+                    "weight": "0.9",
+                    "pics": [
+                        "images/260811002.jpg",
+                        "images/1336270541.jpg"
+                    ],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "1升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "0W-20"
+                        }
+                    ],
+                    "quantity": 1
+                },
+                {
+                    "id": 7,
+                    "goods": {
+                        "id": 3,
+                        "description": "",
+                        "category": {
+                            "id": 3,
+                            "parent_id": 1,
+                            "name": "机油滤清器"
+                        },
+                        "pics": [
+                            "images/260811002.jpg",
+                            "images/1336270541.jpg"
+                        ],
+                        "desc_pics": [],
+                        "attributes": [
+                            {
+                                "attr_name": "品牌",
+                                "attr_value": "马勒/MAHLE"
+                            },
+                            {
+                                "attr_name": "规格",
+                                "attr_value": "只"
+                            },
+                            {
+                                "attr_name": "场地",
+                                "attr_value": "中国"
+                            },
+                            {
+                                "attr_name": "机滤类型",
+                                "attr_value": "机油滤清器"
+                            }
+                        ]
+                    },
+                    "sku_name": "马勒/MAHLE 机油滤清器 OC1480",
+                    "sku_code": "AN01224240",
+                    "price": "25.0",
+                    "stock_quantity": 10,
+                    "weight": "0.22",
+                    "pics": [
+                        "images/260811002.jpg",
+                        "images/1336270541.jpg"
+                    ],
+                    "attributes": [],
+                    "quantity": 1
+                }
+            ]
+        },
+        {
+            "name": "大保养推荐套餐",
+            "rtype": "性价比适配",
+            "skus": [
+                {
+                    "id": 5,
+                    "goods": {
+                        "id": 2,
+                        "description": "新老包装更替中，实物包装可能与图片略有差别",
+                        "category": {
+                            "id": 2,
+                            "parent_id": 1,
+                            "name": "机油"
+                        },
+                        "pics": [
+                            "images/260811002.jpg",
+                            "images/1336270541.jpg"
+                        ],
+                        "desc_pics": [],
+                        "attributes": [
+                            {
+                                "attr_name": "品牌",
+                                "attr_value": "美孚/Mobil"
+                            },
+                            {
+                                "attr_name": "基础油级别",
+                                "attr_value": "全合成机油"
+                            },
+                            {
+                                "attr_name": "机油等级",
+                                "attr_value": "SN"
+                            },
+                            {
+                                "attr_name": "适配发动机",
+                                "attr_value": "汽油发动机"
+                            }
+                        ]
+                    },
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
+                    "sku_code": "AN01224235",
+                    "price": "599.0",
+                    "stock_quantity": 10,
+                    "weight": "3.56",
+                    "pics": [
+                        "images/260811002.jpg",
+                        "images/1336270541.jpg"
+                    ],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "4升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "0W-20"
+                        }
+                    ],
+                    "quantity": 1
+                },
+                {
+                    "id": 6,
+                    "goods": {
+                        "id": 2,
+                        "description": "新老包装更替中，实物包装可能与图片略有差别",
+                        "category": {
+                            "id": 2,
+                            "parent_id": 1,
+                            "name": "机油"
+                        },
+                        "pics": [
+                            "images/260811002.jpg",
+                            "images/1336270541.jpg"
+                        ],
+                        "desc_pics": [],
+                        "attributes": [
+                            {
+                                "attr_name": "品牌",
+                                "attr_value": "美孚/Mobil"
+                            },
+                            {
+                                "attr_name": "基础油级别",
+                                "attr_value": "全合成机油"
+                            },
+                            {
+                                "attr_name": "机油等级",
+                                "attr_value": "SN"
+                            },
+                            {
+                                "attr_name": "适配发动机",
+                                "attr_value": "汽油发动机"
+                            }
+                        ]
+                    },
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
+                    "sku_code": "AN01224236",
+                    "price": "159.0",
+                    "stock_quantity": 10,
+                    "weight": "0.9",
+                    "pics": [
+                        "images/260811002.jpg",
+                        "images/1336270541.jpg"
+                    ],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "1升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "0W-20"
+                        }
+                    ],
+                    "quantity": 1
+                },
+                {
+                    "id": 7,
+                    "goods": {
+                        "id": 3,
+                        "description": "",
+                        "category": {
+                            "id": 3,
+                            "parent_id": 1,
+                            "name": "机油滤清器"
+                        },
+                        "pics": [
+                            "images/260811002.jpg",
+                            "images/1336270541.jpg"
+                        ],
+                        "desc_pics": [],
+                        "attributes": [
+                            {
+                                "attr_name": "品牌",
+                                "attr_value": "马勒/MAHLE"
+                            },
+                            {
+                                "attr_name": "规格",
+                                "attr_value": "只"
+                            },
+                            {
+                                "attr_name": "场地",
+                                "attr_value": "中国"
+                            },
+                            {
+                                "attr_name": "机滤类型",
+                                "attr_value": "机油滤清器"
+                            }
+                        ]
+                    },
+                    "sku_name": "马勒/MAHLE 机油滤清器 OC1480",
+                    "sku_code": "AN01224240",
+                    "price": "25.0",
+                    "stock_quantity": 10,
+                    "weight": "0.22",
+                    "pics": [
+                        "images/260811002.jpg",
+                        "images/1336270541.jpg"
+                    ],
+                    "attributes": [],
+                    "quantity": 1
+                }
+            ]
+        },
+        {
+            "name": "大保养推荐套餐",
+            "rtype": "性能适配",
+            "skus": [
+                {
+                    "id": 1,
+                    "goods": {
+                        "id": 2,
+                        "description": "新老包装更替中，实物包装可能与图片略有差别",
+                        "category": {
+                            "id": 2,
+                            "parent_id": 1,
+                            "name": "机油"
+                        },
+                        "pics": [
+                            "images/260811002.jpg",
+                            "images/1336270541.jpg"
+                        ],
+                        "desc_pics": [],
+                        "attributes": [
+                            {
+                                "attr_name": "品牌",
+                                "attr_value": "美孚/Mobil"
+                            },
+                            {
+                                "attr_name": "基础油级别",
+                                "attr_value": "全合成机油"
+                            },
+                            {
+                                "attr_name": "机油等级",
+                                "attr_value": "SN"
+                            },
+                            {
+                                "attr_name": "适配发动机",
+                                "attr_value": "汽油发动机"
+                            }
+                        ]
+                    },
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
+                    "sku_code": "AN01224231",
+                    "price": "329.0",
+                    "stock_quantity": 10,
+                    "weight": "3.62",
+                    "pics": [
+                        "images/260811002.jpg",
+                        "images/1336270541.jpg"
+                    ],
+                    "attributes": [
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "4升"
+                        },
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "5W-30"
+                        }
+                    ],
+                    "quantity": 1
+                },
+                {
+                    "id": 2,
+                    "goods": {
+                        "id": 2,
+                        "description": "新老包装更替中，实物包装可能与图片略有差别",
+                        "category": {
+                            "id": 2,
+                            "parent_id": 1,
+                            "name": "机油"
+                        },
+                        "pics": [
+                            "images/260811002.jpg",
+                            "images/1336270541.jpg"
+                        ],
+                        "desc_pics": [],
+                        "attributes": [
+                            {
+                                "attr_name": "品牌",
+                                "attr_value": "美孚/Mobil"
+                            },
+                            {
+                                "attr_name": "基础油级别",
+                                "attr_value": "全合成机油"
+                            },
+                            {
+                                "attr_name": "机油等级",
+                                "attr_value": "SN"
+                            },
+                            {
+                                "attr_name": "适配发动机",
+                                "attr_value": "汽油发动机"
+                            }
+                        ]
+                    },
+                    "sku_name": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （1L装）",
+                    "sku_code": "AN01224232",
+                    "price": "89.0",
+                    "stock_quantity": 10,
+                    "weight": "0.92",
+                    "pics": [
+                        "images/260811002.jpg",
+                        "images/1336270541.jpg"
+                    ],
+                    "attributes": [
+                        {
+                            "attr_name": "粘稠度",
+                            "attr_value": "5W-30"
+                        },
+                        {
+                            "attr_name": "规格",
+                            "attr_value": "1升"
+                        }
+                    ],
+                    "quantity": 1
+                },
+                {
+                    "id": 7,
+                    "goods": {
+                        "id": 3,
+                        "description": "",
+                        "category": {
+                            "id": 3,
+                            "parent_id": 1,
+                            "name": "机油滤清器"
+                        },
+                        "pics": [
+                            "images/260811002.jpg",
+                            "images/1336270541.jpg"
+                        ],
+                        "desc_pics": [],
+                        "attributes": [
+                            {
+                                "attr_name": "品牌",
+                                "attr_value": "马勒/MAHLE"
+                            },
+                            {
+                                "attr_name": "规格",
+                                "attr_value": "只"
+                            },
+                            {
+                                "attr_name": "场地",
+                                "attr_value": "中国"
+                            },
+                            {
+                                "attr_name": "机滤类型",
+                                "attr_value": "机油滤清器"
+                            }
+                        ]
+                    },
+                    "sku_name": "马勒/MAHLE 机油滤清器 OC1480",
+                    "sku_code": "AN01224240",
+                    "price": "25.0",
+                    "stock_quantity": 10,
+                    "weight": "0.22",
+                    "pics": [
+                        "images/260811002.jpg",
+                        "images/1336270541.jpg"
+                    ],
+                    "attributes": [],
+                    "quantity": 1
+                }
+            ]
+        }
     ]
 =end
   post :recommends, :provides => [:json] do
     api_rescue do
       authenticate
 
-      @recommends = Recommend.order(:rtype => :asc)
-      { status: 'succ', data: @recommends.map(&:to_api)}.to_json
+      @recommends = Recommend.all
+      datas = []
+      name_rtypes = @recommends.map{|r| [r.name, r.rtype]}.uniq
+      name_rtypes.each do |nr|
+        skus = []
+        @recommends.where(name: nr[0], rtype: nr[1]).each do |r|
+          sku = Sku.find(r.sku_id).to_api
+          sku['quantity'] = r.quantity
+          skus << sku
+        end
+        datas << {name: nr[0],rtype: nr[1],skus: skus}
+      end
+      { status: 'succ', data: datas}.to_json
     end
   end
 
