@@ -54,7 +54,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     api_rescue do
       authenticate
 
-      @cars = Car.where(customer_id: @customer.id)
+      @cars = Car.where(customer_id: @customer.id).order(:id => :asc)
       { status: 'succ', data: @cars.map(&:to_api)}.to_json
     end
   end
