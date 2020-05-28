@@ -80,6 +80,67 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
+  # 返回目录结构
+  # params 空
+  # data
+=begin
+  [
+    {
+        "id": 1,
+        "parent_id": null,
+        "name": "常规保养",
+        "sub": [
+            {
+                "id": 2,
+                "parent_id": 1,
+                "name": "机油"
+            },
+            {
+                "id": 3,
+                "parent_id": 1,
+                "name": "机油滤清器"
+            },
+            {
+                "id": 4,
+                "parent_id": 1,
+                "name": "空气滤清器"
+            },
+            {
+                "id": 5,
+                "parent_id": 1,
+                "name": "燃油滤清器"
+            },
+            {
+                "id": 6,
+                "parent_id": 1,
+                "name": "燃油系统养护"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "parent_id": null,
+        "name": "刹车养护",
+        "sub": [
+            {
+                "id": 8,
+                "parent_id": 7,
+                "name": "刹车油"
+            },
+            {
+                "id": 9,
+                "parent_id": 7,
+                "name": "刹车片"
+            },
+            {
+                "id": 10,
+                "parent_id": 7,
+                "name": "刹车盘"
+            }
+        ]
+    }
+  ]
+=end
   post :categories, :provides => [:json] do
     api_rescue do
       authenticate
@@ -87,5 +148,47 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       { status: 'succ', data: Category.all_categories}.to_json
     end
   end
+
+  # 查找子目录
+  # params {"category_id": 1}
+  # data
+=begin
+  [
+      {
+          "id": 2,
+          "parent_id": 1,
+          "name": "机油"
+      },
+      {
+          "id": 3,
+          "parent_id": 1,
+          "name": "机油滤清器"
+      },
+      {
+          "id": 4,
+          "parent_id": 1,
+          "name": "空气滤清器"
+      },
+      {
+          "id": 5,
+          "parent_id": 1,
+          "name": "燃油滤清器"
+      },
+      {
+          "id": 6,
+          "parent_id": 1,
+          "name": "燃油系统养护"
+      }
+  ]
+=end
+  post :sub_categories, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @categories = Category.where(parent_id: @request_params['category_id'])
+      { status: 'succ', data: @categories.map(&:to_api)}.to_json
+    end
+  end
+
+  
 
 end
