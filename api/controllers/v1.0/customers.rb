@@ -1,3 +1,6 @@
+# encoding: utf-8
+
+# 用户登录 用户汽车相关接口
 AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   before do
     load_api_request_params

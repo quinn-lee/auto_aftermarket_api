@@ -1,4 +1,6 @@
 # encoding: utf-8
+
+#汽车车型选择相关接口
 AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
   before do
     load_api_request_params
