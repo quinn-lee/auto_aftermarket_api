@@ -14,6 +14,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
         {
             "name": "大保养推荐套餐",
             "rtype": "默认适配",
+            "amount": "783.0",
             "skus": [
                 {
                     "id": 5,
@@ -176,6 +177,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
         {
             "name": "大保养推荐套餐",
             "rtype": "性价比适配",
+            "amount": "783.0",
             "skus": [
                 {
                     "id": 5,
@@ -338,6 +340,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
         {
             "name": "大保养推荐套餐",
             "rtype": "性能适配",
+            "amount": "783.0",
             "skus": [
                 {
                     "id": 1,
@@ -508,12 +511,15 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       name_rtypes = @recommends.map{|r| [r.name, r.rtype]}.uniq
       name_rtypes.each do |nr|
         skus = []
+        amount = 0
         @recommends.where(name: nr[0], rtype: nr[1]).each do |r|
-          sku = Sku.find(r.sku_id).to_api
-          sku['quantity'] = r.quantity
-          skus << sku
+          sku = Sku.find(r.sku_id)
+          sku_to_api = sku.to_api
+          sku_to_api['quantity'] = r.quantity
+          amount += r.quantity*sku.price
+          skus << sku_to_api
         end
-        datas << {name: nr[0],rtype: nr[1],skus: skus}
+        datas << {name: nr[0],rtype: nr[1],amount: amount, skus: skus}
       end
       { status: 'succ', data: datas}.to_json
     end
