@@ -30,4 +30,13 @@ class Sku < ActiveRecord::Base
       attributes: Attribute.where(id: SkuAttribute.where(sku_code: sku_code).map(&:attribute_id)).map(&:to_api)
     }
   end
+
+  def to_api_order
+    {
+      id: id,
+      sku_name: sku_name,
+      sku_code: sku_code,
+      pics: ["images/260811002.jpg", "images/1336270541.jpg"]
+    }
+  end
 end
