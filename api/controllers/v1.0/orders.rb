@@ -62,6 +62,16 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       order_no: "12423434",
       amount: 349,
       status: "paid",
+      delivery_info: {
+        name: "aaa",
+        address: "bbb",
+        contact_name: "aaa",
+        contact_phone: "ccc"
+      },
+      contact_info: {
+        name: "李富元",
+        mobile: "13917050000"
+      },
       items: [
         {
           name: "推荐保养套餐",
@@ -100,6 +110,16 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       order_no: "12423434",
       amount: 349,
       status: "paid",
+      delivery_info: {
+        name: "aaa",
+        address: "bbb",
+        contact_name: "aaa",
+        contact_phone: "ccc"
+      },
+      contact_info: {
+        name: "李富元",
+        mobile: "13917050000"
+      },
       items: [
         {
           name: "推荐保养套餐",

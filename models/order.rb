@@ -17,6 +17,16 @@ class Order < ActiveRecord::Base
       order_no: order_no,
       amount: amount,
       status: status,
+      delivery_info: {
+        name: "aaa",
+        address: "bbb",
+        contact_name: "aaa",
+        contact_phone: "ccc"
+      },
+      contact_info: {
+        name: "李富元",
+        mobile: "13917050000"
+      },
       items: items
     }
     return h
