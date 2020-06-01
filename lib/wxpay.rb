@@ -68,7 +68,7 @@ class Wxpay
       ret_info["status"]="fail"
       ret_info["info"]["err_msg"]=e.message
     end
-    logger.info("pre_pay tax_num [#{order_no}] end: #{Time.now}")
+    logger.info("pre_pay tx_num [#{order_no}] end: #{Time.now}")
     logger.info("ret_info:#{ret_info}")
     ret_info
   end

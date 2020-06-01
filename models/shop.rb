@@ -12,4 +12,14 @@ class Shop < ActiveRecord::Base
       business_time: business_time
     }
   end
+
+  def to_api_simple
+    {
+      id: id,
+      name: name,
+      address: address,
+      contact_name: contact_name,
+      contact_phone: contact_phone,
+    }
+  end
 end

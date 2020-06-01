@@ -12,17 +12,20 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
   {
     "shop_id": 2,
     "contact_info": {"name": "李富元", "mobile": "13917050000"},
+    "amount": 200,
+    "pay_amount": 200,
+    "order_type": "maintenance", # maintenance->维修保养，purchase->商城自选商品
     "items": [
         {
           "name": "大保养推荐套餐",
           skus: [
             {
-              "sku_code": "BBBBB",
+              "sku_id": 1,
               "quantity": 1,
               "price": 55
             },
             {
-              "sku_code": "CCCCC",
+              "sku_id": 2,
               "quantity": 1,
               "price": 55
             }
@@ -32,7 +35,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           "name": "自选项目",
           skus: [
             {
-              "sku_code": "AAAAA",
+              "sku_id": 3,
               "quantity": 1,
               "price": 45
             }
@@ -41,18 +44,52 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       ]
   }
 =end
-  # data {"prepay_id"=>"aaa", "amount"=>"", "order_num"=> ""}
+  # data {"prepay_id"=>"aaa", "amount"=>"", "order_no"=> ""}
   post "/create", :provides => [:json] do
     api_rescue do
       authenticate
+      ActiveRecord::Base.transaction do
+        @order = Order.new
+        @order.customer_id = @customer.id
+        @order.merchant_id = @merchant.id
+        @order.order_date = Time.now
+        @order.order_no = @order.gen_order_no
+        @order.amount = @request_params['amount']
+        @order.order_type = @request_params['order_type']
+        @order.pay_amount = @request_params['pay_amount']
+        @order.status = "unpaid"
+        @order.shop_id = @request_params['shop_id']
+        @order.delivery_info = Shop.find(@request_params['shop_id']).to_api_simple
+        @order.contact_info = @request_params['contact_info']
 
+        @order.save!
+        @request_params['items'].each do |item|
+          item['skus'].each do |sku|
+            OrderSku.create!(order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'] )
+          end
+        end
+      end
+      ActiveRecord::Base.transaction do
+        pay_res = Wxpay.pre_pay(@merchant, @order.order_no, @customer.openid, (BigDecimal.new(@order.pay_amount.to_s)*100).to_i, env['REMOTE_HOST'])
+        if pay_res["status"]=="succ"
+          wi=WxpayInfo.create!({
+            prepay_id: pay_res["info"]["prepay_id"],
+            customer_id: @customer.id,
+            order_no: @order.order_no,
+            amount: @order.pay_amount,
+            expired_time: Time.now+1.hour
+          })
+        else
+          raise "prepay_id产生失败:#{pay_res["info"]["err_msg"]}"
+        end
+      end
 
-      { status: 'succ', data: {"prepay_id"=>"aaa", "amount"=>"", "order_num"=> ""}}.to_json
+      { status: 'succ', data: {"prepay_id"=>pay_res["info"]["prepay_id"], "amount"=>@order.pay_amount, "order_no"=> @order.order_no}}.to_json
     end
   end
 
   # 订单列表
-  # params {"status": "unpaid"(待付款)/"paid"(待预约)/"appointed"(待安装)}
+  # params {"status": "unpaid"(待付款)/"paid"(待收货)/"received"(待预约)/"appointed"(待安装)}
   # data
 =begin
   [
@@ -95,7 +132,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     api_rescue do
       authenticate
 
-      @orders = Order.all
+      @orders = Order.where(customer_id: @customer.id)
+      @orders.where(status: @request_params['status']) if @request_params['status'].present?
       { status: 'succ', data: @orders.map(&:to_api)}.to_json
     end
   end
