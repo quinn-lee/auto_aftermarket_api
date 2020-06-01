@@ -4,7 +4,7 @@ class CreateWxpayInfos < ActiveRecord::Migration[5.1]
       t.string :prepay_id
       t.integer :customer_id
       t.string :order_no
-      t.decimal :amount, :precision => 10, :scale => 2
+      t.integer :amount
       t.datetime :expired_time
       t.timestamps null: false
     end

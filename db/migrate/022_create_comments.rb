@@ -1,10 +1,11 @@
 class CreateComments < ActiveRecord::Migration[5.1]
   def self.up
     create_table :comments do |t|
+      t.integer :order_id
+      t.integer :t_sku_id
+      t.json :images
+      t.integer :rating
       t.string :content
-      t.integer :customer_id
-      t.integer :goods_id
-      t.json :pics
       t.timestamps null: false
     end
   end

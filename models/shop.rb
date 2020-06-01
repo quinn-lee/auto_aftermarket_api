@@ -1,4 +1,5 @@
 class Shop < ActiveRecord::Base
+  belongs_to :merchant,   :class_name => 'Merchant'
 
   def to_api
     {
@@ -11,5 +12,4 @@ class Shop < ActiveRecord::Base
       business_time: business_time
     }
   end
-
 end

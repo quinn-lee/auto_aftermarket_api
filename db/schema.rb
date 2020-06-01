@@ -10,17 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 31) do
+ActiveRecord::Schema.define(version: 24) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "attributes", force: :cascade do |t|
-    t.string "attr_name"
-    t.string "attr_value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "car_brands", force: :cascade do |t|
     t.string "brand"
@@ -66,14 +59,6 @@ ActiveRecord::Schema.define(version: 31) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "car_sku_mappings", force: :cascade do |t|
-    t.string "sku_code"
-    t.integer "car_year_id"
-    t.integer "car_model_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "car_years", force: :cascade do |t|
     t.string "brand"
     t.string "car_model"
@@ -96,20 +81,12 @@ ActiveRecord::Schema.define(version: 31) do
     t.boolean "is_current"
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string "name"
-    t.integer "parent_id"
-    t.string "cate_type"
-    t.boolean "is_hidden"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "comments", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "t_sku_id"
+    t.json "images"
+    t.integer "rating"
     t.string "content"
-    t.integer "customer_id"
-    t.integer "goods_id"
-    t.json "pics"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -130,64 +107,34 @@ ActiveRecord::Schema.define(version: 31) do
   create_table "discounts", force: :cascade do |t|
     t.string "order_no"
     t.string "discount_reason"
-    t.decimal "discount_amount", precision: 10, scale: 2
+    t.decimal "discount_amount", precision: 8, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "features", force: :cascade do |t|
-    t.integer "category_id"
-    t.string "name"
-    t.string "description"
-    t.string "feature_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "goods", force: :cascade do |t|
-    t.string "name"
-    t.string "description"
-    t.json "pics"
-    t.integer "category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.json "desc_pics"
-  end
-
-  create_table "goods_attributes", force: :cascade do |t|
-    t.integer "goods_id"
-    t.integer "attribute_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "inventories", force: :cascade do |t|
-    t.integer "merchant_id"
-    t.string "sku_code"
-    t.integer "num"
+  create_table "levels", force: :cascade do |t|
+    t.string "level_name"
+    t.integer "discount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "merchants", force: :cascade do |t|
     t.string "name"
-    t.string "password"
-    t.string "email"
-    t.string "mobile"
     t.string "appid"
     t.string "appsecret"
     t.string "mch_id"
+    t.string "mch_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "mch_key"
   end
 
   create_table "order_skus", force: :cascade do |t|
     t.string "order_no"
     t.string "name"
-    t.string "sku_code"
+    t.string "t_sku_id"
     t.integer "quantity"
-    t.decimal "price", precision: 10, scale: 2
+    t.decimal "price", precision: 8, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -208,23 +155,24 @@ ActiveRecord::Schema.define(version: 31) do
     t.datetime "cancel_time"
     t.string "cancel_reason"
     t.datetime "reservation_time"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "shop_id"
     t.jsonb "delivery_info"
     t.jsonb "contact_info"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "recommends", force: :cascade do |t|
     t.string "name"
-    t.integer "category_id"
-    t.integer "goods_id"
-    t.integer "sku_id"
+    t.string "rtype"
+    t.integer "t_category_id"
+    t.integer "t_spu_id"
+    t.integer "t_sku_id"
     t.integer "car_year_id"
     t.integer "car_model_id"
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "rtype"
   end
 
   create_table "records", force: :cascade do |t|
@@ -248,21 +196,76 @@ ActiveRecord::Schema.define(version: 31) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "sku_attributes", force: :cascade do |t|
-    t.string "sku_code"
-    t.integer "attribute_id"
+  create_table "t_attributes", force: :cascade do |t|
+    t.integer "t_category_id"
+    t.string "name"
+    t.boolean "numeric"
+    t.boolean "generic"
+    t.boolean "selling"
+    t.boolean "searching"
+    t.string "unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "skus", force: :cascade do |t|
-    t.integer "goods_id"
-    t.string "sku_name"
+  create_table "t_attrvalues", force: :cascade do |t|
+    t.integer "t_category_id"
+    t.integer "t_attribute_id"
+    t.string "value"
+    t.boolean "is_valid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "t_brands", force: :cascade do |t|
+    t.string "name"
+    t.string "detail"
+    t.string "image"
+    t.string "letter"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "t_categories", force: :cascade do |t|
+    t.string "name"
+    t.integer "parent_id"
+    t.boolean "if_parent"
+    t.integer "sort"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "t_category_brands", force: :cascade do |t|
+    t.integer "t_category_id"
+    t.integer "t_brand_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "t_skus", force: :cascade do |t|
+    t.integer "t_spu_id"
+    t.integer "merchant_id"
     t.string "sku_code"
-    t.decimal "price", precision: 8, scale: 2
-    t.integer "stock_quantity"
-    t.decimal "weight", precision: 8, scale: 2
-    t.json "pics"
+    t.string "title"
+    t.json "images"
+    t.decimal "price", precision: 10, scale: 2
+    t.jsonb "sale_attrs"
+    t.jsonb "attrs"
+    t.boolean "saleable"
+    t.boolean "is_valid"
+    t.integer "stock_num"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "t_spus", force: :cascade do |t|
+    t.integer "t_category_id"
+    t.integer "t_brand_id"
+    t.integer "merchant_id"
+    t.string "title"
+    t.string "detail"
+    t.boolean "saleable"
+    t.boolean "is_valid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -271,7 +274,7 @@ ActiveRecord::Schema.define(version: 31) do
     t.string "prepay_id"
     t.integer "customer_id"
     t.string "order_no"
-    t.decimal "amount", precision: 10, scale: 2
+    t.integer "amount"
     t.datetime "expired_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

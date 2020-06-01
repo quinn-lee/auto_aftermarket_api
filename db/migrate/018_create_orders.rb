@@ -16,6 +16,9 @@ class CreateOrders < ActiveRecord::Migration[5.1]
       t.datetime :cancel_time
       t.string :cancel_reason
       t.datetime :reservation_time
+      t.integer :shop_id
+      t.jsonb :delivery_info
+      t.jsonb :contact_info
       t.timestamps null: false
     end
   end
