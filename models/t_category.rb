@@ -7,7 +7,16 @@ class TCategory < ActiveRecord::Base
       id: id,
       parent_id: parent_id,
       name: name,
+      brands: TBrand.where(id: TCategoryBrand.where(t_category_id: id).map(&:t_brand_id)).map(&:to_api),
       attributes: t_attributes.map(&:to_api)
+    }
+  end
+
+  def to_api_simple
+    {
+      id: id,
+      parent_id: parent_id,
+      name: name
     }
   end
 

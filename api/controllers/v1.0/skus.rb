@@ -11,325 +11,388 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   # data
 =begin
   [
-        {
-            "name": "大保养推荐套餐",
-            "rtype": "默认适配",
-            "amount": "1047.0",
-            "skus": [
-                {
-                    "id": 5,
-                    "spus": {
-                        "id": 1,
-                        "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
-                        "category": {
-                            "id": 7,
-                            "parent_id": 1,
-                            "name": "机油"
-                        },
-                        "detail": "新老包装更替中，实物包装可能与图片略有差别"
-                    },
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
-                    "sku_code": "AN01224235",
-                    "price": "559.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "4L",
-                        "粘度": "0W-20"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "4L",
-                        "毛重": 3.5,
-                        "粘度": "0W-20",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    },
-                    "quantity": 1
-                },
-                {
-                    "id": 6,
-                    "spus": {
-                        "id": 1,
-                        "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
-                        "category": {
-                            "id": 7,
-                            "parent_id": 1,
-                            "name": "机油"
-                        },
-                        "detail": "新老包装更替中，实物包装可能与图片略有差别"
-                    },
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
-                    "sku_code": "AN01224236",
-                    "price": "159.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "1L",
-                        "粘度": "0W-20"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "1L",
-                        "毛重": 0.9,
-                        "粘度": "0W-20",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    },
-                    "quantity": 1
-                },
-                {
-                    "id": 7,
-                    "spus": {
-                        "id": 2,
-                        "title": "马勒/MAHLE 机油滤清器",
-                        "category": {
-                            "id": 10,
-                            "parent_id": 1,
-                            "name": "机油滤清"
-                        },
-                        "detail": ""
-                    },
-                    "title": "马勒/MAHLE 机油滤清器 OC1480",
-                    "sku_code": "AN01224241",
-                    "price": "329.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {},
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "毛重": 3.5
-                    },
-                    "quantity": 1
-                }
-            ]
-        },
-        {
-            "name": "大保养推荐套餐",
-            "rtype": "性价比适配",
-            "amount": "1047.0",
-            "skus": [
-                {
-                    "id": 5,
-                    "spus": {
-                        "id": 1,
-                        "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
-                        "category": {
-                            "id": 7,
-                            "parent_id": 1,
-                            "name": "机油"
-                        },
-                        "detail": "新老包装更替中，实物包装可能与图片略有差别"
-                    },
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
-                    "sku_code": "AN01224235",
-                    "price": "559.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "4L",
-                        "粘度": "0W-20"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "4L",
-                        "毛重": 3.5,
-                        "粘度": "0W-20",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    },
-                    "quantity": 1
-                },
-                {
-                    "id": 6,
-                    "spus": {
-                        "id": 1,
-                        "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
-                        "category": {
-                            "id": 7,
-                            "parent_id": 1,
-                            "name": "机油"
-                        },
-                        "detail": "新老包装更替中，实物包装可能与图片略有差别"
-                    },
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
-                    "sku_code": "AN01224236",
-                    "price": "159.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "1L",
-                        "粘度": "0W-20"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "1L",
-                        "毛重": 0.9,
-                        "粘度": "0W-20",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    },
-                    "quantity": 1
-                },
-                {
-                    "id": 7,
-                    "spus": {
-                        "id": 2,
-                        "title": "马勒/MAHLE 机油滤清器",
-                        "category": {
-                            "id": 10,
-                            "parent_id": 1,
-                            "name": "机油滤清"
-                        },
-                        "detail": ""
-                    },
-                    "title": "马勒/MAHLE 机油滤清器 OC1480",
-                    "sku_code": "AN01224241",
-                    "price": "329.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {},
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "毛重": 3.5
-                    },
-                    "quantity": 1
-                }
-            ]
-        },
-        {
-            "name": "大保养推荐套餐",
-            "rtype": "性能适配",
-            "amount": "1047.0",
-            "skus": [
-                {
-                    "id": 5,
-                    "spus": {
-                        "id": 1,
-                        "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
-                        "category": {
-                            "id": 7,
-                            "parent_id": 1,
-                            "name": "机油"
-                        },
-                        "detail": "新老包装更替中，实物包装可能与图片略有差别"
-                    },
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
-                    "sku_code": "AN01224235",
-                    "price": "559.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "4L",
-                        "粘度": "0W-20"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "4L",
-                        "毛重": 3.5,
-                        "粘度": "0W-20",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    },
-                    "quantity": 1
-                },
-                {
-                    "id": 6,
-                    "spus": {
-                        "id": 1,
-                        "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
-                        "category": {
-                            "id": 7,
-                            "parent_id": 1,
-                            "name": "机油"
-                        },
-                        "detail": "新老包装更替中，实物包装可能与图片略有差别"
-                    },
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
-                    "sku_code": "AN01224236",
-                    "price": "159.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "1L",
-                        "粘度": "0W-20"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "1L",
-                        "毛重": 0.9,
-                        "粘度": "0W-20",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    },
-                    "quantity": 1
-                },
-                {
-                    "id": 7,
-                    "spus": {
-                        "id": 2,
-                        "title": "马勒/MAHLE 机油滤清器",
-                        "category": {
-                            "id": 10,
-                            "parent_id": 1,
-                            "name": "机油滤清"
-                        },
-                        "detail": ""
-                    },
-                    "title": "马勒/MAHLE 机油滤清器 OC1480",
-                    "sku_code": "AN01224241",
-                    "price": "329.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {},
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "毛重": 3.5
-                    },
-                    "quantity": 1
-                }
-            ]
-        }
-    ]
+      {
+          "name": "大保养推荐套餐",
+          "rtype": "默认适配",
+          "amount": "1047.0",
+          "skus": [
+              {
+                  "id": 5,
+                  "spus": {
+                      "id": 1,
+                      "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
+                      "category": {
+                          "id": 7,
+                          "parent_id": 1,
+                          "name": "机油"
+                      },
+                      "brand": {
+                          "id": 1,
+                          "name": "美孚",
+                          "detail": null,
+                          "image": null,
+                          "letter": "M"
+                      },
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                  },
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
+                  "sku_code": "AN01224235",
+                  "price": "559.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "4L",
+                      "粘度": "0W-20"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "4L",
+                      "毛重": 3.5,
+                      "粘度": "0W-20",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  },
+                  "quantity": 1
+              },
+              {
+                  "id": 6,
+                  "spus": {
+                      "id": 1,
+                      "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
+                      "category": {
+                          "id": 7,
+                          "parent_id": 1,
+                          "name": "机油"
+                      },
+                      "brand": {
+                          "id": 1,
+                          "name": "美孚",
+                          "detail": null,
+                          "image": null,
+                          "letter": "M"
+                      },
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                  },
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
+                  "sku_code": "AN01224236",
+                  "price": "159.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "1L",
+                      "粘度": "0W-20"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "1L",
+                      "毛重": 0.9,
+                      "粘度": "0W-20",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  },
+                  "quantity": 1
+              },
+              {
+                  "id": 7,
+                  "spus": {
+                      "id": 2,
+                      "title": "马勒/MAHLE 机油滤清器",
+                      "category": {
+                          "id": 10,
+                          "parent_id": 1,
+                          "name": "机油滤清"
+                      },
+                      "brand": {
+                          "id": 10,
+                          "name": "马勒",
+                          "detail": null,
+                          "image": null,
+                          "letter": "M"
+                      },
+                      "detail": ""
+                  },
+                  "title": "马勒/MAHLE 机油滤清器 OC1480",
+                  "sku_code": "AN01224241",
+                  "price": "329.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {},
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "毛重": 3.5
+                  },
+                  "quantity": 1
+              }
+          ]
+      },
+      {
+          "name": "大保养推荐套餐",
+          "rtype": "性价比适配",
+          "amount": "1047.0",
+          "skus": [
+              {
+                  "id": 5,
+                  "spus": {
+                      "id": 1,
+                      "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
+                      "category": {
+                          "id": 7,
+                          "parent_id": 1,
+                          "name": "机油"
+                      },
+                      "brand": {
+                          "id": 1,
+                          "name": "美孚",
+                          "detail": null,
+                          "image": null,
+                          "letter": "M"
+                      },
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                  },
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
+                  "sku_code": "AN01224235",
+                  "price": "559.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "4L",
+                      "粘度": "0W-20"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "4L",
+                      "毛重": 3.5,
+                      "粘度": "0W-20",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  },
+                  "quantity": 1
+              },
+              {
+                  "id": 6,
+                  "spus": {
+                      "id": 1,
+                      "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
+                      "category": {
+                          "id": 7,
+                          "parent_id": 1,
+                          "name": "机油"
+                      },
+                      "brand": {
+                          "id": 1,
+                          "name": "美孚",
+                          "detail": null,
+                          "image": null,
+                          "letter": "M"
+                      },
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                  },
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
+                  "sku_code": "AN01224236",
+                  "price": "159.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "1L",
+                      "粘度": "0W-20"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "1L",
+                      "毛重": 0.9,
+                      "粘度": "0W-20",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  },
+                  "quantity": 1
+              },
+              {
+                  "id": 7,
+                  "spus": {
+                      "id": 2,
+                      "title": "马勒/MAHLE 机油滤清器",
+                      "category": {
+                          "id": 10,
+                          "parent_id": 1,
+                          "name": "机油滤清"
+                      },
+                      "brand": {
+                          "id": 10,
+                          "name": "马勒",
+                          "detail": null,
+                          "image": null,
+                          "letter": "M"
+                      },
+                      "detail": ""
+                  },
+                  "title": "马勒/MAHLE 机油滤清器 OC1480",
+                  "sku_code": "AN01224241",
+                  "price": "329.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {},
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "毛重": 3.5
+                  },
+                  "quantity": 1
+              }
+          ]
+      },
+      {
+          "name": "大保养推荐套餐",
+          "rtype": "性能适配",
+          "amount": "1047.0",
+          "skus": [
+              {
+                  "id": 5,
+                  "spus": {
+                      "id": 1,
+                      "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
+                      "category": {
+                          "id": 7,
+                          "parent_id": 1,
+                          "name": "机油"
+                      },
+                      "brand": {
+                          "id": 1,
+                          "name": "美孚",
+                          "detail": null,
+                          "image": null,
+                          "letter": "M"
+                      },
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                  },
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
+                  "sku_code": "AN01224235",
+                  "price": "559.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "4L",
+                      "粘度": "0W-20"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "4L",
+                      "毛重": 3.5,
+                      "粘度": "0W-20",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  },
+                  "quantity": 1
+              },
+              {
+                  "id": 6,
+                  "spus": {
+                      "id": 1,
+                      "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
+                      "category": {
+                          "id": 7,
+                          "parent_id": 1,
+                          "name": "机油"
+                      },
+                      "brand": {
+                          "id": 1,
+                          "name": "美孚",
+                          "detail": null,
+                          "image": null,
+                          "letter": "M"
+                      },
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                  },
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
+                  "sku_code": "AN01224236",
+                  "price": "159.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "1L",
+                      "粘度": "0W-20"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "1L",
+                      "毛重": 0.9,
+                      "粘度": "0W-20",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  },
+                  "quantity": 1
+              },
+              {
+                  "id": 7,
+                  "spus": {
+                      "id": 2,
+                      "title": "马勒/MAHLE 机油滤清器",
+                      "category": {
+                          "id": 10,
+                          "parent_id": 1,
+                          "name": "机油滤清"
+                      },
+                      "brand": {
+                          "id": 10,
+                          "name": "马勒",
+                          "detail": null,
+                          "image": null,
+                          "letter": "M"
+                      },
+                      "detail": ""
+                  },
+                  "title": "马勒/MAHLE 机油滤清器 OC1480",
+                  "sku_code": "AN01224241",
+                  "price": "329.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {},
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "毛重": 3.5
+                  },
+                  "quantity": 1
+              }
+          ]
+      }
+  ]
 =end
   post :recommends, :provides => [:json] do
     api_rescue do
@@ -363,12 +426,78 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
             "id": 1,
             "parent_id": null,
             "name": "维修保养",
+            "brands": [],
             "attributes": [],
             "sub": [
                 {
                     "id": 7,
                     "parent_id": 1,
                     "name": "机油",
+                    "brands": [
+                        {
+                            "id": 1,
+                            "name": "美孚",
+                            "detail": null,
+                            "image": null,
+                            "letter": "M"
+                        },
+                        {
+                            "id": 2,
+                            "name": "壳牌",
+                            "detail": null,
+                            "image": null,
+                            "letter": "Q"
+                        },
+                        {
+                            "id": 3,
+                            "name": "嘉实多",
+                            "detail": null,
+                            "image": null,
+                            "letter": "J"
+                        },
+                        {
+                            "id": 4,
+                            "name": "道达尔",
+                            "detail": null,
+                            "image": null,
+                            "letter": "D"
+                        },
+                        {
+                            "id": 5,
+                            "name": "本田",
+                            "detail": null,
+                            "image": null,
+                            "letter": "B"
+                        },
+                        {
+                            "id": 6,
+                            "name": "力魔",
+                            "detail": null,
+                            "image": null,
+                            "letter": "L"
+                        },
+                        {
+                            "id": 7,
+                            "name": "丰田",
+                            "detail": null,
+                            "image": null,
+                            "letter": "F"
+                        },
+                        {
+                            "id": 8,
+                            "name": "长城",
+                            "detail": null,
+                            "image": null,
+                            "letter": "C"
+                        },
+                        {
+                            "id": 9,
+                            "name": "昆仑",
+                            "detail": null,
+                            "image": null,
+                            "letter": "K"
+                        }
+                    ],
                     "attributes": [
                         {
                             "name": "容量",
@@ -477,18 +606,50 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                     "id": 8,
                     "parent_id": 1,
                     "name": "添加剂",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 9,
                     "parent_id": 1,
                     "name": "防冻液",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 10,
                     "parent_id": 1,
                     "name": "机油滤清",
+                    "brands": [
+                        {
+                            "id": 7,
+                            "name": "丰田",
+                            "detail": null,
+                            "image": null,
+                            "letter": "F"
+                        },
+                        {
+                            "id": 10,
+                            "name": "马勒",
+                            "detail": null,
+                            "image": null,
+                            "letter": "M"
+                        },
+                        {
+                            "id": 11,
+                            "name": "博世",
+                            "detail": null,
+                            "image": null,
+                            "letter": "B"
+                        },
+                        {
+                            "id": 12,
+                            "name": "曼牌滤清器",
+                            "detail": null,
+                            "image": null,
+                            "letter": "M"
+                        }
+                    ],
                     "attributes": [
                         {
                             "name": "毛重",
@@ -514,78 +675,91 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                     "id": 11,
                     "parent_id": 1,
                     "name": "空气滤清",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 12,
                     "parent_id": 1,
                     "name": "空调滤清",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 13,
                     "parent_id": 1,
                     "name": "燃油滤清",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 14,
                     "parent_id": 1,
                     "name": "汽车照明",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 15,
                     "parent_id": 1,
                     "name": "雨刷",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 16,
                     "parent_id": 1,
                     "name": "空调制冷剂",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 17,
                     "parent_id": 1,
                     "name": "火花塞",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 18,
                     "parent_id": 1,
                     "name": "蓄电池",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 19,
                     "parent_id": 1,
                     "name": "刹车油",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 20,
                     "parent_id": 1,
                     "name": "刹车盘",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 21,
                     "parent_id": 1,
                     "name": "刹车片",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 22,
                     "parent_id": 1,
                     "name": "变速箱油",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 23,
                     "parent_id": 1,
                     "name": "减震器",
+                    "brands": [],
                     "attributes": []
                 }
             ]
@@ -594,18 +768,21 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
             "id": 2,
             "parent_id": null,
             "name": "轮胎配件",
+            "brands": [],
             "attributes": [],
             "sub": [
                 {
                     "id": 24,
                     "parent_id": 2,
                     "name": "轮胎",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 25,
                     "parent_id": 2,
                     "name": "轮毂",
+                    "brands": [],
                     "attributes": []
                 }
             ]
@@ -614,54 +791,63 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
             "id": 3,
             "parent_id": null,
             "name": "车载电器",
+            "brands": [],
             "attributes": [],
             "sub": [
                 {
                     "id": 26,
                     "parent_id": 3,
                     "name": "行车记录仪",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 27,
                     "parent_id": 3,
                     "name": "车载吸尘器",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 28,
                     "parent_id": 3,
                     "name": "车载冰箱",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 29,
                     "parent_id": 3,
                     "name": "车载充电器",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 30,
                     "parent_id": 3,
                     "name": "车载净化器",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 31,
                     "parent_id": 3,
                     "name": "胎压监测",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 32,
                     "parent_id": 3,
                     "name": "充气泵",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 33,
                     "parent_id": 3,
                     "name": "应急电源",
+                    "brands": [],
                     "attributes": []
                 }
             ]
@@ -670,54 +856,63 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
             "id": 4,
             "parent_id": null,
             "name": "汽车装饰",
+            "brands": [],
             "attributes": [],
             "sub": [
                 {
                     "id": 34,
                     "parent_id": 4,
                     "name": "坐垫座套",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 35,
                     "parent_id": 4,
                     "name": "汽车脚垫",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 36,
                     "parent_id": 4,
                     "name": "车载支架",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 37,
                     "parent_id": 4,
                     "name": "汽车香水",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 38,
                     "parent_id": 4,
                     "name": "头枕腰靠",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 39,
                     "parent_id": 4,
                     "name": "车内除味",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 40,
                     "parent_id": 4,
                     "name": "挂件摆件",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 41,
                     "parent_id": 4,
                     "name": "汽车钥匙包/扣",
+                    "brands": [],
                     "attributes": []
                 }
             ]
@@ -726,54 +921,63 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
             "id": 5,
             "parent_id": null,
             "name": "美容清洗",
+            "brands": [],
             "attributes": [],
             "sub": [
                 {
                     "id": 42,
                     "parent_id": 5,
                     "name": "洗车机",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 43,
                     "parent_id": 5,
                     "name": "清洁剂",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 44,
                     "parent_id": 5,
                     "name": "汽车贴膜",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 45,
                     "parent_id": 5,
                     "name": "玻璃水",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 46,
                     "parent_id": 5,
                     "name": "补漆笔",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 47,
                     "parent_id": 5,
                     "name": "车蜡",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 48,
                     "parent_id": 5,
                     "name": "镀晶",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 49,
                     "parent_id": 5,
                     "name": "镀膜",
+                    "brands": [],
                     "attributes": []
                 }
             ]
@@ -782,30 +986,35 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
             "id": 6,
             "parent_id": null,
             "name": "安全自驾",
+            "brands": [],
             "attributes": [],
             "sub": [
                 {
                     "id": 50,
                     "parent_id": 6,
                     "name": "灭火器",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 51,
                     "parent_id": 6,
                     "name": "防滑链",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 52,
                     "parent_id": 6,
                     "name": "安全锤",
+                    "brands": [],
                     "attributes": []
                 },
                 {
                     "id": 53,
                     "parent_id": 6,
                     "name": "拖车绳",
+                    "brands": [],
                     "attributes": []
                 }
             ]
@@ -825,19 +1034,21 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   # data
 =begin
   [
-      {
-          "id": 24,
-          "parent_id": 2,
-          "name": "轮胎",
-          "attributes": []
-      },
-      {
-          "id": 25,
-          "parent_id": 2,
-          "name": "轮毂",
-          "attributes": []
-      }
-  ]
+        {
+            "id": 24,
+            "parent_id": 2,
+            "name": "轮胎",
+            "brands": [],
+            "attributes": []
+        },
+        {
+            "id": 25,
+            "parent_id": 2,
+            "name": "轮毂",
+            "brands": [],
+            "attributes": []
+        }
+    ]
 =end
   post :sub_categories, :provides => [:json] do
     api_rescue do
@@ -852,169 +1063,176 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   # data
 =begin
   [
-        {
-            "id": 1,
-            "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
-            "category": {
-                "id": 7,
-                "parent_id": 1,
-                "name": "机油"
-            },
-            "detail": "新老包装更替中，实物包装可能与图片略有差别",
-            "skus": [
-                {
-                    "id": 1,
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
-                    "sku_code": "AN01224231",
-                    "price": "329.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "4L",
-                        "粘度": "5W-30"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "4L",
-                        "毛重": 3.5,
-                        "粘度": "5W-30",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    }
-                },
-                {
-                    "id": 2,
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （1L装）",
-                    "sku_code": "AN01224232",
-                    "price": "89.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "1L",
-                        "粘度": "5W-30"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "1L",
-                        "毛重": 0.9,
-                        "粘度": "5W-30",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    }
-                },
-                {
-                    "id": 3,
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （4L装）",
-                    "sku_code": "AN01224233",
-                    "price": "329.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "4L",
-                        "粘度": "5W-40"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "4L",
-                        "毛重": 3.5,
-                        "粘度": "5W-40",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    }
-                },
-                {
-                    "id": 4,
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （1L装）",
-                    "sku_code": "AN01224234",
-                    "price": "89.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "1L",
-                        "粘度": "5W-40"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "1L",
-                        "毛重": 0.9,
-                        "粘度": "5W-40",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    }
-                },
-                {
-                    "id": 5,
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
-                    "sku_code": "AN01224235",
-                    "price": "559.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "4L",
-                        "粘度": "0W-20"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "4L",
-                        "毛重": 3.5,
-                        "粘度": "0W-20",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    }
-                },
-                {
-                    "id": 6,
-                    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
-                    "sku_code": "AN01224236",
-                    "price": "159.0",
-                    "stock_num": 100,
-                    "images": [
-                        "images/260811002.jpg",
-                        "images/1336270541.jpg"
-                    ],
-                    "sale_attrs": {
-                        "容量": "1L",
-                        "粘度": "0W-20"
-                    },
-                    "attrs": {
-                        "产地": "见瓶身",
-                        "容量": "1L",
-                        "毛重": 0.9,
-                        "粘度": "0W-20",
-                        "保质期": "5年",
-                        "机油种类": "全合成机油",
-                        "机油等级": "SN",
-                        "建议更换周期": "10000公里"
-                    }
-                }
-            ]
-        }
-    ]
+      {
+          "id": 1,
+          "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
+          "category": {
+              "id": 7,
+              "parent_id": 1,
+              "name": "机油"
+          },
+          "detail": "新老包装更替中，实物包装可能与图片略有差别",
+          "brand": {
+              "id": 1,
+              "name": "美孚",
+              "detail": null,
+              "image": null,
+              "letter": "M"
+          },
+          "skus": [
+              {
+                  "id": 1,
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
+                  "sku_code": "AN01224231",
+                  "price": "329.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "4L",
+                      "粘度": "5W-30"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "4L",
+                      "毛重": 3.5,
+                      "粘度": "5W-30",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  }
+              },
+              {
+                  "id": 2,
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （1L装）",
+                  "sku_code": "AN01224232",
+                  "price": "89.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "1L",
+                      "粘度": "5W-30"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "1L",
+                      "毛重": 0.9,
+                      "粘度": "5W-30",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  }
+              },
+              {
+                  "id": 3,
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （4L装）",
+                  "sku_code": "AN01224233",
+                  "price": "329.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "4L",
+                      "粘度": "5W-40"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "4L",
+                      "毛重": 3.5,
+                      "粘度": "5W-40",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  }
+              },
+              {
+                  "id": 4,
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （1L装）",
+                  "sku_code": "AN01224234",
+                  "price": "89.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "1L",
+                      "粘度": "5W-40"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "1L",
+                      "毛重": 0.9,
+                      "粘度": "5W-40",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  }
+              },
+              {
+                  "id": 5,
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
+                  "sku_code": "AN01224235",
+                  "price": "559.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "4L",
+                      "粘度": "0W-20"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "4L",
+                      "毛重": 3.5,
+                      "粘度": "0W-20",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  }
+              },
+              {
+                  "id": 6,
+                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
+                  "sku_code": "AN01224236",
+                  "price": "159.0",
+                  "stock_num": 100,
+                  "images": [
+                      "images/260811002.jpg",
+                      "images/1336270541.jpg"
+                  ],
+                  "sale_attrs": {
+                      "容量": "1L",
+                      "粘度": "0W-20"
+                  },
+                  "attrs": {
+                      "产地": "见瓶身",
+                      "容量": "1L",
+                      "毛重": 0.9,
+                      "粘度": "0W-20",
+                      "保质期": "5年",
+                      "机油种类": "全合成机油",
+                      "机油等级": "SN",
+                      "建议更换周期": "10000公里"
+                  }
+              }
+          ]
+      }
+  ]
 =end
   post :spus, :provides => [:json] do
     api_rescue do
@@ -1030,7 +1248,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   # params {"spu_id": 1}
   # data
 =begin
-  {
+{
       "id": 1,
       "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
       "category": {
@@ -1039,6 +1257,13 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
           "name": "机油"
       },
       "detail": "新老包装更替中，实物包装可能与图片略有差别",
+      "brand": {
+          "id": 1,
+          "name": "美孚",
+          "detail": null,
+          "image": null,
+          "letter": "M"
+      },
       "skus": [
           {
               "id": 1,
@@ -1208,39 +1433,46 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   # data
 =begin
   {
-    "id": 1,
-    "spus": {
-        "id": 1,
-        "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
-        "category": {
-            "id": 7,
-            "parent_id": 1,
-            "name": "机油"
-        },
-        "detail": "新老包装更替中，实物包装可能与图片略有差别"
-    },
-    "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
-    "sku_code": "AN01224231",
-    "price": "329.0",
-    "stock_num": 100,
-    "images": [
-        "images/260811002.jpg",
-        "images/1336270541.jpg"
-    ],
-    "sale_attrs": {
-        "容量": "4L",
-        "粘度": "5W-30"
-    },
-    "attrs": {
-        "产地": "见瓶身",
-        "容量": "4L",
-        "毛重": 3.5,
-        "粘度": "5W-30",
-        "保质期": "5年",
-        "机油种类": "全合成机油",
-        "机油等级": "SN",
-        "建议更换周期": "10000公里"
-    }
+      "id": 1,
+      "spus": {
+          "id": 1,
+          "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
+          "category": {
+              "id": 7,
+              "parent_id": 1,
+              "name": "机油"
+          },
+          "brand": {
+              "id": 1,
+              "name": "美孚",
+              "detail": null,
+              "image": null,
+              "letter": "M"
+          },
+          "detail": "新老包装更替中，实物包装可能与图片略有差别"
+      },
+      "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
+      "sku_code": "AN01224231",
+      "price": "329.0",
+      "stock_num": 100,
+      "images": [
+          "images/260811002.jpg",
+          "images/1336270541.jpg"
+      ],
+      "sale_attrs": {
+          "容量": "4L",
+          "粘度": "5W-30"
+      },
+      "attrs": {
+          "产地": "见瓶身",
+          "容量": "4L",
+          "毛重": 3.5,
+          "粘度": "5W-30",
+          "保质期": "5年",
+          "机油种类": "全合成机油",
+          "机油等级": "SN",
+          "建议更换周期": "10000公里"
+      }
   }
 =end
   post :sku, :provides => [:json] do

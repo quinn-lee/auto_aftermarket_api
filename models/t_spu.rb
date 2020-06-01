@@ -9,8 +9,9 @@ class TSpu < ActiveRecord::Base
     {
       id: id,
       title: title,
-      category: t_category.to_api,
+      category: t_category.to_api_simple,
       detail: detail,
+      brand: t_brand.to_api,
       skus: t_skus.map(&:to_api_simple)
     }
   end
@@ -19,7 +20,8 @@ class TSpu < ActiveRecord::Base
     {
       id: id,
       title: title,
-      category: t_category.to_api,
+      category: t_category.to_api_simple,
+      brand: t_brand.to_api,
       detail: detail
     }
   end
