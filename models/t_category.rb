@@ -6,7 +6,8 @@ class TCategory < ActiveRecord::Base
     {
       id: id,
       parent_id: parent_id,
-      name: name
+      name: name,
+      attributes: t_attributes.map(&:to_api)
     }
   end
 
