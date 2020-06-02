@@ -1059,7 +1059,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   end
 
   # 查找商品
-  # params {"category_id": 1, "name": "美孚"}  后续上线查询支持
+  # params {"category_id": 1, "title": "美孚"}  后续上线查询支持
   # data
 =begin
   [
@@ -1239,7 +1239,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       authenticate
 
       @t_spus = TSpu.where(t_category_id: @request_params['category_id']) if @request_params['category_id'].present?
-      @t_spus = @t_spus.where("name like '%#{@request_params['name']}%'") if @request_params['name'].present?
+      @t_spus = @t_spus.where("name like '%#{@request_params['title']}%'") if @request_params['title'].present?
       { status: 'succ', data: @t_spus.map(&:to_api)}.to_json
     end
   end
