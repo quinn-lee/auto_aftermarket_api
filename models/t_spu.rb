@@ -6,12 +6,15 @@ class TSpu < ActiveRecord::Base
 
 
   def to_api
+    spu_attrs = {}
+    t_skus.each {|sku| sku.sale_attrs.each{|key, value| spu_attrs[key] = spu_attrs[key] || []; spu_attrs[key] << value; spu_attrs[key]=spu_attrs[key].uniq;}}
     {
       id: id,
       title: title,
       category: t_category.to_api_simple,
       detail: detail,
       brand: t_brand.to_api,
+      sale_attrs: spu_attrs,
       skus: t_skus.map(&:to_api_simple)
     }
   end
