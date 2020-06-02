@@ -184,4 +184,62 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       { status: 'succ', data: @order.to_api}.to_json
     end
   end
+
+  # 微信支付异步通知
+  post :notify do
+    logger.info("into notify")
+    begin
+      request.body.rewind
+      if (body=request.body.read).present?
+        logger.info("body: [#{body}]")
+        doc = Nokogiri::Slop body
+        xbuilder = Builder::XmlMarkup.new(:target => ret_xml="")
+        if doc.xml.return_code.content =="SUCCESS"
+          #1.校验签名
+          if check_sign(doc, Merchant.first)==true
+            order_no=doc.xml.out_trade_no.content
+            WxpayInfo.transaction do
+            wi=WxpayInfo.lock.where(order_no:out_trade_no).last
+            if wi.present?
+              #2.校验返回的订单金额是否与商户侧的订单金额一致
+              if wi.amount*100==(doc.xml.total_fee.content).to_i
+                wi.transaction_id=doc.xml.transaction_id.content#微信支付订单号
+                wi.pay_time=Time.parse(doc.xml.time_end.content) if doc.xml.time_end.present?
+                wi.pay_detail=pay_detail_transfer(doc, Merchant.first)
+                wi.status="paid"
+                wi.save!
+                xbuilder.xml{
+                  xbuilder.return_code "SUCCESS"
+                }
+
+              else
+                logger.info("notify: Inconsistency of amount!!! ")
+                xbuilder.xml{
+                  xbuilder.return_code "FAIL"
+                  xbuilder.return_msg "Inconsistency of amount"
+                }
+              end
+            else
+              logger.info("WxpayInfo not found")
+              xbuilder.xml{
+                xbuilder.return_code "SUCCESS"
+              }
+            end
+          else
+            logger.info("Sign Check Wrong")
+            xbuilder.xml{
+              xbuilder.return_code "FAIL"
+              xbuilder.return_msg "签名失败"
+            }
+          end
+
+        end
+
+        logger.info("ret [#{ret_xml}]")
+        render plain: ret_xml and return
+      end
+    rescue=> e
+      logger.info("wxpay_redirect rescue: #{e.message}")
+    end
+  end
 end

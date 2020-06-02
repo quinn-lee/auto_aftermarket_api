@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 25) do
+ActiveRecord::Schema.define(version: 26) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -278,6 +278,10 @@ ActiveRecord::Schema.define(version: 25) do
     t.datetime "expired_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "pay_detail"
+    t.string "transaction_id"
+    t.datetime "pay_time"
+    t.string "status"
   end
 
 end

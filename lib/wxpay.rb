@@ -24,7 +24,7 @@ class Wxpay
       pay.body="JSAPI"
       pay.mch_id=merchant.mch_id
       pay.nonce_str=Wxpay.gen_rand_str(20)
-      pay.notify_url="http://172.105.198.104:4000/notify"
+      pay.notify_url="http://172.105.198.104:4000/v1.0/orders/notify"
       pay.openid= openid
       pay.out_trade_no=order_no
       pay.spbill_create_ip=ip_address  #!!!
