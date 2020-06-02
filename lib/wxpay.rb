@@ -30,7 +30,7 @@ class Wxpay
       pay.spbill_create_ip=ip_address  #!!!
       pay.total_fee=total_fee     #1
       pay.trade_type="JSAPI"
-      pay.sign=pay.gen_sign
+      pay.sign=pay.gen_sign(merchant)
       xbuilder = Builder::XmlMarkup.new(:target => ret_xml="")
       xbuilder.xml{
         xbuilder.appid pay.appid
@@ -92,7 +92,7 @@ class Wxpay
         pay.out_trade_no=tx_num
       end
       # pay.sign_type="MD5"
-      pay.sign=pay.gen_sign
+      pay.sign=pay.gen_sign(merchant)
       xbuilder = Builder::XmlMarkup.new(:target => ret_xml="")
       if transaction_id.present?
       xbuilder.xml{
@@ -151,7 +151,7 @@ class Wxpay
   end
 
   #生成微信支付签名
-  def gen_sign
+  def gen_sign(merchant)
     #1.参数按ASCII码从小到大排序
     record_hash = {}
     instance_variables.each do |key|
@@ -167,9 +167,9 @@ class Wxpay
     #并对stringSignTemp进行MD5运算，
     #再将得到的字符串所有字符转换为大写
     if stringA.match("&notify_url")!=nil
-      stringSignTemp=Wxpay.url_decode(stringA+"&key="+Settings.wechat.mch_key)
+      stringSignTemp=Wxpay.url_decode(stringA+"&key="+merchant.mch_key)
     else
-      stringSignTemp=stringA+"&key="+Settings.wechat.mch_key
+      stringSignTemp=stringA+"&key="+merchant.mch_key
     end
     logger.info("[stringSignTemp]: #{stringSignTemp}")
     sign=Digest::MD5.hexdigest(stringSignTemp).upcase
@@ -195,7 +195,7 @@ class Wxpay
     pay.sign_type="MD5"
     pay.bill_date=bill_date
     pay.bill_type=bill_type
-    pay.sign=pay.gen_sign
+    pay.sign=pay.gen_sign(merchant)
     xbuilder = Builder::XmlMarkup.new(:target => ret_xml="")
       xbuilder.xml{
         xbuilder.appid pay.appid
