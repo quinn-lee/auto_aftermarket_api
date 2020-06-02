@@ -72,7 +72,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       ActiveRecord::Base.transaction do
         pay_res = Wxpay.pre_pay(@merchant, @order.order_no, @customer.openid, (BigDecimal.new(@order.pay_amount.to_s)*100).to_i, env['REMOTE_HOST'])
         if pay_res["status"]=="succ"
-          wi=WxpayInfo.create!({
+          @wi=WxpayInfo.create!({
             prepay_id: pay_res["info"]["prepay_id"],
             customer_id: @customer.id,
             order_no: @order.order_no,
@@ -84,7 +84,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         end
       end
 
-      { status: 'succ', data: {"prepay_id"=>pay_res["info"]["prepay_id"], "amount"=>@order.pay_amount, "order_no"=> @order.order_no}}.to_json
+      { status: 'succ', data: {"prepay_id"=>@wi.prepay_id, "amount"=>@order.pay_amount, "order_no"=> @order.order_no}}.to_json
     end
   end
 
