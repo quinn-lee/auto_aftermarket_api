@@ -198,32 +198,33 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           #1.校验签名
           if check_sign(doc, Merchant.first)==true
             order_no=doc.xml.out_trade_no.content
-            WxpayInfo.transaction do
-            wi=WxpayInfo.lock.where(order_no:out_trade_no).last
-            if wi.present?
-              #2.校验返回的订单金额是否与商户侧的订单金额一致
-              if wi.amount*100==(doc.xml.total_fee.content).to_i
-                wi.transaction_id=doc.xml.transaction_id.content#微信支付订单号
-                wi.pay_time=Time.parse(doc.xml.time_end.content) if doc.xml.time_end.present?
-                wi.pay_detail=pay_detail_transfer(doc, Merchant.first)
-                wi.status="paid"
-                wi.save!
+            ActiveRecord::Base.transaction do
+              wi=WxpayInfo.lock.where(order_no:out_trade_no).last
+              if wi.present?
+                #2.校验返回的订单金额是否与商户侧的订单金额一致
+                if wi.amount*100==(doc.xml.total_fee.content).to_i
+                  wi.transaction_id=doc.xml.transaction_id.content#微信支付订单号
+                  wi.pay_time=Time.parse(doc.xml.time_end.content) if doc.xml.time_end.present?
+                  wi.pay_detail=pay_detail_transfer(doc, Merchant.first)
+                  wi.status="paid"
+                  wi.save!
+                  xbuilder.xml{
+                    xbuilder.return_code "SUCCESS"
+                  }
+                  wi.after_paid
+                else
+                  logger.info("notify: Inconsistency of amount!!! ")
+                  xbuilder.xml{
+                    xbuilder.return_code "FAIL"
+                    xbuilder.return_msg "Inconsistency of amount"
+                  }
+                end
+              else
+                logger.info("WxpayInfo not found")
                 xbuilder.xml{
                   xbuilder.return_code "SUCCESS"
                 }
-                wi.after_paid
-              else
-                logger.info("notify: Inconsistency of amount!!! ")
-                xbuilder.xml{
-                  xbuilder.return_code "FAIL"
-                  xbuilder.return_msg "Inconsistency of amount"
-                }
               end
-            else
-              logger.info("WxpayInfo not found")
-              xbuilder.xml{
-                xbuilder.return_code "SUCCESS"
-              }
             end
           else
             logger.info("Sign Check Wrong")
