@@ -211,7 +211,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
                 xbuilder.xml{
                   xbuilder.return_code "SUCCESS"
                 }
-
+                wi.after_paid
               else
                 logger.info("notify: Inconsistency of amount!!! ")
                 xbuilder.xml{
