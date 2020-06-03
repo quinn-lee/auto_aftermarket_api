@@ -95,7 +95,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     api_rescue do
       authenticate
       ActiveRecord::Base.transaction do
-        @order = Order.find(@request_params['“order_id”'])
+        @order = Order.find(@request_params['order_id'])
         pay_res = Wxpay.pre_pay(@merchant, @order.order_no, @customer.openid, (BigDecimal.new(@order.pay_amount.to_s)*100).to_i, env['REMOTE_HOST'])
         if pay_res["status"]=="succ"
           @wi=WxpayInfo.create!({
@@ -121,7 +121,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     api_rescue do
       authenticate
       ActiveRecord::Base.transaction do
-        @order = Order.find(@request_params['“order_id”'])
+        @order = Order.find(@request_params['order_id'])
         raise "can not delete status=#{@order.status}" unless @order.can_delete?
         @order.update!(status: "delete")
       end
