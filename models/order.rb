@@ -6,7 +6,7 @@ class Order < ActiveRecord::Base
   end
 
   def can_delete?
-    ['unpaid'， 'done'].include? status
+    ['unpaid', 'done'].include? status
   end
 
   def to_api
