@@ -1434,7 +1434,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
 =begin
   {
       "id": 1,
-      "spus": {
+      "spu": {
           "id": 1,
           "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
           "category": {

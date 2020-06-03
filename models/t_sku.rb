@@ -5,7 +5,7 @@ class TSku < ActiveRecord::Base
   def to_api
     {
       id: id,
-      spus: t_spu.to_api_simple,
+      spu: t_spu.to_api_simple,
       title: title,
       sku_code: sku_code,
       price: price,
