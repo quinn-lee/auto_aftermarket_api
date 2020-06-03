@@ -88,8 +88,50 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     end
   end
 
+  # 未支付订单 继续支付 调用微信预支付
+  # params {“order_id”=>1}
+  # data {"prepay_id"=>"aaa", "amount"=>"", "order_no"=> ""}
+  post "/pay", :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        @order = Order.find(@request_params['“order_id”'])
+        pay_res = Wxpay.pre_pay(@merchant, @order.order_no, @customer.openid, (BigDecimal.new(@order.pay_amount.to_s)*100).to_i, env['REMOTE_HOST'])
+        if pay_res["status"]=="succ"
+          @wi=WxpayInfo.create!({
+            prepay_id: pay_res["info"]["prepay_id"],
+            customer_id: @customer.id,
+            order_no: @order.order_no,
+            amount: @order.pay_amount,
+            expired_time: Time.now+1.hour
+          })
+        else
+          raise "prepay_id产生失败:#{pay_res["info"]["err_msg"]}"
+        end
+      end
+
+      { status: 'succ', data: {"prepay_id"=>@wi.prepay_id, "amount"=>@order.pay_amount, "order_no"=> @order.order_no}}.to_json
+    end
+  end
+
+  # 订单删除
+  # params {"order_id"=>1}
+  # data {"}
+  post "/delete", :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        @order = Order.find(@request_params['“order_id”'])
+        raise "can not delete status=#{@order.status}" unless @order.can_delete?
+        @order.update!(status: "delete")
+      end
+
+      { status: 'succ', data: {}}.to_json
+    end
+  end
+
   # 订单列表
-  # params {"status": "unpaid"(待付款)/"paid"(待收货)/"received"(待预约)/"appointed"(待安装)}
+  # params {"status": "unpaid"(待付款)/"paid"(待收货)/"received"(待预约)/"appointed"(待安装)/"done"(已完成)/"delete"(已删除)}
   # data
 =begin
   [
@@ -134,7 +176,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     api_rescue do
       authenticate
 
-      @orders = Order.where(customer_id: @customer.id)
+      @orders = Order.where(customer_id: @customer.id).where.not(status: "delete")
       @orders.where(status: @request_params['status']) if @request_params['status'].present?
       { status: 'succ', data: @orders.map(&:to_api)}.to_json
     end

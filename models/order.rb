@@ -5,6 +5,10 @@ class Order < ActiveRecord::Base
     "#{r[0]['nextval']}#{Time.now.strftime('%Y%m%d%H%M%S')}"
   end
 
+  def can_delete?
+    ['unpaid'， 'done'].include? status
+  end
+
   def to_api
     oss = OrderSku.where(order_no: order_no)
     items = []
