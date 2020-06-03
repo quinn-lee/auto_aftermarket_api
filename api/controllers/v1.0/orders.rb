@@ -109,6 +109,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         name: "李富元",
         mobile: "13917050000"
       },
+      need_hours: 1.5,
+      need_lift_hours: 0.5,
       items: [
         {
           name: "推荐保养套餐",
@@ -158,6 +160,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         name: "李富元",
         mobile: "13917050000"
       },
+      need_hours: 1.5,
+      need_lift_hours: 0.5,
       items: [
         {
           name: "推荐保养套餐",
@@ -199,7 +203,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           if check_sign(doc, Merchant.first)==true
             order_no=doc.xml.out_trade_no.content
             ActiveRecord::Base.transaction do
-              wi=WxpayInfo.lock.where(order_no:out_trade_no).last
+              wi=WxpayInfo.lock.where(order_no:out_trade_no).order(:id => :asc).last
               if wi.present?
                 #2.校验返回的订单金额是否与商户侧的订单金额一致
                 if wi.amount*100==(doc.xml.total_fee.content).to_i

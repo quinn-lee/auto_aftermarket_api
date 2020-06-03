@@ -33,6 +33,7 @@ Padrino::Logger::Config[:production] = {
   :format_message => '%s - %s %s',
   :colorize_logging => false
 }
+Time.zone = "Beijing"
 #
 # ## Configure Ruby to allow requiring features from your lib folder
 #

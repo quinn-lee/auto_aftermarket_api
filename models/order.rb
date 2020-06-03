@@ -15,6 +15,8 @@ class Order < ActiveRecord::Base
       end
       items << {name: os_name, skus: skus}
     end
+    need_hours = 1.5
+    need_lift_hours = 0.5
 
     h = {
       id: id,
@@ -26,6 +28,8 @@ class Order < ActiveRecord::Base
       status: status,
       delivery_info: delivery_info,
       contact_info: contact_info,
+      need_hours: need_hours,
+      need_lift_hours: need_lift_hours,
       items: items
     }
     return h

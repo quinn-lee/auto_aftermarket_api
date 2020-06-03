@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 28) do
+ActiveRecord::Schema.define(version: 30) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,16 @@ ActiveRecord::Schema.define(version: 28) do
     t.string "appsecret"
     t.string "mch_id"
     t.string "mch_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "order_reservations", force: :cascade do |t|
+    t.integer "shop_id"
+    t.string "order_no"
+    t.date "booking_date"
+    t.datetime "booking_time_from"
+    t.datetime "booking_time_to"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -266,6 +276,15 @@ ActiveRecord::Schema.define(version: 28) do
     t.string "detail"
     t.boolean "saleable"
     t.boolean "is_valid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "working_time_sets", force: :cascade do |t|
+    t.integer "shop_id"
+    t.integer "t_category_id"
+    t.decimal "hours", precision: 10, scale: 2
+    t.boolean "need_lift"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
