@@ -74,7 +74,7 @@ class Wxpay
   end
 
   #支付：查询订单
-  def self.order_query(merchant, ransaction_id, tx_num)
+  def self.order_query(merchant, transaction_id, tx_num)
     begin
       ret_info={
         "status"=>"",
