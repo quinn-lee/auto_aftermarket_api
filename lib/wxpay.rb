@@ -146,7 +146,7 @@ class Wxpay
       ret_info["status"]="fail"
       ret_info["info"]["err_msg"]=e.message
     end
-    logger.info("order_query order_num [#{transaction_id||tax_num}] end: #{Time.now}")
+    logger.info("order_query order_num [#{transaction_id||tx_num}] end: #{Time.now}")
     ret_info
   end
 
