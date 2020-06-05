@@ -9,6 +9,12 @@ class Order < ActiveRecord::Base
     ['unpaid', 'done'].include? status
   end
 
+  def reservation_time
+    if or = OrderReservation.find_by(order_no: order_no)
+      or.to_api
+    end
+  end
+
   def to_api
     oss = OrderSku.where(order_no: order_no)
     items = []
@@ -34,6 +40,7 @@ class Order < ActiveRecord::Base
       contact_info: contact_info,
       need_hours: need_hours,
       need_lift_hours: need_lift_hours,
+      reservation_time: reservation_time,
       items: items
     }
     return h

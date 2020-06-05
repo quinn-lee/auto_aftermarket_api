@@ -176,7 +176,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     api_rescue do
       authenticate
 
-      @orders = Order.where(customer_id: @customer.id).where.not(status: "delete")
+      @orders = Order.where(customer_id: @customer.id).where.not(status: "delete").order("created_at desc")
       @orders.where(status: @request_params['status']) if @request_params['status'].present?
       { status: 'succ', data: @orders.map(&:to_api)}.to_json
     end
