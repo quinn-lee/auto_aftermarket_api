@@ -10,8 +10,8 @@ class Order < ActiveRecord::Base
   end
 
   def reservation_time
-    if or = OrderReservation.find_by(order_no: order_no)
-      or.to_api
+    if order_reservation = OrderReservation.find_by(order_no: order_no)
+      order_reservation.to_api
     end
   end
 
