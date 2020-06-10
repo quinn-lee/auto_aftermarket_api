@@ -10,8 +10,10 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
   # params
 =begin
   {
-    "shop_id": 2,
-    "contact_info": {"name": "李富元", "mobile": "13917050000"},
+    "shop_id": 2, # 到店安装时，选择的门店，自选商品时如果没有到店安装的，该项为空
+    "contact_info": {"name": "李富元", "mobile": "13917050000"}, # 到店安装时需要填写，
+    "delivery_info": {"province": "", "city": "", "district": "", "address": "",
+                        "name": "", "mobile": ""}, # 寄送地址 自选商品时 如果有寄送到家的商品时需要填写
     "amount": 200,
     "pay_amount": 200,
     "order_type": "maintenance", # maintenance->维修保养，purchase->商城自选商品
@@ -49,6 +51,13 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     api_rescue do
       authenticate
       ActiveRecord::Base.transaction do
+        raise "order_type #{@request_params['order_type']} wrong" unless (['maintenance', 'purchase'].include? @request_params['order_type'])
+        if @request_params['order_type'] == "maintenance"
+          unless @shop = Shop.find(@request_params['shop_id'])
+            raise "shop not exists"
+          end
+          raise "contact_info can not be null" if @request_params['contact_info'].blank?
+        end
         @order = Order.new
         @order.customer_id = @customer.id
         @order.merchant_id = @merchant.id
@@ -59,8 +68,13 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         @order.pay_amount = @request_params['pay_amount']
         @order.status = "unpaid"
         @order.shop_id = @request_params['shop_id']
-        @order.delivery_info = Shop.find(@request_params['shop_id']).to_api_simple
-        @order.contact_info = @request_params['contact_info']
+        if @request_params['order_type'] == "maintenance" # 维修保养
+          @order.delivery_info = @shop.to_api_simple
+          @order.contact_info = @request_params['contact_info']
+        elsif @request_params['order_type'] == "purchase" # 自选商品
+          @order.delivery_info = @request_params['delivery_info']
+          @order.contact_info = @request_params['contact_info'].present? ? @request_params['contact_info'] : @request_params['delivery_info']
+        end
 
         @order.save!
         @request_params['items'].each do |item|
