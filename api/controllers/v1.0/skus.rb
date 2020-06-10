@@ -1245,9 +1245,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   post :spus, :provides => [:json] do
     api_rescue do
       authenticate
-
-      @t_spus = TSpu.where(t_category_id: @request_params['category_id']) if @request_params['category_id'].present?
-      @t_spus = @t_spus.where("name like '%#{@request_params['title']}%'") if @request_params['title'].present?
+      @t_spus = TSpu.all
+      @t_spus = @t_spus.where(t_category_id: @request_params['category_id']) if @request_params['category_id'].present?
+      @t_spus = @t_spus.where("title like '%#{@request_params['title']}%'") if @request_params['title'].present?
       { status: 'succ', data: @t_spus.map(&:to_api)}.to_json
     end
   end
