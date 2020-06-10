@@ -24,12 +24,14 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
             {
               "sku_id": 1,
               "quantity": 1,
-              "price": 55
+              "price": 55,
+              "service": {"到店安装": 50} # 自选商品时选择的可选服务，如果没有可选服务项，则该字段为空
             },
             {
               "sku_id": 2,
               "quantity": 1,
-              "price": 55
+              "price": 55,
+              "service": {"无需安装": 0} # 自选商品时选择的可选服务，如果没有可选服务项，则该字段为空
             }
           ]
         },
@@ -39,7 +41,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
             {
               "sku_id": 3,
               "quantity": 1,
-              "price": 45
+              "price": 45,
+              "service": {}
             }
           ]
         }
@@ -79,7 +82,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         @order.save!
         @request_params['items'].each do |item|
           item['skus'].each do |sku|
-            OrderSku.create!(order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'] )
+            OrderSku.create!(order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'] )
           end
         end
       end
