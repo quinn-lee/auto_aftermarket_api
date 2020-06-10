@@ -130,7 +130,7 @@ TAttribute.create(t_category_id: tc14.id, name: "毛重", numeric: true, generic
 TAttribute.create(t_category_id: tc14.id, name: "产地", numeric: false, generic: true, selling: false, searching: false, unit: nil)
 
 
-m1 = Merchant.create(name: "EuropeTime", appid: "wxb5ebd7edf0437cdb", appsecret: "986dfb559ebb15402628db871ba6f608", mch_id: "1494422632", mch_key: "uH372sXm3dR8KFD9LScN61Aj4f59D31W")
+m1 = Merchant.create(name: "EuropeTime", appid: "wx8617e1f397b74930", appsecret: "e3314799cc97fe67b68df4ffdfcb46e8", mch_id: "1494422632", mch_key: "uH372sXm3dR8KFD9LScN61Aj4f59D31W")
 
 s1 = Shop.create(merchant_id: m1.id, name: "东升汽车养护店（石泉路店）", address: "上海市普陀区石泉路22号", contact_name: "李富元", contact_phone: "13917050000")
 

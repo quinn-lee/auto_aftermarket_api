@@ -19,13 +19,15 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0' do
   end
 
   # 选择车型
-  # params {"brand": "奥迪"}
+  # params {"brand": "奥迪", "car_model": "A4L"}
   # data [{"brand": "奥迪", "car_model": "奥迪A4L", "manufacturer": "一汽-大众奥迪>>"}...]
   post :car_models, :provides => [:json] do
     api_rescue do
       authenticate
-
-      @car_years = CarYear.where(brand: @request_params["brand"]).order(:id => :asc)
+      @car_years = CarYear.all
+      @car_years = @car_years.where(brand: @request_params["brand"]) if @request_params["brand"].present?
+      @car_years = @car_years.where("car_model like '%#{@request_params["car_model"]}%'") if @request_params["car_model"].present?
+      @car_years = @car_years.order(:id => :asc)
       { status: 'succ', data: @car_years.map(&:to_api).uniq}.to_json
     end
   end
