@@ -1085,6 +1085,10 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
                   "sku_code": "AN01224231",
                   "price": "329.0",
+                  "service_fee": {
+                        "到店安装": 50,
+                        "无需安装": 0
+                    },
                   "stock_num": 100,
                   "images": [
                       "images/260811002.jpg",
@@ -1110,6 +1114,10 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （1L装）",
                   "sku_code": "AN01224232",
                   "price": "89.0",
+                  "service_fee": {
+                        "到店安装": 50,
+                        "无需安装": 0
+                    },
                   "stock_num": 100,
                   "images": [
                       "images/260811002.jpg",
@@ -1270,6 +1278,10 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
               "sku_code": "AN01224231",
               "price": "329.0",
+              "service_fee": {
+                        "到店安装": 50,
+                        "无需安装": 0
+                    },
               "stock_num": 100,
               "images": [
                   "images/260811002.jpg",
@@ -1454,6 +1466,10 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
       "sku_code": "AN01224231",
       "price": "329.0",
+      "service_fee": {
+                        "到店安装": 50,
+                        "无需安装": 0
+                    },
       "stock_num": 100,
       "images": [
           "images/260811002.jpg",

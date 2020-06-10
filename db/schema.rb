@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 30) do
+ActiveRecord::Schema.define(version: 31) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -266,6 +266,7 @@ ActiveRecord::Schema.define(version: 30) do
     t.integer "stock_num"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "service_fee"
   end
 
   create_table "t_spus", force: :cascade do |t|
