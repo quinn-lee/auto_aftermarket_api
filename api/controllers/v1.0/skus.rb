@@ -1058,197 +1058,125 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
-  # 查找商品
-  # params {"category_id": 1, "title": "美孚"}  后续上线查询支持
+  # 查找商品 返回sku列表 category_id必须输入
+  # params {"category_id": 1, "title": "美孚", "brand_id": [1,2],
+    #  "attrs": {"规格": ['255/55R18','235/60R18'], "轮胎性能": ['SUV/越野型']}}
   # data
 =begin
-  [
-      {
-          "id": 1,
-          "title": "【正品授权】美孚/Mobil 美孚1号全合成机油",
-          "category": {
-              "id": 7,
-              "parent_id": 1,
-              "name": "机油"
-          },
-          "detail": "新老包装更替中，实物包装可能与图片略有差别",
-          "brand": {
-              "id": 1,
-              "name": "美孚",
-              "detail": null,
-              "image": null,
-              "letter": "M"
-          },
-          "skus": [
-              {
-                  "id": 1,
-                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
-                  "sku_code": "AN01224231",
-                  "price": "329.0",
-                  "service_fee": {
-                        "到店安装": 50,
-                        "无需安装": 0
-                    },
-                  "stock_num": 100,
-                  "images": [
-                      "images/260811002.jpg",
-                      "images/1336270541.jpg"
-                  ],
-                  "sale_attrs": {
-                      "容量": "4L",
-                      "粘度": "5W-30"
-                  },
-                  "attrs": {
-                      "产地": "见瓶身",
-                      "容量": "4L",
-                      "毛重": 3.5,
-                      "粘度": "5W-30",
-                      "保质期": "5年",
-                      "机油种类": "全合成机油",
-                      "机油等级": "SN",
-                      "建议更换周期": "10000公里"
-                  }
-              },
-              {
-                  "id": 2,
-                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （1L装）",
-                  "sku_code": "AN01224232",
-                  "price": "89.0",
-                  "service_fee": {
-                        "到店安装": 50,
-                        "无需安装": 0
-                    },
-                  "stock_num": 100,
-                  "images": [
-                      "images/260811002.jpg",
-                      "images/1336270541.jpg"
-                  ],
-                  "sale_attrs": {
-                      "容量": "1L",
-                      "粘度": "5W-30"
-                  },
-                  "attrs": {
-                      "产地": "见瓶身",
-                      "容量": "1L",
-                      "毛重": 0.9,
-                      "粘度": "5W-30",
-                      "保质期": "5年",
-                      "机油种类": "全合成机油",
-                      "机油等级": "SN",
-                      "建议更换周期": "10000公里"
-                  }
-              },
-              {
-                  "id": 3,
-                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （4L装）",
-                  "sku_code": "AN01224233",
-                  "price": "329.0",
-                  "stock_num": 100,
-                  "images": [
-                      "images/260811002.jpg",
-                      "images/1336270541.jpg"
-                  ],
-                  "sale_attrs": {
-                      "容量": "4L",
-                      "粘度": "5W-40"
-                  },
-                  "attrs": {
-                      "产地": "见瓶身",
-                      "容量": "4L",
-                      "毛重": 3.5,
-                      "粘度": "5W-40",
-                      "保质期": "5年",
-                      "机油种类": "全合成机油",
-                      "机油等级": "SN",
-                      "建议更换周期": "10000公里"
-                  }
-              },
-              {
-                  "id": 4,
-                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （1L装）",
-                  "sku_code": "AN01224234",
-                  "price": "89.0",
-                  "stock_num": 100,
-                  "images": [
-                      "images/260811002.jpg",
-                      "images/1336270541.jpg"
-                  ],
-                  "sale_attrs": {
-                      "容量": "1L",
-                      "粘度": "5W-40"
-                  },
-                  "attrs": {
-                      "产地": "见瓶身",
-                      "容量": "1L",
-                      "毛重": 0.9,
-                      "粘度": "5W-40",
-                      "保质期": "5年",
-                      "机油种类": "全合成机油",
-                      "机油等级": "SN",
-                      "建议更换周期": "10000公里"
-                  }
-              },
-              {
-                  "id": 5,
-                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
-                  "sku_code": "AN01224235",
-                  "price": "559.0",
-                  "stock_num": 100,
-                  "images": [
-                      "images/260811002.jpg",
-                      "images/1336270541.jpg"
-                  ],
-                  "sale_attrs": {
-                      "容量": "4L",
-                      "粘度": "0W-20"
-                  },
-                  "attrs": {
-                      "产地": "见瓶身",
-                      "容量": "4L",
-                      "毛重": 3.5,
-                      "粘度": "0W-20",
-                      "保质期": "5年",
-                      "机油种类": "全合成机油",
-                      "机油等级": "SN",
-                      "建议更换周期": "10000公里"
-                  }
-              },
-              {
-                  "id": 6,
-                  "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
-                  "sku_code": "AN01224236",
-                  "price": "159.0",
-                  "stock_num": 100,
-                  "images": [
-                      "images/260811002.jpg",
-                      "images/1336270541.jpg"
-                  ],
-                  "sale_attrs": {
-                      "容量": "1L",
-                      "粘度": "0W-20"
-                  },
-                  "attrs": {
-                      "产地": "见瓶身",
-                      "容量": "1L",
-                      "毛重": 0.9,
-                      "粘度": "0W-20",
-                      "保质期": "5年",
-                      "机油种类": "全合成机油",
-                      "机油等级": "SN",
-                      "建议更换周期": "10000公里"
-                  }
-              }
-          ]
-      }
-  ]
+    [
+        {
+            "id": 8,
+            "spu": {
+                "id": 3,
+                "title": "米其林轮胎Michelin汽车轮胎",
+                "category": {
+                    "id": 24,
+                    "parent_id": 2,
+                    "name": "轮胎"
+                },
+                "brand": {
+                    "id": 13,
+                    "name": "米其林（MICHELIN）",
+                    "detail": null,
+                    "image": null,
+                    "letter": "M"
+                },
+                "detail": ""
+            },
+            "title": "米其林轮胎Michelin汽车轮胎 235/60R18 107W 竞驰 PILOT SPORT 4 SUV 适配奥迪Q5/奔驰GLC级/雷克萨斯RX",
+            "sku_code": "AN01224291",
+            "price": "1029.0",
+            "service_fee": {
+                "到店安装": 50,
+                "无需安装": 0
+            },
+            "stock_num": 100,
+            "images": [
+                "images/e878635ad3af97aa.jpg",
+                "images/f8238c37ec858c0b.jpg"
+            ],
+            "sale_attrs": {
+                "规格": "235/60R18",
+                "轮胎性能": "SUV/越野型",
+                "轮胎花纹": "竞驰 PILOT SPORT 4 SUV"
+            },
+            "attrs": {
+                "产地": "其他",
+                "尺寸": "18英寸",
+                "毛重": "13.06kg",
+                "规格": "235/60R18",
+                "扁平比": "60",
+                "胎面宽度": "235",
+                "轮胎性能": "SUV/越野型",
+                "轮胎花纹": "竞驰 PILOT SPORT 4 SUV"
+            }
+        },
+        {
+            "id": 9,
+            "spu": {
+                "id": 3,
+                "title": "米其林轮胎Michelin汽车轮胎",
+                "category": {
+                    "id": 24,
+                    "parent_id": 2,
+                    "name": "轮胎"
+                },
+                "brand": {
+                    "id": 13,
+                    "name": "米其林（MICHELIN）",
+                    "detail": null,
+                    "image": null,
+                    "letter": "M"
+                },
+                "detail": ""
+            },
+            "title": "米其林轮胎Michelin汽车轮胎255/55 R18 109Y PILOT SPORT 4 SUV 适配保时捷卡宴/奥迪Q7/大众途锐等",
+            "sku_code": "AN01224292",
+            "price": "1249.0",
+            "service_fee": {
+                "到店安装": 50,
+                "无需安装": 0
+            },
+            "stock_num": 100,
+            "images": [
+                "images/e878635ad3af97aa.jpg",
+                "images/f8238c37ec858c0b.jpg"
+            ],
+            "sale_attrs": {
+                "规格": "255/55R18",
+                "轮胎性能": "SUV/越野型",
+                "轮胎花纹": "竞驰 PILOT SPORT 4 SUV"
+            },
+            "attrs": {
+                "产地": "其他",
+                "尺寸": "18英寸",
+                "毛重": "14.48kg",
+                "规格": "255/55R18",
+                "扁平比": "55",
+                "胎面宽度": "255",
+                "轮胎性能": "SUV/越野型",
+                "轮胎花纹": "竞驰 PILOT SPORT 4 SUV"
+            }
+        }
+    ]
 =end
-  post :spus, :provides => [:json] do
+  post :skus, :provides => [:json] do
     api_rescue do
       authenticate
-      @t_spus = TSpu.all
-      @t_spus = @t_spus.where(t_category_id: @request_params['category_id']) if @request_params['category_id'].present?
-      @t_spus = @t_spus.where("title like '%#{@request_params['title']}%'") if @request_params['title'].present?
-      { status: 'succ', data: @t_spus.map(&:to_api)}.to_json
+      raise "category_id 必须指定" unless @request_params['category_id'].present?
+      @t_spus = TSpu.where(t_category_id: @request_params['category_id'], merchant_id: @merchant.id)
+      @t_spus = TSpu.where(t_brand_id: @request_params['brand_id']) if @request_params['brand_id'].present?
+      @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id))
+      @t_skus = @t_skus.where("title like '%#{@request_params['title']}%'") if @request_params['title'].present?
+      if @request_params['attrs'].present?
+        @request_params['attrs'].each do |k, v|
+          instr = "("
+          v.each{|s| instr << "'#{s}',"}
+          instr = instr.chop << ")"
+          @t_skus = @t_skus.where("attrs ->> '#{k}' in #{instr}")
+        end
+      end
+      { status: 'succ', data: @t_skus.map(&:to_api)}.to_json
     end
   end
 
