@@ -185,7 +185,80 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
             }
           ]
         }
-      ]
+      ],
+      "sub_orders": [
+                {
+                    "sub_type": "install",
+                    "shop_info": {
+                        "id": 1,
+                        "name": "东升汽车养护店（石泉路店）",
+                        "address": "上海市普陀区石泉路22号",
+                        "contact_name": "李富元",
+                        "contact_phone": "13917050000"
+                    },
+                    "delivery_info": {
+                        "id": 1,
+                        "name": "东升汽车养护店（石泉路店）",
+                        "address": "上海市普陀区石泉路22号",
+                        "contact_name": "李富元",
+                        "contact_phone": "13917050000"
+                    },
+                    "items": [
+                        {
+                            "id": 5,
+                            "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
+                            "sku_code": "AN01224235",
+                            "images": [
+                                "images/260811002.jpg",
+                                "images/1336270541.jpg"
+                            ],
+                            "order_no": "100000001520200608020209",
+                            "service_fee": null,
+                            "quantity": 1,
+                            "price": "559.0"
+                        },
+                        {
+                            "id": 6,
+                            "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
+                            "sku_code": "AN01224236",
+                            "images": [
+                                "images/260811002.jpg",
+                                "images/1336270541.jpg"
+                            ],
+                            "order_no": "100000001520200608020209",
+                            "service_fee": null,
+                            "quantity": 1,
+                            "price": "159.0"
+                        },
+                        {
+                            "id": 7,
+                            "title": "马勒/MAHLE 机油滤清器 OC1480",
+                            "sku_code": "AN01224241",
+                            "images": [
+                                "images/260811002.jpg",
+                                "images/1336270541.jpg"
+                            ],
+                            "order_no": "100000001520200608020209",
+                            "service_fee": null,
+                            "quantity": 1,
+                            "price": "329.0"
+                        },
+                        {
+                            "id": 3,
+                            "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （4L装）",
+                            "sku_code": "AN01224233",
+                            "images": [
+                                "images/260811002.jpg",
+                                "images/1336270541.jpg"
+                            ],
+                            "order_no": "100000001520200608020209",
+                            "service_fee": null,
+                            "quantity": 2,
+                            "price": "329.0"
+                        }
+                    ]
+                }
+            ]
     }
   ]
 =end
@@ -236,7 +309,80 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
             }
           ]
         }
-      ]
+      ],
+      "sub_orders": [
+                {
+                    "sub_type": "install",
+                    "shop_info": {
+                        "id": 1,
+                        "name": "东升汽车养护店（石泉路店）",
+                        "address": "上海市普陀区石泉路22号",
+                        "contact_name": "李富元",
+                        "contact_phone": "13917050000"
+                    },
+                    "delivery_info": {
+                        "id": 1,
+                        "name": "东升汽车养护店（石泉路店）",
+                        "address": "上海市普陀区石泉路22号",
+                        "contact_name": "李富元",
+                        "contact_phone": "13917050000"
+                    },
+                    "items": [
+                        {
+                            "id": 5,
+                            "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
+                            "sku_code": "AN01224235",
+                            "images": [
+                                "images/260811002.jpg",
+                                "images/1336270541.jpg"
+                            ],
+                            "order_no": "100000001520200608020209",
+                            "service_fee": null,
+                            "quantity": 1,
+                            "price": "559.0"
+                        },
+                        {
+                            "id": 6,
+                            "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
+                            "sku_code": "AN01224236",
+                            "images": [
+                                "images/260811002.jpg",
+                                "images/1336270541.jpg"
+                            ],
+                            "order_no": "100000001520200608020209",
+                            "service_fee": null,
+                            "quantity": 1,
+                            "price": "159.0"
+                        },
+                        {
+                            "id": 7,
+                            "title": "马勒/MAHLE 机油滤清器 OC1480",
+                            "sku_code": "AN01224241",
+                            "images": [
+                                "images/260811002.jpg",
+                                "images/1336270541.jpg"
+                            ],
+                            "order_no": "100000001520200608020209",
+                            "service_fee": null,
+                            "quantity": 1,
+                            "price": "329.0"
+                        },
+                        {
+                            "id": 3,
+                            "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-40 SN级 （4L装）",
+                            "sku_code": "AN01224233",
+                            "images": [
+                                "images/260811002.jpg",
+                                "images/1336270541.jpg"
+                            ],
+                            "order_no": "100000001520200608020209",
+                            "service_fee": null,
+                            "quantity": 2,
+                            "price": "329.0"
+                        }
+                    ]
+                }
+            ]
     }
 =end
   post "/show", :provides => [:json] do
