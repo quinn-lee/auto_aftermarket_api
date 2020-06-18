@@ -2,6 +2,7 @@ class WxpayInfo < ActiveRecord::Base
 
   def after_paid
     if order = Order.find_by(order_no: order_no)
+      return if order.status != "unpaid"
       order.update!(status: "paid", pay_way: "wechat", pay_time: Time.now, tx_num: transaction_id)
 
       order_skus = OrderSku.where(order_no: order.order_no)
