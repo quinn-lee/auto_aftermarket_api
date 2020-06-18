@@ -31,7 +31,10 @@ class Order < ActiveRecord::Base
     end
     need_hours = 1.5
     need_lift_hours = 0.5
-
+    shop_info = {}
+    if order.shop_id.present?
+      shop_info = Shop.find(order.shop_id).to_api_simple
+    end
     h = {
       id: id,
       order_date: order_date.try{|o| o.strftime("%F")},
@@ -41,6 +44,7 @@ class Order < ActiveRecord::Base
       amount: amount,
       status: status,
       delivery_info: delivery_info,
+      shop_info: shop_info,
       contact_info: contact_info,
       need_hours: need_hours,
       need_lift_hours: need_lift_hours,

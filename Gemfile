@@ -17,6 +17,8 @@ source 'https://gems.ruby-china.com'
 gem 'rake'
 
 # Component requirements
+gem 'activesupport', '>= 3.1'
+gem 'bcrypt'
 gem 'activerecord', '5.1.5', :require => 'active_record'
 gem 'pg'
 
