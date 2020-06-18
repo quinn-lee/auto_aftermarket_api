@@ -1,5 +1,9 @@
 class Order < ActiveRecord::Base
 
+  has_many :sub_orders, :class_name => 'SubOrder', :dependent => :destroy
+  belongs_to :merchant,   :class_name => 'Merchant'
+  belongs_to :customer,   :class_name => 'Customer'
+
   def gen_order_no
     r=ActiveRecord::Base.connection.execute("select nextval('order_no_seq')")
     "#{r[0]['nextval']}#{Time.now.strftime('%Y%m%d%H%M%S')}"
@@ -41,7 +45,8 @@ class Order < ActiveRecord::Base
       need_hours: need_hours,
       need_lift_hours: need_lift_hours,
       reservation_time: reservation_time,
-      items: items
+      items: items,
+      sub_orders: sub_orders.map(&:to_api)
     }
     return h
   end
