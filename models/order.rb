@@ -32,8 +32,8 @@ class Order < ActiveRecord::Base
     need_hours = 1.5
     need_lift_hours = 0.5
     shop_info = {}
-    if order.shop_id.present?
-      shop_info = Shop.find(order.shop_id).to_api_simple
+    if shop_id.present?
+      shop_info = Shop.find(shop_id).to_api_simple
     end
     h = {
       id: id,
