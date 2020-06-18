@@ -1,64 +1,379 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-    <meta name=viewport content='width=device-width,initial-scale=1' />
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title><%= @title.present? ? "#{@title} | Padrino Admin" : "Padrino Admin" %></title>
-    <%= favicon_tag "favicon.ico" %>
-    <link href='http://fonts.googleapis.com/css?family=Varela' rel=stylesheet />
-    <%= stylesheet_link_tag 'bootstrap', 'application' %>
-  </head>
-  <body>
-    <div class="navbar navbar-fixed-top">
-      <div class=navbar-inner>
-        <div class=container>
-          <%= link_to 'Padrino', url(:base, :index), :class => 'navbar-brand', :title => 'Padrino Admin' %>
-          <ul class="nav navbar-nav pull-right">
-            <li class=navbar-edit-account><%= link_to tag_icon(:user), url(:accounts, :edit, :id => current_account.id), :title => pat(:profile), :class => 'navbar-nav-link' %></li>
-            <li class=navbar-logout>
-              <%= button_to(:logout, url(:sessions, :destroy), :method => :delete, :class => 'navbar-nav-form', :submit_options => { :type => :submit, :title => pat(:logout), :class => 'navbar-nav-form-link' }) { tag_icon(:'power-off') } %>
-            </li>
-          </ul>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon
+		============================================ -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <!-- Google Fonts
+		============================================ -->
+    <link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/bootstrap.min.css">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/font-awesome.min.css">
+    <!-- owl.carousel CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/owl.carousel.css">
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/owl.theme.css">
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/owl.transitions.css">
+    <!-- animate CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/animate.css">
+    <!-- normalize CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/normalize.css">
+    <!-- meanmenu icon CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/meanmenu.min.css">
+    <!-- main CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/main.css">
+    <!-- morrisjs CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/morrisjs/morris.css">
+    <!-- mCustomScrollbar CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/scrollbar/jquery.mCustomScrollbar.min.css">
+    <!-- metisMenu CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/metisMenu/metisMenu.min.css">
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/metisMenu/metisMenu-vertical.css">
+    <!-- calendar CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/calendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/calendar/fullcalendar.print.min.css">
+    <!-- style CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/style.css">
+    <!-- responsive CSS
+		============================================ -->
+    <link rel="stylesheet" href="/admin/stylesheets/jeweler/responsive.css">
+    <!-- modernizr JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/vendor/modernizr-2.8.3.min.js"></script>
+</head>
 
-          <ul class="nav navbar-nav pull-left">
-            <% project_modules.each do |project_module| %>
-              <% if request.path_info =~ /^#{project_module.path}/ %>
-                <li class="navbar-module active">
-              <% else %>
-                <li class=navbar-module>
-              <% end %>
-                <%= link_to project_module.human_name, url(project_module.path) %>
-                </li>
-            <% end %>
-          </ul>
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <div class="left-sidebar-pro">
+        <nav id="sidebar" class="">
+            <div class="sidebar-header">
+              <!--
+                <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                <strong><img src="img/logo/logosn.png" alt="" /></strong>
+              -->
+            </div>
+            <div class="left-custom-menu-adp-wrap comment-scrollbar">
+                <nav class="sidebar-nav left-sidebar-menu-pro">
+                    <ul class="metismenu" id="menu1">
+                        <li class="active">
+                            <a class="has-arrow" href="#">
+            								   <i class="fa big-icon fa-home icon-wrap"></i>
+            								   <span class="mini-click-non">客户</span>
+            								</a>
+                            <ul class="submenu-angle" aria-expanded="true">
+                                <li><a title="客户画像" href="#"><i class="fa fa-bullseye sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">客户画像</span></a></li>
+                                <li><a title="客户活跃度" href="#"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">客户活跃度</span></a></li>
+                                <li><a title="客户行为统计" href="#"><i class="fa fa-cube sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">客户行为统计</span></a></li>
+                                <li><a title="标签管理" href="#"><i class="fa fa-female sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">标签管理</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-envelope icon-wrap"></i> <span class="mini-click-non">员工</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="BOSS雷达" href="#"><i class="fa fa-inbox sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">BOSS雷达</span></a></li>
+                                <li><a title="员工列表" href="#"><i class="fa fa-television sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">员工列表</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">商品</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="目录" href="#"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">目录</span></a></li>
+                                <li><a title="商品" href="#"><i class="fa fa-map-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">商品</span></a></li>
+                                <li><a title="商品榜单（点击量，销量，销售额）" href="#"><i class="fa fa-file-pdf-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">商品榜单</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">汽车基础数据</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="汽车品牌" href="#"><i class="fa fa-folder sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">汽车品牌</span></a></li>
+                                <li><a title="车型" href="#"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">车型</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-bar-chart-o icon-wrap"></i> <span class="mini-click-non">订单管理</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="订单列表" href="#"><i class="fa fa-line-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">订单列表</span></a></li>
+                                <li><a title="员工订单统计" href="#"><i class="fa fa-area-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">员工订单统计</span></a></li>
+                                <li><a title="员工佣金统计" href="#"><i class="fa fa-pie-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">员工佣金统计</span></a></li>
+                                <li><a title="特权折扣" href="#"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">特权折扣</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="fa big-icon fa-table icon-wrap"></i> <span class="mini-click-non">营销活动</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="秒杀" href="#"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">秒杀</span></a></li>
+                                <li><a title="团购" href="#"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">团购</span></a></li>
+                                <li><a title="优惠券" href="#"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优惠券</span></a></li>
+                                <li><a title="优选商品" href="#"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优选商品</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-table icon-wrap"></i> <span class="mini-click-non">财务</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="财务对账" href="#"><i class="fa fa-pencil sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">财务对账</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-desktop icon-wrap"></i> <span class="mini-click-non">小程序设置</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="聊天设置" href="#"><i class="fa fa-external-link-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">聊天设置</span></a></li>
+                                <li><a title="首页栏目" href="#"><i class="fa fa-crop sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">首页栏目</span></a></li>
+                                <li><a title="手机号授权" href="#"><i class="fa fa-building sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">手机号授权</span></a></li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </nav>
+    </div>
+    <!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+
+      <div class="header-advance-area">
+          <div class="header-top-area">
+              <div class="container-fluid">
+                  <div class="row">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="header-top-wraper">
+                              <div class="row">
+                                  <div class="col-lg-7 col-md-7 col-sm-1 col-xs-12">
+
+                                  </div>
+                                  <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                      <div class="header-right-info">
+                                          <ul class="nav navbar-nav mai-top-nav header-right-menu">
+                                              <li class="nav-item dropdown">
+                                                  <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-envelope-o adminpro-chat-pro" aria-hidden="true"></i><span class="indicator-ms"></span></a>
+                                                  <div role="menu" class="author-message-top dropdown-menu animated zoomIn">
+                                                      <div class="message-single-top">
+                                                          <h1>Message</h1>
+                                                      </div>
+                                                      <div class="message-view">
+                                                          <a href="#">View All Messages</a>
+                                                      </div>
+                                                  </div>
+                                              </li>
+                                              <li class="nav-item"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="indicator-nt"></span></a>
+                                                  <div role="menu" class="notification-author dropdown-menu animated zoomIn">
+                                                      <div class="notification-single-top">
+                                                          <h1>Notifications</h1>
+                                                      </div>
+
+                                                      <div class="notification-view">
+                                                          <a href="#">View All Notification</a>
+                                                      </div>
+                                                  </div>
+                                              </li>
+                                              <li class="nav-item">
+                                                  <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
+                            <i class="fa fa-user adminpro-user-rounded header-riht-inf" aria-hidden="true"></i>
+                            <span class="admin-name"><%=current_account.email%></span>
+                            <i class="fa fa-angle-down adminpro-icon adminpro-down-arrow"></i>
+                          </a>
+                                                  <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
+
+                                                      <li><%= link_to '编辑', url(:accounts, :edit, :id => current_account.id), :title => pat(:profile)%>
+                                                      </li>
+                                                      <li><%= link_to '退出', url(:sessions, :destroy), :method => :delete %>
+                                                      </li>
+                                                  </ul>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- Mobile Menu start -->
+          <div class="mobile-menu-area">
+              <div class="container">
+                  <div class="row">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="mobile-menu">
+                              <nav id="dropdown">
+                                  <ul class="mobile-menu-nav">
+                                      <li><a data-toggle="collapse" data-target="#Charts" href="#">客户 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                          <ul class="collapse dropdown-header-top">
+                                              <li><a href="#">客户画像</a></li>
+                                              <li><a href="#">客户活跃度</a></li>
+                                              <li><a href="#">客户行为统计</a></li>
+                                              <li><a href="#">标签管理</a></li>
+                                          </ul>
+                                      </li>
+                                      <li><a data-toggle="collapse" data-target="#demo" href="#">员工 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                          <ul id="demo" class="collapse dropdown-header-top">
+                                            <li><a title="BOSS雷达" href="#">BOSS雷达</a></li>
+                                            <li><a title="员工列表" href="#">员工列表</a></li>
+                                          </ul>
+                                      </li>
+                                      <li><a data-toggle="collapse" data-target="#others" href="#">商品 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                          <ul id="others" class="collapse dropdown-header-top">
+                                            <li><a title="目录" href="#">目录</a></li>
+                                            <li><a title="商品" href="#">商品</a></li>
+                                            <li><a title="商品榜单（点击量，销量，销售额）" href="#">商品榜单</a></li>
+                                          </ul>
+                                      </li>
+                                      <li><a data-toggle="collapse" data-target="#Miscellaneousmob" href="#">汽车基础数据 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                          <ul id="Miscellaneousmob" class="collapse dropdown-header-top">
+                                            <li><a title="汽车品牌" href="#">汽车品牌</a></li>
+                                            <li><a title="车型" href="#">车型</a></li>
+                                          </ul>
+                                      </li>
+                                      <li><a data-toggle="collapse" data-target="#Chartsmob" href="#">订单管理 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                          <ul id="Chartsmob" class="collapse dropdown-header-top">
+                                            <li><a title="订单列表" href="#">订单列表</a></li>
+                                            <li><a title="员工订单统计" href="#">员工订单统计</a></li>
+                                            <li><a title="员工佣金统计" href="#">员工佣金统计</a></li>
+                                            <li><a title="特权折扣" href="#">特权折扣</a></li>
+                                          </ul>
+                                      </li>
+                                      <li><a data-toggle="collapse" data-target="#Tablesmob" href="#">营销活动 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                          <ul id="Tablesmob" class="collapse dropdown-header-top">
+                                            <li><a title="秒杀" href="#">秒杀</a></li>
+                                            <li><a title="团购" href="#">团购</a></li>
+                                            <li><a title="优惠券" href="#">优惠券</a></li>
+                                            <li><a title="优选商品" href="#">优选商品</a></li>
+                                          </ul>
+                                      </li>
+                                      <li><a data-toggle="collapse" data-target="#formsmob" href="#">财务 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                          <ul id="formsmob" class="collapse dropdown-header-top">
+                                              <li><a title="财务对账" href="#">财务对账</a></li>
+                                          </ul>
+                                      </li>
+                                      <li><a data-toggle="collapse" data-target="#Appviewsmob" href="#">小程序设置 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                          <ul id="Appviewsmob" class="collapse dropdown-header-top">
+                                            <li><a title="聊天设置" href="#">聊天设置</a></li>
+                                            <li><a title="首页栏目" href="#">首页栏目</a></li>
+                                            <li><a title="手机号授权" href="#">手机号授权</a></li>
+                                          </ul>
+                                      </li>
+                                  </ul>
+                              </nav>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- Mobile Menu end -->
+          <div class="breadcome-area" style="margin-top: 60px;">
+              <div class="container-fluid">
+                  <div class="row">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="breadcome-list single-page-breadcome">
+                              <div class="row">
+                                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                                  </div>
+                                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                      <ul class="breadcome-menu">
+                                          <li><a href="#">Home</a> <span class="bread-slash">/</span>
+                                          </li>
+                                          <li><span class="bread-blod">Product Cart</span>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
         </div>
-      </div>
+        <div class="product-cart-area mg-tb-15">
+            <div class="container-fluid">
+                <div class="row">
+                  <%= yield %>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class='container main'>
-      <div class='main-wrapper'>
-        <%= {:error => 'danger', :warning => 'warning', :success => 'success', :notice => 'info'}.map { |type, class_name| flash_tag(type, :class => "alert alert-#{class_name} fade in", :bootstrap => true) }.join.html_safe %>
-        <div class='row'><%= yield %></div>
-        <div class='main-wrapper-push'></div>
-      </div>
-    </div>
+    <!-- jquery
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/vendor/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/bootstrap.min.js"></script>
+    <!-- wow JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/wow.min.js"></script>
+    <!-- price-slider JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/jquery-price-slider.js"></script>
+    <!-- meanmenu JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/jquery.meanmenu.js"></script>
+    <!-- owl.carousel JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/owl.carousel.min.js"></script>
+    <!-- sticky JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/jquery.sticky.js"></script>
+    <!-- scrollUp JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/jquery.scrollUp.min.js"></script>
+    <!-- mCustomScrollbar JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/admin/javascripts/jeweler/scrollbar/mCustomScrollbar-active.js"></script>
+    <!-- metisMenu JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/metisMenu/metisMenu.min.js"></script>
+    <script src="/admin/javascripts/jeweler/metisMenu/metisMenu-active.js"></script>
+    <!-- morrisjs JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/morrisjs/raphael-min.js"></script>
+    <script src="/admin/javascripts/jeweler/morrisjs/morris.js"></script>
+    <script src="/admin/javascripts/jeweler/morrisjs/morris-active.js"></script>
+    <!-- morrisjs JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/sparkline/jquery.sparkline.min.js"></script>
+    <script src="/admin/javascripts/jeweler/sparkline/jquery.charts-sparkline.js"></script>
+    <!-- calendar JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/calendar/moment.min.js"></script>
+    <script src="/admin/javascripts/jeweler/calendar/fullcalendar.min.js"></script>
+    <script src="/admin/javascripts/jeweler/calendar/fullcalendar-active.js"></script>
+    <!-- tab JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/tab.js"></script>
+    <!-- wizard JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/wizard/jquery.steps.js"></script>
+    <script src="/admin/javascripts/jeweler/wizard/steps-active.js"></script>
+    <!-- plugins JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/plugins.js"></script>
+    <!-- main JS
+		============================================ -->
+    <script src="/admin/javascripts/jeweler/main.js"></script>
+</body>
 
-    <footer>
-      <div class='footer-wrapper container'>
-        <p class='pull-left'>Copyright &copy; 2020 Your Site - Powered by Padrino v.0.14.4</p>
-        <ul class='pull-right footer-links'>
-          <li><%= link_to tag_icon(:home, 'web'), 'http://www.padrinorb.com', :target => :_blank, :class => 'footer-links-link' %></li>
-          <li><%= link_to tag_icon(:heart, 'blog'), 'http://www.padrinorb.com/blog', :target => :_blank, :class => 'footer-links-link' %></li>
-          <li><%= link_to tag_icon(:github, 'code'), 'https://github.com/padrino/padrino-framework', :target => :_blank, :class => 'footer-links-link' %></li>
-          <li><%= link_to tag_icon(:twitter, 'twitter'), 'http://twitter.com/padrinorb', :target => :_blank, :class => 'footer-links-link' %></li>
-        </ul>
-      </div>
-    </footer>
-
-    <%= javascript_include_tag 'jquery-1.11.0.min', (Padrino.env == :production ? 'bootstrap/bootstrap.min' : %w[bootstrap/affix bootstrap/alert bootstrap/button bootstrap/carousel bootstrap/collapse bootstrap/dropdown  bootstrap/tooltip bootstrap/transition  bootstrap/modal bootstrap/popover bootstrap/scrollspy bootstrap/tab]), :application %>
-  </body>
 </html>
