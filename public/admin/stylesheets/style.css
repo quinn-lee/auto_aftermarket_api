@@ -1960,7 +1960,7 @@ ul.tab-custon-design li.active a, ul.tab-review-design li.active a{
     padding: 0;
     width: 22px;
     height: 22px;
-    background: url(img/green1.png) no-repeat;
+    background: url(/admin/images/jeweler/green1.png) no-repeat;
     border: none;
     cursor: pointer;
 }
@@ -3073,7 +3073,7 @@ ul.mailbox-list li:hover a, ul.h-list li:hover a {
     padding: 0;
     width: 22px;
     height: 22px;
-    background: url(img/green1.png) no-repeat;
+    background: url(/admin/images/jeweler/green1.png) no-repeat;
     border: none;
     cursor: pointer;
 }

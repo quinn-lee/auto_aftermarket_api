@@ -87,17 +87,27 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         end
       end
       ActiveRecord::Base.transaction do
-        pay_res = Wxpay.pre_pay(@merchant, @order.order_no, @customer.openid, (BigDecimal.new(@order.pay_amount.to_s)*100).to_i, env['REMOTE_HOST'])
-        if pay_res["status"]=="succ"
+        if BigDecimal.new(@order.pay_amount.to_s) < BigDecimal.new("0.0001")
           @wi=WxpayInfo.create!({
-            prepay_id: pay_res["info"]["prepay_id"],
             customer_id: @customer.id,
             order_no: @order.order_no,
             amount: @order.pay_amount,
             expired_time: Time.now+1.hour
           })
+          @wi.after_paid
         else
-          raise "prepay_id产生失败:#{pay_res["info"]["err_msg"]}"
+          pay_res = Wxpay.pre_pay(@merchant, @order.order_no, @customer.openid, (BigDecimal.new(@order.pay_amount.to_s)*100).to_i, env['REMOTE_HOST'])
+          if pay_res["status"]=="succ"
+            @wi=WxpayInfo.create!({
+              prepay_id: pay_res["info"]["prepay_id"],
+              customer_id: @customer.id,
+              order_no: @order.order_no,
+              amount: @order.pay_amount,
+              expired_time: Time.now+1.hour
+            })
+          else
+            raise "prepay_id产生失败:#{pay_res["info"]["err_msg"]}"
+          end
         end
       end
 

@@ -306,9 +306,11 @@
               </div>
           </div>
         </div>
+
         <div class="product-cart-area mg-tb-15">
             <div class="container-fluid">
                 <div class="row">
+                  <%= {:error => 'danger', :warning => 'warning', :success => 'success', :notice => 'info'}.map { |type, class_name| flash_tag(type, :class => "alert alert-#{class_name} fade in", :bootstrap => true) }.join.html_safe %>
                   <%= yield %>
                 </div>
             </div>
@@ -368,6 +370,10 @@
 		============================================ -->
     <script src="/admin/javascripts/jeweler/wizard/jquery.steps.js"></script>
     <script src="/admin/javascripts/jeweler/wizard/steps-active.js"></script>
+    <!-- icheck JS
+    ============================================ -->
+    <script src="/admin/javascripts/jeweler/icheck/icheck.min.js"></script>
+    <script src="/admin/javascripts/jeweler/icheck/icheck-active.js"></script>
     <!-- plugins JS
 		============================================ -->
     <script src="/admin/javascripts/jeweler/plugins.js"></script>

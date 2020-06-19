@@ -1,4 +1,7 @@
 class TSpu < ActiveRecord::Base
+
+  validates :t_category_id, :t_brand_id, :title, presence: true
+
   belongs_to :t_category,   :class_name => 'TCategory'
   belongs_to :t_brand,   :class_name => 'TBrand'
   belongs_to :merchant,   :class_name => 'Merchant'
