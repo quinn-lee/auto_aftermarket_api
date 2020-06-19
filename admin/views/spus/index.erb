@@ -25,12 +25,15 @@
                 <td><%= spu.detail %></td>
                 <td><%= spu.t_skus.count %></td>
                 <td>
+                    <a href="<%=url(:spus, :edit, :id =>spu.id) %>" title="修改" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+
+                    <a href="<%=url(:spus, :show, :id =>spu.id)%>" title="查看SKU" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+
                     <% if spu.saleable %>
                     <a href="<%=url(:spus, :change_sale, :id =>spu.id, :action =>'offsale')%>" title="下架" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     <% else %>
                     <a href="<%=url(:spus, :change_sale, :id =>spu.id, :action =>'onsale')%>" title="上架" class="pd-setting-ed"><i class="fa fa-check" aria-hidden="true"></i></a>
                     <% end %>
-                    <a href="<%=url(:spus, :show, :id =>spu.id)%>" title="查看SKU" class="pd-setting-ed"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                 </td>
             </tr>
             <% end %>

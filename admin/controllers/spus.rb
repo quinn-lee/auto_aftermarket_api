@@ -6,7 +6,7 @@ AutoAftermarketApi::Admin.controllers :spus do
     @spus = current_account.merchant.t_spus
     @spus = @spus.where(t_category_id: params[:category_id]) if params[:category_id].present?
     @spus = @spus.where(t_brand_id: params[:brand_id]) if params[:brand_id].present?
-    @spus = @spus.paginate(page: params[:page], per_page: 2)
+    @spus = @spus.order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'spus/index'
   end
 
@@ -104,14 +104,40 @@ AutoAftermarketApi::Admin.controllers :spus do
     end
   end
 
-  # 产品下架
+  # 产品编辑
+  get :edit, :with => :id do
+    @spu = TSpu.find(params[:id])
+    @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @spu.t_category.id).map(&:t_brand_id))
+    render "spus/edit"
+  end
+
+  # 产品编辑 提交
+  post :update, :with => :id do
+    begin
+      if @spu = TSpu.find(params[:id])
+        if @spu.update!(params[:t_spu])
+          flash.now[:success] = "产品修改成功"
+          redirect(url(:spus, :index))
+        else
+          raise "产品修改失败"
+        end
+      end
+    rescue => e
+      flash.now[:error] = e.message
+      @title = "修改产品信息"
+      @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @spu.t_category.id).map(&:t_brand_id))
+      render 'spus/edit'
+    end
+  end
+
+  # 产品上下架
   get :change_sale, :with => :id do
     begin
       @spu = TSpu.find(params[:id])
       saleable = params[:action] == "onsale" ? true : false
       @spu.update!(saleable: saleable)
       @spu.t_skus.update_all(saleable: saleable)
-      flash[:success] = "产品(SKU)#{params[:action] == "onsale" ? '上架' : '下架'}成功"
+      flash[:success] = "产品(SPU)#{params[:action] == "onsale" ? '上架' : '下架'}成功"
       redirect(url(:spus, :index))
     rescue => e
       flash[:error] = e.message
@@ -119,7 +145,7 @@ AutoAftermarketApi::Admin.controllers :spus do
     end
   end
 
-  # SKU详情
+  # SPU详情
   get :show, :with => :id do
     begin
       @spu = TSpu.find(params[:id])
@@ -127,6 +153,43 @@ AutoAftermarketApi::Admin.controllers :spus do
     rescue => e
       flash[:error] = e.message
       render "spus/show"
+    end
+  end
+
+  # 产品上下架
+  get :change_sku_sale, :with => :sku_id do
+    begin
+      @sku = TSku.find(params[:sku_id])
+      saleable = params[:action] == "onsale" ? true : false
+      @sku.update!(saleable: saleable)
+      flash[:success] = "商品(SKU)#{params[:action] == "onsale" ? '上架' : '下架'}成功"
+      redirect(url(:spus, :show, :id => @sku.t_spu.id))
+    rescue => e
+      flash[:error] = e.message
+      redirect(url(:spus, :show, :id => @sku.t_spu.id))
+    end
+  end
+
+  # 商品编辑
+  get :edit_sku, :with => :sku_id do
+    @sku = TSku.find(params[:sku_id])
+    render "spus/edit_sku"
+  end
+
+  # 商品编辑 提交
+  post :update_sku, :with => :sku_id do
+    begin
+      if @sku = TSku.find(params[:sku_id])
+        if @sku.update!(params[:t_sku])
+          flash.now[:success] = "商品修改成功"
+          redirect(url(:spus, :show, :id => @sku.t_spu.id))
+        else
+          raise "商品品修改失败"
+        end
+      end
+    rescue => e
+      flash.now[:error] = e.message
+      render 'spus/edit_sku'
     end
   end
 

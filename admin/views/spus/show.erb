@@ -22,7 +22,12 @@
                 <td>￥<%= sku.price %></td>
                 <td><%= sku.stock_num %></td>
                 <td>
-
+                  <a href="<%=url(:spus, :edit_sku, :sku_id =>sku.id) %>" title="修改" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                  <% if sku.saleable %>
+                  <a href="<%=url(:spus, :change_sku_sale, :sku_id =>sku.id, :action =>'offsale')%>" title="下架" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                  <% else %>
+                  <a href="<%=url(:spus, :change_sku_sale, :sku_id =>sku.id, :action =>'onsale')%>" title="上架" class="pd-setting-ed"><i class="fa fa-check" aria-hidden="true"></i></a>
+                  <% end %>
                 </td>
             </tr>
             <% end %>
