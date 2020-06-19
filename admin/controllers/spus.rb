@@ -59,20 +59,26 @@ AutoAftermarketApi::Admin.controllers :spus do
       attrs = {}
       service_fee = {}
       @attrs.each do |tattr|
-        logger.info tattr.name
-        logger.info params[tattr.name.to_sym]
         if tattr.selling
           raise "销售属性必须填写" if params[tattr.name.to_sym].blank?
           sale_attrs[tattr.name] = params[tattr.name.to_sym]
         end
         attrs[tattr.name] = params[tattr.name.to_sym]
       end
-      logger.info sale_attrs
-      logger.info attrs
+      if params[:service].present?
+        params[:service].each do |s|
+          raise "服务费用必须填写" if params[s.to_sym].blank?
+          service_fee[s] = params[s.to_sym]
+        end
+
+      end
       @sku.sale_attrs = sale_attrs
       @sku.attrs = attrs
+      @sku.service_fee = service_fee
+      @sku.saleable = true
+      @sku.is_valid = true
       @sku.save
-      flash.now[:success] = "SKU添加成功"
+      flash[:success] = "SKU添加成功"
       redirect(url(:spus, :add_sku, :id => @sku.t_spu_id))
     rescue=>e
       flash.now[:error] = e.message

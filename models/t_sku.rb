@@ -17,9 +17,10 @@ class TSku < ActiveRecord::Base
       price: price,
       service_fee: service_fee,
       stock_num: stock_num,
-      images: images.map(&:url),
+      images: images.try{|i| i.map(&:url)},
       sale_attrs: sale_attrs,
-      attrs: attrs
+      attrs: attrs,
+      detail: detail.try{|i| i.map(&:url)}
     }
   end
 
@@ -31,9 +32,10 @@ class TSku < ActiveRecord::Base
       price: price,
       service_fee: service_fee,
       stock_num: stock_num,
-      images: images.map(&:url),
+      images: images.try{|i| i.map(&:url)},
       sale_attrs: sale_attrs,
-      attrs: attrs
+      attrs: attrs,
+      detail: detail.try{|i| i.map(&:url)}
     }
   end
 
@@ -42,7 +44,7 @@ class TSku < ActiveRecord::Base
       id: id,
       title: title,
       sku_code: sku_code,
-      images: images.map(&:url)
+      images: images.try{|i| i.map(&:url)},
     }
   end
 end

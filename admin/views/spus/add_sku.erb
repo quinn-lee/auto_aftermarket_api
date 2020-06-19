@@ -64,7 +64,7 @@
                               <% if attrvalues.count > 0 %>
                                 <%=select_tag(tattr.name, :options => attrvalues.map(&:value), :class => "form-control custom-select-value")%>
                               <% else %>
-                                <%=text_field_tag(tattr.name, :class => "form-control")%>
+                                <%=text_field_tag(tattr.name, :value => params[tattr.name.to_sym], :class => "form-control")%>
                               <% end %>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                               <% if attrvalues.count > 0 %>
                                 <%=select_tag(tattr.name, :options => attrvalues.map{|av| "#{av.value}#{tattr.unit}"}, :class => "form-control custom-select-value")%>
                               <% else %>
-                                <%=text_field_tag(tattr.name, :class => "form-control", :required => true)%>
+                                <%=text_field_tag(tattr.name, :value => params[tattr.name.to_sym], :class => "form-control", :required => true)%>
                               <% end %>
                             </div>
                         </div>
