@@ -22,4 +22,9 @@ AutoAftermarketApi::Admin.controllers :sessions do
     set_current_account(nil)
     redirect url(:sessions, :new)
   end
+
+  get :destroy do
+    set_current_account(nil)
+    redirect url(:sessions, :new)
+  end
 end

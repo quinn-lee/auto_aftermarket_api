@@ -1,8 +1,10 @@
 AutoAftermarketApi::Admin.controllers :spus do
+  before do
+    set_spus_title_and_local
+  end
 
   # 产品列表
   get :index do
-    @title = "商品列表"
     @spus = current_account.merchant.t_spus
     @spus = @spus.where(t_category_id: params[:category_id]) if params[:category_id].present?
     @spus = @spus.where(t_brand_id: params[:brand_id]) if params[:brand_id].present?
@@ -12,7 +14,6 @@ AutoAftermarketApi::Admin.controllers :spus do
 
   # 新增产品 选择目录
   get :select_category do
-    @title = "选择商品目录"
     @categories = TCategory.all
     render 'spus/select_category'
   end
@@ -20,7 +21,6 @@ AutoAftermarketApi::Admin.controllers :spus do
   # 新增产品
   post :new do
     begin
-      @title = "填写产品信息"
       raise "请选择商品目录" if params[:category_2].blank?
       @category = TCategory.find(params[:category_2])
       @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @category.id).map(&:t_brand_id))
@@ -28,7 +28,6 @@ AutoAftermarketApi::Admin.controllers :spus do
       render 'spus/new'
     rescue => e
       flash.now[:error] = e.message
-      @title = "选择商品目录"
       @categories = TCategory.all
       render 'spus/select_category'
     end
@@ -48,7 +47,6 @@ AutoAftermarketApi::Admin.controllers :spus do
       end
     rescue => e
       flash.now[:error] = e.message
-      @title = "填写产品信息"
       @category = TCategory.find(@spu.t_category_id)
       @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @category.id).map(&:t_brand_id))
       render 'spus/new'
@@ -124,7 +122,6 @@ AutoAftermarketApi::Admin.controllers :spus do
       end
     rescue => e
       flash.now[:error] = e.message
-      @title = "修改产品信息"
       @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @spu.t_category.id).map(&:t_brand_id))
       render 'spus/edit'
     end

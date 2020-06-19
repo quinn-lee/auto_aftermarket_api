@@ -1,4 +1,8 @@
 AutoAftermarketApi::Admin.controllers :accounts do
+  before do
+    set_accounts_title_and_local
+  end
+
   get :index do
     @title = "Accounts"
     @accounts = Account.all
@@ -78,11 +82,11 @@ AutoAftermarketApi::Admin.controllers :accounts do
     end
     ids = params[:account_ids].split(',').map(&:strip)
     accounts = Account.find(ids)
-    
+
     if accounts.include? current_account
       flash[:error] = pat(:delete_error, :model => 'account')
     elsif Account.destroy accounts
-    
+
       flash[:success] = pat(:destroy_many_success, :model => 'Accounts', :ids => "#{ids.join(', ')}")
     end
     redirect url(:accounts, :index)

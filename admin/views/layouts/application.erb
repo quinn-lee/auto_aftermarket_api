@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title><%= @title.present? ? "#{@title} | Padrino Admin" : "Padrino Admin" %></title>
+    <title><%= @title.present? ? "#{@title} | Julai Admin" : "Julai Admin" %></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- favicon
@@ -171,21 +171,21 @@
                                                   <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-envelope-o adminpro-chat-pro" aria-hidden="true"></i><span class="indicator-ms"></span></a>
                                                   <div role="menu" class="author-message-top dropdown-menu animated zoomIn">
                                                       <div class="message-single-top">
-                                                          <h1>Message</h1>
+                                                          <h1>消息</h1>
                                                       </div>
                                                       <div class="message-view">
-                                                          <a href="#">View All Messages</a>
+                                                          <a href="#">查看所有消息</a>
                                                       </div>
                                                   </div>
                                               </li>
                                               <li class="nav-item"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="indicator-nt"></span></a>
                                                   <div role="menu" class="notification-author dropdown-menu animated zoomIn">
                                                       <div class="notification-single-top">
-                                                          <h1>Notifications</h1>
+                                                          <h1>通知</h1>
                                                       </div>
 
                                                       <div class="notification-view">
-                                                          <a href="#">View All Notification</a>
+                                                          <a href="#">查看所有通知</a>
                                                       </div>
                                                   </div>
                                               </li>
@@ -295,9 +295,9 @@
                                   </div>
                                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                       <ul class="breadcome-menu">
-                                          <li><a href="#">Home</a> <span class="bread-slash">/</span>
+                                          <li><a href="/">首页</a> <span class="bread-slash">/</span>
                                           </li>
-                                          <li><span class="bread-blod">Product Cart</span>
+                                          <li><span class="bread-blod"><%=@local%></span>
                                           </li>
                                       </ul>
                                   </div>
