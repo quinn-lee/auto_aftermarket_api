@@ -1,4 +1,6 @@
 AutoAftermarketApi::Admin.controllers :spus do
+
+  # 产品列表
   get :index do
     @title = "商品列表"
     @spus = current_account.merchant.t_spus
@@ -8,12 +10,14 @@ AutoAftermarketApi::Admin.controllers :spus do
     render 'spus/index'
   end
 
+  # 新增产品 选择目录
   get :select_category do
     @title = "选择商品目录"
     @categories = TCategory.all
     render 'spus/select_category'
   end
 
+  # 新增产品
   post :new do
     begin
       @title = "填写产品信息"
@@ -30,6 +34,7 @@ AutoAftermarketApi::Admin.controllers :spus do
     end
   end
 
+  # 新增产品 提交
   post :create do
     begin
       @spu = TSpu.new(params[:t_spu])
@@ -50,6 +55,7 @@ AutoAftermarketApi::Admin.controllers :spus do
     end
   end
 
+  # 添加SKU
   get :add_sku, :with => :id do
     @spu = TSpu.find(params[:id])
     @category = TCategory.find(@spu.t_category_id)
@@ -59,6 +65,7 @@ AutoAftermarketApi::Admin.controllers :spus do
     render "spus/add_sku"
   end
 
+  # 添加SKU 提交
   post :create_sku, :with => :id do
     begin
       logger.info params
@@ -94,6 +101,21 @@ AutoAftermarketApi::Admin.controllers :spus do
     rescue=>e
       flash.now[:error] = e.message
       render "spus/add_sku"
+    end
+  end
+
+  # 产品下架
+  get :change_sale, :with => :id do
+    begin
+      @spu = TSpu.find(params[:id])
+      saleable = params[:action] == "onsale" ? true : false
+      @spu.update!(saleable: saleable)
+      @spu.t_skus.update_all(saleable: saleable)
+      flash[:success] = "产品(SKU)#{params[:action] == "onsale" ? '上架' : '下架'}成功"
+      redirect(url(:spus, :index))
+    rescue => e
+      flash[:error] = e.message
+      redirect(url(:spus, :index))
     end
   end
 

@@ -44,13 +44,7 @@ class TSpu < ActiveRecord::Base
   def saleable_class
     saleable ? "pd-setting" : "ds-setting"
   end
-  def valid_class
-    is_valid ? "pd-setting" : "ds-setting"
-  end
   def saleable_desc
-    saleable ? "正常" : "下架"
-  end
-  def valid_desc
-    is_valid ? "正常" : "无效"
+    saleable ? "正常" : "已下架"
   end
 end

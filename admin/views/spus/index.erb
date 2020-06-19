@@ -8,10 +8,9 @@
             <tr>
                 <th style="width: 15%;">目录</th>
                 <th style="width: 10%;">品牌</th>
-                <th style="width: 18%;">标题</th>
+                <th style="width: 23%;">标题</th>
                 <th style="width: 10%;">可销售?</th>
-                <th style="width: 10%;">有效?</th>
-                <th style="width: 15%;">说明</th>
+                <th style="width: 20%;">说明</th>
                 <th style="width: 10%;">SKU数量</th>
                 <th style="width: 10%;"></th>
             </tr>
@@ -23,14 +22,14 @@
                 <td>
                     <button class="<%= spu.saleable_class%>"><%= spu.saleable_desc%></button>
                 </td>
-                <td>
-                    <button class="<%= spu.valid_class%>"><%= spu.valid_desc%></button>
-                </td>
                 <td><%= spu.detail %></td>
                 <td><%= spu.t_skus.count %></td>
                 <td>
-                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <% if spu.saleable %>
+                    <a href="<%=url(:spus, :change_sale, :id =>spu.id, :action =>'offsale')%>" title="下架" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <% else %>
+                    <a href="<%=url(:spus, :change_sale, :id =>spu.id, :action =>'onsale')%>" title="上架" class="pd-setting-ed"><i class="fa fa-check" aria-hidden="true"></i></a>
+                    <% end %>
                 </td>
             </tr>
             <% end %>
