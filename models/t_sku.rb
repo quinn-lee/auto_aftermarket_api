@@ -17,7 +17,7 @@ class TSku < ActiveRecord::Base
       price: price,
       service_fee: service_fee,
       stock_num: stock_num,
-      images: images,
+      images: images.map(&:url),
       sale_attrs: sale_attrs,
       attrs: attrs
     }
@@ -31,7 +31,7 @@ class TSku < ActiveRecord::Base
       price: price,
       service_fee: service_fee,
       stock_num: stock_num,
-      images: images,
+      images: images.map(&:url),
       sale_attrs: sale_attrs,
       attrs: attrs
     }
@@ -42,7 +42,7 @@ class TSku < ActiveRecord::Base
       id: id,
       title: title,
       sku_code: sku_code,
-      images: images
+      images: images.map(&:url)
     }
   end
 end

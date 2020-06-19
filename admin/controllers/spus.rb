@@ -55,20 +55,22 @@ AutoAftermarketApi::Admin.controllers :spus do
       @category = TCategory.find(@spu.t_category_id)
       @attrs = TAttribute.where(t_category_id: @spu.t_category_id)
       @sku = TSku.new(params[:t_sku])
-      sale_attrs = []
-      attrs = []
-      service_fee = []
+      sale_attrs = {}
+      attrs = {}
+      service_fee = {}
       @attrs.each do |tattr|
         logger.info tattr.name
-        logger.info params[:t_sku][tattr.name]
+        logger.info params[tattr.name.to_sym]
         if tattr.selling
-          raise "销售属性必须填写" if params[:t_sku][tattr.name.to_sym].blank?
-          sale_attrs << {"#{tattr.name}" => params[:t_sku][tattr.name.to_sym]}
+          raise "销售属性必须填写" if params[tattr.name.to_sym].blank?
+          sale_attrs[tattr.name] = params[tattr.name.to_sym]
         end
-        attrs << {"#{tattr.name}" => params[:t_sku][tattr.name.to_sym]}
+        attrs[tattr.name] = params[tattr.name.to_sym]
       end
       logger.info sale_attrs
       logger.info attrs
+      @sku.sale_attrs = sale_attrs
+      @sku.attrs = attrs
       @sku.save
       flash.now[:success] = "SKU添加成功"
       redirect(url(:spus, :add_sku, :id => @sku.t_spu_id))
