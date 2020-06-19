@@ -1,0 +1,44 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="product-status-wrap">
+        <h4><%=@spu.category_desc%>--<%=@spu.t_brand.name%>--<%=@spu.title%></h4>
+        <table>
+            <tr>
+                <th style="width: 10%;">SKU代码</th>
+                <th style="width: 25%;">标题</th>
+                <th style="width: 20%;">销售属性</th>
+                <th style="width: 10%;">可销售?</th>
+                <th style="width: 10%;">价格</th>
+                <th style="width: 10%;">库存</th>
+                <th style="width: 10%;"></th>
+            </tr>
+            <% @spu.t_skus.each do |sku| %>
+            <tr>
+                <td><%= sku.sku_code%></td>
+                <td><%= sku.title %></td>
+                <td><%= sku.sale_attrs_desc %></td>
+                <td>
+                    <button class="<%= sku.saleable_class%>"><%= sku.saleable_desc%></button>
+                </td>
+                <td>￥<%= sku.price %></td>
+                <td><%= sku.stock_num %></td>
+                <td>
+
+                </td>
+            </tr>
+            <% end %>
+
+        </table>
+        <div class="form-group-inner">
+            <div class="login-btn-inner">
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-9">
+                        <div class="login-horizental cancel-wp pull-left">
+                            <a href="<%=url(:spus, :index)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

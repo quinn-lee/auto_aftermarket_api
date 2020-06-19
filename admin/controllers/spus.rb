@@ -119,4 +119,15 @@ AutoAftermarketApi::Admin.controllers :spus do
     end
   end
 
+  # SKU详情
+  get :show, :with => :id do
+    begin
+      @spu = TSpu.find(params[:id])
+      render "spus/show"
+    rescue => e
+      flash[:error] = e.message
+      render "spus/show"
+    end
+  end
+
 end

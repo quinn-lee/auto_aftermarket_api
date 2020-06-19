@@ -30,6 +30,7 @@
                     <% else %>
                     <a href="<%=url(:spus, :change_sale, :id =>spu.id, :action =>'onsale')%>" title="上架" class="pd-setting-ed"><i class="fa fa-check" aria-hidden="true"></i></a>
                     <% end %>
+                    <a href="<%=url(:spus, :show, :id =>spu.id)%>" title="查看SKU" class="pd-setting-ed"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                 </td>
             </tr>
             <% end %>

@@ -47,4 +47,15 @@ class TSku < ActiveRecord::Base
       images: images.try{|i| i.map(&:url)},
     }
   end
+
+  def saleable_class
+    saleable ? "pd-setting" : "ds-setting"
+  end
+  def saleable_desc
+    saleable ? "正常" : "已下架"
+  end
+
+  def sale_attrs_desc
+    sale_attrs.to_a.map{|sa| sa.join(':')}.join('，')
+  end
 end
