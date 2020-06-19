@@ -80,7 +80,7 @@
                         <li class="active">
                           <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">商品</span></a>
                           <ul class="submenu-angle" aria-expanded="false">
-                              <li><a title="目录" href="#"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">目录</span></a></li>
+                              <li><a title="目录" href="<%=url(:categories, :index)%>"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">目录</span></a></li>
                               <li><a title="商品" href="<%=url(:spus, :index)%>"><i class="fa fa-map-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">商品</span></a></li>
                               <li><a title="商品榜单（点击量，销量，销售额）" href="#"><i class="fa fa-file-pdf-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">商品榜单</span></a></li>
                           </ul>
@@ -222,7 +222,7 @@
                                   <ul class="mobile-menu-nav">
                                       <li><a data-toggle="collapse" data-target="#others" href="#">商品 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
                                         <ul id="others" class="collapse dropdown-header-top">
-                                          <li><a title="目录" href="#">目录</a></li>
+                                          <li><a title="目录" href="<%=url(:categories, :index)%>">目录</a></li>
                                           <li><a title="商品" href="<%=url(:spus, :index)%>">商品</a></li>
                                           <li><a title="商品榜单（点击量，销量，销售额）" href="#">商品榜单</a></li>
                                         </ul>

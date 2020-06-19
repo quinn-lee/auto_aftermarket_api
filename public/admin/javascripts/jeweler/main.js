@@ -17,6 +17,11 @@ function change_category(obj){
 
 (function ($) {
  "use strict";
+  $(".sub_categories").hide();
+  $(".toggle-button").bind("click", function(){
+    $(".sub_"+$(this).attr("data-id")).slideToggle();
+  })
+
 	/*----------------------------
 	 jQuery MeanMenu
 	------------------------------ */

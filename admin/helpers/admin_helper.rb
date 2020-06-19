@@ -12,6 +12,11 @@ module AutoAftermarketApi
         @local = "用户"
       end
 
+      def set_categories_title_and_local
+        @title = "目录"
+        @local = "目录"
+      end
+
     end
 
     helpers AdminHelper
