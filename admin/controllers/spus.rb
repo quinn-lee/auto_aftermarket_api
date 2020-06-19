@@ -78,7 +78,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       @sku.saleable = true
       @sku.is_valid = true
       @sku.save
-      flash[:success] = "SKU添加成功"
+      flash[:success] = "SKU添加成功，您可以继续为该SPU添加SKU"
       redirect(url(:spus, :add_sku, :id => @sku.t_spu_id))
     rescue=>e
       flash.now[:error] = e.message
