@@ -193,4 +193,10 @@ AutoAftermarketApi::Admin.controllers :spus do
     end
   end
 
+  # 商品展示
+  get :show_sku, :with => :sku_id do
+    @sku = TSku.find(params[:sku_id])
+    render "spus/show_sku"
+  end
+
 end
