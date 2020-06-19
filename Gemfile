@@ -41,3 +41,5 @@ gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 
 gem 'nokogiri', '~> 1.10', '>= 1.10.9'
 gem 'builder', '~> 3.2', '>= 3.2.2'
+
+gem 'will_paginate', '~> 3.1.0'

@@ -31,4 +31,26 @@ class TSpu < ActiveRecord::Base
       detail: detail
     }
   end
+
+  def category_desc
+    begin
+      p_category = TCategory.find(t_category.parent_id)
+      "#{p_category.name}/#{t_category.name}"
+    rescue=>e
+      ""
+    end
+  end
+
+  def saleable_class
+    saleable ? "pd-setting" : "ds-setting"
+  end
+  def valid_class
+    is_valid ? "pd-setting" : "ds-setting"
+  end
+  def saleable_desc
+    saleable ? "正常" : "下架"
+  end
+  def valid_desc
+    is_valid ? "正常" : "无效"
+  end
 end

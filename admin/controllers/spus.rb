@@ -1,4 +1,13 @@
 AutoAftermarketApi::Admin.controllers :spus do
+  get :index do
+    @title = "商品列表"
+    @spus = current_account.merchant.t_spus
+    @spus = @spus.where(t_category_id: params[:category_id]) if params[:category_id].present?
+    @spus = @spus.where(t_brand_id: params[:brand_id]) if params[:brand_id].present?
+    @spus = @spus.paginate(page: params[:page], per_page: 2)
+    render 'spus/index'
+  end
+
   get :select_category do
     @title = "选择商品目录"
     @categories = TCategory.all
@@ -24,6 +33,8 @@ AutoAftermarketApi::Admin.controllers :spus do
   post :create do
     begin
       @spu = TSpu.new(params[:t_spu])
+      @spu.saleable = true
+      @spu.is_valid = true
       if @spu.save
         flash.now[:success] = "产品创建成功，请继续为该产品添加SKU"
         redirect(url(:spus, :add_sku, :id => @spu.id))

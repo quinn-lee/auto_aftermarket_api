@@ -105,6 +105,7 @@ GEM
     tilt (2.0.10)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
+    will_paginate (3.1.8)
 
 PLATFORMS
   ruby
@@ -121,6 +122,7 @@ DEPENDENCIES
   rake
   ruby-pinyin
   settingslogic (~> 2.0, >= 2.0.9)
+  will_paginate (~> 3.1.0)
 
 BUNDLED WITH
    1.17.3

@@ -73,6 +73,10 @@ Padrino.dependency_paths.unshift Padrino.root('config/initializers/*.rb')
 #
 Padrino.before_load do
   require 'net/http'
+  require 'will_paginate'
+  require 'will_paginate/active_record'
+  require 'will_paginate/view_helpers/sinatra'
+  include WillPaginate::Sinatra::Helpers
 end
 
 ##

@@ -1,0 +1,42 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="product-status-wrap">
+        <h4>产品(SPU)列表</h4>
+        <div class="add-product">
+            <a href="<%=url(:spus, :select_category)%>">新增产品(SPU)</a>
+        </div>
+        <table>
+            <tr>
+                <th style="width: 15%;">目录</th>
+                <th style="width: 10%;">品牌</th>
+                <th style="width: 18%;">标题</th>
+                <th style="width: 10%;">可销售?</th>
+                <th style="width: 10%;">有效?</th>
+                <th style="width: 15%;">说明</th>
+                <th style="width: 10%;">SKU数量</th>
+                <th style="width: 10%;"></th>
+            </tr>
+            <% @spus.each do |spu| %>
+            <tr>
+                <td><%= spu.category_desc%></td>
+                <td><%= spu.t_brand.name %></td>
+                <td><%= spu.title %></td>
+                <td>
+                    <button class="<%= spu.saleable_class%>"><%= spu.saleable_desc%></button>
+                </td>
+                <td>
+                    <button class="<%= spu.valid_class%>"><%= spu.valid_desc%></button>
+                </td>
+                <td><%= spu.detail %></td>
+                <td><%= spu.t_skus.count %></td>
+                <td>
+                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                </td>
+            </tr>
+            <% end %>
+
+        </table>
+        <%= will_paginate @spus %>
+
+    </div>
+</div>
