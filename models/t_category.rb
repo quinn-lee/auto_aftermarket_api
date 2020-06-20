@@ -1,4 +1,7 @@
 class TCategory < ActiveRecord::Base
+
+  validates :name, presence: true
+
   has_many :t_spus, :class_name => 'TSpu', :dependent => :destroy
   has_many :t_attributes, :class_name => 'TAttribute', :dependent => :destroy
 

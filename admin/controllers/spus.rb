@@ -46,6 +46,7 @@ AutoAftermarketApi::Admin.controllers :spus do
         raise "产品创建失败"
       end
     rescue => e
+      logger.info e.backtrace
       flash.now[:error] = e.message
       @category = TCategory.find(@spu.t_category_id)
       @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @category.id).map(&:t_brand_id))
@@ -97,6 +98,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       flash[:success] = "SKU添加成功，您可以继续为该SPU添加SKU"
       redirect(url(:spus, :add_sku, :id => @sku.t_spu_id))
     rescue=>e
+      logger.info e.backtrace
       flash.now[:error] = e.message
       render "spus/add_sku"
     end
@@ -121,6 +123,7 @@ AutoAftermarketApi::Admin.controllers :spus do
         end
       end
     rescue => e
+      logger.info e.backtrace
       flash.now[:error] = e.message
       @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @spu.t_category.id).map(&:t_brand_id))
       render 'spus/edit'
@@ -137,6 +140,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       flash[:success] = "产品(SPU)#{params[:action] == "onsale" ? '上架' : '下架'}成功"
       redirect(url(:spus, :index))
     rescue => e
+      logger.info e.backtrace
       flash[:error] = e.message
       redirect(url(:spus, :index))
     end
@@ -148,6 +152,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       @spu = TSpu.find(params[:id])
       render "spus/show"
     rescue => e
+      logger.info e.backtrace
       flash[:error] = e.message
       render "spus/show"
     end
@@ -162,6 +167,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       flash[:success] = "商品(SKU)#{params[:action] == "onsale" ? '上架' : '下架'}成功"
       redirect(url(:spus, :show, :id => @sku.t_spu.id))
     rescue => e
+      logger.info e.backtrace
       flash[:error] = e.message
       redirect(url(:spus, :show, :id => @sku.t_spu.id))
     end
@@ -185,6 +191,7 @@ AutoAftermarketApi::Admin.controllers :spus do
         end
       end
     rescue => e
+      logger.info e.backtrace
       flash.now[:error] = e.message
       render 'spus/edit_sku'
     end

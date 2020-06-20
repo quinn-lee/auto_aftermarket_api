@@ -2,14 +2,15 @@
     <div class="product-status-wrap">
         <h4>目录列表</h4>
         <div class="add-product">
-            <a href="">新增目录</a>
+            <a href="<%=url(:categories, :new)%>">新增目录</a>
         </div>
         <table>
             <tr>
-                <th style="width: 15%;">一级目录</th>
-                <th style="width: 15%;">二级目录</th>
+                <th style="width: 12%;">一级目录</th>
+                <th style="width: 12%;">二级目录</th>
                 <th style="width: 33%;">品牌</th>
                 <th style="width: 33%;">属性</th>
+                <th style="width: 8%;"></th>
             </tr>
             <% @categories.where(parent_id: nil).each do |category| %>
               <tr>
@@ -17,11 +18,13 @@
                   <td></td>
                   <td></td>
                   <td></td>
+                  <td><a href="<%=url(:categories, :new, :parent_id =>category.id) %>" title="新增二级目录" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
               </tr>
               <% @categories.where(parent_id: category.id).each do |sub_category|%>
               <tr class="sub_categories sub_<%=category.id%>">
                   <td></td>
                   <td><%= sub_category.name%></td>
+                  <td></td>
                   <td></td>
                   <td></td>
               </tr>
