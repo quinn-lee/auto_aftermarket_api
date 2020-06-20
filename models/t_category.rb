@@ -1,6 +1,6 @@
 class TCategory < ActiveRecord::Base
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   has_many :t_spus, :class_name => 'TSpu', :dependent => :destroy
   has_many :t_attributes, :class_name => 'TAttribute', :dependent => :destroy
@@ -33,5 +33,9 @@ class TCategory < ActiveRecord::Base
       categories << cg
     end
     categories
+  end
+
+  def brands
+    TBrand.where(id: TCategoryBrand.where(t_category_id: id).map(&:t_brand_id))
   end
 end

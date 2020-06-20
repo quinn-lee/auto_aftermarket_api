@@ -24,7 +24,10 @@
               <tr class="sub_categories sub_<%=category.id%>">
                   <td></td>
                   <td><%= sub_category.name%></td>
-                  <td></td>
+                  <td>
+                    <%= sub_category.brands.map(&:name).join(',')%>
+                    
+                  </td>
                   <td></td>
                   <td></td>
               </tr>

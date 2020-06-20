@@ -11,34 +11,46 @@
     <%= favicon_tag "favicon.ico" %>
     <%= stylesheet_link_tag "bootstrap", "application" %>
   </head>
-  <body>
-    <% form_tag url(:sessions, :create), :class=>"login form-horizontal" do %>
-      <div class="login-header modal-header">
-        <div class="login-logo"> <%= image_tag("logo.png", :alt => "Padrino's logo", :height => 250, :width => 193) %> </div>
-      </div>
-      <div class="login-body modal-body">
+  <body style="background: url(/admin/images/login-bg.png) no-repeat center center; background-size: 100%;">
 
-        <%= {:error => 'danger', :warning => 'warning', :success => 'success', :notice => 'info'}.map { |type, class_name| flash_tag(type, :class => "alert alert-#{class_name} fade in", :bootstrap => true) }.join.html_safe %>
+    <div class="form-group-inner">
+        <div class="row">
+            <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                &nbsp;
+            </div>
+            <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
+                <img src="/admin/images/zuo.png" style="width: 85%;padding-top: 130px;">
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="padding-top: 130px;">
+                <div class="form-select-list" style="background: #EBF0F3;box-shadow: inset 0 1px 3px 0 #FFFFFF;border-radius: 20px;">
+                  <% form_tag url(:sessions, :create), :class=>"login form-horizontal", style: "width: 100%;    margin-top: 0px;" do %>
+                    <div class="login-body modal-body" style="padding: 20px 20px !important;">
+                      <div class="form-group">
+                        <label class="col-lg-12 control-label" style="font-family: PingFangSC-Medium;font-size: 26px;color: #000000;letter-spacing: 1px;text-align: left;">登录</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-12 control-label" style="font-family: PingFangSC-Regular;font-size: 14px;color: #999999;letter-spacing: 3px;text-align: left;">QUAIE「SHANG HAI」</label>
+                      </div>
 
-        <div class="form-group">
-          <label for="email" class="col-lg-2 control-label"><%= pat('login.email') %></label>
-          <div class="col-lg-10"><%= email_field_tag :email, :id => :email, :value => params[:email], :autofocus => true, :class => 'form-control' %></div>
+                      <%= {:error => 'danger', :warning => 'warning', :success => 'success', :notice => 'info'}.map { |type, class_name| flash_tag(type, :class => "alert alert-#{class_name} fade in", :bootstrap => true) }.join.html_safe %>
+
+                      <div class="form-group">
+                        <div class="col-lg-12"><%= email_field_tag :email, :id => :email, :value => params[:email], :autofocus => false, :class => 'form-control', style: "background: #E5E9F1; border-radius: 10px;", placeholder: "邮箱" %></div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-lg-12"><%= password_field_tag :password, :id => :password, :class => 'form-control', style: "background: #E5E9F1; border-radius: 10px;", placeholder: "密码" %></div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-lg-12"><%= submit_tag("登录", :class => "btn btn-primary pull-right", style: "background: #FBCE19;border-radius: 37.5px;border-color: #FBCE19;width: 100%;color: #000000;") %></div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">&nbsp;</div>
         </div>
-
-        <div class="form-group">
-          <label for="password" class="col-lg-2 control-label"><%= pat('login.password') %></label>
-          <div class="col-lg-10"><%= password_field_tag :password, :id => :password, :class => 'form-control' %></div>
-        </div>
-
-        <fieldset class="login-control-group-last control-group">
-          <div class="login-controls controls">
-            <label class="login-bypass-label checkbox"><%= check_box_tag :bypass %>  <%= pat('login.bypass') %></label>
-          </div>
-        </fieldset>
-
-      </div>
-      <div class="login-footer modal-footer"><%= submit_tag(pat('login.sign_in'), :class => "btn btn-primary pull-right") %></div>
-    <% end %>
+    </div>
     <%= javascript_include_tag 'jquery-1.11.0.min', (Padrino.env == :production ? 'bootstrap/bootstrap.min' : %w[bootstrap/affix bootstrap/alert bootstrap/button bootstrap/carousel bootstrap/collapse bootstrap/dropdown  bootstrap/tooltip bootstrap/transition  bootstrap/modal bootstrap/popover bootstrap/scrollspy bootstrap/tab]), :application %>
   </body>
 </html>
