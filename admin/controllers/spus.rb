@@ -184,6 +184,8 @@ AutoAftermarketApi::Admin.controllers :spus do
   post :update_sku, :with => :sku_id do
     begin
       if @sku = TSku.find(params[:sku_id])
+        @sku.images = params[:images] if params[:images].present?
+        @sku.detail = params[:detail] if params[:detail].present?
         if @sku.update!(params[:t_sku])
           flash.now[:success] = "商品修改成功"
           redirect(url(:spus, :show, :id => @sku.t_spu.id))
