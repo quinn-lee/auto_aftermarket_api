@@ -17,7 +17,7 @@
             <% @spus.each do |spu| %>
             <tr>
                 <td><%= spu.category_desc%></td>
-                <td><%= spu.t_brand.name %></td>
+                <td><%= spu.t_brand.name if spu.t_brand %></td>
                 <td><%= spu.title %></td>
                 <td>
                     <button class="<%= spu.saleable_class%>"><%= spu.saleable_desc%></button>

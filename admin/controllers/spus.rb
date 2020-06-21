@@ -23,6 +23,7 @@ AutoAftermarketApi::Admin.controllers :spus do
     begin
       raise "请选择商品目录" if params[:category_2].blank?
       @category = TCategory.find(params[:category_2])
+      raise "该商品目录未创建任何属性值，请先到目录列表为该目录创建属性" unless @category.t_attributes.present?
       @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @category.id).map(&:t_brand_id))
       @spu = TSpu.new(t_category_id: @category.id, merchant_id: current_account.merchant.id)
       render 'spus/new'

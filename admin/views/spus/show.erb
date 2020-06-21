@@ -1,6 +1,6 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="product-status-wrap">
-        <h4><%=@spu.category_desc%>--<%=@spu.t_brand.name%>--<%=@spu.title%></h4>
+        <h4><%=@spu.category_desc%>--<%=@spu.t_brand.name if @spu.t_brand%>--<%=@spu.title%></h4>
         <table>
             <tr>
                 <th style="width: 10%;">SKU代码</th>
