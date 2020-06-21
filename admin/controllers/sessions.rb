@@ -1,9 +1,11 @@
 AutoAftermarketApi::Admin.controllers :sessions do
   get :new do
+    @title = "登录"
     render "/sessions/new", nil, :layout => false
   end
 
   post :create do
+    @title = "登录"
     if account = Account.authenticate(params[:email], params[:password])
       set_current_account(account)
       redirect url(:base, :index)
