@@ -110,7 +110,8 @@
                     <% end %>
 
                   </td>
-                  <td><a href="<%=url(:categories, :new_attribute, :id =>sub_category.id) %>" title="添加属性" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-file sub-icon-mg" aria-hidden="true"></i></a></td>
+                  <td><a href="<%=url(:categories, :new_attribute, :id =>sub_category.id) %>" title="添加属性" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-file sub-icon-mg" aria-hidden="true"></i></a>
+                    <a href="<%=url(:categories, :new_brands, :id =>sub_category.id) %>" title="添加品牌" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa big-icon fa-desktop icon-wrap" aria-hidden="true"></i></a></td>
               </tr>
               <% end %>
             <% end %>

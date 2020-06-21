@@ -75,5 +75,34 @@ AutoAftermarketApi::Admin.controllers :categories do
     end
   end
 
+  # 新增品牌
+  get :new_brands, :with => :id  do
+    @category = TCategory.find(params[:id])
+    render "categories/new_brands"
+  end
+
+  # 新增品牌
+  post :create_brands, :with => :id do
+    begin
+      @category = TCategory.find(params[:id])
+      raise "品牌名称不可为空" if params[:brands].blank?
+      brands = params[:brands].to_s.split("|||")
+      brands.each do |brand_name|
+        unless brand = TBrand.find_by(name: brand_name)
+          brand = TBrand.create(name: brand_name)
+        end
+        unless tcb = TCategoryBrand.find_by(t_category_id: @category.id, t_brand_id: brand.id)
+          TCategoryBrand.create(t_category_id: @category.id, t_brand_id: brand.id)
+        end
+      end
+      flash[:notice] = "品牌添加成功"
+      redirect(url(:categories, :index))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      render "categories/new_brands"
+    end
+  end
+
 
 end

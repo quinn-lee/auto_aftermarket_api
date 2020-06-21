@@ -87,7 +87,7 @@ TCategoryBrand.create(t_category_id: tc14.id,t_brand_id: tb22.id)
 TCategoryBrand.create(t_category_id: tc14.id,t_brand_id: tb23.id)
 TCategoryBrand.create(t_category_id: tc14.id,t_brand_id: tb17.id)
 
-ta1 = TAttribute.create(t_category_id: tc11.id, name: "容量", numeric: true, generic: true, selling: true, searching: true, unit: "升")
+ta1 = TAttribute.create(t_category_id: tc11.id, name: "容量", numeric: true, generic: true, selling: true, searching: true, unit: "L")
 ta2 = TAttribute.create(t_category_id: tc11.id, name: "粘度", numeric: false, generic: true, selling: true, searching: true, unit: nil)
 ta3 = TAttribute.create(t_category_id: tc11.id, name: "机油种类", numeric: false, generic: true, selling: false, searching: true, unit: nil)
 ta4 = TAttribute.create(t_category_id: tc11.id, name: "毛重", numeric: true, generic: true, selling: false, searching: false, unit: "千克")
