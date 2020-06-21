@@ -34,11 +34,11 @@
               <div class="form-group-inner">
                   <div class="row">
                       <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">销售属性？*</label>
+                          <label class="login2 pull-right pull-right-pro">属性类别*</label>
                       </div>
                       <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                           <div class="form-select-list">
-                            <%=f.select(:selling, :options => ['false', 'true'], :class => "form-control custom-select-value")%>
+                            <%=f.select(:selling, :options => [['展示属性','false'], ['销售属性','true']], :class => "form-control custom-select-value")%>
                           </div>
                       </div>
                   </div>
@@ -50,7 +50,7 @@
                       </div>
                       <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                           <div class="form-select-list">
-                            <%=f.select(:searching, :options => ['false', 'true'], :class => "form-control custom-select-value")%>
+                            <%=f.select(:searching, :options => [['否','false'], ['是','true']], :class => "form-control custom-select-value")%>
                           </div>
                       </div>
                   </div>
@@ -58,7 +58,7 @@
               <div class="form-group-inner">
                   <div class="row">
                       <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">属性单位</label>
+                          <label class="login2 pull-right pull-right-pro">属性值单位</label>
                       </div>
                       <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                           <div class="form-select-list">

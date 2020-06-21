@@ -14,4 +14,11 @@ class TAttribute < ActiveRecord::Base
       values: t_attrvalues.where(is_valid: true).map(&:value)
     }
   end
+
+  def selling_desc
+    selling ? '销售属性' : '展示属性'
+  end
+  def searching_desc
+    searching ? '是' : '否'
+  end
 end
