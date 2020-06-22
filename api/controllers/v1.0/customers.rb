@@ -126,7 +126,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   post :location_info, :provides => [:json] do
     api_rescue do
       authenticate
-      his_location = @customer.location_info || []
+      his_location = @customer.his_location_info || []
       his_location << @request_params
       @customer.his_location_info = his_location
       @customer.location_info = @request_params
