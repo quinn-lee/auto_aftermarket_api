@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 35) do
+ActiveRecord::Schema.define(version: 40) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,9 @@ ActiveRecord::Schema.define(version: 35) do
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "wechat_info"
+    t.jsonb "location_info"
+    t.jsonb "his_location_info"
   end
 
   create_table "discounts", force: :cascade do |t|
@@ -184,6 +187,14 @@ ActiveRecord::Schema.define(version: 35) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "page_views", force: :cascade do |t|
+    t.integer "customer_id"
+    t.datetime "visit_time"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "recommends", force: :cascade do |t|
     t.string "name"
     t.string "rtype"
@@ -202,6 +213,14 @@ ActiveRecord::Schema.define(version: 35) do
     t.string "order_no"
     t.datetime "record_date"
     t.string "order_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shares", force: :cascade do |t|
+    t.integer "customer_id"
+    t.string "url"
+    t.jsonb "options"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

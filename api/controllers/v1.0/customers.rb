@@ -89,4 +89,81 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
       { status: 'succ', data: @car.to_api}.to_json
     end
   end
+
+
+  # 记录微信用户信息
+  # params: {
+      # avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwG"...
+      # city: "Taizhou"
+      # country: "China"
+      # gender: 1
+      # language: "zh_CN"
+      # nickName: "nonki"
+      # province: "Zhejiang"
+  # }
+  # data {}
+  post :wechat_info, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @customer.wechat_info = @request_params
+      @customer.save!
+
+      { status: 'succ', data: {}}.to_json
+    end
+  end
+
+  # 记录微信用户信息
+  # params: {
+      # accuracy: 65
+      # errMsg: "getLocation:ok"
+      # horizontalAccuracy: 65
+      # latitude: 31.2494
+      # longitude: 121.397
+      # speed: -1
+      # verticalAccuracy: 65
+  # }
+  # data {}
+  post :location_info, :provides => [:json] do
+    api_rescue do
+      authenticate
+      his_location = @customer.location_info || []
+      his_location << @request_params
+      @customer.his_location_info = his_location
+      @customer.location_info = @request_params
+      @customer.save!
+
+      { status: 'succ', data: {}}.to_json
+    end
+  end
+
+  # 用户分享
+  # params: {
+      # url: '/pages/index/index',
+      # options: { 分享人token: '1233', 参数1: 'a', 参数2: 'b' }
+  # }
+  post :share, :provides => [:json] do
+    api_rescue do
+      authenticate
+      Share.create!(customer_id: @customer.id, url: @request_params['url'], options: @request_params['options'])
+      { status: 'succ', data: {}}.to_json
+    end
+  end
+
+  # pv记录
+  # params: {pv: [
+    # { timestamp: '2020-06-22 11:11:11', url: '/pages/commodities/show?spu_id=7' },
+    # { timestamp: '2020-06-22 12:12:12', url: '/pages/index/index' }
+  # ]
+  #}
+  post :page_views, :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        @request_params['pv'].each do |pv|
+          PageView.create!(customer_id: @customer.id, visit_time: pv['timestamp'], url: pv['url'])
+        end
+      end
+      { status: 'succ', data: {}}.to_json
+    end
+  end
 end
