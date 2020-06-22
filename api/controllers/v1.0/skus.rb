@@ -1029,6 +1029,27 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
+  # 目录详情
+  # params {"category_id": 1}
+  # data
+=begin
+  {
+        "id": 11,
+        "parent_id": 1,
+        "parent_name": "维修保养",
+        "name": "空气滤清",
+        "brands": [],
+        "attributes": []
+    }
+=end
+  post :category, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @category = TCategory.find(@request_params['category_id'])
+      { status: 'succ', data: @category.to_api}.to_json
+    end
+  end
+
   # 查找子目录
   # params {"category_id": 1}
   # data
