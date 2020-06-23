@@ -6,8 +6,11 @@ AutoAftermarketApi::Admin.controllers :spus do
   # 产品列表
   get :index do
     @spus = current_account.merchant.t_spus
-    @spus = @spus.where(t_category_id: params[:category_id]) if params[:category_id].present?
+    @categories = TCategory.all
+    @spus = @spus.where(t_category_id: TCategory.where(parent_id: params[:category_1]).map(&:id)) if params[:category_1].present?
+    @spus = @spus.where(t_category_id: params[:category_2]) if params[:category_2].present?
     @spus = @spus.where(t_brand_id: params[:brand_id]) if params[:brand_id].present?
+    @spus = @spus.where("title like '%#{params[:title]}%'") if params[:title].present?
     @spus = @spus.order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'spus/index'
   end
@@ -95,7 +98,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       @sku.service_fee = service_fee
       @sku.saleable = true
       @sku.is_valid = true
-      @sku.save
+      @sku.save!
       flash[:success] = "SKU添加成功，您可以继续为该SPU添加SKU"
       redirect(url(:spus, :add_sku, :id => @sku.t_spu_id))
     rescue=>e

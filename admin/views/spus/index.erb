@@ -1,8 +1,80 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="product-status-wrap">
-        <h4>产品(SPU)列表</h4>
-        <div class="add-product">
-            <a href="<%=url(:spus, :select_category)%>">新增产品(SPU)</a>
+        <div class="row">
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <h4>产品(SPU)列表</h4>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <div class="modal-bootstrap modal-login-form">
+                <a class="zoomInDown mg-t" href="#" data-toggle="modal" data-target="#searchZoom">搜索</a>
+            </div>
+            <div id="searchZoom" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-close-area modal-close-df">
+                            <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-login-form-inner">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="basic-login-inner modal-basic-inner">
+                                            <% form_tag url(:spus, :index), :class=>"form-horizontal", :method => 'get' do %>
+                                                <div class="form-group-inner">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                            <label class="login2">目录</label>
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                            <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group-inner">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                            <%=select_tag(:category_2, :options => [], :class => "form-control custom-select-value", id: "category_2")%>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group-inner">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                            <label class="login2">标题</label>
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                            <%=text_field_tag(:title, :class => "form-control")%>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="login-btn-inner">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                            <div class="login-horizental">
+                                                                <button class="btn btn-sm btn-primary login-submit-cs" type="submit">搜索</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <div class="add-product">
+                <a href="<%=url(:spus, :select_category)%>">新增产品(SPU)</a>
+            </div>
+          </div>
         </div>
         <table>
             <tr>
@@ -28,6 +100,7 @@
                     <a href="<%=url(:spus, :edit, :id =>spu.id) %>" title="修改" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 
                     <a href="<%=url(:spus, :show, :id =>spu.id)%>" title="查看SKU" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    <a href="<%=url(:spus, :add_sku, :id =>spu.id, :from => 'index')%>" title="添加SKU" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
 
                     <% if spu.saleable %>
                     <a href="<%=url(:spus, :change_sale, :id =>spu.id, :action =>'offsale')%>" title="下架" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
@@ -43,3 +116,8 @@
 
     </div>
 </div>
+<span style="display: none">
+  <% @categories.each do |category| %>
+    <%=hidden_field_tag "categoryid_#{category.id}", id: "categoryid_#{category.id}", :value => "#{category.name}", class: "category_class_#{category.parent_id}"%>
+  <% end %>
+</span>

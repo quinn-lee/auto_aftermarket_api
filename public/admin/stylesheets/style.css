@@ -1044,9 +1044,9 @@ ul.two-part-sp li{
 }
 .add-product a {
     float: right;
-    position: absolute;
+    /*position: absolute;
     top: 14px;
-    right: 50px;
+    right: 50px;*/
     background: -webkit-linear-gradient(178deg, #e12503 0%, #85060c 100%);
     background: linear-gradient(178deg, #e12503 0%, #85060c 100%);
     padding: 6px 20px;
