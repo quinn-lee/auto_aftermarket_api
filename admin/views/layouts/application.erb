@@ -132,7 +132,7 @@
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="秒杀" href="<%=url(:groups, :select_sku, :from => 'seckills')%>"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">秒杀</span></a></li>
                                 <li><a title="团购" href="<%=url(:groups, :select_sku, :from => 'groups')%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">团购</span></a></li>
-                                <li><a title="优惠券" href="#"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优惠券</span></a></li>
+                                <li><a title="优惠券" href="<%=url(:coupons, :new )%>"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优惠券</span></a></li>
                                 <li><a title="优选商品" href="#"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优选商品</span></a></li>
                             </ul>
                         </li>
@@ -266,7 +266,7 @@
                                           <ul id="Tablesmob" class="collapse dropdown-header-top">
                                             <li><a title="秒杀" href="<%=url(:groups, :select_sku, :from => 'seckills')%>">秒杀</a></li>
                                             <li><a title="团购" href="<%=url(:groups, :select_sku, :from => 'groups')%>">团购</a></li>
-                                            <li><a title="优惠券" href="#">优惠券</a></li>
+                                            <li><a title="优惠券" href="<%=url(:coupons, :new )%>">优惠券</a></li>
                                             <li><a title="优选商品" href="#">优选商品</a></li>
                                           </ul>
                                       </li>

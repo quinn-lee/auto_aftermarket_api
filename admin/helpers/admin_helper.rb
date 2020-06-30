@@ -27,6 +27,11 @@ module AutoAftermarketApi
         @local = "秒杀"
       end
 
+      def set_coupons_title_and_local
+        @title = "优惠券"
+        @local = "优惠券"
+      end
+
     end
 
     helpers AdminHelper
