@@ -32,7 +32,7 @@ AutoAftermarketApi::Admin.controllers :groups do
       @group = Group.new(params[:group])
       @sku = TSku.find(@group.t_sku_id)
       @group.created_by = current_account.id
-      @group.status = 0
+      @group.status = 1
       @group.sku_info = {t_spu_id: @sku.t_spu_id, title: @sku.title, t_category_id: @sku.t_spu.t_category_id}
       if @group.save
         flash.now[:success] = "创建拼团活动成功"

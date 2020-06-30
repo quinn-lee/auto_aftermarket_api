@@ -14,7 +14,7 @@ AutoAftermarketApi::Admin.controllers :coupons do
     begin
       @coupon = Coupon.new(params[:coupon])
       @coupon.created_by = current_account.id
-      @coupon.status = 0
+      @coupon.status = 1
       if @coupon.save
         flash.now[:success] = "创建优惠券成功"
         redirect(url(:coupons, :new))

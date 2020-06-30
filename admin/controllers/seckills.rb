@@ -16,7 +16,8 @@ AutoAftermarketApi::Admin.controllers :seckills do
       @seckill = Seckill.new(params[:seckill])
       @sku = TSku.find(@seckill.t_sku_id)
       @seckill.created_by = current_account.id
-      @seckill.status = 0
+      @seckill.status = 1
+      @seckill.remaining_num = @seckill.num
       @seckill.sku_info = {t_spu_id: @sku.t_spu_id, title: @sku.title, t_category_id: @sku.t_spu.t_category_id}
       if @seckill.save
         flash.now[:success] = "创建秒杀活动成功"
