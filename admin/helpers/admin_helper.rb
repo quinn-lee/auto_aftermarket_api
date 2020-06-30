@@ -22,6 +22,11 @@ module AutoAftermarketApi
         @local = "团购"
       end
 
+      def set_seckills_title_and_local
+        @title = "秒杀"
+        @local = "秒杀"
+      end
+
     end
 
     helpers AdminHelper

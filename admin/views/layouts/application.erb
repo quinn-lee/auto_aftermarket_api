@@ -130,8 +130,8 @@
                         <li>
                             <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="fa big-icon fa-table icon-wrap"></i> <span class="mini-click-non">营销活动</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="秒杀" href="#"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">秒杀</span></a></li>
-                                <li><a title="团购" href="#"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">团购</span></a></li>
+                                <li><a title="秒杀" href="<%=url(:groups, :select_sku, :from => 'seckills')%>"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">秒杀</span></a></li>
+                                <li><a title="团购" href="<%=url(:groups, :select_sku, :from => 'groups')%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">团购</span></a></li>
                                 <li><a title="优惠券" href="#"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优惠券</span></a></li>
                                 <li><a title="优选商品" href="#"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优选商品</span></a></li>
                             </ul>
@@ -264,8 +264,8 @@
                                       </li>
                                       <li><a data-toggle="collapse" data-target="#Tablesmob" href="#">营销活动 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
                                           <ul id="Tablesmob" class="collapse dropdown-header-top">
-                                            <li><a title="秒杀" href="#">秒杀</a></li>
-                                            <li><a title="团购" href="#">团购</a></li>
+                                            <li><a title="秒杀" href="<%=url(:groups, :select_sku, :from => 'seckills')%>">秒杀</a></li>
+                                            <li><a title="团购" href="<%=url(:groups, :select_sku, :from => 'groups')%>">团购</a></li>
                                             <li><a title="优惠券" href="#">优惠券</a></li>
                                             <li><a title="优选商品" href="#">优选商品</a></li>
                                           </ul>

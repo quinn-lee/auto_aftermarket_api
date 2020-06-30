@@ -12,6 +12,10 @@ AutoAftermarketApi::Admin.controllers :groups do
     @spus = @spus.where(t_brand_id: params[:brand_id]) if params[:brand_id].present?
     @spus = @spus.where("title like '%#{params[:title]}%'") if params[:title].present?
     @spus = @spus.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    @from = params[:from].present? ? params[:from].to_s.to_sym : :groups
+    @mod = @from == :groups ? "拼团" : "秒杀"
+    @title = @from == :groups ? "拼团" : "秒杀"
+    @local = @from == :groups ? "拼团" : "秒杀"
     render 'groups/select_sku'
   end
 
