@@ -17,6 +17,11 @@ module AutoAftermarketApi
         @local = "目录"
       end
 
+      def set_groups_title_and_local
+        @title = "团购"
+        @local = "团购"
+      end
+
     end
 
     helpers AdminHelper

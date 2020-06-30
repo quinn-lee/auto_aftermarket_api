@@ -22,6 +22,18 @@ function change_category(obj){
     $(".sub_"+$(this).attr("data-id")).slideToggle();
   })
 
+
+  if($(".datetimePicker").length>0){
+      $(".datetimePicker").datetimepicker({
+          lang:"ch",
+          timepicker:true,
+          allowBlank:true,
+          format:'Y/m/d H:i',
+          onGenerate:function(){
+          }
+      });
+  }
+
 	/*----------------------------
 	 jQuery MeanMenu
 	------------------------------ */

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 40) do
+ActiveRecord::Schema.define(version: 46) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,43 @@ ActiveRecord::Schema.define(version: 40) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "coupon_logs", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "coupon_receive_id"
+    t.integer "order_id"
+    t.decimal "order_original_amount", precision: 10, scale: 2
+    t.decimal "coupon_amount", precision: 10, scale: 2
+    t.decimal "order_final_amount", precision: 10, scale: 2
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "coupon_receives", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "coupon_id"
+    t.decimal "coupon_money", precision: 10, scale: 2
+    t.decimal "full_money", precision: 10, scale: 2
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "coupons", force: :cascade do |t|
+    t.string "title"
+    t.integer "ctype"
+    t.integer "merchant_id"
+    t.integer "created_by"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.decimal "money", precision: 10, scale: 2
+    t.integer "status"
+    t.string "remarks"
+    t.decimal "full_money", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "sex"
@@ -122,6 +159,36 @@ ActiveRecord::Schema.define(version: 40) do
     t.string "order_no"
     t.string "discount_reason"
     t.decimal "discount_amount", precision: 8, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "group_buyers", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "group_id"
+    t.integer "order_id"
+    t.integer "t_sku_id"
+    t.integer "group_quantity"
+    t.integer "status"
+    t.decimal "group_price", precision: 10, scale: 2
+    t.decimal "group_amount", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "title"
+    t.string "detail"
+    t.integer "merchant_id"
+    t.integer "created_by"
+    t.decimal "group_price", precision: 10, scale: 2
+    t.integer "status"
+    t.integer "t_sku_id"
+    t.jsonb "sku_info"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.integer "min_num"
+    t.integer "max_num"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -213,6 +280,22 @@ ActiveRecord::Schema.define(version: 40) do
     t.string "order_no"
     t.datetime "record_date"
     t.string "order_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "seckills", force: :cascade do |t|
+    t.string "title"
+    t.string "detail"
+    t.integer "merchant_id"
+    t.integer "created_by"
+    t.integer "t_sku_id"
+    t.jsonb "sku_info"
+    t.integer "num"
+    t.integer "status"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.decimal "seckill_price", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

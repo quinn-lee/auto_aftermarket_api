@@ -1,0 +1,141 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="review-tab-pro-inner">
+        <ul id="myTab3" class="tab-review-design">
+            <li class="active"><a disable='true'><i class="fa fa-tag" aria-hidden="true"></i> 1、选择拼团商品</a></li>
+            <li><a disable='true'><i class="fa fa-pencil" aria-hidden="true"></i> 2、填写拼团信息</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content custom-product-edit">
+          <div class="product-status-wrap">
+              <div class="row">
+                <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                  <div class="modal-bootstrap modal-login-form">
+                      <a class="zoomInDown mg-t" href="#" data-toggle="modal" data-target="#searchZoom">搜索</a>
+                  </div>
+                  <div id="searchZoom" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-close-area modal-close-df">
+                                  <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                              </div>
+                              <div class="modal-body">
+                                  <div class="modal-login-form-inner">
+                                      <div class="row">
+                                          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                              <div class="basic-login-inner modal-basic-inner">
+                                                  <% form_tag url(:groups, :select_sku), :class=>"form-horizontal", :method => 'get' do %>
+                                                      <div class="form-group-inner">
+                                                          <div class="row">
+                                                              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                  <label class="login2">目录</label>
+                                                              </div>
+                                                              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                  <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                      <div class="form-group-inner">
+                                                          <div class="row">
+                                                              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+                                                              </div>
+                                                              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                  <%=select_tag(:category_2, :options => [], :class => "form-control custom-select-value", id: "category_2")%>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                      <div class="form-group-inner">
+                                                          <div class="row">
+                                                              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                  <label class="login2">标题</label>
+                                                              </div>
+                                                              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                  <%=text_field_tag(:title, :class => "form-control")%>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                      <div class="login-btn-inner">
+                                                          <div class="row">
+                                                              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                  <div class="login-horizental">
+                                                                      <button class="btn btn-sm btn-primary login-submit-cs" type="submit">搜索</button>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  <% end %>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <table id="accordion2">
+                  <tr>
+                      <th style="width: 15%;">目录</th>
+                      <th style="width: 10%;">品牌</th>
+                      <th style="width: 23%;">标题</th>
+                      <th style="width: 10%;">可销售?</th>
+                      <th style="width: 20%;">说明</th>
+                      <th style="width: 10%;">SKU数量</th>
+                      <th style="width: 10%;"></th>
+                  </tr>
+                  <% @spus.each do |spu| %>
+                  <tr>
+                      <td><%= spu.category_desc%></td>
+                      <td><%= spu.t_brand.name if spu.t_brand %></td>
+                      <td><%= spu.title %></td>
+                      <td>
+                          <button class="<%= spu.saleable_class%>"><%= spu.saleable_desc%></button>
+                      </td>
+                      <td><%= spu.detail %></td>
+                      <td><%= spu.t_skus.count %></td>
+                      <td>
+                          <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<%=spu.id%>">查看SKU</a>
+                      </td>
+                  </tr>
+                  <tbody id="collapse<%=spu.id%>" class="panel-collapse panel-ic collapse" style="background: #BDC3C7">
+                    <tr>
+                        <td>价格</td>
+                        <td>库存</td>
+                        <td>标题</td>
+                        <td>可销售？</td>
+                        <td>销售属性</td>
+                        <td>SKU代码</td>
+                        <td>
+                        </td>
+                    </tr>
+                    <% spu.t_skus.each do |sku|%>
+                    <tr>
+                        <td>￥<%= sku.price %></td>
+                        <td><%= sku.stock_num %></td>
+                        <td><%= sku.title %></td>
+                        <td>
+                            <button class="<%= sku.saleable_class%>"><%= sku.saleable_desc%></button>
+                        </td>
+                        <td><%= sku.sale_attrs_desc %></td>
+                        <td><%= sku.sku_code%></td>
+                        <td>
+                          <a href="<%=url(:groups, :new, :sku_id =>sku.id) %>" title="选择" class="pd-setting-ed" style="margin-right: 5px;">拼团该商品</a>
+                        </td>
+                    </tr>
+                    <% end %>
+                  </tbody>
+                  <% end %>
+
+              </div>
+              <%= will_paginate @spus %>
+
+          </div>
+        </div>
+    </div>
+</div>
+<span style="display: none">
+  <% @categories.each do |category| %>
+    <%=hidden_field_tag "categoryid_#{category.id}", id: "categoryid_#{category.id}", :value => "#{category.name}", class: "category_class_#{category.parent_id}"%>
+  <% end %>
+</span>
