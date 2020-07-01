@@ -4,6 +4,7 @@ class Order < ActiveRecord::Base
   belongs_to :merchant,   :class_name => 'Merchant'
   belongs_to :customer,   :class_name => 'Customer'
   has_one :coupon_log, :class_name => 'CouponLog', :dependent => :destroy
+  has_one :group_buyer, :class_name => 'GroupBuyer', :dependent => :destroy
 
   def gen_order_no
     r=ActiveRecord::Base.connection.execute("select nextval('order_no_seq')")
@@ -12,6 +13,22 @@ class Order < ActiveRecord::Base
 
   def can_delete?
     ['unpaid', 'done'].include? status
+  end
+
+  # 仅在支付成功后，可取消
+  def can_cancel?
+    return false if status != "paid"
+    if order_type == "group" # 团购需要判断是否已成团
+      return false if group_buyer.group.status == 2  #已成团不可取消
+    end
+    return true
+  end
+
+  def do_cancel
+    update!(status: "cancelled")
+    if order_type == "group" && group_buyer.present?
+      group_buyer.update!(status: 0)
+    end
   end
 
   def reservation_time
@@ -36,6 +53,7 @@ class Order < ActiveRecord::Base
     if shop_id.present?
       shop_info = Shop.find(shop_id).to_api_simple
     end
+
     h = {
       id: id,
       order_date: order_date.try{|o| o.strftime("%F")},
@@ -43,6 +61,9 @@ class Order < ActiveRecord::Base
       order_type: order_type,
       pay_amount: pay_amount,
       amount: amount,
+      coupon_amount: coupon_log.present? ? coupon_log.coupon_amount : 0,
+      group_buyer_id: group_buyer.present? ? group_buyer.id : nil,
+      group: group_buyer.present? ? group_buyer.group.to_api : {},
       status: status,
       delivery_info: delivery_info,
       shop_info: shop_info,

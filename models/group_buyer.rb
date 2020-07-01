@@ -1,5 +1,6 @@
 class GroupBuyer < ActiveRecord::Base
   belongs_to :group,   :class_name => 'Group'
+  belongs_to :order,   :class_name => 'Order'
 
   scope :purchased,  lambda { where.not(status: 0) }
 

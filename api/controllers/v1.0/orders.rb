@@ -188,7 +188,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
   end
 
   # 订单列表
-  # params {"status": "unpaid"(待付款)/"paid"(待收货)/"received"(待预约)/"appointed"(待安装)/"done"(已完成)/"delete"(已删除)}
+  # params {"status": "unpaid"(待付款)/"paid"(待收货)/"received"(待预约)/"appointed"(待安装)/"done"(已完成)/"delete"(已删除)/"cancelled"已取消}
   # data
 =begin
   [
@@ -198,6 +198,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       order_no: "12423434",
       amount: 349,
       status: "paid",
+      coupon_amount: 0,  #优惠券信息
+      group_buyer_id: 1,  #拼团ID
+      group: {},  #团购信息
       delivery_info: {
         name: "aaa",
         address: "bbb",
@@ -322,6 +325,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       order_no: "12423434",
       amount: 349,
       status: "paid",
+      coupon_amount: 0,  #优惠券信息
+      group_buyer_id: 1,  #拼团ID
+      group: {},  #团购信息
       delivery_info: {
         name: "aaa",
         address: "bbb",
@@ -431,6 +437,22 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
 
       @order = Order.find(@request_params["id"])
       { status: 'succ', data: @order.to_api}.to_json
+    end
+  end
+
+  # 取消订单
+  # params {"order_id"=>1}
+  # data {"}
+  post "/cancel", :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        @order = Order.find(@request_params['order_id'])
+        raise "can not cancel status=#{@order.status}" unless @order.can_cancel?
+        @order.do_cancel
+      end
+
+      { status: 'succ', data: {}}.to_json
     end
   end
 
