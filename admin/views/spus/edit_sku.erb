@@ -37,7 +37,7 @@
                     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                         <label class="login2 pull-right pull-right-pro">价格*</label>
                     </div>
-                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
                         <div class="form-select-list">
                           <%=f.text_field(:price, :class => "form-control", :required => true)%>
                         </div>
@@ -49,10 +49,28 @@
                     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                         <label class="login2 pull-right pull-right-pro">库存*</label>
                     </div>
-                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
                         <div class="form-select-list">
                           <%=f.text_field(:stock_num, :class => "form-control", :required => true)%>
                         </div>
+                    </div>
+                    <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
+                      <label class="login2 pull-left pull-left-pro" style="color: #EC7063">该商品的实际库存</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group-inner">
+                <div class="row">
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                        <label class="login2 pull-right pull-right-pro">可销售库存*</label>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-select-list">
+                          <%=f.text_field(:available_num, :class => "form-control", :required => true)%>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
+                      <label class="login2 pull-left pull-left-pro" style="color: #EC7063">某些商品实际库存为0时，还能继续销售，则需要设置该字段=实际库存+n，n为实际库存为0后还能继续销售的个数，n=0代表实际库存为0后不能继续销售</label>
                     </div>
                 </div>
             </div>

@@ -101,7 +101,7 @@
                   <tbody id="collapse<%=spu.id%>" class="panel-collapse panel-ic collapse" style="background: #BDC3C7">
                     <tr>
                         <td>价格</td>
-                        <td>库存</td>
+                        <td>库存(可销售)</td>
                         <td>标题</td>
                         <td>可销售？</td>
                         <td>销售属性</td>
@@ -112,7 +112,7 @@
                     <% spu.t_skus.each do |sku|%>
                     <tr>
                         <td>￥<%= sku.price %></td>
-                        <td><%= sku.stock_num %></td>
+                        <td><%= sku.stock_num %>(<%= sku.available_num %>)</td>
                         <td><%= sku.title %></td>
                         <td>
                             <button class="<%= sku.saleable_class%>"><%= sku.saleable_desc%></button>
