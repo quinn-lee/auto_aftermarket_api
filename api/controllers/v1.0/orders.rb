@@ -14,9 +14,13 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     "contact_info": {"name": "李富元", "mobile": "13917050000"}, # 到店安装时需要填写，
     "delivery_info": {"province": "", "city": "", "district": "", "address": "",
                         "name": "", "mobile": ""}, # 寄送地址 自选商品时 如果有寄送到家的商品时需要填写
-    "amount": 200,
-    "pay_amount": 200,
-    "order_type": "maintenance", # maintenance->维修保养，purchase->商城自选商品
+    "amount": 300,  #订单实际金额
+    "pay_amount": 200,   #支付金额 = 订单实际金额 - 优惠券金额
+    "coupon_amount": 100,   #优惠券金额，未使用优惠券时该项为空
+    "coupon_receive_id": 1,  #使用的已领取优惠券ID，每个订单只能使用一张优惠券，未使用优惠券时该项为空
+    "group_id": 1,  #团购活动ID, order_type=group时，该项必须填写
+    "seckill_id": 1,  #秒杀活动ID, order_type=seckill时，该项必须填写
+    "order_type": "maintenance", # maintenance->维修保养，purchase->商城自选商品，group->团购，seckill->秒杀
     "items": [
         {
           "name": "大保养推荐套餐",
@@ -74,14 +78,40 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         if @request_params['order_type'] == "maintenance" # 维修保养
           @order.delivery_info = @shop.to_api_simple
           @order.contact_info = @request_params['contact_info']
-        elsif @request_params['order_type'] == "purchase" # 自选商品
+        elsif (["purchase", "group", "seckill"].include? @request_params['order_type']) # 自选商品、团购、秒杀
           @order.delivery_info = @request_params['delivery_info']
           @order.contact_info = @request_params['contact_info'].present? ? @request_params['contact_info'] : @request_params['delivery_info']
         end
 
         @order.save!
+        if @request_params['order_type'] == "group" # 团购商品
+          group = Group.find(@request_params['group_id'])
+          raise "该团购状态为不可购买" if group.status != 1
+          raise "该团已过期，无法购买" if group.end_time < Time.now
+          raise "已超过最大成团人数，无法购买" if group.group_buyers.purchased.count >= group.max_num
+          # 记录购买者
+          GroupBuyer.create!(customer_id: @customer.id, group_id: group.id, order_id: @order.id, t_sku_id: group.t_sku_id, group_quantity: 1, status: 1, group_price: group.group_price, group_amount: group.group_amount)
+        elsif @request_params['order_type'] == "seckill" # 秒杀商品
+          seckill = Seckill.find(@request_params['seckill_id'])
+          raise "该秒杀状态为不可购买" if seckill.status != 1
+          raise "该秒杀已过期，无法购买" if seckill.end_time < Time.now
+          raise "该秒杀无剩余商品，无法购买" if seckill.remaining_num < 1
+          # 修改剩余可秒杀商品数
+          seckill.update!(remaining_num: seckill.remaining_num-1)
+        end
+        if @request_params['coupon_receive_id'].present? #使用优惠券
+          cr = CouponReceive.find(@request_params['coupon_receive_id'])
+          raise "该优惠券已使用或已过期，无法使用" if cr.status != 0
+          raise "该优惠券已过期，无法使用" if cr.coupon.end_time < Time.now
+          cr.update!(status: 1) # 修改领取的优惠券状态为已使用
+          # 记录使用的优惠券
+          CouponLog.create!(customer_id: @customer.id, coupon_receive_id: cr.id, order_id: @order.id, order_original_amount: @order.amount, coupon_amount: cr.coupon_money, order_final_amount: @order.pay_amount, status: 0)
+        end
         @request_params['items'].each do |item|
           item['skus'].each do |sku|
+            tsku = TSku.find(sku['sku_id'])
+            raise "商品库存不足，创建订单失败" if tsku.available_num < sku['quantity']
+            tsku.update(stock_num: (tsku.stock_num||0)-sku['quantity'].to_i, available_num: (tsku.available_num||0)-sku['quantity'].to_i)
             OrderSku.create!(order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'] )
           end
         end

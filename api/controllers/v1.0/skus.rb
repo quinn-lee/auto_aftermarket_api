@@ -1187,7 +1187,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       raise "category_id 必须指定" unless @request_params['category_id'].present?
       @t_spus = TSpu.where(t_category_id: @request_params['category_id'], merchant_id: @merchant.id, saleable: true)
       @t_spus = TSpu.where(t_brand_id: @request_params['brand_id']) if @request_params['brand_id'].present?
-      @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id), saleable: true)
+      @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id), saleable: true).where("available_num > 0")
       @t_skus = @t_skus.where("title like '%#{@request_params['title']}%'") if @request_params['title'].present?
       if @request_params['attrs'].present?
         @request_params['attrs'].each do |k, v|
