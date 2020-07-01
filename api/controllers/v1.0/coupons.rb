@@ -52,7 +52,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/coupons' do
 
 
   # 客户已领取优惠券
-  # params 空
+  # params {status: 0} #0表示已领取未使用，1表示已使用，2表示已过期； 为空时返回所有的优惠券
   # data
 =begin
   [
@@ -74,8 +74,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/coupons' do
   post :received, :provides => [:json] do
     api_rescue do
       authenticate
-
-      { status: 'succ', data: @customer.coupon_receives.map(&:to_api)}.to_json
+      @coupon_receives = @customer.coupon_receives
+      @coupon_receives = @coupon_receives.where(status: @request_params['status']) if @request_params['status'].present?
+      { status: 'succ', data: @coupon_receives.map(&:to_api)}.to_json
     end
   end
 end

@@ -60,7 +60,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/seckills' do
   end
 
 
-  # 根据seckill_id，查询团购商品详情
+  # 根据seckill_id，查询秒杀商品详情
   # params {"seckill_id": 1}
   # data
 =begin
