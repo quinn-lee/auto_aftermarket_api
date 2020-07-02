@@ -8,7 +8,7 @@ class WxpayInfo < ActiveRecord::Base
       order_skus = OrderSku.where(order_no: order.order_no)
       if order.order_type == "maintenance" #维修保养时，只有一个子订单
         SubOrder.create!(order_id: order.id, sub_type: "install", order_sku_ids: order_skus.map(&:id))
-      elsif order.order_type == "purchase" #根据是否有到店安装的商品进行拆分订单
+      else #根据是否有到店安装的商品进行拆分订单
         install_list = []
         delivery_list = []
         order_skus.each do |order_sku|
@@ -20,6 +20,10 @@ class WxpayInfo < ActiveRecord::Base
         end
         SubOrder.create!(order_id: order.id, sub_type: "install", order_sku_ids: install_list) if install_list.present?
         SubOrder.create!(order_id: order.id, sub_type: "delivery", order_sku_ids: delivery_list) if delivery_list.present?
+      end
+
+      if order.coupon_log.present?
+        order.coupon_log.update!(status: 1)
       end
     end
   end
