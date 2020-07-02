@@ -29,7 +29,13 @@
                 <td><%=group.title%></td>
                 <td><%=group.detail%></td>
                 <td><%=group.t_sku.title%></td>
-                <td><%=group.begin_time.try{|bt| bt.strftime('%Y%m%d %H:%M')}%>~<br/><%=group.end_time.try{|et| et.strftime('%Y%m%d %H:%M')}%></td>
+                <td><%=group.begin_time.try{|bt| bt.strftime('%Y%m%d %H:%M')}%>~<br/><%=group.end_time.try{|et| et.strftime('%Y%m%d %H:%M')}%><br/>
+                  <% if group.begin_time > Time.now %>
+                    <span style="color: #3498DB;">(未开始)</span>
+                  <% elsif group.end_time < Time.now %>
+                    <span style="color: #3498DB;">(已结束)</span>
+                  <% end %>
+                </td>
                 <td>￥<%=group.group_price%>(￥<%=group.t_sku.price%>)</td>
                 <td><%=group.min_num%>~<%=group.max_num%></td>
                 <td><%=group.group_buyers.purchased.count%></td>

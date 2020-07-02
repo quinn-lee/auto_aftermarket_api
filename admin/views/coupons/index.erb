@@ -1,0 +1,71 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="product-status-wrap">
+        <div class="row">
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <h4>优惠券列表</h4>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <div class="add-product">
+                <a href="<%=url(:coupons, :new)%>">创建优惠券</a>
+            </div>
+          </div>
+        </div>
+        <table>
+            <tr>
+                <th style="width: 15%;">标题</th>
+                <th style="width: 15%;">秒杀描述</th>
+                <th style="width: 12%;">结束时间</th>
+                <th style="width: 8%;">金额</th>
+                <th style="width: 10%;">使用条件</th>
+                <th style="width: 8%;">领取数</th>
+                <th style="width: 8%;">使用数</th>
+                <th style="width: 10%;">状态</th>
+                <th style="width: 10%;"></th>
+            </tr>
+            <% @coupons.each do |coupon| %>
+            <tr>
+                <td><%=coupon.title%></td>
+                <td><%=coupon.remarks%></td>
+                <td><%=coupon.end_time.try{|et| et.strftime('%Y%m%d %H:%M')}%></br>
+                  <% if coupon.end_time < Time.now %>
+                  <span style="color: #3498DB;">(已过期)</span>
+                  <% end %>
+                </td>
+                <td>￥<%=coupon.money%></td>
+                <td>>= ￥<%=coupon.full_money%></td>
+                <td><%=coupon.coupon_receives.count%></td>
+                <td><%=coupon.coupon_logs.count%></td>
+                <td><%=Coupon::STATUS[coupon.status.to_s]%></td>
+                <td>
+                  <div class="button-drop-style-one btn-danger-bg">
+                      <button type="button" class="btn btn-custon-four btn-danger dropdown-toggle" data-toggle="dropdown">操作 <i class="fa fa-angle-down"></i>
+    </button>
+                      <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-five" role="menu">
+                          <% if coupon.status == 1%>
+                          <li><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '0')%>">下架</a></li>
+                          <% if coupon.coupon_receives.count == 0%>
+                            <li><a href="<%=url(:coupons, :edit, :id => coupon.id)%>">修改秒杀信息</a></li>
+                          <% end %>
+                          <% elsif coupon.status == 0%>
+                          <li><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '1')%>">上架</a></li>
+                          <% end %>
+
+                      </ul>
+                  </div>
+                </td>
+            </tr>
+            <% end %>
+
+        </table>
+        <%= will_paginate @coupons %>
+
+    </div>
+</div>
+
+<style>
+.dropdown-menu.another-drop-pro-five{
+  left: 79% !important;
+}
+</style>

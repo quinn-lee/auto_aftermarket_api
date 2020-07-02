@@ -22,5 +22,9 @@ class Coupon < ActiveRecord::Base
     }
   end
 
+  def coupon_logs
+    CouponLog.where(coupon_receive_id: coupon_receives.map(&:id))
+  end
+
 
 end

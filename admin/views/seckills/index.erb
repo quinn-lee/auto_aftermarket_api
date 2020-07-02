@@ -29,7 +29,13 @@
                 <td><%=seckill.title%></td>
                 <td><%=seckill.detail%></td>
                 <td><%=seckill.t_sku.title%></td>
-                <td><%=seckill.begin_time.try{|bt| bt.strftime('%Y%m%d %H:%M')}%>~<br/><%=seckill.end_time.try{|et| et.strftime('%Y%m%d %H:%M')}%></td>
+                <td><%=seckill.begin_time.try{|bt| bt.strftime('%Y%m%d %H:%M')}%>~<br/><%=seckill.end_time.try{|et| et.strftime('%Y%m%d %H:%M')}%><br/>
+                  <% if seckill.begin_time > Time.now %>
+                    <span style="color: #3498DB;">(未开始)</span>
+                  <% elsif seckill.end_time < Time.now %>
+                    <span style="color: #3498DB;">(已结束)</span>
+                  <% end %>
+                </td>
                 <td>￥<%=seckill.seckill_price%>(￥<%=seckill.t_sku.price%>)</td>
                 <td><%=seckill.num%></td>
                 <td><%=seckill.seckill_buyers.purchased.count%></td>
