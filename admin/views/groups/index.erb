@@ -1,0 +1,70 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="product-status-wrap">
+        <div class="row">
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <h4>团购列表</h4>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <div class="add-product">
+                <a href="<%=url(:groups, :select_sku, :from => 'groups')%>">创建团购</a>
+            </div>
+          </div>
+        </div>
+        <table>
+            <tr>
+                <th style="width: 10%;">拼团标题</th>
+                <th style="width: 13%;">拼团描述</th>
+                <th style="width: 15%;">商品</th>
+                <th style="width: 15%;">开始结束时间</th>
+                <th style="width: 10%;">团购价(原价)</th>
+                <th style="width: 8%;">人数限制</th>
+                <th style="width: 7%;">销售数</th>
+                <th style="width: 10%;">状态</th>
+                <th style="width: 10%;"></th>
+            </tr>
+            <% @groups.each do |group| %>
+            <tr>
+                <td><%=group.title%></td>
+                <td><%=group.detail%></td>
+                <td><%=group.t_sku.title%></td>
+                <td><%=group.begin_time.try{|bt| bt.strftime('%Y%m%d %H:%M')}%>~<br/><%=group.end_time.try{|et| et.strftime('%Y%m%d %H:%M')}%></td>
+                <td>￥<%=group.group_price%>(￥<%=group.t_sku.price%>)</td>
+                <td><%=group.min_num%>~<%=group.max_num%></td>
+                <td><%=group.group_buyers.purchased.count%></td>
+                <td><%=Group::STATUS[group.status.to_s]%></td>
+                <td>
+                  <div class="button-drop-style-one btn-danger-bg">
+                      <button type="button" class="btn btn-custon-four btn-danger dropdown-toggle" data-toggle="dropdown">操作 <i class="fa fa-angle-down"></i>
+    </button>
+                      <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-five" role="menu">
+                          <% if group.status == 1%>
+                          <li><a href="<%=url(:groups, :change_status, :id => group.id, :status => '0')%>">下架</a></li>
+                          <li><a href="<%=url(:groups, :change_status, :id => group.id, :status => '2')%>">成团</a></li>
+                          <li><a href="<%=url(:groups, :change_status, :id => group.id, :status => '3')%>">未成团</a></li>
+                          <li><a href="<%=url(:groups, :edit, :id => group.id)%>">修改拼团信息</a></li>
+                          <% elsif group.status == 0%>
+                          <li><a href="<%=url(:groups, :change_status, :id => group.id, :status => '1')%>">上架</a></li>
+                          <% end %>
+
+                          <% if group.group_buyers.count > 0%>
+                          <li><a href="<%=url(:groups, :show, :id => group.id)%>">购买记录</a></li>
+                          <% end %>
+                      </ul>
+                  </div>
+                </td>
+            </tr>
+            <% end %>
+
+        </table>
+        <%= will_paginate @groups %>
+
+    </div>
+</div>
+
+<style>
+.dropdown-menu.another-drop-pro-five{
+  left: 79% !important;
+}
+</style>

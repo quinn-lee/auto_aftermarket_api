@@ -47,4 +47,57 @@ AutoAftermarketApi::Admin.controllers :groups do
     end
   end
 
+  get :index do
+    @groups = current_account.merchant.groups
+    @groups = @groups.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    render 'groups/index'
+  end
+
+  get :change_status, :with => :id do
+    begin
+      @group = Group.find(params[:id])
+      if @group.status == 1 # 发布中 可下架、未成团、成团
+        if !(['0', '2', '3'].include? params[:status])
+          raise "不可修改为未知的状态"
+        end
+      elsif @group.status == 0 # 下架的，可上架
+        raise "下架中的团购 只能修改为发布" if params[:status] != '1'
+      elsif ([2, 3].include? @group.status) # 成团或者未成团后，不可修改状态
+        raise "该团已结束，不可再修改状态"
+      end
+      @group.update!(status: params[:status])
+      flash[:notice] = "修改状态成功"
+      redirect(url(:groups, :index))
+    rescue => e
+      logger.info e.backtrace
+      flash.now[:error] = e.message
+      redirect(url(:groups, :index))
+    end
+  end
+
+  get :edit, :with => :id do
+    @group = Group.find(params[:id])
+    render 'groups/edit'
+  end
+
+  post :update, :with => :id do
+    begin
+      @group = Group.find(params[:id])
+      raise "该团购不可修改" if @group.status != 1 # 上架的团购才可编辑
+      raise "该团购已开始购买，不可修改价格" if @group.group_buyers.purchased.count > 0 && @group.group_price != BigDecimal.new(params[:group][:group_price])
+      @group.update!(params[:group])
+      flash[:notice] = "拼团信息修改成功"
+      redirect(url(:groups, :index))
+    rescue => e
+      logger.info e.backtrace
+      flash.now[:error] = e.message
+      render 'groups/edit'
+    end
+  end
+
+  get :show, :with => :id do
+    @group = Group.find(params[:id])
+    render 'groups/show'
+  end
+
 end

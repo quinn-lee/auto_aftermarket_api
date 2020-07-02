@@ -7,7 +7,7 @@ class Group < ActiveRecord::Base
   has_many :group_buyers, :class_name => 'GroupBuyer', :dependent => :destroy
 
   STATUS = {
-    1 => '发布',
+    1 => '上架',
     0 => '下架',
     2 => '成团',
     3 => '未成团'

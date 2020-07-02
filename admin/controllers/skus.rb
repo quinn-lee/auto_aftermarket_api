@@ -28,7 +28,7 @@ AutoAftermarketApi::Admin.controllers :skus do
     render 'skus/select_sku'
   end
 
-  get :change_preferred do
+  get :change_preferred, :with => :sku_id do
     begin
       @sku = TSku.find(params[:sku_id])
       @sku.update!(preferred: params[:option])
