@@ -20,14 +20,14 @@ AutoAftermarketApi::Admin.controllers :seckills do
       @seckill.remaining_num = @seckill.num
       @seckill.sku_info = {t_spu_id: @sku.t_spu_id, title: @sku.title, t_category_id: @sku.t_spu.t_category_id}
       if @seckill.save
-        flash.now[:success] = "创建秒杀活动成功"
-        redirect(url(:groups, :select_sku, :from => "seckills"))
+        flash[:success] = "创建秒杀活动成功"
+        redirect(url(:seckills, :index))
       else
         raise "创建秒杀活动失败"
       end
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       render 'seckills/new'
     end
   end
@@ -46,7 +46,7 @@ AutoAftermarketApi::Admin.controllers :seckills do
       redirect(url(:seckills, :index))
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       redirect(url(:seckills, :index))
     end
   end
@@ -66,7 +66,7 @@ AutoAftermarketApi::Admin.controllers :seckills do
       redirect(url(:seckills, :index))
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       render 'seckills/edit'
     end
   end

@@ -15,7 +15,7 @@ AutoAftermarketApi::Admin.controllers :sessions do
       redirect url(:base, :index)
     else
       params[:email] = h(params[:email])
-      flash.now[:error] = pat('login.error')
+      flash[:error] = pat('login.error')
       render "/sessions/new", nil, :layout => false
     end
   end

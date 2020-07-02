@@ -41,7 +41,7 @@ AutoAftermarketApi::Admin.controllers :skus do
       end
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       redirect(url(:skus, :preferred))
     end
   end

@@ -16,14 +16,14 @@ AutoAftermarketApi::Admin.controllers :coupons do
       @coupon.created_by = current_account.id
       @coupon.status = 1
       if @coupon.save
-        flash.now[:success] = "创建优惠券成功"
+        flash[:success] = "创建优惠券成功"
         redirect(url(:coupons, :new))
       else
         raise "创建优惠券失败"
       end
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       render 'coupons/new'
     end
   end

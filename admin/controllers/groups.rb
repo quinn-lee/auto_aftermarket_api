@@ -35,14 +35,14 @@ AutoAftermarketApi::Admin.controllers :groups do
       @group.status = 1
       @group.sku_info = {t_spu_id: @sku.t_spu_id, title: @sku.title, t_category_id: @sku.t_spu.t_category_id}
       if @group.save
-        flash.now[:success] = "创建拼团活动成功"
-        redirect(url(:groups, :select_sku))
+        flash[:success] = "创建拼团活动成功"
+        redirect(url(:groups, :index))
       else
         raise "创建拼团活动失败"
       end
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       render 'groups/new'
     end
   end
@@ -70,7 +70,7 @@ AutoAftermarketApi::Admin.controllers :groups do
       redirect(url(:groups, :index))
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       redirect(url(:groups, :index))
     end
   end

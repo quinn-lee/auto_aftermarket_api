@@ -23,7 +23,7 @@ AutoAftermarketApi::Admin.controllers :accounts do
       params[:save_and_continue] ? redirect(url(:accounts, :index)) : redirect(url(:accounts, :edit, :id => @account.id))
     else
       @title = pat(:create_title, :model => 'account')
-      flash.now[:error] = pat(:create_error, :model => 'account')
+      flash[:error] = pat(:create_error, :model => 'account')
       render 'accounts/new'
     end
   end
@@ -49,7 +49,7 @@ AutoAftermarketApi::Admin.controllers :accounts do
           redirect(url(:accounts, :index)) :
           redirect(url(:accounts, :edit, :id => @account.id))
       else
-        flash.now[:error] = pat(:update_error, :model => 'account')
+        flash[:error] = pat(:update_error, :model => 'account')
         render 'accounts/edit'
       end
     else

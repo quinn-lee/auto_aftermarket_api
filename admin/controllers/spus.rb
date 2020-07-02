@@ -31,7 +31,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       @spu = TSpu.new(t_category_id: @category.id, merchant_id: current_account.merchant.id)
       render 'spus/new'
     rescue => e
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       @categories = TCategory.all
       render 'spus/select_category'
     end
@@ -44,14 +44,14 @@ AutoAftermarketApi::Admin.controllers :spus do
       @spu.saleable = true
       @spu.is_valid = true
       if @spu.save
-        flash.now[:success] = "产品创建成功，请继续为该产品添加SKU"
+        flash[:success] = "产品创建成功，请继续为该产品添加SKU"
         redirect(url(:spus, :add_sku, :id => @spu.id))
       else
         raise "产品创建失败"
       end
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       @category = TCategory.find(@spu.t_category_id)
       @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @category.id).map(&:t_brand_id))
       render 'spus/new'
@@ -103,7 +103,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       redirect(url(:spus, :add_sku, :id => @sku.t_spu_id))
     rescue=>e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       render "spus/add_sku"
     end
   end
@@ -120,7 +120,7 @@ AutoAftermarketApi::Admin.controllers :spus do
     begin
       if @spu = TSpu.find(params[:id])
         if @spu.update!(params[:t_spu])
-          flash.now[:success] = "产品修改成功"
+          flash[:success] = "产品修改成功"
           redirect(url(:spus, :index))
         else
           raise "产品修改失败"
@@ -128,7 +128,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       end
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       @brands = TBrand.where(id: TCategoryBrand.where(t_category_id: @spu.t_category.id).map(&:t_brand_id))
       render 'spus/edit'
     end
@@ -190,7 +190,7 @@ AutoAftermarketApi::Admin.controllers :spus do
         @sku.images = params[:images] if params[:images].present?
         @sku.detail = params[:detail] if params[:detail].present?
         if @sku.update!(params[:t_sku])
-          flash.now[:success] = "商品修改成功"
+          flash[:success] = "商品修改成功"
           redirect(url(:spus, :show, :id => @sku.t_spu.id))
         else
           raise "商品品修改失败"
@@ -198,7 +198,7 @@ AutoAftermarketApi::Admin.controllers :spus do
       end
     rescue => e
       logger.info e.backtrace
-      flash.now[:error] = e.message
+      flash[:error] = e.message
       render 'spus/edit_sku'
     end
   end
