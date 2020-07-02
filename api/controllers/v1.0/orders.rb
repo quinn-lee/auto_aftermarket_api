@@ -58,7 +58,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     api_rescue do
       authenticate
       ActiveRecord::Base.transaction do
-        raise "order_type #{@request_params['order_type']} wrong" unless (['maintenance', 'purchase'].include? @request_params['order_type'])
+        raise "order_type #{@request_params['order_type']} wrong" unless (['maintenance', 'purchase', 'group', 'seckill'].include? @request_params['order_type'])
         if @request_params['order_type'] == "maintenance"
           unless @shop = Shop.find(@request_params['shop_id'])
             raise "shop not exists"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 48) do
+ActiveRecord::Schema.define(version: 49) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -392,6 +392,7 @@ ActiveRecord::Schema.define(version: 48) do
     t.jsonb "service_fee"
     t.jsonb "detail"
     t.integer "available_num"
+    t.integer "preferred"
   end
 
   create_table "t_spus", force: :cascade do |t|
