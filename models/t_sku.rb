@@ -8,6 +8,11 @@ class TSku < ActiveRecord::Base
   belongs_to :t_spu,   :class_name => 'TSpu'
   belongs_to :merchant,   :class_name => 'Merchant'
 
+  PREFERRED = {
+    1 => '优选',
+    0 => '普通'
+  }.stringify_keys
+
   def to_api
     {
       id: id,
@@ -18,6 +23,7 @@ class TSku < ActiveRecord::Base
       service_fee: service_fee,
       stock_num: stock_num,
       available_num: available_num,
+      preferred: PREFERRED[preferred.to_s],
       images: images.try{|i| i.map(&:url)},
       sale_attrs: sale_attrs,
       attrs: attrs,
@@ -34,6 +40,7 @@ class TSku < ActiveRecord::Base
       service_fee: service_fee,
       stock_num: stock_num,
       available_num: available_num,
+      preferred: PREFERRED[preferred],
       images: images.try{|i| i.map(&:url)},
       sale_attrs: sale_attrs,
       attrs: attrs,

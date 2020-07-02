@@ -39,6 +39,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "sku_code": "AN01224235",
                   "price": "559.0",
                   "stock_num": 100,
+                  available_num: 100, #可销售数量
+                  preferred: '优选', #是否优选商品
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -82,6 +84,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "sku_code": "AN01224236",
                   "price": "159.0",
                   "stock_num": 100,
+                  available_num: 100, #可销售数量
+                  preferred: '优选', #是否优选商品
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -125,6 +129,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "sku_code": "AN01224241",
                   "price": "329.0",
                   "stock_num": 100,
+                  available_num: 100, #可销售数量
+                  preferred: '优选', #是否优选商品
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -166,6 +172,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "sku_code": "AN01224235",
                   "price": "559.0",
                   "stock_num": 100,
+                  available_num: 100, #可销售数量
+                  preferred: '优选', #是否优选商品
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -209,6 +217,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "sku_code": "AN01224236",
                   "price": "159.0",
                   "stock_num": 100,
+                  available_num: 100, #可销售数量
+                  preferred: '优选', #是否优选商品
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -252,6 +262,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "sku_code": "AN01224241",
                   "price": "329.0",
                   "stock_num": 100,
+                  available_num: 100, #可销售数量
+                  preferred: '优选', #是否优选商品
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -293,6 +305,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "sku_code": "AN01224235",
                   "price": "559.0",
                   "stock_num": 100,
+                  available_num: 100, #可销售数量
+                  preferred: '优选', #是否优选商品
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -336,6 +350,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "sku_code": "AN01224236",
                   "price": "159.0",
                   "stock_num": 100,
+                  available_num: 100, #可销售数量
+                  preferred: '优选', #是否优选商品
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -379,6 +395,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "sku_code": "AN01224241",
                   "price": "329.0",
                   "stock_num": 100,
+                  available_num: 100, #可销售数量
+                  preferred: '优选', #是否优选商品
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -1080,7 +1098,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   end
 
   # 查找商品 返回sku列表 category_id必须输入
-  # params {"category_id": 1, "title": "美孚", "brand_id": [1,2],
+  # params {"category_id": 1, "title": "美孚", "brand_id": [1,2], preferred: 1,  #preferred=1表示查询优选商品，=0表示查询普通商品
     #  "attrs": {"规格": ['255/55R18','235/60R18'], "轮胎性能": ['SUV/越野型']}}
   # data
 =begin
@@ -1112,6 +1130,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                 "无需安装": 0
             },
             "stock_num": 100,
+            available_num: 100, #可销售数量
+            preferred: '优选', #是否优选商品
             "images": [
                 "images/e878635ad3af97aa.jpg",
                 "images/f8238c37ec858c0b.jpg"
@@ -1159,6 +1179,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                 "无需安装": 0
             },
             "stock_num": 100,
+            available_num: 100, #可销售数量
+            preferred: '普通', #是否优选商品
             "images": [
                 "images/e878635ad3af97aa.jpg",
                 "images/f8238c37ec858c0b.jpg"
@@ -1189,6 +1211,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       @t_spus = TSpu.where(t_brand_id: @request_params['brand_id']) if @request_params['brand_id'].present?
       @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id), saleable: true).where("available_num > 0")
       @t_skus = @t_skus.where("title like '%#{@request_params['title']}%'") if @request_params['title'].present?
+      @t_skus = @t_skus.where(preferred: @request_params['preferred']) if @request_params['preferred'].present?
       if @request_params['attrs'].present?
         @request_params['attrs'].each do |k, v|
           instr = "("
@@ -1232,6 +1255,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                         "无需安装": 0
                     },
               "stock_num": 100,
+              available_num: 100, #可销售数量
+              preferred: '优选', #是否优选商品
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1257,6 +1282,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "sku_code": "AN01224232",
               "price": "89.0",
               "stock_num": 100,
+              available_num: 100, #可销售数量
+              preferred: '优选', #是否优选商品
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1282,6 +1309,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "sku_code": "AN01224233",
               "price": "329.0",
               "stock_num": 100,
+              available_num: 100, #可销售数量
+              preferred: '优选', #是否优选商品
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1307,6 +1336,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "sku_code": "AN01224234",
               "price": "89.0",
               "stock_num": 100,
+              available_num: 100, #可销售数量
+              preferred: '优选', #是否优选商品
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1332,6 +1363,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "sku_code": "AN01224235",
               "price": "559.0",
               "stock_num": 100,
+              available_num: 100, #可销售数量
+              preferred: '优选', #是否优选商品
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1357,6 +1390,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "sku_code": "AN01224236",
               "price": "159.0",
               "stock_num": 100,
+              available_num: 100, #可销售数量
+              preferred: '优选', #是否优选商品
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1420,6 +1455,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                         "无需安装": 0
                     },
       "stock_num": 100,
+      available_num: 100, #可销售数量
+      preferred: '优选', #是否优选商品
       "images": [
           "images/260811002.jpg",
           "images/1336270541.jpg"
@@ -1446,6 +1483,32 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
 
       @sku = TSku.find(@request_params['sku_id'])
       { status: 'succ', data: @sku.to_api}.to_json
+    end
+  end
+
+
+  # 优选商品列表
+  # params {"category_id": 1, "title": "美孚", "brand_id": [1,2]
+    #  "attrs": {"规格": ['255/55R18','235/60R18'], "轮胎性能": ['SUV/越野型']}}
+  # data 与skus同
+  post :preferred, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @t_spus = TSpu.where(merchant_id: @merchant.id, saleable: true)
+      @t_spus = TSpu.where(t_category_id: @request_params['category_id']) if @request_params['category_id'].present?
+      @t_spus = TSpu.where(t_brand_id: @request_params['brand_id']) if @request_params['brand_id'].present?
+      @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id), saleable: true, preferred: 1).where("available_num > 0")
+      @t_skus = @t_skus.where("title like '%#{@request_params['title']}%'") if @request_params['title'].present?
+
+      if @request_params['attrs'].present?
+        @request_params['attrs'].each do |k, v|
+          instr = "("
+          v.each{|s| instr << "'#{s}',"}
+          instr = instr.chop << ")"
+          @t_skus = @t_skus.where("attrs ->> '#{k}' in #{instr}")
+        end
+      end
+      { status: 'succ', data: @t_skus.map(&:to_api)}.to_json
     end
   end
 

@@ -32,6 +32,11 @@ module AutoAftermarketApi
         @local = "优惠券"
       end
 
+      def set_skus_title_and_local
+        @title = "优选"
+        @local = "优选"
+      end
+
     end
 
     helpers AdminHelper

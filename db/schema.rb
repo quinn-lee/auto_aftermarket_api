@@ -392,7 +392,7 @@ ActiveRecord::Schema.define(version: 49) do
     t.jsonb "service_fee"
     t.jsonb "detail"
     t.integer "available_num"
-    t.integer "preferred"
+    t.integer "preferred", default: 0
   end
 
   create_table "t_spus", force: :cascade do |t|

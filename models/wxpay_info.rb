@@ -22,6 +22,7 @@ class WxpayInfo < ActiveRecord::Base
         SubOrder.create!(order_id: order.id, sub_type: "delivery", order_sku_ids: delivery_list) if delivery_list.present?
       end
 
+      # 如果有使用优惠券，更新优惠券状态
       if order.coupon_log.present?
         order.coupon_log.update!(status: 1)
       end
