@@ -32,4 +32,48 @@ AutoAftermarketApi::Admin.controllers :seckills do
     end
   end
 
+  get :index do
+    @seckills = current_account.merchant.seckills
+    @seckills = @seckills.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    render 'seckills/index'
+  end
+
+  get :change_status, :with => :id do
+    begin
+      @seckill = Seckill.find(params[:id])
+      @seckill.update!(status: params[:status])
+      flash[:notice] = "修改状态成功"
+      redirect(url(:seckills, :index))
+    rescue => e
+      logger.info e.backtrace
+      flash.now[:error] = e.message
+      redirect(url(:seckills, :index))
+    end
+  end
+
+  get :edit, :with => :id do
+    @seckill = Seckill.find(params[:id])
+    render 'seckills/edit'
+  end
+
+  post :update, :with => :id do
+    begin
+      @seckill = Seckill.find(params[:id])
+      raise "该秒杀不可修改" if @seckill.status != 1 # 上架的秒杀才可编辑
+      raise "该秒杀已开始购买，不可修改价格" if @seckill.seckill_buyers.purchased.count > 0 && @seckill.seckill_price != BigDecimal.new(params[:seckill][:seckill_price])
+      @seckill.update!(params[:seckill])
+      flash[:notice] = "秒杀信息修改成功"
+      redirect(url(:seckills, :index))
+    rescue => e
+      logger.info e.backtrace
+      flash.now[:error] = e.message
+      render 'seckills/edit'
+    end
+  end
+
+  get :show, :with => :id do
+    @seckill = Seckill.find(params[:id])
+    render 'seckills/show'
+  end
+
 end

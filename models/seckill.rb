@@ -7,7 +7,7 @@ class Seckill < ActiveRecord::Base
   has_many :seckill_buyers, :class_name => 'SeckillBuyer', :dependent => :destroy
 
   STATUS = {
-    1 => '发布',
+    1 => '上架',
     0 => '下架',
     2 => '结束'
   }.stringify_keys
