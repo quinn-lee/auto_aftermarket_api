@@ -11,7 +11,7 @@
             </tr>
             <% @seckill.seckill_buyers.each do |buyer| %>
             <tr>
-                <td><%= @group.t_sku.title%></td>
+                <td><%= @seckill.t_sku.title%></td>
                 <td><%= buyer.order.order_no %></td>
                 <td><%= buyer.order.pay_time.try{|pt| pt.strftime("%F %T")} %></td>
                 <td>
