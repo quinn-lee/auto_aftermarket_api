@@ -90,7 +90,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "该团已过期，无法购买" if group.end_time < Time.now
           raise "已超过最大成团人数，无法购买" if group.group_buyers.purchased.count >= group.max_num
           # 记录购买者
-          GroupBuyer.create!(customer_id: @customer.id, group_id: group.id, order_id: @order.id, t_sku_id: group.t_sku_id, group_quantity: 1, status: 1, group_price: group.group_price, group_amount: group.group_amount)
+          GroupBuyer.create!(customer_id: @customer.id, group_id: group.id, order_id: @order.id, t_sku_id: group.t_sku_id, group_quantity: 1, status: 1, group_price: group.group_price, group_amount: group.group_price)
         elsif @request_params['order_type'] == "seckill" # 秒杀商品
           seckill = Seckill.find(@request_params['seckill_id'])
           raise "该秒杀状态为不可购买" if seckill.status != 1
