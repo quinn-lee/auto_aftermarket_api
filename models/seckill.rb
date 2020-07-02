@@ -4,6 +4,8 @@ class Seckill < ActiveRecord::Base
   belongs_to :merchant,   :class_name => 'Merchant'
   belongs_to :t_sku,   :class_name => 'TSku'
 
+  has_many :seckill_buyers, :class_name => 'SeckillBuyer', :dependent => :destroy
+
   STATUS = {
     1 => '发布',
     0 => '下架',

@@ -98,6 +98,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "该秒杀无剩余商品，无法购买" if seckill.remaining_num < 1
           # 修改剩余可秒杀商品数
           seckill.update!(remaining_num: seckill.remaining_num-1)
+          SeckillBuyer.create!(customer_id: @customer.id, seckill_id: seckill.id, order_id: @order.id, t_sku_id: seckill.t_sku_id, status: 1, seckill_price: seckill.seckill_price, seckill_amount: seckill.seckill_price)
         end
         if @request_params['coupon_receive_id'].present? #使用优惠券
           cr = CouponReceive.find(@request_params['coupon_receive_id'])

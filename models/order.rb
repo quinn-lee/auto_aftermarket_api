@@ -5,6 +5,7 @@ class Order < ActiveRecord::Base
   belongs_to :customer,   :class_name => 'Customer'
   has_one :coupon_log, :class_name => 'CouponLog', :dependent => :destroy
   has_one :group_buyer, :class_name => 'GroupBuyer', :dependent => :destroy
+  has_one :seckill_buyer, :class_name => 'SeckillBuyer', :dependent => :destroy
 
   def gen_order_no
     r=ActiveRecord::Base.connection.execute("select nextval('order_no_seq')")
