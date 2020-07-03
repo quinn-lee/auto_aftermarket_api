@@ -13,7 +13,7 @@ class Order < ActiveRecord::Base
   end
 
   def can_delete?
-    ['unpaid', 'done'].include? status
+    ['unpaid', 'done', 'cancelled'].include? status
   end
 
   # 仅在支付成功后，可取消
@@ -29,6 +29,9 @@ class Order < ActiveRecord::Base
     update!(status: "cancelled")
     if order_type == "group" && group_buyer.present?
       group_buyer.update!(status: 0)
+    end
+    if order_type == "seckill" && seckill_buyer.present?
+      seckill_buyer.update!(status: 0)
     end
   end
 

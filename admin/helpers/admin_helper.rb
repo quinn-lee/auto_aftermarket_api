@@ -37,6 +37,11 @@ module AutoAftermarketApi
         @local = "优选"
       end
 
+      def set_orders_title_and_local
+        @title = "订单"
+        @local = "订单"
+      end
+
     end
 
     helpers AdminHelper
