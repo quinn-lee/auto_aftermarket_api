@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 商户表，用于记录商户的小程序相关配置信息
 class Merchant < ActiveRecord::Base
   has_many :shops, :class_name => 'Shop', :dependent => :destroy
   has_many :t_spus, :class_name => 'TSpu', :dependent => :destroy

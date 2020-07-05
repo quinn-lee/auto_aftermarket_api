@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 客户所选汽车
 class Car < ActiveRecord::Base
   def to_api
     begin

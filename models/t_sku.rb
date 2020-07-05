@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 商品SKU表
 require 'carrierwave/orm/activerecord'
 class TSku < ActiveRecord::Base
   mount_uploaders :images, FileUploader

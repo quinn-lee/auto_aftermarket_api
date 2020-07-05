@@ -1,3 +1,6 @@
+# encoding: utf-8
+# 客户表
+
 class Customer < ActiveRecord::Base
   has_many :orders, :class_name => 'Order', :dependent => :destroy
   has_many :shares, :class_name => 'Share', :dependent => :destroy

@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 商户门店记录，一个商户有一个或多个门店
 class Shop < ActiveRecord::Base
   belongs_to :merchant,   :class_name => 'Merchant'
 

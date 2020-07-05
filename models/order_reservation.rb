@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 预约
 class OrderReservation < ActiveRecord::Base
   def to_api
     {

@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 产品SPU表
 class TSpu < ActiveRecord::Base
 
   validates :t_category_id, :title, presence: true

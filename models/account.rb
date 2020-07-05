@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 后台管理账户，每个商户有多个管理账户
 class Account < ActiveRecord::Base
   belongs_to :merchant,   :class_name => 'Merchant'
 

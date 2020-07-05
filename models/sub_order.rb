@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 子订单
 class SubOrder < ActiveRecord::Base
   belongs_to :order,   :class_name => 'Order'
 

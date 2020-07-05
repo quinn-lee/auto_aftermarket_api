@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 微信支付请求
 class WxpayInfo < ActiveRecord::Base
 
   def after_paid

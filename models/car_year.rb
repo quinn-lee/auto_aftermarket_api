@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 汽车年款
 class CarYear < ActiveRecord::Base
 
   def to_api

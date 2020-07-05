@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 团购购买记录
 class GroupBuyer < ActiveRecord::Base
   belongs_to :group,   :class_name => 'Group'
   belongs_to :order,   :class_name => 'Order'

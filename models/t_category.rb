@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 目录表，目前支持两级目录结构
 class TCategory < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true

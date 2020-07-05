@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 目录销售属性
 class TAttribute < ActiveRecord::Base
   validates :name, presence: true
   belongs_to :t_category,   :class_name => 'TCategory'

@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 订单表
 class Order < ActiveRecord::Base
 
   has_many :sub_orders, :class_name => 'SubOrder', :dependent => :destroy

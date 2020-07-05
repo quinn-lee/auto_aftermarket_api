@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 优惠券使用记录
 class CouponLog < ActiveRecord::Base
   belongs_to :order,   :class_name => 'Order'
 
@@ -7,6 +9,6 @@ class CouponLog < ActiveRecord::Base
   }.stringify_keys
 
   def to_api
-    
+
   end
 end

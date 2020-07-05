@@ -1,3 +1,5 @@
+# encoding: utf-8
+# 优惠券
 class Coupon < ActiveRecord::Base
   validates :title, :remarks, :merchant_id, :money, :full_money, :end_time,  presence: true
 
