@@ -47,12 +47,14 @@ AutoAftermarketApi::Admin.controllers :groups do
     end
   end
 
+  # 拼团列表
   get :index do
     @groups = current_account.merchant.groups
     @groups = @groups.order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'groups/index'
   end
 
+  # 修改状态
   get :change_status, :with => :id do
     begin
       @group = Group.find(params[:id])
@@ -75,11 +77,13 @@ AutoAftermarketApi::Admin.controllers :groups do
     end
   end
 
+  # 编辑拼团
   get :edit, :with => :id do
     @group = Group.find(params[:id])
     render 'groups/edit'
   end
 
+  # 修改拼团
   post :update, :with => :id do
     begin
       @group = Group.find(params[:id])
@@ -95,6 +99,7 @@ AutoAftermarketApi::Admin.controllers :groups do
     end
   end
 
+  # 团购展示
   get :show, :with => :id do
     @group = Group.find(params[:id])
     render 'groups/show'

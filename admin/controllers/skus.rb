@@ -17,6 +17,7 @@ AutoAftermarketApi::Admin.controllers :skus do
     render 'skus/preferred'
   end
 
+  # 选择优选商品页面
   get :select_sku do
     @spus = current_account.merchant.t_spus
     @categories = TCategory.all
@@ -28,6 +29,7 @@ AutoAftermarketApi::Admin.controllers :skus do
     render 'skus/select_sku'
   end
 
+  # 修改 优选商品
   get :change_preferred, :with => :sku_id do
     begin
       @sku = TSku.find(params[:sku_id])

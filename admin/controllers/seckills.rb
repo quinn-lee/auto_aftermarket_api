@@ -32,12 +32,14 @@ AutoAftermarketApi::Admin.controllers :seckills do
     end
   end
 
+  # 秒杀列表
   get :index do
     @seckills = current_account.merchant.seckills
     @seckills = @seckills.order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'seckills/index'
   end
 
+  # 修改状态
   get :change_status, :with => :id do
     begin
       @seckill = Seckill.find(params[:id])
@@ -51,11 +53,13 @@ AutoAftermarketApi::Admin.controllers :seckills do
     end
   end
 
+  # 编辑秒杀
   get :edit, :with => :id do
     @seckill = Seckill.find(params[:id])
     render 'seckills/edit'
   end
 
+  # 修改秒杀
   post :update, :with => :id do
     begin
       @seckill = Seckill.find(params[:id])
@@ -71,6 +75,7 @@ AutoAftermarketApi::Admin.controllers :seckills do
     end
   end
 
+  # 秒杀展示
   get :show, :with => :id do
     @seckill = Seckill.find(params[:id])
     render 'seckills/show'

@@ -28,13 +28,14 @@ AutoAftermarketApi::Admin.controllers :coupons do
     end
   end
 
-
+  # 优惠券列表
   get :index do
     @coupons = current_account.merchant.coupons
     @coupons = @coupons.order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'coupons/index'
   end
 
+  # 修改状态
   get :change_status, :with => :id do
     begin
       @coupon = Coupon.find(params[:id])
@@ -48,11 +49,13 @@ AutoAftermarketApi::Admin.controllers :coupons do
     end
   end
 
+  # 编辑优惠券
   get :edit, :with => :id do
     @coupon = Coupon.find(params[:id])
     render 'coupons/edit'
   end
 
+  # 修改优惠券
   post :update, :with => :id do
     begin
       @coupon = Coupon.find(params[:id])
