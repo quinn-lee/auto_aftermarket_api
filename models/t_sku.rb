@@ -12,6 +12,8 @@ class TSku < ActiveRecord::Base
 
   PREFERRED = {
     1 => '优选',
+    2 => '优选',
+    3 => '优选',
     0 => '普通'
   }.stringify_keys
 
