@@ -11,9 +11,9 @@ AutoAftermarketApi::Admin.controllers :skus do
     @spus = @spus.where(t_category_id: params[:category_2]) if params[:category_2].present?
     @spus = @spus.where(t_brand_id: params[:brand_id]) if params[:brand_id].present?
 
-    @skus = TSku.where(preferred: 1, t_spu_id: @spus.map(&:id))
+    @skus = TSku.where(t_spu_id: @spus.map(&:id)).where.not(preferred: 0)
     @skus = @skus.where("title like '%#{params[:title]}%'") if params[:title].present?
-    @skus = @skus.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    @skus = @skus.order("preferred desc").order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'skus/preferred'
   end
 
@@ -33,18 +33,40 @@ AutoAftermarketApi::Admin.controllers :skus do
   get :change_preferred, :with => :sku_id do
     begin
       @sku = TSku.find(params[:sku_id])
-      @sku.update!(preferred: params[:option])
+      raise "优先级必须选择" unless params[:option].present?
+      if params[:option] != "0" # 添加为优选时，广告语必须输入且不能超过12个字
+        raise "广告语必须输入" if params[:preferred_slogan].blank?
+        raise "广告语不能超过12个字" if params[:preferred_slogan].to_s.length > 12
+      end
+      if params[:option] == '0' # 从优选商品中删除
+        @sku.update!(preferred: params[:option], preferred_slogan: nil)
+      else
+        @sku.update!(preferred: params[:option], preferred_slogan: params[:preferred_slogan])
+      end
       if params[:option] == '0'
         flash[:notice] = "已从优选商品中删除"
         redirect(url(:skus, :preferred))
       else
-        flash[:notice] = "添加为优选商品成功，您可以继续添加"
-        redirect(url(:skus, :select_sku))
+        if params[:from] == "modify" # 修改广告语
+          flash[:notice] = "广告语修改成功"
+          redirect(url(:skus, :preferred))
+        else
+          flash[:notice] = "添加为优选商品成功，您可以继续添加"
+          redirect(url(:skus, :select_sku))
+        end
       end
     rescue => e
       logger.info e.backtrace
       flash[:error] = e.message
-      redirect(url(:skus, :preferred))
+      if params[:option] == '0'
+        redirect(url(:skus, :preferred))
+      else
+        if params[:from] == "modify" # 修改广告语
+          redirect(url(:skus, :preferred))
+        else
+          redirect(url(:skus, :select_sku))
+        end
+      end
     end
   end
 

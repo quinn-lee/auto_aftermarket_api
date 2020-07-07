@@ -41,6 +41,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "stock_num": 100,
                   available_num: 100, #可销售数量
                   preferred: '优选', #是否优选商品
+                  "preferred_slogan": "", #优选商品广告语
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -86,6 +87,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "stock_num": 100,
                   available_num: 100, #可销售数量
                   preferred: '优选', #是否优选商品
+                  "preferred_slogan": "", #优选商品广告语
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -131,6 +133,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "stock_num": 100,
                   available_num: 100, #可销售数量
                   preferred: '优选', #是否优选商品
+                  "preferred_slogan": "", #优选商品广告语
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -174,6 +177,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "stock_num": 100,
                   available_num: 100, #可销售数量
                   preferred: '优选', #是否优选商品
+                  "preferred_slogan": "", #优选商品广告语
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -219,6 +223,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "stock_num": 100,
                   available_num: 100, #可销售数量
                   preferred: '优选', #是否优选商品
+                  "preferred_slogan": "", #优选商品广告语
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -264,6 +269,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "stock_num": 100,
                   available_num: 100, #可销售数量
                   preferred: '优选', #是否优选商品
+                  "preferred_slogan": "", #优选商品广告语
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -307,6 +313,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "stock_num": 100,
                   available_num: 100, #可销售数量
                   preferred: '优选', #是否优选商品
+                  "preferred_slogan": "", #优选商品广告语
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -352,6 +359,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "stock_num": 100,
                   available_num: 100, #可销售数量
                   preferred: '优选', #是否优选商品
+                  "preferred_slogan": "", #优选商品广告语
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -397,6 +405,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "stock_num": 100,
                   available_num: 100, #可销售数量
                   preferred: '优选', #是否优选商品
+                  "preferred_slogan": "", #优选商品广告语
                   "images": [
                       "images/260811002.jpg",
                       "images/1336270541.jpg"
@@ -1132,6 +1141,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
             "stock_num": 100,
             available_num: 100, #可销售数量
             preferred: '优选', #是否优选商品
+            "preferred_slogan": "", #优选商品广告语
             "images": [
                 "images/e878635ad3af97aa.jpg",
                 "images/f8238c37ec858c0b.jpg"
@@ -1181,6 +1191,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
             "stock_num": 100,
             available_num: 100, #可销售数量
             preferred: '普通', #是否优选商品
+            "preferred_slogan": "", #优选商品广告语
             "images": [
                 "images/e878635ad3af97aa.jpg",
                 "images/f8238c37ec858c0b.jpg"
@@ -1257,6 +1268,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "stock_num": 100,
               available_num: 100, #可销售数量
               preferred: '优选', #是否优选商品
+              "preferred_slogan": "", #优选商品广告语
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1284,6 +1296,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "stock_num": 100,
               available_num: 100, #可销售数量
               preferred: '优选', #是否优选商品
+              "preferred_slogan": "", #优选商品广告语
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1311,6 +1324,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "stock_num": 100,
               available_num: 100, #可销售数量
               preferred: '优选', #是否优选商品
+              "preferred_slogan": "", #优选商品广告语
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1338,6 +1352,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "stock_num": 100,
               available_num: 100, #可销售数量
               preferred: '优选', #是否优选商品
+              "preferred_slogan": "", #优选商品广告语
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1365,6 +1380,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "stock_num": 100,
               available_num: 100, #可销售数量
               preferred: '优选', #是否优选商品
+              "preferred_slogan": "", #优选商品广告语
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1392,6 +1408,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "stock_num": 100,
               available_num: 100, #可销售数量
               preferred: '优选', #是否优选商品
+              "preferred_slogan": "", #优选商品广告语
               "images": [
                   "images/260811002.jpg",
                   "images/1336270541.jpg"
@@ -1457,6 +1474,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       "stock_num": 100,
       available_num: 100, #可销售数量
       preferred: '优选', #是否优选商品
+      "preferred_slogan": "", #优选商品广告语
       "images": [
           "images/260811002.jpg",
           "images/1336270541.jpg"
@@ -1497,7 +1515,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       @t_spus = TSpu.where(merchant_id: @merchant.id, saleable: true)
       @t_spus = TSpu.where(t_category_id: @request_params['category_id']) if @request_params['category_id'].present?
       @t_spus = TSpu.where(t_brand_id: @request_params['brand_id']) if @request_params['brand_id'].present?
-      @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id), saleable: true, preferred: 1).where("available_num > 0")
+      @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id), saleable: true).where("available_num > 0").where.not(preferred: 0)
       @t_skus = @t_skus.where("title like '%#{@request_params['title']}%'") if @request_params['title'].present?
 
       if @request_params['attrs'].present?
@@ -1508,7 +1526,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
           @t_skus = @t_skus.where("attrs ->> '#{k}' in #{instr}")
         end
       end
-      { status: 'succ', data: @t_skus.map(&:to_api)}.to_json
+      { status: 'succ', data: @t_skus.order("preferred desc").map(&:to_api)}.to_json
     end
   end
 
