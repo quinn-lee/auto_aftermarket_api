@@ -459,6 +459,18 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     end
   end
 
+  # 状态统计
+  # params 空
+  # data [{'status': "paid", 'count': 1}]
+  post "/status_count", :provides => [:json] do
+    api_rescue do
+      authenticate
+
+      rs = Order.select("status, count(*) as count").group("status")
+      { status: 'succ', data: rs.map{|r| {status: r.status, count: r.count}}}.to_json
+    end
+  end
+
   # 微信支付异步通知
   post :notify do
     logger.info("into notify")

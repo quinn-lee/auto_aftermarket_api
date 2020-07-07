@@ -10,6 +10,8 @@ class TSku < ActiveRecord::Base
   belongs_to :t_spu,   :class_name => 'TSpu'
   belongs_to :merchant,   :class_name => 'Merchant'
 
+  has_many :favorites, :class_name => 'Favorite', :dependent => :destroy
+
   PREFERRED = {
     1 => '优选',
     2 => '优选',

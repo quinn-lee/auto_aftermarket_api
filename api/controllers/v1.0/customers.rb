@@ -166,4 +166,16 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
       { status: 'succ', data: {}}.to_json
     end
   end
+
+  # 返回客户的访问记录(最近100条)
+  # params 空
+  # data
+  post :recent_page_views, :provides => [:json] do
+    api_rescue do
+      authenticate
+
+      @pvs = @customer.page_views.order("visit_time desc")
+      { status: 'succ', data: @pvs.map(&:to_api)}.to_json
+    end
+  end
 end

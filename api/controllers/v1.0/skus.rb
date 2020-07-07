@@ -1530,4 +1530,32 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
+  # 收藏商品列表
+  # params 空
+  # data 与skus同
+  post :favorites, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @favorites = Favorite.where(merchant_id: @merchant.id, customer_id: @customer.id)
+      { status: 'succ', data: @favorites.order("created_at desc").map{|f| f.t_sku.to_api}}.to_json
+    end
+  end
+
+  # 收藏商品
+  # params {sku_id: 1}
+  # data {}
+  post :favour, :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        raise "sku ID不能为空" if @request_params['sku_id'].blank?
+        sku = TSku.find(@request_params['sku_id'])
+        if Favorite.where(merchant_id: @merchant.id, customer_id: @customer.id, t_sku_id: sku.id).count == 0
+          Favorite.create!(merchant_id: @merchant.id, customer_id: @customer.id, t_sku_id: sku.id)
+        end
+      end
+      { status: 'succ', data: {}}.to_json
+    end
+  end
+
 end
