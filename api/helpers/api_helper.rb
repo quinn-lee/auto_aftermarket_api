@@ -6,6 +6,7 @@ module AutoAftermarketApi
         begin
           block_given? ? yield : raise('no block given')
         rescue Exception => e
+          logger.info "#{e.backtrace}"
           logger.info "FAIL #{request.path} - #{e.message}" unless Padrino.env == :production
           { status: 'fail', reason: [ e.message ] }.to_json
         end

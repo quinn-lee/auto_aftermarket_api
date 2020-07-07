@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 51) do
+ActiveRecord::Schema.define(version: 55) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,24 @@ ActiveRecord::Schema.define(version: 51) do
     t.string "crypted_password"
     t.string "role"
     t.integer "merchant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "answer_likes", force: :cascade do |t|
+    t.integer "answer_id"
+    t.integer "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "answers", force: :cascade do |t|
+    t.integer "question_id"
+    t.string "content"
+    t.json "images"
+    t.json "audio"
+    t.integer "customer_id"
+    t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -262,6 +280,15 @@ ActiveRecord::Schema.define(version: 51) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "questions", force: :cascade do |t|
+    t.string "content"
+    t.integer "merchant_id"
+    t.integer "customer_id"
+    t.integer "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "recommends", force: :cascade do |t|
     t.string "name"
     t.string "rtype"
@@ -416,6 +443,14 @@ ActiveRecord::Schema.define(version: 51) do
     t.string "detail"
     t.boolean "saleable"
     t.boolean "is_valid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "title"
+    t.integer "merchant_id"
+    t.integer "created_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
