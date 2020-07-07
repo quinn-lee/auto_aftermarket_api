@@ -175,7 +175,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
       authenticate
 
       @pvs = @customer.page_views.order("visit_time desc")
-      { status: 'succ', data: @pvs.map(&:to_api)}.to_json
+      { status: 'succ', data: @pvs.limit(100).map(&:to_api)}.to_json
     end
   end
 end
