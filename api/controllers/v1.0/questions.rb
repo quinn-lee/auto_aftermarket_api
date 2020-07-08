@@ -108,6 +108,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
                     },
                     "account": "N",  #是否为店家回复，Y为是，N为否
                     "answer_likes": 1,   #答案点赞数
+                    "answer_liked": "Y", #当前请求用户是否点赞过该答案，"Y"点赞过，"N"未点赞过
                     "created_at": "2020-07-07 22:39:16"  #回答时间
                 }
             ],
@@ -144,7 +145,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
       @questions = Question.where(merchant_id: @merchant.id)
       @questions = @questions.where(topic_id: @request_params['topic_id']) if @request_params['topic_id'].present?
       @questions = @questions.where(customer_id: @customer.id) if @request_params['self'] == "t"
-      { status: 'succ', data: @questions.order("created_at desc").map(&:to_api)}.to_json
+      { status: 'succ', data: @questions.order("created_at desc").map{|q| q.to_api(@customer)}}.to_json
     end
   end
 
@@ -156,7 +157,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
       authenticate
 
       @questions = Question.where(merchant_id: @merchant.id).joins(:answers).group("id").having("count(*) > ?", 2).order("count(*) desc")
-      { status: 'succ', data: @questions.map(&:to_api)}.to_json
+      { status: 'succ', data: @questions.map{|q| q.to_api(@customer)}}.to_json
     end
   end
 
@@ -192,6 +193,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
                     },
                     "account": "N",  #是否为店家回复，Y为是，N为否
                     "answer_likes": 0,   #答案点赞数
+                    "answer_liked": "Y", #当前请求用户是否点赞过该答案，"Y"点赞过，"N"未点赞过
                     "created_at": "2020-07-07 22:39:16"  #回答时间
                 }
             ],
@@ -204,7 +206,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
       authenticate
 
       @question = Question.find(@request_params['question_id'])
-      { status: 'succ', data: @question.to_api}.to_json
+      { status: 'succ', data: @question.to_api(@customer)}.to_json
     end
   end
 
@@ -220,6 +222,25 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
         answer = Answer.find(@request_params['answer_id'])
         if AnswerLike.where(answer_id: answer.id, customer_id: @customer.id).count == 0
           AnswerLike.create!(answer_id: answer.id, customer_id: @customer.id)
+        end
+      end
+
+      { status: 'succ', data: {}}.to_json
+    end
+  end
+
+  # 取消点赞答案
+  # params {"answer_id": 1}
+  # answer_id--答案id
+  # data {}
+  post "/answer/unlike", :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        raise "问题ID不能为空" if @request_params['answer_id'].blank?
+        answer = Answer.find(@request_params['answer_id'])
+        if al = AnswerLike.find_by(answer_id: answer.id, customer_id: @customer.id)
+          al.destroy
         end
       end
 

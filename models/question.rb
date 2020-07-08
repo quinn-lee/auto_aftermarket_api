@@ -8,7 +8,7 @@ class Question < ActiveRecord::Base
 
   validates :content, :merchant_id, :topic_id, presence: true
 
-  def to_api
+  def to_api(current_customer=nil)
     account_answer = answers.where.not(account_id: nil).first
     {
       id: id,
@@ -16,8 +16,8 @@ class Question < ActiveRecord::Base
       topic: topic.to_api,
       customer: customer.present? ? customer.wechat_info : nil,
       customer_answers_num: answers.where(account_id: nil).count,
-      customer_answers: answers.where(account_id: nil).order("created_at desc").map(&:to_api),
-      account_answer: account_answer.present? ? account_answer.to_api : nil,
+      customer_answers: answers.where(account_id: nil).order("created_at desc").map{|answer| answer.to_api(current_customer)},
+      account_answer: account_answer.present? ? account_answer.to_api(current_customer) : nil,
       created_at: created_at.strftime("%F %T")
     }
   end

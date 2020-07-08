@@ -10,7 +10,8 @@ class Answer < ActiveRecord::Base
   mount_uploader :images, FileUploader
   mount_uploader :audio, AudioUploader
 
-  def to_api
+  def to_api(current_customer=nil)
+    al = answer_likes.where(customer_id: current_customer.id).first if current_customer
     {
       id: id,
       content: content,
@@ -19,6 +20,7 @@ class Answer < ActiveRecord::Base
       customer: customer.present? ? customer.wechat_info : nil,
       account: account.present? ? "Y" : "N",
       answer_likes: answer_likes.count,
+      answer_liked: al.present? ? "Y" : "N",
       created_at: created_at.strftime("%F %T")
     }
   end
