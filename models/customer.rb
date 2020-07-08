@@ -8,5 +8,6 @@ class Customer < ActiveRecord::Base
   has_many :coupon_receives, :class_name => 'CouponReceive', :dependent => :destroy
   has_many :group_buyers, :class_name => 'GroupBuyer', :dependent => :destroy
   has_many :seckill_buyers, :class_name => 'SeckillBuyer', :dependent => :destroy
+  has_many :favorites, :class_name => 'Favorite', :dependent => :destroy
 
 end
