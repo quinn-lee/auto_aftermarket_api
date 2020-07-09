@@ -10,4 +10,6 @@ class Merchant < ActiveRecord::Base
   has_many :groups, :class_name => 'Group', :dependent => :destroy
   has_many :coupons, :class_name => 'Coupon', :dependent => :destroy
   has_many :seckills, :class_name => 'Seckill', :dependent => :destroy
+
+  has_many :questions, :class_name => 'Question', :dependent => :destroy
 end

@@ -1,0 +1,88 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="product-status-wrap">
+      <div class="row">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+          <h4>问题列表</h4>
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+          <div class="modal-bootstrap modal-login-form">
+              <a class="zoomInDown mg-t" href="#" data-toggle="modal" data-target="#searchZoom">搜索</a>
+          </div>
+          <div id="searchZoom" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-close-area modal-close-df">
+                          <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                      </div>
+                      <div class="modal-body">
+                          <div class="modal-login-form-inner">
+                              <div class="row">
+                                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                      <div class="basic-login-inner modal-basic-inner">
+                                          <% form_tag url(:questions, :index), :class=>"form-horizontal", :method => 'get' do %>
+                                              <div class="form-group-inner">
+                                                  <div class="row">
+                                                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                          <label class="login2">话题</label>
+                                                      </div>
+                                                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                          <%=select_tag(:topic_id, :options => @topics.map{|topic| [topic.title, topic.id]}.unshift([nil,nil]), :class => "form-control custom-select-value")%>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="form-group-inner">
+                                                  <div class="row">
+                                                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                          <label class="login2">内容</label>
+                                                      </div>
+                                                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                          <%=text_field_tag(:content, :class => "form-control")%>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="login-btn-inner">
+                                                  <div class="row">
+                                                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                          <div class="login-horizental">
+                                                              <button class="btn btn-sm btn-primary login-submit-cs" type="submit">搜索</button>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          <% end %>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+        <table>
+            <tr>
+                <th style="width: 10%;">话题</th>
+                <th style="width: 62%;">问题内容</th>
+                <th style="width: 10%;">已回复？</th>
+                <th style="width: 15%;"></th>
+            </tr>
+            <% @questions.each do |question| %>
+            <tr>
+                <td><%= question.topic.title%></td>
+                <td><%= question.content %></td>
+                <td><%= question.answers.where.not(account_id: nil).count > 0 ? '已回复' : '未回复' %></td>
+                <td>
+                  <a href="<%=url(:questions, :new_answer, :id=>question.id)%>" title="回复" class="pd-setting-ed" style="margin-right: 5px;">回复</a>
+                  <a href="<%=url(:questions, :answers, :id=>question.id)%>" title="查看" class="pd-setting-ed" style="margin-right: 5px;">问题详情</a>
+
+
+                </td>
+            </tr>
+            <% end %>
+
+        </table>
+        <%= will_paginate @questions %>
+    </div>
+</div>

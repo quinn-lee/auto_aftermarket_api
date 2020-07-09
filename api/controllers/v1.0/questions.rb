@@ -50,16 +50,19 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
         @answer = Answer.new(content: @request_params['content'], question_id: question.id)
         @answer.customer_id = @customer.id if @request_params['anonymous'] != "t" # 不匿名时才记录回答者
         i = 0
+        images = []
         if @request_params['images'].present? # 保存图片
           @request_params['images'].each do |img|
             file_path = "public/uploads/tmp/answer#{question.id}#{Time.now.strftime('%Y%m%d%H%M%S')}#{i}"
             decode_base64_content = Base64.decode64(img)
             File.delete(file_path) if File.exists?(file_path)
             File.open(file_path, "wb"){|f| f.write decode_base64_content}
-            File.open(file_path, "rb"){|f| @answer.images = f }
+            # File.open(file_path, "rb"){|f| @answer.images = f }
+            images << File.open(file_path, "rb")
             i += 1
           end
         end
+        @answer.images = images
         if @request_params['audio'].present? # 保存语音
           file_path = "public/uploads/tmp/answer#{question.id}#{Time.now.strftime('%Y%m%d%H%M%S')}#{i}"
           decode_base64_content = Base64.decode64(@request_params['audio'])

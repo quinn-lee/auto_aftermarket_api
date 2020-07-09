@@ -7,7 +7,7 @@ class Answer < ActiveRecord::Base
   belongs_to :account,   :class_name => 'Account'
   has_many :answer_likes, :class_name => 'AnswerLike', :dependent => :destroy
 
-  mount_uploader :images, FileUploader
+  mount_uploaders :images, FileUploader
   mount_uploader :audio, AudioUploader
 
   def to_api(current_customer=nil)
@@ -15,7 +15,7 @@ class Answer < ActiveRecord::Base
     {
       id: id,
       content: content,
-      images: images.present? ? [images.url] : [],
+      images: images.try{|i| i.map(&:url)},
       audio: audio.present? ? audio.url : nil,
       customer: customer.present? ? customer.wechat_info : nil,
       account: account.present? ? "Y" : "N",
@@ -23,6 +23,14 @@ class Answer < ActiveRecord::Base
       answer_liked: al.present? ? "Y" : "N",
       created_at: created_at.strftime("%F %T")
     }
+  end
+
+  def nickname
+    if account.present?
+      "商家回复#{account.email}"
+    else
+      customer.present? ? (customer.wechat_info.present? ? (customer.wechat_info['nickName'] || '匿名') : '匿名') : '匿名'
+    end
   end
 
 end

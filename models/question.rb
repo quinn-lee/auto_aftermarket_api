@@ -22,4 +22,8 @@ class Question < ActiveRecord::Base
     }
   end
 
+  def nickname
+    customer.present? ? (customer.wechat_info.present? ? (customer.wechat_info['nickName'] || '匿名') : '匿名') : '匿名'
+  end
+
 end

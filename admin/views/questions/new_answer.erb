@@ -1,0 +1,86 @@
+<div class="blog-details-area mg-tb-15">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="blog-details-inner">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="latest-blog-single blog-single-full-view">
+                                <div class="blog-details blog-sig-details">
+                                    <div class="details-blog-dt blog-sig-details-dt">
+                                        <span><a><i class="fa fa-user"></i> <%= @question.nickname %></a></span>
+                                        <span><a><i class="fa fa-calendar"></i> <%=@question.created_at.strftime("%F %T")%></a></span>
+                                        <span><a><i class="fa fa-comments-o"></i> <%=@question.answers.count%>个 回复</a></span>
+                                    </div>
+                                    <h1><a class="blog-ht" href="#">问题内容</a></h1>
+                                    <p>#<%=@question.topic.title%>#   <%=@question.content%></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="lead-head">
+                                <h3>回复</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="coment-area">
+                          <% form_for @answer, url(:questions, :answer, :id => @question.id), :class=>"form-horizontal", :method => 'post', multipart: true do |f| %>
+                                <%=f.hidden_field :question_id %>
+                                <%=f.hidden_field :account_id %>
+                                <div class="form-group-inner">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                                            <label class="login2 pull-right pull-right-pro">文字内容</label>
+                                        </div>
+                                        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="form-select-list">
+                                              <%=f.text_area :content, :class => "form-control" %>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group-inner">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                                            <label class="login2 pull-right pull-right-pro">图片</label>
+                                        </div>
+                                        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="form-select-list">
+                                              <%=f.file_field(:images, :class => "form-control", multiple: true)%>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group-inner">
+                                    <div class="login-btn-inner">
+                                        <div class="row">
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-9">
+                                                <div class="login-horizental cancel-wp pull-left">
+                                                    <a href="<%=url(:questions, :index)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
+                                                    <%=f.submit "提交", :class => "btn btn-sm btn-primary login-submit-cs"%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                          <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+.user-comment {
+  border-bottom: none !important;
+}
+</style>

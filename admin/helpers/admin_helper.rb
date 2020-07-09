@@ -42,6 +42,11 @@ module AutoAftermarketApi
         @local = "订单"
       end
 
+      def set_questions_title_and_local
+        @title = "问答"
+        @local = "问答"
+      end
+
     end
 
     helpers AdminHelper
