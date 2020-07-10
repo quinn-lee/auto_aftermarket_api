@@ -49,7 +49,7 @@ AutoAftermarketApi::Admin.controllers :questions do
     @topics = Topic.all
     @questions = @questions.where(topic_id: params[:topic_id]) if params[:topic_id].present?
     @questions = @questions.where("content like '%#{params[:content]}%'") if params[:content].present?
-    @questions = @questions.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    @questions = @questions.order("created_at desc").paginate(page: params[:page], per_page: 30)
     render "questions/index"
   end
 

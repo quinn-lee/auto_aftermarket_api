@@ -1558,4 +1558,39 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
+  # 取消收藏
+  # params {sku_id: 1}
+  # data {}
+  post :cancel_favour, :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        raise "sku ID不能为空" if @request_params['sku_id'].blank?
+        sku = TSku.find(@request_params['sku_id'])
+        if favorite = Favorite.find_by(merchant_id: @merchant.id, customer_id: @customer.id, t_sku_id: sku.id)
+          favorite.destroy
+        end
+      end
+      { status: 'succ', data: {}}.to_json
+    end
+  end
+
+  # 商品是否收藏过
+  # params {sku_id: 1}
+  # data {"favorite": true}
+  post :is_favorite, :provides => [:json] do
+    api_rescue do
+      authenticate
+      ActiveRecord::Base.transaction do
+        raise "sku ID不能为空" if @request_params['sku_id'].blank?
+        sku = TSku.find(@request_params['sku_id'])
+        @data = {"favorite": false}
+        if favorite = Favorite.find_by(merchant_id: @merchant.id, customer_id: @customer.id, t_sku_id: sku.id)
+          @data = {"favorite": true}
+        end
+      end
+      { status: 'succ', data: @data}.to_json
+    end
+  end
+
 end
