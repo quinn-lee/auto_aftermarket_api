@@ -469,7 +469,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       rs = @customer.orders.select("status, count(*) as count").group("status")
       data = rs.map{|r| {status: r.status, count: r.count}}
       data << {status: 'favorite', count: @customer.favorites.count}
-      data << {status: 'page_view', count: @customer.page_views.count > 100 ? 100 : @customer.page_views.count}
+      data << {status: 'sku_views', count: @customer.sku_views.count > 100 ? 100 : @customer.sku_views.count}
       data << {status: 'coupon', count: @customer.coupon_receives.where(status: 0).count}
       { status: 'succ', data: data}.to_json
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 56) do
+ActiveRecord::Schema.define(version: 57) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -365,6 +365,14 @@ ActiveRecord::Schema.define(version: 56) do
     t.string "contact_phone"
     t.jsonb "workstation"
     t.jsonb "business_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sku_views", force: :cascade do |t|
+    t.integer "customer_id"
+    t.datetime "visit_time"
+    t.string "t_sku_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

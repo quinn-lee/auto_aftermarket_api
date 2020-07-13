@@ -1500,6 +1500,11 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       authenticate
 
       @sku = TSku.find(@request_params['sku_id'])
+      if sv = SkuView.find_by(customer_id: @customer.id, t_sku_id: @sku.id)
+        sv.update(visit_time: Time.now)
+      else
+        SkuView.create(customer_id: @customer.id, t_sku_id: @sku.id, visit_time: Time.now)
+      end
       { status: 'succ', data: @sku.to_api}.to_json
     end
   end
