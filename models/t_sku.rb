@@ -11,6 +11,7 @@ class TSku < ActiveRecord::Base
   belongs_to :merchant,   :class_name => 'Merchant'
 
   has_many :favorites, :class_name => 'Favorite', :dependent => :destroy
+  has_many :sku_views, :class_name => 'SkuView', :dependent => :destroy
 
   PREFERRED = {
     1 => '优选',
