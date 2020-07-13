@@ -79,6 +79,7 @@ AutoAftermarketApi::Admin.controllers :questions do
       @answer = Answer.new(params[:answer])
       raise "回复内容不能都为空" if @answer.content.blank? && @answer.images.blank?
       if @answer.save
+        @question.update(updated_at: Time.now)
         flash[:success] = "回复成功"
         redirect(url(:questions, :answers, :id => @question.id))
       else

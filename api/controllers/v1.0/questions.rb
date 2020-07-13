@@ -70,6 +70,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
           File.open(file_path, "wb"){|f| f.write decode_base64_content}
           File.open(file_path, "rb"){|f| @answer.audio = f }
         end
+        question.update!(updated_at: Time.now)
         @answer.save!
       end
 
@@ -78,7 +79,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
   end
 
   # 问题列表
-  # params {"topic_id": 1, "self": "t"/"f"}
+  # params {"topic_id": 1, "self": "t"/"f", "content": "aaa"}
   # 可通过topic_id筛选，如果self为"t",只返回该用户问题，为"f"时，返回所有问题
   # data
 =begin
@@ -148,7 +149,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
       @questions = Question.where(merchant_id: @merchant.id)
       @questions = @questions.where(topic_id: @request_params['topic_id']) if @request_params['topic_id'].present?
       @questions = @questions.where(customer_id: @customer.id) if @request_params['self'] == "t"
-      { status: 'succ', data: @questions.order("created_at desc").map{|q| q.to_api(@customer)}}.to_json
+      @questions = @questions.where("content like '%#{@request_params['content']}%'") if @request_params['content'].present?
+      { status: 'succ', data: @questions.order("updated_at desc").map{|q| q.to_api(@customer)}}.to_json
     end
   end
 

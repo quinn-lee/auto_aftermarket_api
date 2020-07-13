@@ -17,7 +17,8 @@ class Question < ActiveRecord::Base
       customer_answers_num: answers.where(account_id: nil).count,
       customer_answers: answers.where(account_id: nil).order("created_at desc").map{|answer| answer.to_api(current_customer)},
       account_answers: answers.where.not(account_id: nil).order("created_at desc").map{|answer| answer.to_api(current_customer)},
-      created_at: created_at.strftime("%F %T")
+      created_at: created_at.strftime("%F %T"),
+      updated_at: updated_at.strftime("%F %T")
     }
   end
 
