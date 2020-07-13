@@ -115,7 +115,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
                     "created_at": "2020-07-07 22:39:16"  #回答时间
                 }
             ],
-            "account_answer": null, #是店家回复，有回复时，内容与上面客户回复一致
+            "account_answers": [], #是店家回复，有回复时，内容与上面客户回复一致
             "created_at": "2020-07-07 17:50:39"
         },
         {
@@ -136,7 +136,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
             },
             "customer_answers_num": 0,
             "customer_answers": [],
-            "account_answer": null,
+            "account_answers": [],
             "created_at": "2020-07-07 17:51:00"
         }
     ]
@@ -200,7 +200,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
                     "created_at": "2020-07-07 22:39:16"  #回答时间
                 }
             ],
-            "account_answer": null, #是店家回复，有回复时，内容与上面客户回复一致
+            "account_answers": [], #是店家回复，有回复时，内容与上面客户回复一致
             "created_at": "2020-07-07 17:50:39"
         }
 =end
