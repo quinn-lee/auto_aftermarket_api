@@ -4,12 +4,12 @@
         <table>
             <tr>
                 <th style="width: 10%;">SKU代码</th>
-                <th style="width: 25%;">标题</th>
-                <th style="width: 20%;">销售属性</th>
+                <th style="width: 22%;">标题</th>
+                <th style="width: 18%;">销售属性</th>
                 <th style="width: 10%;">可销售?</th>
                 <th style="width: 10%;">价格</th>
                 <th style="width: 10%;">库存(可销售)</th>
-                <th style="width: 10%;"></th>
+                <th style="width: 15%;"></th>
             </tr>
             <% @spu.t_skus.each do |sku| %>
             <tr>
@@ -29,6 +29,8 @@
                   <% else %>
                   <a href="<%=url(:spus, :change_sku_sale, :sku_id =>sku.id, :action =>'onsale')%>" title="上架" class="pd-setting-ed"><i class="fa fa-check" aria-hidden="true"></i></a>
                   <% end %>
+
+                  <a href="<%=url(:spus, :select_car_model, :sku_id =>sku.id) %>" title="匹配" class="pd-setting-ed">匹配车型</a>
                 </td>
             </tr>
             <% end %>

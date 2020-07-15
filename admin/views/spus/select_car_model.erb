@@ -1,0 +1,116 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="review-tab-pro-inner">
+        <ul id="myTab3" class="tab-review-design">
+            <li class="active"><a disable='true'><i class="fa fa-tag" aria-hidden="true"></i> 商品匹配车型</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content custom-product-edit">
+          <div class="product-status-wrap">
+              <% form_tag url(:spus, :selected_car_model, :sku_id => @sku.id), :class=>"form-horizontal", :method => 'post' do %>
+              <div class="form-group-inner">
+                  <div class="login-btn-inner">
+                      <div class="row">
+                          <div class="col-lg-3"></div>
+                          <div class="col-lg-9">
+                              <div class="login-horizental cancel-wp pull-left">
+                                <% if @car_year.present? %>
+                                  <a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id, :car_model => @car_model)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
+                                <% elsif @car_model.present? %>
+                                  <a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
+                                <% elsif @brand.present? %>
+                                  <a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
+                                <% else %>
+                                  <a href="<%=url(:spus, :show, :id => @sku.t_spu_id)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
+                                <% end %>
+
+                                <%=submit_tag "提交", :class => "btn btn-sm btn-primary login-submit-cs"%>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <table id="accordion2">
+                  <tr>
+                      <th style="width: 28%;">品牌</th>
+                      <th style="width: 25%;">车款</th>
+                      <th style="width: 20%;"><input type="checkbox" onclick="checkAllYear(this)">生产年份</th>
+                      <th style="width: 25%;"><input type="checkbox" onclick="checkAllModel(this)">车型</th>
+                  </tr>
+                  <% index = 0%>
+                  <% if @car_year.present? %>
+                    <%=hidden_field_tag :brand, value: @brand.id%>
+                    <%=hidden_field_tag :car_model, value: @car_model%>
+                    <%=hidden_field_tag :year_id, value: @car_year.id%>
+                    <% @model_versions.each do |model_v| %>
+                      <tr>
+                          <td><% if index == 0%><img src="<%=@brand.image_url%>">&nbsp;&nbsp;&nbsp;<a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id)%>" ><%=@brand.brand %></a><% end %></td>
+                          <td><% if index == 0%><a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id, :car_model => @car_model)%>" ><%=@car_model %></a><% end %></td>
+                          <td><% if index == 0%><a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id, :car_model => @car_model, :year_id => @car_year.id)%>" ><%=@car_year.year %></a><% end %></td>
+                          <td><input type="checkbox" name="model_ids[]" value="<%=model_v.id%>"><%=model_v.car_model_version %></td>
+                      </tr>
+                      <% index += 1%>
+                    <% end %>
+                  <% elsif @car_model.present? %>
+                    <%=hidden_field_tag :brand, value: @brand.id%>
+                    <%=hidden_field_tag :car_model, value: @car_model%>
+                    <% @car_years.each do |car_year| %>
+                      <tr>
+                          <td><% if index == 0%><img src="<%=@brand.image_url%>">&nbsp;&nbsp;&nbsp;<a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id)%>" ><%=@brand.brand %></a><% end %></td>
+                          <td><% if index == 0%><a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id, :car_model => @car_model)%>" ><%=@car_model %></a><% end %></td>
+                          <td><input type="checkbox" name="year_ids[]" value="<%=car_year.id%>"><a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id, :car_model => @car_model, :year_id => car_year.id)%>" ><%=car_year.year %></a></td>
+                          <td></td>
+                      </tr>
+                      <% index += 1%>
+                    <% end %>
+                  <% elsif @brand.present? %>
+                    <%=hidden_field_tag :brand, value: @brand.id%>
+                    <% @car_models.each do |car_model| %>
+                      <tr>
+                          <td><% if index == 0%><img src="<%=@brand.image_url%>">&nbsp;&nbsp;&nbsp;<a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id)%>" ><%=@brand.brand %></a><% end %></td>
+                          <td><a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => @brand.id, :car_model => car_model)%>" ><%=car_model %></a></td>
+                          <td></td>
+                          <td></td>
+                      </tr>
+                      <% index += 1%>
+                    <% end %>
+                  <% else %>
+                    <% @car_brands.each do |brand| %>
+                      <tr>
+                          <td><img src="<%=brand.image_url%>">&nbsp;&nbsp;&nbsp;<a href="<%=url(:spus, :select_car_model, :sku_id => @sku.id, :brand => brand.id)%>" ><%=brand.brand %></a></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </table>
+                <% end %>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<script>
+function checkAllModel(object)
+{
+   var model_ids = document.getElementsByName("model_ids[]");
+   var length = model_ids.length;
+   var checked = object.checked;
+   //alert(checked)
+   for (var i = 0; i < length; i++)
+   {
+     model_ids[i].checked=checked;
+   }
+}
+function checkAllYear(object)
+{
+   var year_ids = document.getElementsByName("year_ids[]");
+   var length = year_ids.length;
+   var checked = object.checked;
+   //alert(checked)
+   for (var i = 0; i < length; i++)
+   {
+     year_ids[i].checked=checked;
+   }
+}
+</script>

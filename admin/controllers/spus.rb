@@ -209,4 +209,68 @@ AutoAftermarketApi::Admin.controllers :spus do
     render "spus/show_sku"
   end
 
+  # 商品匹配车型
+  get :select_car_model, :with => :sku_id do
+    @sku = TSku.find(params[:sku_id])
+    @car_brands = CarBrand.order(:id => :asc)
+    if params[:brand].present?
+      @brand = CarBrand.find(params[:brand])
+      @car_models = CarYear.where(brand: @brand.brand).map(&:car_model).uniq
+    end
+    if params[:car_model].present?
+      @car_model = params[:car_model]
+      @car_years = CarYear.where(brand: @brand.brand, car_model: @car_model)
+    end
+    if params[:year_id].present?
+      @car_year = CarYear.find(params[:year_id])
+      @model_versions = CarModel.where(car_year_id: @car_year.id)
+    end
+    render "spus/select_car_model"
+  end
+
+  post :selected_car_model, :with => :sku_id do
+    begin
+      logger.info params
+      @sku = TSku.find(params[:sku_id])
+      @car_brands = CarBrand.order(:id => :asc)
+      if params[:brand].present?
+        @brand = CarBrand.find(params[:brand])
+        @car_models = CarYear.where(brand: @brand.brand).map(&:car_model).uniq
+      end
+      if params[:car_model].present?
+        @car_model = params[:car_model]
+        @car_years = CarYear.where(brand: @brand.brand, car_model: @car_model)
+      end
+      if params[:year_id].present?
+        @car_year = CarYear.find(params[:year_id])
+        @model_versions = CarModel.where(car_year_id: @car_year.id)
+      end
+      raise "请勾选年份或车型" if params[:model_ids].blank? && params[:year_ids].blank?
+      ActiveRecord::Base.transaction do
+        if params[:model_ids].present?
+          CarModel.where(id: params[:model_ids]).each do |car_model|
+            unless cms = CarModelSku.find_by(car_model_id: car_model.id, t_sku_id: @sku.id, merchant_id: current_account.merchant.id)
+              CarModelSku.create!(car_model_id: car_model.id, t_sku_id: @sku.id, merchant_id: current_account.merchant.id, t_category_id: @sku.t_spu.t_category_id)
+            end
+          end
+        end
+        if params[:year_ids].present?
+          CarYear.where(id: params[:year_ids]).each do |car_year|
+            car_year.car_models.each do |car_model|
+              unless cms = CarModelSku.find_by(car_model_id: car_model.id, t_sku_id: @sku.id, merchant_id: current_account.merchant.id)
+                CarModelSku.create!(car_model_id: car_model.id, t_sku_id: @sku.id, merchant_id: current_account.merchant.id, t_category_id: @sku.t_spu.t_category_id)
+              end
+            end
+          end
+        end
+      end
+      flash[:success] = "车型匹配成功"
+      redirect(url(:spus, :select_car_model, :sku_id => @sku.id))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      render 'spus/select_car_model'
+    end
+  end
+
 end
