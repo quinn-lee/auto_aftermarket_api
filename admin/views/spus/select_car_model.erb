@@ -6,6 +6,46 @@
         <div id="myTabContent" class="tab-content custom-product-edit">
           <div class="product-status-wrap">
               <% form_tag url(:spus, :selected_car_model, :sku_id => @sku.id), :class=>"form-horizontal", :method => 'post' do %>
+              <div class="row">
+                <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                  <div class="modal-bootstrap modal-login-form">
+                      <a class="zoomInDown mg-t" href="#" data-toggle="modal" data-target="#searchZoom">已匹配车型</a>
+                  </div>
+                  <div id="searchZoom" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-close-area modal-close-df">
+                                  <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                              </div>
+                              <div class="modal-body">
+                                  <div class="modal-login-form-inner">
+                                      <div class="row">
+                                          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                              <div class="basic-login-inner modal-basic-inner">
+                                                <table>
+                                                    <tr>
+                                                        <th style="width: 44%;">年款</th>
+                                                        <th style="width: 44%;">车型</th>
+                                                        <th style="width: 10%;"></th>
+                                                    </tr>
+                                                    <% CarModel.where(id: CarModelSku.where(t_sku_id: @sku.id, merchant_id: current_account.merchant.id).map(&:car_model_id)).each do |car_model|%>
+                                                    <tr>
+                                                        <td><%=car_model.car_model_name%></td>
+                                                        <td><%=car_model.car_model_version%></td>
+                                                        <td><a href="<%=url(:spus, :unselected_car_model, :sku_id => @sku.id, :car_model_id => car_model.id)%>" >删除</a></td>
+                                                    </tr>
+                                                    <% end %>
+                                                </table>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
               <div class="form-group-inner">
                   <div class="login-btn-inner">
                       <div class="row">

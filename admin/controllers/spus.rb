@@ -230,7 +230,6 @@ AutoAftermarketApi::Admin.controllers :spus do
 
   post :selected_car_model, :with => :sku_id do
     begin
-      logger.info params
       @sku = TSku.find(params[:sku_id])
       @car_brands = CarBrand.order(:id => :asc)
       if params[:brand].present?
@@ -265,6 +264,22 @@ AutoAftermarketApi::Admin.controllers :spus do
         end
       end
       flash[:success] = "车型匹配成功"
+      redirect(url(:spus, :select_car_model, :sku_id => @sku.id))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      render 'spus/select_car_model'
+    end
+  end
+
+  get :unselected_car_model, :with => :sku_id do
+    begin
+      @sku = TSku.find(params[:sku_id])
+      cmss = CarModelSku.where(car_model_id: params[:car_model_id], t_sku_id: @sku.id, merchant_id: current_account.merchant.id)
+      ActiveRecord::Base.transaction do
+        cmss.delete_all
+      end
+      flash[:success] = "车型匹配删除成功"
       redirect(url(:spus, :select_car_model, :sku_id => @sku.id))
     rescue => e
       logger.info e.backtrace
