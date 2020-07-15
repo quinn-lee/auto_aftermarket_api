@@ -1598,4 +1598,24 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
+
+  # 保养套餐替换商品
+  # 有匹配的商品时返回同一个目录下匹配的商品，没有匹配的商品时返回同一个目录下通用的商品
+  # params {car_model_id: 1, sku_id: 7}
+  # car_model_id是当前车型的汽车型号id，sku_id是需要替换的商品sku_id
+  # data 与skus/skus 接口相同
+  post :sub_skus, :provides => [:json] do
+    api_rescue do
+      authenticate
+      raise "参数不能为空" if @request_params['car_model_id'].blank? || @request_params['sku_id'].blank?
+      @sku = TSku.find(@request_params['sku_id'])
+      @t_skus = TSku.where(id: CarModelSku.where(merchant_id: @merchant.id, car_model_id: @request_params['car_model_id'], t_category_id: @sku.t_spu.t_category_id).map(&:t_sku_id)).where.not(id: @sku.id).where(saleable: true).where("available_num > 0")
+      if @t_skus.count == 0 #不存在匹配商品时，返回同一个目录下的通用商品
+        @t_spus = TSpu.where(t_category_id: @sku.t_spu.t_category_id, merchant_id: @merchant.id, saleable: true)
+        @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id), saleable: true).where("available_num > 0").where.not(id: CarModelSku.where(merchant_id: @merchant.id, t_category_id: @sku.t_spu.t_category_id).where.not(car_model_id: @request_params['car_model_id']).map(&:t_sku_id)).where.not(id: @sku.id)
+      end
+      { status: 'succ', data: @t_skus.map(&:to_api)}.to_json
+    end
+  end
+
 end

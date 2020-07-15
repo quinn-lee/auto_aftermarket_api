@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 57) do
+ActiveRecord::Schema.define(version: 58) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,15 @@ ActiveRecord::Schema.define(version: 57) do
     t.jsonb "engine_oil_label"
     t.decimal "max_engine_oil_volume", precision: 8, scale: 2
     t.jsonb "brake_fluid_label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "car_model_skus", force: :cascade do |t|
+    t.integer "car_model_id"
+    t.integer "t_sku_id"
+    t.integer "t_category_id"
+    t.integer "merchant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

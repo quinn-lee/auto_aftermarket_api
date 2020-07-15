@@ -3,6 +3,7 @@ module AutoAftermarketApi
     register Padrino::Mailer
     register Padrino::Helpers
     enable :sessions
+    set :protection, :except => [:json_csrf]
 
     ##
     # Caching support.
