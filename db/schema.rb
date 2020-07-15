@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 58) do
+ActiveRecord::Schema.define(version: 59) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,18 @@ ActiveRecord::Schema.define(version: 58) do
     t.string "crypted_password"
     t.string "role"
     t.integer "merchant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.integer "customer_id"
+    t.string "province"
+    t.string "city"
+    t.string "district"
+    t.string "address"
+    t.string "name"
+    t.string "mobile"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
