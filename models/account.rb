@@ -2,6 +2,7 @@
 # 后台管理账户，每个商户有多个管理账户
 class Account < ActiveRecord::Base
   belongs_to :merchant,   :class_name => 'Merchant'
+  belongs_to :shop,   :class_name => 'Shop'
 
   attr_accessor :password, :password_confirmation
 

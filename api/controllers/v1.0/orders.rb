@@ -112,8 +112,10 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           item['skus'].each do |sku|
             tsku = TSku.find(sku['sku_id'])
             raise "商品库存不足，创建订单失败" if tsku.available_num < sku['quantity']
+            lack_quantity = sku['quantity'].to_i - (tsku.stock_num < 0 ? 0 : tsku.stock_num) # 需采购的数量
+            lack_quantity = lack_quantity < 0 ? 0 : lack_quantity
             tsku.update(stock_num: (tsku.stock_num||0)-sku['quantity'].to_i, available_num: (tsku.available_num||0)-sku['quantity'].to_i)
-            OrderSku.create!(order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'] )
+            OrderSku.create!(order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'], lack_quantity: lack_quantity )
           end
         end
       end

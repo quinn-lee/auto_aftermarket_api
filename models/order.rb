@@ -9,6 +9,24 @@ class Order < ActiveRecord::Base
   has_one :group_buyer, :class_name => 'GroupBuyer', :dependent => :destroy
   has_one :seckill_buyer, :class_name => 'SeckillBuyer', :dependent => :destroy
 
+  STATUS = {
+    "unpaid" => '待付款',
+    "paid" => '已付款待发货/采购',
+    "received" => '采购完成待预约/发货',
+    "delivered" => '已发货待收货',
+    "appointed" => '已预约待安装',
+    "done" => '已完成',
+    "delete" => '已删除',
+    "cancelled" => '已取消'
+  }.stringify_keys
+
+  ORDERTYPE = {
+    "maintenance" => '维修保养',
+    "purchase" => '自选商品',
+    "group" => '团购',
+    "seckill" => '秒杀'
+  }.stringify_keys
+
   def gen_order_no
     r=ActiveRecord::Base.connection.execute("select nextval('order_no_seq')")
     "#{r[0]['nextval']}#{Time.now.strftime('%Y%m%d%H%M%S')}"
