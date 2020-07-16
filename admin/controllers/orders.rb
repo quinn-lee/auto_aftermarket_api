@@ -20,4 +20,8 @@ AutoAftermarketApi::Admin.controllers :orders do
     @order_skus = @order_skus.order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'orders/purchases'
   end
+
+  # 采购完成操作
+  post :purchased do
+  end
 end
