@@ -65,9 +65,9 @@
             </tr>
             <% @order_skus.each do |order_sku| %>
             <tr>
-                <td><%=order_sku.sku.title%></td>
-                <td><%=order_sku.sku.sale_attrs_desc%></td>
-                <td><%=order_sku.sku.sku_code%></td>
+                <td><%=order_sku.t_sku.title%></td>
+                <td><%=order_sku.t_sku.sale_attrs_desc%></td>
+                <td><%=order_sku.t_sku.sku_code%></td>
                 <td><%=order_sku.order_no%></td>
                 <td><%=order_sku.quantity%></td>
                 <td><%=order_sku.lack_quantity%></td>

@@ -15,7 +15,7 @@ AutoAftermarketApi::Admin.controllers :orders do
 
   # 采购列表
   get :purchases do
-    @order_skus = OrderSku.where("lack_quantity < 0").where("(SELECT orders.merchant_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{current_account.merchant.id}")
+    @order_skus = OrderSku.where("lack_quantity > 0").where("(SELECT orders.merchant_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{current_account.merchant.id}")
     @order_skus = @order_skus.where(order_no: params[:order_no]) if params[:order_no].present?
     @order_skus = @order_skus.order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'orders/purchases'
