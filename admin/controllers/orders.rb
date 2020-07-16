@@ -21,6 +21,14 @@ AutoAftermarketApi::Admin.controllers :orders do
     render 'orders/purchases'
   end
 
+  # 待发货列表
+  get :deliveries do
+    @orders = current_account.merchant.orders.where(status: 'received').where("(SELECT sub_orders.sub_type FROM sub_orders WHERE orders.id = sub_orders.order_id) = 'delivery'")
+    @orders = @orders.where(order_no: params[:order_no]) if params[:order_no].present?
+    @orders = @orders.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    render 'orders/deliveries'
+  end
+
   # 采购完成操作
   post :purchased do
   end

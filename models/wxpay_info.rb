@@ -8,6 +8,9 @@ class WxpayInfo < ActiveRecord::Base
       order.update!(status: "paid", pay_way: "wechat", pay_time: Time.now, tx_num: transaction_id)
 
       order_skus = OrderSku.where(order_no: order.order_no)
+      if order_skus.where("lack_quantity > 0").count == 0 # 不缺货时，更新订单状态为可发货或可预约
+        order.update!(status: "received")
+      end
       if order.order_type == "maintenance" #维修保养时，只有一个子订单
         SubOrder.create!(order_id: order.id, sub_type: "install", order_sku_ids: order_skus.map(&:id))
       else #根据是否有到店安装的商品进行拆分订单
