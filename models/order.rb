@@ -100,4 +100,15 @@ class Order < ActiveRecord::Base
     }
     return h
   end
+
+  def delivery_address
+    if delivery_info.present?
+      "#{delivery_info['province']}#{delivery_info['city']}#{delivery_info['district']} #{delivery_info['address']}  #{delivery_info['name']} #{delivery_info['mobile']}"
+    end
+  end
+  def contact_info_s
+    if contact_info.present?
+      "#{contact_info['name']} #{contact_info['mobile']}"
+    end
+  end
 end

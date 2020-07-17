@@ -1601,7 +1601,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
 
   # 保养套餐替换商品
   # 有匹配的商品时返回同一个目录下匹配的商品，没有匹配的商品时返回同一个目录下通用的商品
-  # params {car_model_id: 1, sku_id: 7}
+  # params {car_model_id: 1, sku_id: 7,
+    #  "title": "美孚", "brand_id": [1,2], preferred: 1,  #preferred=1表示查询优选商品，=0表示查询普通商品
+    #  "attrs": {"规格": ['255/55R18','235/60R18'], "轮胎性能": ['SUV/越野型']}}
   # car_model_id是当前车型的汽车型号id，sku_id是需要替换的商品sku_id
   # data 与skus/skus 接口相同
   post :sub_skus, :provides => [:json] do
@@ -1613,6 +1615,17 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       if @t_skus.count == 0 #不存在匹配商品时，返回同一个目录下的通用商品
         @t_spus = TSpu.where(t_category_id: @sku.t_spu.t_category_id, merchant_id: @merchant.id, saleable: true)
         @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id), saleable: true).where("available_num > 0").where.not(id: CarModelSku.where(merchant_id: @merchant.id, t_category_id: @sku.t_spu.t_category_id).where.not(car_model_id: @request_params['car_model_id']).map(&:t_sku_id)).where.not(id: @sku.id)
+      end
+      @t_skus = @t_skus.where("(SELECT t_spus.t_brand_id FROM t_spus WHERE t_spus.id = t_skus.t_spu_id) in (?) ", @request_params['brand_id']) if @request_params['brand_id'].present?
+      @t_skus = @t_skus.where("title like '%#{@request_params['title']}%'") if @request_params['title'].present?
+      @t_skus = @t_skus.where(preferred: @request_params['preferred']) if @request_params['preferred'].present?
+      if @request_params['attrs'].present?
+        @request_params['attrs'].each do |k, v|
+          instr = "("
+          v.each{|s| instr << "'#{s}',"}
+          instr = instr.chop << ")"
+          @t_skus = @t_skus.where("attrs ->> '#{k}' in #{instr}")
+        end
       end
       { status: 'succ', data: @t_skus.map(&:to_api)}.to_json
     end

@@ -3,6 +3,11 @@
 class SubOrder < ActiveRecord::Base
   belongs_to :order,   :class_name => 'Order'
 
+  SUBTYPE = {
+    "install" => '安装',
+    "delivery" => '寄送'
+  }.stringify_keys
+
   def to_api
     oss = OrderSku.where(id: order_sku_ids)
     items = []

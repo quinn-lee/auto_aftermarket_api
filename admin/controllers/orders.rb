@@ -29,7 +29,61 @@ AutoAftermarketApi::Admin.controllers :orders do
     render 'orders/deliveries'
   end
 
+  # 取消
+  get :cancel, :with => :id do
+    begin
+      @order = Order.find(params[:id])
+      @order.update!(status: "cancelled", cancel_time: Time.now)
+      flash[:success] = "取消成功"
+      redirect(url(:orders, :index))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:orders, :index))
+    end
+  end
+
   # 采购完成操作
-  post :purchased do
+  get :purchased do
+    begin
+      raise "请勾选需要操作的记录" if params[:ids].blank?
+      @order_skus = OrderSku.where(id: params[:ids])
+      ActiveRecord::Base.transaction do
+        @order_skus.each do |order_sku|
+          sku = TSku.find(order_sku.t_sku_id)
+          # 更新库存数量
+          sku.update!(stock_num: (sku.stock_num||0)+order_sku.lack_quantity, available_num: (sku.available_num||0)+order_sku.lack_quantity)
+          # 更新需采购数量
+          order_sku.update!(lack_quantity: 0)
+          order = Order.find_by(order_no: order_sku.order_no)
+          if OrderSku.where(order_no: order.order_no).where("lack_quantity > 0").count == 0
+            # 更新订单状态
+            order.update!(status: "received")
+          end
+        end
+      end
+      flash[:success] = "操作成功"
+      redirect(url(:orders, :purchases))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:orders, :purchases))
+    end
+  end
+
+  # 发货完成
+  get :delivered do
+    begin
+      raise "请勾选需要操作的记录" if params[:ids].blank?
+      @orders = Order.where(id: params[:ids])
+      @orders.update_all(status: "delivered", delivere_time: Time.now)
+      SubOrder.where(sub_type: "delivery").where(order_id: params[:ids]).update(status: "delivered")
+      flash[:success] = e.message
+      redirect(url(:orders, :deliveries))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = "操作成功"
+      redirect(url(:orders, :deliveries))
+    end
   end
 end

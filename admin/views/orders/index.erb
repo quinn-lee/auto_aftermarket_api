@@ -73,7 +73,7 @@
             </div>
           </div>
         </div>
-        <table>
+        <table id="accordion2">
             <tr>
                 <th style="width: 12%;">订单号</th>
                 <th style="width: 10%;">订单类型</th>
@@ -87,7 +87,7 @@
             </tr>
             <% @orders.each do |order| %>
             <tr>
-                <td><%=order.order_no%></td>
+                <td><a data-toggle="collapse" data-parent="#accordion2" href="#collapse<%=order.id%>"><%=order.order_no%></a></td>
                 <td><%=Order::ORDERTYPE[order.order_type]%></td>
                 <td>￥<%=order.amount%></td>
                 <td>￥<%=order.pay_amount%></td>
@@ -97,14 +97,36 @@
                 <td><%=Order::STATUS[order.status]%></td>
                 <td>
                   <div class="button-drop-style-one btn-danger-bg">
-                      <button type="button" class="btn btn-custon-four btn-danger dropdown-toggle" data-toggle="dropdown">操作 <i class="fa fa-angle-down"></i>
-    </button>
+                      <button type="button" class="btn btn-custon-four btn-danger dropdown-toggle" data-toggle="dropdown">操作 <i class="fa fa-angle-down"></i></button>
                       <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-five" role="menu">
-                          <li></li>
-
+                          <li><a href="<%=url(:orders, :cancel, :id => order.id)%>">取消</a></li>
                       </ul>
                   </div>
                 </td>
+                <tbody id="collapse<%=order.id%>" class="panel-collapse panel-ic collapse" style="background: #BDC3C7">
+                  <% order.sub_orders.each do |sub_order|%>
+                  <tr>
+                      <td><%=SubOrder::SUBTYPE[sub_order.sub_type]%></td>
+                      <td colspan="6">
+                        <table>
+                        <% OrderSku.where(id: sub_order.order_sku_ids).each do |order_sku|%>
+                        <tr>
+                          <td><%=order_sku.t_sku.title%></td>
+                          <td><%=order_sku.quantity%></td>
+                        </tr>
+                        <% end %>
+                        </table>
+                      </td>
+                      <td colspan="2">
+                        <% if sub_order.sub_type=="install" %>
+                          <%=order.contact_info_s%>
+                        <% else %>
+                          <%=order.delivery_address%>
+                        <% end %>
+                      </td>
+                  </tr>
+                  <% end %>
+                </tbody>
             </tr>
             <% end %>
 
