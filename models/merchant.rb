@@ -12,4 +12,6 @@ class Merchant < ActiveRecord::Base
   has_many :seckills, :class_name => 'Seckill', :dependent => :destroy
 
   has_many :questions, :class_name => 'Question', :dependent => :destroy
+
+  has_many :activities, :class_name => 'Activity', :dependent => :destroy
 end
