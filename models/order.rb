@@ -101,6 +101,18 @@ class Order < ActiveRecord::Base
     return h
   end
 
+  def to_agent_api(percent)
+    t_sku = TSku.where(id: OrderSku.where(order_no: order_no).map(&:t_sku_id)).first
+    {
+      sku_info: t_sku.t_spu.t_category.name,
+      customer_nickname: (self.customer.wechat_info || {})['nickName'],
+      pay_amount: pay_amount,
+      commission: BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s)),
+      pay_time: pay_time.try{|pt| pt.strftime("%F %T")}
+    }
+
+  end
+
   def delivery_address
     if delivery_info.present?
       "#{delivery_info['province']}#{delivery_info['city']}#{delivery_info['district']} #{delivery_info['address']}  #{delivery_info['name']} #{delivery_info['mobile']}"

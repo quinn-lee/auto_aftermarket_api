@@ -30,6 +30,28 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/coupons' do
     end
   end
 
+  # 优惠券详情
+  # params {"id": 1}
+  # data
+=begin
+    {
+        "id": 1,
+        "title": "保养专用优惠券",   #优惠券标题
+        "remarks": "满1000元可用",   #优惠券说明
+        "end_time": "2020-06-25 21:00:00",  #优惠券结束时间
+        "money": "100.0",   #优惠券金额
+        "full_money": "2000.0",   #优惠券使用条件，订单金额满多少可使用，每个订单只可使用一张优惠券
+        "status": "下架"  #状态： 可领取，下架，已结束； 只有状态是可领取的，客户才能领取
+    }
+=end
+  post :show, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @coupon = @merchant.coupons.find(@request_params['id'])
+      { status: 'succ', data: @coupon.to_api }.to_json
+    end
+  end
+
 
 
   # 客户优惠券领取

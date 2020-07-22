@@ -10,6 +10,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
   # params
 =begin
   {
+    "dist_share_id": 10, # 分享记录的id，通过别人的分享下单时，需要传输该字段
     "shop_id": 2, # 到店安装时，选择的门店，自选商品时如果没有到店安装的，该项为空
     "contact_info": {"name": "李富元", "mobile": "13917050000"}, # 到店安装时需要填写，
     "delivery_info": {"province": "", "city": "", "district": "", "address": "",
@@ -81,6 +82,12 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         elsif (["purchase", "group", "seckill"].include? @request_params['order_type']) # 自选商品、团购、秒杀
           @order.delivery_info = @request_params['delivery_info']
           @order.contact_info = @request_params['contact_info'].present? ? @request_params['contact_info'] : @request_params['delivery_info']
+        end
+        # 记录分享下单关系
+        if @request_params["dist_share_id"].present?
+          @order.dist_share_id = @request_params["dist_share_id"]
+          agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员
+          @order.dist_agent_id = agent.id if (([1, 2].include?agent.role_id) && (agent.app_status == 1)) #是分销员时，记录订单归属的分销员
         end
 
         @order.save!
@@ -474,6 +481,40 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       data << {status: 'sku_views', count: @customer.sku_views.count > 100 ? 100 : @customer.sku_views.count}
       data << {status: 'coupon', count: @customer.coupon_receives.where(status: 0).count}
       { status: 'succ', data: data}.to_json
+    end
+  end
+
+  # 该用户所属分销订单
+  # params {"pay_time_gt": "2020-01-01"}
+  # 可根据时间进行筛选，pay_time_gt表示支付时间大于？
+  # data
+=begin
+  {
+        "all_pay_amount": "1588.0",  #客户消费总额
+        "all_commission": "158.8",  #红利总计
+        "can_withdraw_money": "40.0",  #当前可提现金额
+        "last_month_withdraw": 0, #上月收入
+        "dist_orders": [
+            {
+                "sku_info": "机油",  #订单商品所属
+                "customer_nickname": "nonki", #订单客户昵称
+                "pay_amount": "300.0",  #订单支付金额
+                "commission": "30.0", #订单产生佣金
+                "pay_time": "2020-07-16 17:13:36"  #订单支付时间
+            }
+        ]
+    }
+=end
+  post "/dist_orders", :provides => [:json] do
+    api_rescue do
+      authenticate
+      #TODO
+      percent = 0.1
+      @dist_orders = @customer.dist_orders(@merchant)
+      @dist_orders = @dist_orders.where("pay_time >= ?", @request_params['pay_time_gt']) if @request_params['pay_time_gt'].present?
+      all_pay_amount = @dist_orders.each.sum(&:pay_amount)
+      all_commission = @dist_orders.each.sum{|order| BigDecimal.new(sprintf("%.2f", (order.pay_amount * percent).to_s))}
+      { status: 'succ', data: {all_pay_amount: all_pay_amount, all_commission: all_commission, can_withdraw_money: @customer.can_withdraw_money(@merchant, percent), last_month_withdraw: @customer.last_month_withdraw(@merchant),dist_orders: @dist_orders.map{|order| order.to_agent_api(percent)}}}.to_json
     end
   end
 

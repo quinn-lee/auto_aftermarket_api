@@ -7,7 +7,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   end
 
   # 注册或登录
-  # params {"code": "011EewQl0V6Juq13KWNl01SgQl0EewQ-"}
+  # params {"code": "011EewQl0V6Juq13KWNl01SgQl0EewQ-", "dist_share_id": 10}
+  # dist_share_id 为分享记录的id，只有在新用户注册的时候需要传输（通过点击别人分享的内容进入小程序时 ）
   # data {"token": ""}
   # 此处获得的token，需要在后续请求中加入到header中，key='token', value='token值'
   post "/", :provides => [:json] do
@@ -21,13 +22,19 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         if res["errcode"].present?
           raise res['errmsg']
         else
-          unless cus = Customer.find_by(openid: res['openid'])
-            cus = Customer.create(openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
+          unless @cus = Customer.find_by(openid: res['openid'])
+            dist_agent_id = nil
+            dist_share_id = @request_params["dist_share_id"]
+            if @request_params["dist_share_id"].present?
+              agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员
+              dist_agent_id = agent.id if (([1, 2].include?agent.role_id) && (agent.app_status == 1)) #是分销员时，记录新用户归属的分销员
+            end
+            @cus = Customer.create(dist_share_id: dist_share_id, dist_agent_id: dist_agent_id, openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
           end
         end
       end
 
-      { status: 'succ', data: {token: cus.token}}.to_json
+      { status: 'succ', data: {token: @cus.token}}.to_json
     end
   end
 
@@ -176,6 +183,116 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
 
       @svs = @customer.sku_views.order("visit_time desc")
       { status: 'succ', data: @svs.limit(100).map{|sv| sv.t_sku.to_api}}.to_json
+    end
+  end
+
+  # 判断客户是否符合申请成为分销员的条件
+  # params 空
+  # data {can_agent: true} true为符合申请条件，false为不符合申请条件
+  post :can_agent, :provides => [:json] do
+    api_rescue do
+      authenticate
+      #TODO
+      { status: 'succ', data: {can_agent: true}}.to_json
+    end
+  end
+
+  # 申请成为销售员/分销员
+  # params {'role': 1}
+  # role 1=>销售员 2=>分销员
+  # 公司内部员工申请成为销售员（可直接申请，无需判断），客户申请成为分销员（需要先调用can_agent接口判断能否申请），
+  # 后台审核通过后才能访问商户版小程序
+  # data 空
+  post :agent_apply, :provides => [:json] do
+    api_rescue do
+      authenticate
+      raise "角色错误" unless [1, 2].include? @request_params['role'].to_i
+      @customer.update!(role_id: @request_params['role'].to_i, app_status: 0)
+      { status: 'succ', data: {}}.to_json
+    end
+  end
+
+  # 商户版小程序登录
+  # params {"code": "011EewQl0V6Juq13KWNl01SgQl0EewQ-"}
+  # data {"token": ""}
+  # 此处获得的token，需要在后续请求中加入到header中，key='token', value='token值'
+  post :agent_login, :provides => [:json] do
+    api_rescue do
+      code,body=WebFunctions.method_url_call("get","https://api.weixin.qq.com/sns/jscode2session?appid=#{Settings.wechat.appId}&secret=#{Settings.wechat.appSecret}&js_code=#{@request_params["code"]}&grant_type=authorization_code",{},"JSON")
+      if code!="200"
+        logger.info("call api weixin expection , [#{code}]")
+        raise "call api weixin timeout,please try again"
+      else
+        res=JSON.parse body
+        if res["errcode"].present?
+          raise res['errmsg']
+        else
+          # 后台审核通过后的分销员或销售员才能访问商户版小程序
+          unless cus = Customer.find_by(openid: res['openid'], role_id: [1, 2], app_status: 1)
+            raise "权限错误"
+          end
+        end
+      end
+
+      { status: 'succ', data: {token: cus.token}}.to_json
+    end
+  end
+
+  # 销售员/分销员 个人资料修改
+  # params {"name": "a", "mobile": "1330001102", "email": "lifuyuan@hotmail.com", wx_barcode: "Base64编码后的串", avatar: "Base64编码后的串"}
+  # data 空
+  post :modify_agent_info, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @customer.name = @request_params['name'] if @request_params['name'].present?
+      @customer.mobile = @request_params['mobile'] if @request_params['mobile'].present?
+      @customer.email = @request_params['email'] if @request_params['email'].present?
+      if @request_params['wx_barcode'].present? # 保存微信二维码
+        file_path = "public/uploads/tmp/wx_barcode#{@customer.id}#{Time.now.strftime('%Y%m%d%H%M%S')}"
+        decode_base64_content = Base64.decode64(@request_params['wx_barcode'])
+        File.delete(file_path) if File.exists?(file_path)
+        File.open(file_path, "wb"){|f| f.write decode_base64_content}
+        File.open(file_path, "rb"){|f| @customer.wx_barcode = f }
+      end
+      if @request_params['avatar'].present? # 保存头像
+        file_path = "public/uploads/tmp/avatar#{@customer.id}#{Time.now.strftime('%Y%m%d%H%M%S')}"
+        decode_base64_content = Base64.decode64(@request_params['avatar'])
+        File.delete(file_path) if File.exists?(file_path)
+        File.open(file_path, "wb"){|f| f.write decode_base64_content}
+        File.open(file_path, "rb"){|f| @customer.avatar = f }
+      end
+      @customer.save!
+      { status: 'succ', data: {}}.to_json
+    end
+  end
+
+  # 销售员/分销员 资料
+  # params 空
+  # data
+=begin
+  {
+        "id": 1,
+        "name": "a",
+        "mobile": "1330001102",
+        "token": "",
+        "email": "lifuyuan@hotmail.com",
+        "wx_barcode": "/uploads/customer/wx_barcode/1/wx_barcode120200722222956",
+        "avatar": "/uploads/customer/avatar/1/avatar120200722222956",
+        "wechat_info": {
+            "city": "Taizhou",
+            "gender": 1,
+            "country": "China",
+            "language": "zh_CN",
+            "nickName": "nonki",
+            "province": "Zhejiang",
+            "avatarUrl": "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwG"
+        }
+    }
+=end
+  post :agent_info, :provides => [:json] do
+    api_rescue do
+      authenticate
+      { status: 'succ', data: @customer.to_agent_api}.to_json
     end
   end
 end

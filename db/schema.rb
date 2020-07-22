@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 65) do
+ActiveRecord::Schema.define(version: 76) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,6 +202,13 @@ ActiveRecord::Schema.define(version: 65) do
     t.jsonb "wechat_info"
     t.jsonb "location_info"
     t.jsonb "his_location_info"
+    t.string "email"
+    t.json "wx_barcode"
+    t.integer "role_id"
+    t.integer "dist_share_id"
+    t.integer "dist_agent_id"
+    t.integer "app_status"
+    t.json "avatar"
   end
 
   create_table "discounts", force: :cascade do |t|
@@ -323,6 +330,8 @@ ActiveRecord::Schema.define(version: 65) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "delivere_time"
+    t.integer "dist_share_id"
+    t.integer "dist_agent_id"
   end
 
   create_table "page_views", force: :cascade do |t|
@@ -360,6 +369,12 @@ ActiveRecord::Schema.define(version: 65) do
     t.string "order_no"
     t.datetime "record_date"
     t.string "order_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -513,6 +528,16 @@ ActiveRecord::Schema.define(version: 65) do
     t.string "title"
     t.integer "merchant_id"
     t.integer "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "withdraws", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "merchant_id"
+    t.datetime "app_date"
+    t.decimal "amount", precision: 10, scale: 2
+    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
