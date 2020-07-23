@@ -2,6 +2,8 @@
 # 营销活动
 
 class Activity < ActiveRecord::Base
+  validates :image, presence: true
+
   belongs_to :merchant,   :class_name => 'Merchant'
   mount_uploader :image, FileUploader
 

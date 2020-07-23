@@ -47,6 +47,11 @@ module AutoAftermarketApi
         @local = "问答"
       end
 
+      def set_activities_title_and_local
+        @title = "营销活动"
+        @local = "营销活动"
+      end
+
     end
 
     helpers AdminHelper

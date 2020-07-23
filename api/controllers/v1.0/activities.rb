@@ -13,9 +13,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/activities' do
 [
   {
     id: 1,
-    title: "",
-    content: "",
-    image: ""
+    title: "",  #该字段暂时不用，为以后的预留
+    content: "",  #该字段暂时不用，为以后的预留
+    image: ""  #活动海报url
   }
 ]
 =end
@@ -34,9 +34,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/activities' do
 =begin
   {
     id: 1,
-    title: "",
-    content: "",
-    image: ""
+    title: "",  #该字段暂时不用，为以后的预留
+    content: "",  #该字段暂时不用，为以后的预留
+    image: ""  #活动海报url
   }
 =end
   post :show, :provides => [:json] do
