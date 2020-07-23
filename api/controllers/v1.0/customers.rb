@@ -192,8 +192,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   post :can_agent, :provides => [:json] do
     api_rescue do
       authenticate
-      #TODO
-      { status: 'succ', data: {can_agent: true}}.to_json
+      { status: 'succ', data: {can_agent: @customer.can_dist_apply?}}.to_json
     end
   end
 
@@ -206,7 +205,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   post :agent_apply, :provides => [:json] do
     api_rescue do
       authenticate
+      raise "已经是分销员或销售员了" if [1, 2].include? @customer.role_id
       raise "角色错误" unless [1, 2].include? @request_params['role'].to_i
+      raise "不符合申请条件" unless @customer.can_dist_apply?
       @customer.update!(role_id: @request_params['role'].to_i, app_status: 0)
       { status: 'succ', data: {}}.to_json
     end

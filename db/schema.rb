@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 79) do
+ActiveRecord::Schema.define(version: 83) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -209,12 +209,38 @@ ActiveRecord::Schema.define(version: 79) do
     t.integer "dist_agent_id"
     t.integer "app_status"
     t.json "avatar"
+    t.integer "merchant_id"
   end
 
   create_table "discounts", force: :cascade do |t|
     t.string "order_no"
     t.string "discount_reason"
     t.decimal "discount_amount", precision: 8, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "dist_orders", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "dist_agent_id"
+    t.string "sku_info"
+    t.integer "customer_id"
+    t.integer "merchant_id"
+    t.decimal "pay_amount", precision: 10, scale: 2
+    t.decimal "commission", precision: 10, scale: 2
+    t.datetime "pay_time"
+    t.datetime "complete_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "dist_settings", force: :cascade do |t|
+    t.integer "merchant_id"
+    t.boolean "dist_switch"
+    t.decimal "amount_limit", precision: 10, scale: 2
+    t.integer "number_limit"
+    t.decimal "sales_percent", precision: 10, scale: 2
+    t.decimal "dist_percent", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -522,6 +548,7 @@ ActiveRecord::Schema.define(version: 79) do
     t.boolean "is_valid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "dist_percent"
   end
 
   create_table "topics", force: :cascade do |t|

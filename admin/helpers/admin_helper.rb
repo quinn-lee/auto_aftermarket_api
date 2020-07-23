@@ -62,6 +62,11 @@ module AutoAftermarketApi
         @local = "提现"
       end
 
+      def set_dist_settings_title_and_local
+        @title = "分销设置"
+        @local = "分销设置"
+      end
+
     end
 
     helpers AdminHelper

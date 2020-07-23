@@ -508,13 +508,12 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
   post "/dist_orders", :provides => [:json] do
     api_rescue do
       authenticate
-      #TODO
-      percent = 0.1
+
       @dist_orders = @customer.dist_orders(@merchant)
       @dist_orders = @dist_orders.where("pay_time >= ?", @request_params['pay_time_gt']) if @request_params['pay_time_gt'].present?
       all_pay_amount = @dist_orders.each.sum(&:pay_amount)
-      all_commission = @dist_orders.each.sum{|order| BigDecimal.new(sprintf("%.2f", (order.pay_amount * percent).to_s))}
-      { status: 'succ', data: {all_pay_amount: all_pay_amount, all_commission: all_commission, can_withdraw_money: @customer.can_withdraw_money(@merchant, percent), last_month_withdraw: @customer.last_month_withdraw(@merchant),dist_orders: @dist_orders.map{|order| order.to_agent_api(percent)}}}.to_json
+      all_commission = @dist_orders.each.sum(&:commission)
+      { status: 'succ', data: {all_pay_amount: all_pay_amount, all_commission: all_commission, can_withdraw_money: @customer.can_withdraw_money(@merchant), last_month_withdraw: @customer.last_month_withdraw(@merchant),dist_orders: @dist_orders.map{|order| order.to_api}}}.to_json
     end
   end
 

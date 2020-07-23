@@ -6,7 +6,7 @@ AutoAftermarketApi::Admin.controllers :customers do
   get :agents do
     @title = "分销员审核"
     @local = "分销员审核"
-    @customers = Customer.where(role_id: [1,2])
+    @customers = Customer.where(role_id: [1,2]) #TODO 需要加上merchant_id搜索
     @customers = @customers.order("app_status asc").order("updated_at desc").paginate(page: params[:page], per_page: 30)
     render 'customers/agents'
   end

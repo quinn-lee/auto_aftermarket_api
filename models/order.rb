@@ -3,11 +3,14 @@
 class Order < ActiveRecord::Base
 
   has_many :sub_orders, :class_name => 'SubOrder', :dependent => :destroy
+  has_many :dist_orders, :class_name => 'DistOrder', :dependent => :destroy
   belongs_to :merchant,   :class_name => 'Merchant'
   belongs_to :customer,   :class_name => 'Customer'
   has_one :coupon_log, :class_name => 'CouponLog', :dependent => :destroy
   has_one :group_buyer, :class_name => 'GroupBuyer', :dependent => :destroy
   has_one :seckill_buyer, :class_name => 'SeckillBuyer', :dependent => :destroy
+
+  after_save :update_dist_orders
 
   STATUS = {
     "unpaid" => '待付款',
@@ -101,18 +104,6 @@ class Order < ActiveRecord::Base
     return h
   end
 
-  def to_agent_api(percent)
-    t_sku = TSku.where(id: OrderSku.where(order_no: order_no).map(&:t_sku_id)).first
-    {
-      sku_info: t_sku.t_spu.t_category.name,
-      customer_nickname: (self.customer.wechat_info || {})['nickName'],
-      pay_amount: pay_amount,
-      commission: BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s)),
-      pay_time: pay_time.try{|pt| pt.strftime("%F %T")}
-    }
-
-  end
-
   def delivery_address
     if delivery_info.present?
       "#{delivery_info['province']}#{delivery_info['city']}#{delivery_info['district']} #{delivery_info['address']}  #{delivery_info['name']} #{delivery_info['mobile']}"
@@ -121,6 +112,26 @@ class Order < ActiveRecord::Base
   def contact_info_s
     if contact_info.present?
       "#{contact_info['name']} #{contact_info['mobile']}"
+    end
+  end
+
+
+  # 订单状态修改后，根据订单状态回调产生分销订单数据
+  def update_dist_orders
+    t_sku = TSku.where(id: OrderSku.where(order_no: order_no).map(&:t_sku_id)).first
+    ds = DistSetting.first
+    dist_agent = Customer.find(customer.dist_agent_id)
+    percent = BigDecimal.new(dist_agent.dist_percent.to_s)
+    commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s))
+    if status == "paid" #插入分销订单数据
+      # 分销金额>0 并且开启了分销，才插入分销订单数据
+      if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
+        DistOrder.create(order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, customer_id: customer_id, merchant_id: merchant_id, pay_amount: pay_amount, commission: commission, pay_time: pay_time, complete_time: nil)
+      end
+    elsif ['unpaid','delete','cancelled'].include? status #删除分销订单数据
+      dist_orders.delete_all
+    elsif status == "done" #更新分销订单数据
+      dist_orders.update_all(complete_time: Time.now)
     end
   end
 end

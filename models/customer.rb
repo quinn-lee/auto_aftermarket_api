@@ -37,12 +37,12 @@ class Customer < ActiveRecord::Base
 
   # 分销订单
   def dist_orders(merchant)
-    Order.where(merchant_id: merchant.id).where.not(status: ['unpaid','delete','cancelled']).where(customer_id: Customer.where(dist_agent_id: id).map(&:id))
+    DistOrder.where(merchant_id: merchant.id).where(dist_agent_id: id)
   end
 
   # 可提现金额
-  def can_withdraw_money(merchant, percent)
-    all_withdraw_money = percent * dist_orders(merchant).where(status: "done").where("pay_time <= '#{(Time.now - 7.days).strftime('%F %T')}'").each.sum(&:pay_amount)
+  def can_withdraw_money(merchant)
+    all_withdraw_money = dist_orders(merchant).where("complete_time <= '#{(Time.now - 7.days).strftime('%F %T')}'").each.sum(&:commission)
     withdrawed_money = Withdraw.where(merchant_id: merchant.id, customer_id: id).where.not(status: 2).each.sum(&:amount)
     all_withdraw_money - withdrawed_money
   end
@@ -52,16 +52,37 @@ class Customer < ActiveRecord::Base
     Withdraw.where(merchant_id: merchant.id, customer_id: id).where.not(status: 2).where("app_date >= '#{Date.today.last_month.at_beginning_of_month.strftime("%F %T")}'").where("app_date < '#{Date.today.at_beginning_of_month.strftime("%F %T")}'").each.sum(&:amount)
   end
 
+  # 成交订单
   def paid_orders
     orders.where.not(status: ['unpaid','delete','cancelled'])
   end
 
+  # 已完成订单
   def done_orders
     orders.where(status: ['done'])
   end
 
+  # 已发展客户数
   def dist_customers
     Customer.where(dist_agent_id: id)
+  end
+
+  # 佣金比例
+  def dist_percent
+    ds = DistSetting.first
+    if role_id == 1
+      ds.try{|ds| ds.sales_percent } || 0
+    elsif role_id == 2
+      ds.try{|ds| ds.dist_percent } || 0
+    else
+      0
+    end
+  end
+
+  # 是否可申请成为分销员
+  def can_dist_apply?
+    ds = DistSetting.first  #TODO 需要加上merchant_id的条件搜索
+    (done_orders.each.sum(&:pay_amount) >= ds.amount_limit) or (dist_customers.count >= ds.number_limit)
   end
 
 end
