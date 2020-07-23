@@ -7,7 +7,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/withdraws' do
   end
 
   # 佣金提现申请
-  # params {"apply_amount": 10}
+  # params {"apply_amount": 10, account_no: "123, 李富元", wechat_no: "1301805044"}
+  # apply_amount--申请提现金额，account_no--银行账号户名信息，wechat_no--微信号，用于微信转账
+  # 银行账号和微信号可需要其中一个。
   # data 空
   post :apply, :provides => [:json] do
     api_rescue do
@@ -15,8 +17,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/withdraws' do
       #TODO
       percent = 0.1
       raise "提现金额不能为空" if @request_params['apply_amount'].blank?
+      raise "提现金额必须大于0" if BigDecimal.new(@request_params['apply_amount'].to_s) < 0.001
       raise "提现金额不能大于可提现金额" if BigDecimal.new(@request_params['apply_amount'].to_s) > @customer.can_withdraw_money(@merchant, percent)
-      Withdraw.create!(customer_id: @customer.id, merchant_id: @merchant.id, app_date: Time.now, amount: BigDecimal.new(@request_params['apply_amount'].to_s), status: 0)
+      Withdraw.create!(account_no: @request_params['account_no'], wechat_no: @request_params['wechat_no'], customer_id: @customer.id, merchant_id: @merchant.id, app_date: Time.now, amount: BigDecimal.new(@request_params['apply_amount'].to_s), status: 0)
       { status: 'succ', data: {}}.to_json
     end
   end

@@ -2,17 +2,22 @@
 # 佣金提现表
 
 class Withdraw < ActiveRecord::Base
+  belongs_to :customer,   :class_name => 'Customer'
+
   STATUS = {
     0 => '申请提现',
-    1 => '审核通过已打款',
+    1 => '已打款',
     2 => '审核未通过'
   }.stringify_keys
 
   def to_api
     {
-      app_date: app_date.strftime("%F %T"),
+      app_date: app_date.try{|ad| ad.strftime("%F %T")},
+      pay_date: pay_date.try{|pd| pd.strftime("%F %T")},
       amount: amount,
-      status: status
+      status: status,
+      account_no: account_no,
+      wechat_no: wechat_no
     }
   end
 end

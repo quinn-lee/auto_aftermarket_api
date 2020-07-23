@@ -57,6 +57,11 @@ module AutoAftermarketApi
         @local = "用户"
       end
 
+      def set_withdraws_title_and_local
+        @title = "提现"
+        @local = "提现"
+      end
+
     end
 
     helpers AdminHelper
