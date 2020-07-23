@@ -13,6 +13,12 @@ class Customer < ActiveRecord::Base
 
   belongs_to :role,   :class_name => 'Role'
 
+  APPSTATUS = {
+    0 => '待审核',
+    1 => '审核通过',
+    2 => '审核未通过'
+  }.stringify_keys
+
   mount_uploader :wx_barcode, FileUploader
   mount_uploader :avatar, FileUploader
 
@@ -44,6 +50,18 @@ class Customer < ActiveRecord::Base
   # 上月提现金额
   def last_month_withdraw(merchant)
     Withdraw.where(merchant_id: merchant.id, customer_id: id).where.not(status: 2).where("app_date >= '#{Date.today.last_month.at_beginning_of_month.strftime("%F %T")}'").where("app_date < '#{Date.today.at_beginning_of_month.strftime("%F %T")}'").each.sum(&:amount)
+  end
+
+  def paid_orders
+    orders.where.not(status: ['unpaid','delete','cancelled'])
+  end
+
+  def done_orders
+    orders.where(status: ['done'])
+  end
+
+  def dist_customers
+    Customer.where(dist_agent_id: id)
   end
 
 end

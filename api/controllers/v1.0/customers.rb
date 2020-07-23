@@ -26,8 +26,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
             dist_agent_id = nil
             dist_share_id = @request_params["dist_share_id"]
             if @request_params["dist_share_id"].present?
-              agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员
-              dist_agent_id = agent.id if (([1, 2].include?agent.role_id) && (agent.app_status == 1)) #是分销员时，记录新用户归属的分销员
+              agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员或找出最早分享客户
+              dist_agent_id = agent.id #记录新用户归属
             end
             @cus = Customer.create(dist_share_id: dist_share_id, dist_agent_id: dist_agent_id, openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
           end

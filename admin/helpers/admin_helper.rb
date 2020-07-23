@@ -52,6 +52,11 @@ module AutoAftermarketApi
         @local = "营销活动"
       end
 
+      def set_customers_title_and_local
+        @title = "用户"
+        @local = "用户"
+      end
+
     end
 
     helpers AdminHelper
