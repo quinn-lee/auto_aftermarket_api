@@ -120,13 +120,15 @@ class Order < ActiveRecord::Base
   def update_dist_orders
     t_sku = TSku.where(id: OrderSku.where(order_no: order_no).map(&:t_sku_id)).first
     ds = DistSetting.first
-    dist_agent = Customer.find(customer.dist_agent_id)
-    percent = BigDecimal.new(dist_agent.dist_percent.to_s)
-    commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s))
     if status == "paid" #插入分销订单数据
-      # 分销金额>0 并且开启了分销，才插入分销订单数据
-      if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
-        DistOrder.create(order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, customer_id: customer_id, merchant_id: merchant_id, pay_amount: pay_amount, commission: commission, pay_time: pay_time, complete_time: nil)
+      if customer.dist_agent_id.present?
+        dist_agent = Customer.find(customer.dist_agent_id)
+        percent = BigDecimal.new(dist_agent.dist_percent.to_s)
+        commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s))
+        # 分销金额>0 并且开启了分销，才插入分销订单数据
+        if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
+          DistOrder.create(order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, customer_id: customer_id, merchant_id: merchant_id, pay_amount: pay_amount, commission: commission, pay_time: pay_time, complete_time: nil)
+        end
       end
     elsif ['unpaid','delete','cancelled'].include? status #删除分销订单数据
       dist_orders.delete_all
