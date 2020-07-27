@@ -43,6 +43,20 @@ AutoAftermarketApi::Admin.controllers :orders do
     end
   end
 
+  # 取消
+  get :done, :with => :id do
+    begin
+      @order = Order.find(params[:id])
+      @order.update!(status: "done")
+      flash[:success] = "订单状态修改成功"
+      redirect(url(:orders, :index))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:orders, :index))
+    end
+  end
+
   # 采购完成操作
   get :purchased do
     begin
