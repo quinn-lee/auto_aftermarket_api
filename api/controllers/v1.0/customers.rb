@@ -9,7 +9,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   # 注册或登录
   # params {"code": "011EewQl0V6Juq13KWNl01SgQl0EewQ-", "dist_share_id": 10}
   # dist_share_id 为分享记录的id，只有在新用户注册的时候需要传输（通过点击别人分享的内容进入小程序时 ）
-  # data {"token": ""}
+  # data {"token": "", "role": 1}  role=1代表销售员，role=2代表分销员，role=3或者空代表普通客户
   # 此处获得的token，需要在后续请求中加入到header中，key='token', value='token值'
   post "/", :provides => [:json] do
     api_rescue do
@@ -34,7 +34,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         end
       end
 
-      { status: 'succ', data: {token: @cus.token}}.to_json
+      { status: 'succ', data: {token: @cus.token, role: @cus.role_id}}.to_json
     end
   end
 
@@ -241,7 +241,27 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
 
   # 销售员/分销员 个人资料修改
   # params {"name": "a", "mobile": "1330001102", "email": "lifuyuan@hotmail.com", wx_barcode: "Base64编码后的串", avatar: "Base64编码后的串"}
-  # data 空
+  # data
+=begin
+  {
+        "id": 1,
+        "name": "a",
+        "mobile": "1330001102",
+        "token": "",
+        "email": "lifuyuan@hotmail.com",
+        "wx_barcode": "/uploads/customer/wx_barcode/1/wx_barcode120200722222956",
+        "avatar": "/uploads/customer/avatar/1/avatar120200722222956",
+        "wechat_info": {
+            "city": "Taizhou",
+            "gender": 1,
+            "country": "China",
+            "language": "zh_CN",
+            "nickName": "nonki",
+            "province": "Zhejiang",
+            "avatarUrl": "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwG"
+        }
+    }
+=end
   post :modify_agent_info, :provides => [:json] do
     api_rescue do
       authenticate
@@ -263,7 +283,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         File.open(file_path, "rb"){|f| @customer.avatar = f }
       end
       @customer.save!
-      { status: 'succ', data: {}}.to_json
+      { status: 'succ', data: @customer.to_agent_api}.to_json
     end
   end
 
@@ -294,6 +314,44 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     api_rescue do
       authenticate
       { status: 'succ', data: @customer.to_agent_api}.to_json
+    end
+  end
+
+  # 小程序二维码图片
+  # params {"page", "pages/index/index"}
+  # data {"url": ""}
+  post :app_qrcode_image, :provides => [:json] do
+    api_rescue do
+      authenticate
+      code,body=WebFunctions.method_url_call("get","https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=#{Settings.wechat.appId}&secret=#{Settings.wechat.appSecret}",{},"JSON")
+      if code!="200"
+        logger.info("call api weixin expection , [#{code}]")
+        raise "call api weixin timeout,please try again"
+      else
+        res=JSON.parse body
+        if res["errcode"].present?
+          raise res['errmsg']
+        else
+          access_token = res['access_token']
+          param = {scene: "a=1"}
+          param['page'] = @request_params['page'] if @request_params['page'].present?
+          code,body=WebFunctions.method_url_call("post","https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=#{access_token}",param,"JSON")
+          if code!="200"
+            logger.info("call api weixin expection , [#{code}]")
+            raise "call api weixin timeout,please try again"
+          else
+            begin
+              res=JSON.parse body
+              raise res['errmsg']
+            rescue
+              @url = "uploads/tmp/qrcode#{@customer.id}#{Time.now.strftime('%Y%m%d%H%M%S')}.jpg"
+              file_path = "public/#{@url}"
+              File.open(file_path, "wb"){|f| f.write body}
+            end
+          end
+        end
+      end
+      { status: 'succ', data: {url: @url}}.to_json
     end
   end
 end
