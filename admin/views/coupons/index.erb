@@ -14,27 +14,33 @@
         </div>
         <table>
             <tr>
-                <th style="width: 15%;">标题</th>
-                <th style="width: 15%;">秒杀描述</th>
+                <th style="width: 8%;">标题</th>
+                <th style="width: 8%;">秒杀描述</th>
+                <th style="width: 8%;">类型</th>
                 <th style="width: 12%;">结束时间</th>
-                <th style="width: 8%;">金额</th>
+                <th style="width: 7%;">金额</th>
                 <th style="width: 10%;">使用条件</th>
-                <th style="width: 8%;">领取数</th>
-                <th style="width: 8%;">使用数</th>
-                <th style="width: 10%;">状态</th>
-                <th style="width: 10%;"></th>
+                <th style="width: 7%;">折扣</th>
+                <th style="width: 7%;">可领取数</th>
+                <th style="width: 7%;">领取数</th>
+                <th style="width: 7%;">使用数</th>
+                <th style="width: 8%;">状态</th>
+                <th style="width: 7%;"></th>
             </tr>
             <% @coupons.each do |coupon| %>
             <tr>
                 <td><%=coupon.title%></td>
                 <td><%=coupon.remarks%></td>
+                <td><%=Coupon::CTYPE[coupon.ctype.to_s]%></td>
                 <td><%=coupon.end_time.try{|et| et.strftime('%Y%m%d %H:%M')}%></br>
                   <% if coupon.end_time < Time.now %>
                   <span style="color: #3498DB;">(已过期)</span>
                   <% end %>
                 </td>
-                <td>￥<%=coupon.money%></td>
-                <td>>= ￥<%=coupon.full_money%></td>
+                <td><%if coupon.ctype==1%>￥<%=coupon.money%><% end %></td>
+                <td><%if coupon.ctype==1%>>= ￥<%=coupon.full_money%><% end %></td>
+                <td><%if coupon.ctype==2%><%=coupon.discount %><% end %></td>
+                <td><%=coupon.max_num %></td>
                 <td><%=coupon.coupon_receives.count%></td>
                 <td><%=coupon.coupon_logs.count%></td>
                 <td><%=Coupon::STATUS[coupon.status.to_s]%></td>
@@ -46,6 +52,7 @@
                           <% if coupon.status == 1%>
                           <li><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '0')%>">下架</a></li>
                           <% if coupon.coupon_receives.count == 0%>
+                            <li><a href="<%=url(:coupons, :select_spu, :id => coupon.id)%>">指定商品</a></li>
                             <li><a href="<%=url(:coupons, :edit, :id => coupon.id)%>">修改秒杀信息</a></li>
                           <% end %>
                           <% elsif coupon.status == 0%>

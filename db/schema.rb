@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 83) do
+ActiveRecord::Schema.define(version: 87) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,7 @@ ActiveRecord::Schema.define(version: 83) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "discount", precision: 10, scale: 2
   end
 
   create_table "coupons", force: :cascade do |t|
@@ -186,6 +187,9 @@ ActiveRecord::Schema.define(version: 83) do
     t.decimal "full_money", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "discount", precision: 10, scale: 2
+    t.integer "max_num"
+    t.jsonb "spus"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -548,7 +552,7 @@ ActiveRecord::Schema.define(version: 83) do
     t.boolean "is_valid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "dist_percent"
+    t.decimal "dist_percent", precision: 10, scale: 2
   end
 
   create_table "topics", force: :cascade do |t|

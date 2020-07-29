@@ -318,7 +318,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   end
 
   # 小程序二维码图片
-  # params {"page", "pages/index/index"}
+  # params {"scene": "a=1", "page", "pages/index/index"}
   # data {"url": ""}
   post :app_qrcode_image, :provides => [:json] do
     api_rescue do
@@ -333,12 +333,12 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
           raise res['errmsg']
         else
           access_token = res['access_token']
-          param = {scene: "a=1"}
+          param = {scene: @request_params['scene']}
           param['page'] = @request_params['page'] if @request_params['page'].present?
           code,body=WebFunctions.method_url_call("post","https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=#{access_token}",param,"JSON")
           if code!="200"
-            logger.info("call api weixin expection , [#{code}]")
-            raise "call api weixin timeout,please try again"
+            logger.info("call api getwxacodeunlimit expection , [#{code}]")
+            raise "call api getwxacodeunlimit timeout,please try again"
           else
             begin
               res=JSON.parse body
