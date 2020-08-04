@@ -4,6 +4,8 @@ class Label < ActiveRecord::Base
 
   validates :name, :ltype, presence: true
 
+  mount_uploader :image, FileUploader
+
   LTYPE = {
     1 => '优选标签'
   }.stringify_keys
@@ -11,7 +13,8 @@ class Label < ActiveRecord::Base
   def to_api
     {
       id: id,
-      name: name
+      name: name,
+      image: image.present? ? image.url : nil
     }
   end
 

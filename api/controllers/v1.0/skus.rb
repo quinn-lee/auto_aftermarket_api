@@ -1518,7 +1518,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   [
       {
           "id": 1,
-          "name": "haha1aa"
+          "name": "haha1aa",
+          "image": "/uploads/label/image/4/Screenshot_20200623_161707.png"
       }
   ]
 =end
