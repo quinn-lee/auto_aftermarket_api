@@ -1235,8 +1235,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
-  # 根据spu_id查找单个商品
-  # params {"spu_id": 1}
+  # 根据spu_id或者sku_id查找单个商品
+  # params {"spu_id": 1, "sku_id": 1}  spu_id或sku_id不能同时为空
   # data
 =begin
 {
@@ -1434,8 +1434,11 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   post :spu, :provides => [:json] do
     api_rescue do
       authenticate
-
-      @t_spu = TSpu.find(@request_params['spu_id'])
+      if @request_params['spu_id'].present?
+        @t_spu = TSpu.find(@request_params['spu_id'])
+      elsif @request_params['sku_id'].present?
+        @t_spu = TSku.find(@request_params['sku_id']).t_spu
+      end
       { status: 'succ', data: @t_spu.to_api}.to_json
     end
   end

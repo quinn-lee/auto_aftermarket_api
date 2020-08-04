@@ -199,7 +199,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
 
   # 订单列表
   # params {"status": "unpaid"(待付款)/"paid"(待收货)/"received"(待预约)/"appointed"(待安装)/"done"(已完成)/"delete"(已删除)/"cancelled"已取消,
-            #"order_type": "maintenance"(维修保养)/"purchase"(自选商品)/"group"(团购)/"seckill"(秒杀)}
+            #"order_type": "maintenance"(维修保养)/"purchase"(自选商品)/"group"(团购)/"seckill"(秒杀)
+            #"title": "机油"} ##商品名称，模糊查询
   # data
 =begin
   [
@@ -323,6 +324,10 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       @orders = Order.where(customer_id: @customer.id).where.not(status: "delete").order("created_at desc")
       @orders = @orders.where(status: @request_params['status']) if @request_params['status'].present?
       @orders = @orders.where(order_type: @request_params['order_type']) if @request_params['order_type'].present?
+      if @request_params['title'].present?
+        oss = OrderSku.where(order_no: @orders.map(&:order_no)).where("(select t_skus.title from t_skus where t_skus.id = order_skus.t_sku_id) like '%#{@request_params['title']}%'")
+        @orders = @orders.where(order_no: oss.map(&:order_no))
+      end
       { status: 'succ', data: @orders.map(&:to_api)}.to_json
     end
   end

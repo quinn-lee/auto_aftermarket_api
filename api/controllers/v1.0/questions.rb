@@ -18,8 +18,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
   end
 
   # 提问
-  # params {"content": "", "topic_id": 1, "anonymous": 't'/'f'}
-  # content--提问内容，topic_id--提问时选择的话题id，anonymous--是否匿名提问't'为是，'f'为否
+  # params {"content": "", "topic_id": 1, "anonymous": 't'/'f', "sku_id": 2}
+  # content--提问内容，topic_id--提问时选择的话题id，anonymous--是否匿名提问't'为是，'f'为否，sku_id--商品id
   # data {}
   post "/create", :provides => [:json] do
     api_rescue do
@@ -27,7 +27,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
       ActiveRecord::Base.transaction do
         raise "所有参数都不能为空" if @request_params['content'].blank? || @request_params['topic_id'].blank? || @request_params['anonymous'].blank?
         topic = Topic.find(@request_params['topic_id'])
-        @question = Question.new(content: @request_params['content'], merchant_id: @merchant.id, topic_id: topic.id)
+        @question = Question.new(content: @request_params['content'], merchant_id: @merchant.id, topic_id: topic.id, t_sku_id: @request_params['sku_id'])
         @question.customer_id = @customer.id if @request_params['anonymous'] != "t" # 不匿名时才记录提问者
         @question.save!
       end
@@ -79,7 +79,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
   end
 
   # 问题列表
-  # params {"topic_id": 1, "self": "t"/"f", "content": "aaa"}
+  # params {"topic_id": 1, "self": "t"/"f", "content": "aaa", "sku_id": 2}
   # 可通过topic_id筛选，如果self为"t",只返回该用户问题，为"f"时，返回所有问题
   # data
 =begin
@@ -117,7 +117,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
                 }
             ],
             "account_answers": [], #是店家回复，有回复时，内容与上面客户回复一致
-            "created_at": "2020-07-07 17:50:39"
+            "created_at": "2020-07-07 17:50:39",
+            "sku_id": 2
         },
         {
             "id": 2,
@@ -148,6 +149,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
 
       @questions = Question.where(merchant_id: @merchant.id)
       @questions = @questions.where(topic_id: @request_params['topic_id']) if @request_params['topic_id'].present?
+      @questions = @questions.where(t_sku_id: @request_params['sku_id']) if @request_params['sku_id'].present?
       @questions = @questions.where(customer_id: @customer.id) if @request_params['self'] == "t"
       @questions = @questions.where("content like '%#{@request_params['content']}%'") if @request_params['content'].present?
       { status: 'succ', data: @questions.order("updated_at desc").map{|q| q.to_api(@customer)}}.to_json

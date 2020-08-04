@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 87) do
+ActiveRecord::Schema.define(version: 90) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -329,13 +329,13 @@ ActiveRecord::Schema.define(version: 87) do
   create_table "order_skus", force: :cascade do |t|
     t.string "order_no"
     t.string "name"
-    t.string "t_sku_id"
     t.integer "quantity"
     t.decimal "price", precision: 8, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "service_fee"
     t.integer "lack_quantity", default: 0
+    t.integer "t_sku_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -379,6 +379,7 @@ ActiveRecord::Schema.define(version: 87) do
     t.integer "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "t_sku_id"
   end
 
   create_table "recommends", force: :cascade do |t|
