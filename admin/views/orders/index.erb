@@ -92,7 +92,7 @@
                 <td>￥<%=order.amount%></td>
                 <td>￥<%=order.pay_amount%></td>
                 <td><%=order.pay_time.try{|pt| pt.strftime('%Y%m%d')}%></td>
-                <td><%=order.reservation_time.try{|rt| rt.strftime('%Y%m%d %H:%M')}%></td>
+                <td><%=(order.reservation_time || {})['booking_date']%></td>
                 <td><%=order.cancel_time.try{|ct| ct.strftime('%Y%m%d')}%></td>
                 <td><%=Order::STATUS[order.status]%></td>
                 <td>
