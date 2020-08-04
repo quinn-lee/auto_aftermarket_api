@@ -1,0 +1,153 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="product-status-wrap">
+        <h4>优选标签列表</h4>
+        <table>
+            <tr>
+                <th style="width: 85%;">标签</th>
+                <th style="width: 10%;"></th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="modal-area-button">
+                    <% @labels.each do |label|%>
+                      <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#editLabel<%=label.id%>"><%=label.name%></a>
+
+                      <div id="editLabel<%=label.id%>" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-close-area modal-close-df">
+                                      <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                                  </div>
+                                  <div class="modal-body">
+                                      <div class="modal-login-form-inner">
+                                          <div class="row">
+                                              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                  <div class="basic-login-inner modal-basic-inner">
+                                                      <% form_for label, url(:labels, :update_preferred_label, label_id: label.id), :class=>"form-horizontal", :method => 'post' do |f| %>
+                                                          <div class="form-group-inner">
+                                                              <div class="row">
+                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                      <label class="login2">标签名称</label>
+                                                                  </div>
+                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                      <%=f.text_field(:name, :class => "form-control")%>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                          <div class="login-btn-inner">
+                                                              <div class="row">
+                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                      <div class="login-horizental">
+                                                                          <button class="btn btn-sm btn-primary login-submit-cs" type="submit">提交</button>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      <% end %>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    <% end %>
+                    </div>
+
+              </td>
+              <td><a  href="#" data-toggle="modal" data-target="#newLabel">新增标签</a></td>
+              <div id="newLabel" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-close-area modal-close-df">
+                              <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                          </div>
+                          <div class="modal-body">
+                              <div class="modal-login-form-inner">
+                                  <div class="row">
+                                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                          <div class="basic-login-inner modal-basic-inner">
+                                              <% form_for Label.new, url(:labels, :create_preferred_label), :class=>"form-horizontal", :method => 'post' do |f| %>
+                                                  <div class="form-group-inner">
+                                                      <div class="row">
+                                                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                              <label class="login2">标签名称</label>
+                                                          </div>
+                                                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                              <%=f.text_field(:name, :class => "form-control")%>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="login-btn-inner">
+                                                      <div class="row">
+                                                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                              <div class="login-horizental">
+                                                                  <button class="btn btn-sm btn-primary login-submit-cs" type="submit">提交</button>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              <% end %>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </tr>
+
+        </table>
+
+    </div>
+</div>
+<style>
+.modal-area-button a{
+	padding: 10px 10px;
+    text-decoration: none;
+    color: #fff;
+    position: relative;
+    z-index: 11;
+    font-size: 14px;
+	display:inline-block;
+  text-align: center;
+}
+
+.modal-area-button a.Primary:before{
+	width:100%;
+}
+.modal-area-button a.Information:before{
+	width:100%;
+}
+.modal-area-button a.Warning:before{
+	width:100%;
+}
+.modal-area-button a.Danger:before{
+	width:100%;
+}
+.modal-area-button a.Primary:after{
+	width:100%;
+}
+.modal-area-button a.Information:after{
+	width:100%;
+}
+.modal-area-button a.Warning:after{
+	width:100%;
+}
+.modal-area-button a.Danger:after{
+	width:100%;
+}
+.product-status-wrap .pd-setting{
+  margin-bottom: 5px;
+}
+.panel-body{
+  padding: 0px;
+}
+.hpanel .panel-body{
+  padding: 0px;
+}
+</style>

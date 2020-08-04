@@ -41,7 +41,7 @@ AutoAftermarketApi::Admin.controllers :skus do
       if params[:option] == '0' # 从优选商品中删除
         @sku.update!(preferred: params[:option], preferred_slogan: nil)
       else
-        @sku.update!(preferred: params[:option], preferred_slogan: params[:preferred_slogan])
+        @sku.update!(preferred: params[:option], preferred_slogan: params[:preferred_slogan], label_id: params[:label_id])
       end
       if params[:option] == '0'
         flash[:notice] = "已从优选商品中删除"

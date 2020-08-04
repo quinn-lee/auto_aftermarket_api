@@ -1512,9 +1512,27 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
     end
   end
 
+  # 优选商品标签
+  # data
+=begin
+  [
+      {
+          "id": 1,
+          "name": "haha1aa"
+      }
+  ]
+=end
+  post :preferred_labels, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @labels = Label.where(ltype: 1)
+      { status: 'succ', data: @labels.map(&:to_api)}.to_json
+    end
+  end
+
 
   # 优选商品列表
-  # params {"category_id": 1, "title": "美孚", "brand_id": [1,2]
+  # params {"category_id": 1, "title": "美孚", "brand_id": [1,2], "label_id": 1
     #  "attrs": {"规格": ['255/55R18','235/60R18'], "轮胎性能": ['SUV/越野型']}}
   # data 与skus同
   post :preferred, :provides => [:json] do
@@ -1525,7 +1543,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       @t_spus = TSpu.where(t_brand_id: @request_params['brand_id']) if @request_params['brand_id'].present?
       @t_skus = TSku.where(t_spu_id: @t_spus.map(&:id), saleable: true).where("available_num > 0").where.not(preferred: 0)
       @t_skus = @t_skus.where("title like '%#{@request_params['title']}%'") if @request_params['title'].present?
-
+      @t_skus = @t_skus.where(label_id: @request_params['label_id']) if @request_params['label_id'].present?
       if @request_params['attrs'].present?
         @request_params['attrs'].each do |k, v|
           instr = "("

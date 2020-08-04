@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 90) do
+ActiveRecord::Schema.define(version: 92) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -299,6 +299,13 @@ ActiveRecord::Schema.define(version: 90) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "labels", force: :cascade do |t|
+    t.string "name"
+    t.integer "ltype"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "levels", force: :cascade do |t|
     t.string "level_name"
     t.integer "discount"
@@ -541,6 +548,7 @@ ActiveRecord::Schema.define(version: 90) do
     t.integer "available_num"
     t.integer "preferred", default: 0
     t.string "preferred_slogan"
+    t.integer "label_id"
   end
 
   create_table "t_spus", force: :cascade do |t|
