@@ -34,7 +34,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         end
       end
 
-      { status: 'succ', data: {token: @cus.token, role: @cus.role_id}}.to_json
+      { status: 'succ', data: {token: @cus.token, role: @cus.role_id_t}}.to_json
     end
   end
 

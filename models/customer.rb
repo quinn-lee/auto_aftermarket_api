@@ -85,4 +85,12 @@ class Customer < ActiveRecord::Base
     (done_orders.each.sum(&:pay_amount) >= ds.amount_limit) or (dist_customers.count >= ds.number_limit)
   end
 
+  def role_id_t
+    if app_status == 1
+      role_id
+    else
+      nil
+    end
+  end
+
 end

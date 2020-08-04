@@ -9,7 +9,7 @@ AutoAftermarketApi::Admin.controllers :orders do
     @orders = @orders.where(status: params[:status]) if params[:status].present?
     @orders = @orders.where(order_type: params[:order_type]) if params[:order_type].present?
     @orders = @orders.where(order_no: params[:order_no]) if params[:order_no].present?
-    @orders = @orders.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    @orders = @orders.order("created_at desc").paginate(page: params[:page], per_page: 30)
     render 'orders/index'
   end
 
@@ -17,7 +17,7 @@ AutoAftermarketApi::Admin.controllers :orders do
   get :purchases do
     @order_skus = OrderSku.where("lack_quantity > 0").where("(SELECT orders.merchant_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{current_account.merchant.id}")
     @order_skus = @order_skus.where(order_no: params[:order_no]) if params[:order_no].present?
-    @order_skus = @order_skus.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    @order_skus = @order_skus.order("created_at desc").paginate(page: params[:page], per_page: 30)
     render 'orders/purchases'
   end
 
@@ -25,7 +25,7 @@ AutoAftermarketApi::Admin.controllers :orders do
   get :deliveries do
     @orders = current_account.merchant.orders.where(status: 'received').where("(SELECT sub_orders.sub_type FROM sub_orders WHERE orders.id = sub_orders.order_id) = 'delivery'")
     @orders = @orders.where(order_no: params[:order_no]) if params[:order_no].present?
-    @orders = @orders.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    @orders = @orders.order("created_at desc").paginate(page: params[:page], per_page: 30)
     render 'orders/deliveries'
   end
 
