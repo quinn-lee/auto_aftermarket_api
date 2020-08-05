@@ -27,7 +27,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/comments' do
     api_rescue do
       authenticate
 
-      @order_skus = OrderSku.where(comment_status: 0)
+      @order_skus = OrderSku.where(comment_status: 0).where("(SELECT orders.customer_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{@customer.id}")
       { status: 'succ', data: @order_skus.map(&:to_api_comment)}.to_json
     end
   end
