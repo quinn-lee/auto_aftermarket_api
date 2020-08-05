@@ -8,6 +8,7 @@ class TSpu < ActiveRecord::Base
   belongs_to :t_brand,   :class_name => 'TBrand'
   belongs_to :merchant,   :class_name => 'Merchant'
   has_many :t_skus, :class_name => 'TSku', :dependent => :destroy
+  has_many :comments, :class_name => 'Comment', :dependent => :destroy
 
 
   def to_api

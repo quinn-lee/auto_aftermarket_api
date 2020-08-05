@@ -10,4 +10,13 @@ class OrderSku < ActiveRecord::Base
       price: price
     }
   end
+
+  def to_api_comment
+    order = Order.find_by(order_no: order_no)
+    if order
+      t_sku.to_api_order.merge({order_id: order.id})
+    else
+      t_sku.to_api_order
+    end
+  end
 end

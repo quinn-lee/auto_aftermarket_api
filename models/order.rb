@@ -4,6 +4,7 @@ class Order < ActiveRecord::Base
 
   has_many :sub_orders, :class_name => 'SubOrder', :dependent => :destroy
   has_many :dist_orders, :class_name => 'DistOrder', :dependent => :destroy
+  has_many :comments, :class_name => 'Comment', :dependent => :destroy
   belongs_to :merchant,   :class_name => 'Merchant'
   belongs_to :customer,   :class_name => 'Customer'
   has_one :coupon_log, :class_name => 'CouponLog', :dependent => :destroy

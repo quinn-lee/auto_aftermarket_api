@@ -12,6 +12,7 @@ class TSku < ActiveRecord::Base
 
   has_many :favorites, :class_name => 'Favorite', :dependent => :destroy
   has_many :sku_views, :class_name => 'SkuView', :dependent => :destroy
+  has_many :comments, :class_name => 'Comment', :dependent => :destroy
 
   PREFERRED = {
     1 => '优选',

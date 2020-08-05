@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 93) do
+ActiveRecord::Schema.define(version: 96) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,6 +149,8 @@ ActiveRecord::Schema.define(version: 93) do
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "t_spu_id"
+    t.integer "customer_id"
   end
 
   create_table "coupon_logs", force: :cascade do |t|
@@ -344,6 +346,7 @@ ActiveRecord::Schema.define(version: 93) do
     t.jsonb "service_fee"
     t.integer "lack_quantity", default: 0
     t.integer "t_sku_id"
+    t.integer "comment_status", default: 0
   end
 
   create_table "orders", force: :cascade do |t|

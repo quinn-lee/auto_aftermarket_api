@@ -10,6 +10,7 @@ class Customer < ActiveRecord::Base
   has_many :group_buyers, :class_name => 'GroupBuyer', :dependent => :destroy
   has_many :seckill_buyers, :class_name => 'SeckillBuyer', :dependent => :destroy
   has_many :favorites, :class_name => 'Favorite', :dependent => :destroy
+  has_many :comments, :class_name => 'Comment', :dependent => :destroy
 
   belongs_to :role,   :class_name => 'Role'
 
