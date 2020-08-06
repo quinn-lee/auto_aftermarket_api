@@ -127,7 +127,8 @@ class Order < ActiveRecord::Base
         percent = BigDecimal.new(dist_agent.dist_percent.to_s)
         commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s))
         # 分销金额>0 并且开启了分销，才插入分销订单数据
-        if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
+        #if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
+        if dist_orders.blank? && ds.dist_switch
           DistOrder.create(order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, customer_id: customer_id, merchant_id: merchant_id, pay_amount: pay_amount, commission: commission, pay_time: pay_time, complete_time: nil)
         end
       end
