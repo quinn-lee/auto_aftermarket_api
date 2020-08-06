@@ -23,8 +23,14 @@ class WxpayInfo < ActiveRecord::Base
             delivery_list << order_sku.id
           end
         end
-        SubOrder.create!(order_id: order.id, sub_type: "install", order_sku_ids: install_list) if install_list.present?
-        SubOrder.create!(order_id: order.id, sub_type: "delivery", order_sku_ids: delivery_list) if delivery_list.present?
+        if install_list.present?
+          so = SubOrder.create!(order_id: order.id, sub_type: "install", order_sku_ids: install_list, status: order.status)
+          if order.status == "received"
+            order.update!(status: "appointing") #更新为待预约
+            so.update!(status: "appointing") #更新为待预约
+          end
+        end
+        SubOrder.create!(order_id: order.id, sub_type: "delivery", order_sku_ids: delivery_list, status: order.status) if delivery_list.present?
       end
 
       # 如果有使用优惠券，更新优惠券状态

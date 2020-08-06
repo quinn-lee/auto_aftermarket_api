@@ -17,6 +17,7 @@ class Order < ActiveRecord::Base
     "unpaid" => '待付款',
     "paid" => '已付款待采购',
     "received" => '采购完成待预约/发货',
+    "appointing" => '待预约',
     "delivered" => '已发货待收货',
     "appointed" => '已预约待安装',
     "done" => '已完成',

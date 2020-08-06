@@ -74,6 +74,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/reservations' do
         ActiveRecord::Base.transaction do
           OrderReservation.create!(shop_id: @shop.id, order_no: @order.order_no, booking_date: Time.parse(@request_params['booking_time_from']).strftime("%F"), booking_time_from: @request_params['booking_time_from'], booking_time_to: @request_params['booking_time_to'])
           @order.update!(status: "appointed")
+          @order.sub_orders.where(sub_type: "install").update_all(status: "appointed")
         end
         { status: 'succ', data: {}}.to_json
     end

@@ -43,7 +43,7 @@ AutoAftermarketApi::Admin.controllers :orders do
     end
   end
 
-  # 取消
+  # 完成
   get :done, :with => :id do
     begin
       @order = Order.find(params[:id])
@@ -73,6 +73,10 @@ AutoAftermarketApi::Admin.controllers :orders do
           if OrderSku.where(order_no: order.order_no).where("lack_quantity > 0").count == 0
             # 更新订单状态
             order.update!(status: "received")
+            if order.sub_orders.where(sub_type: "install").present?
+              order.update!(status: "appointing") #更新为待预约
+              order.sub_orders.where(sub_type: "install").update_all(status: "appointing")
+            end
           end
         end
       end

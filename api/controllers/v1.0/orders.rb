@@ -198,7 +198,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
   end
 
   # 订单列表
-  # params {"status": "unpaid"(待付款)/"paid"(待收货)/"received"(待预约)/"appointed"(待安装)/"done"(已完成)/"delete"(已删除)/"cancelled"已取消,
+  # params {"status": "unpaid"(待付款)/"paid"(待收货)/"received"(待发货)/"delivered"(已发货)/"appointing"(待预约)/"appointed"(待安装)/"done"(已完成)/"delete"(已删除)/"cancelled"已取消,
             #"order_type": "maintenance"(维修保养)/"purchase"(自选商品)/"group"(团购)/"seckill"(秒杀)
             #"title": "机油"} ##商品名称，模糊查询
   # data
