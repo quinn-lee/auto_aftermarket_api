@@ -7,8 +7,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/withdraws' do
   end
 
   # 佣金提现申请
-  # params {"apply_amount": 10, account_no: "123, 李富元", wechat_no: "1301805044"}
-  # apply_amount--申请提现金额，account_no--银行账号户名信息，wechat_no--微信号，用于微信转账
+  # params {"apply_amount": 10, account_no: "123|李富元|1001", wechat_no: "1301805044"}
+  # apply_amount--申请提现金额，account_no--银行账号户名信息（格式：账号|姓名|开户行id），wechat_no--微信号，用于微信转账
   # 银行账号和微信号可需要其中一个。
   # data 空
   post :apply, :provides => [:json] do
