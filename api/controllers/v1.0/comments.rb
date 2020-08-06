@@ -131,7 +131,11 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/comments' do
                   "/uploads/t_sku/images/3/images/260811002.jpg",
                   "/uploads/t_sku/images/3/images/1336270541.jpg"
               ]
-          }
+          },
+          "customer": {
+            "nickName"=>"nonki",
+            "avatarUrl"=>"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwG"
+        }
       }
   ]
 =end
@@ -147,7 +151,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/comments' do
       else
         @comments = Comment.where("1=2")
       end
-      { status: 'succ', data: @comments.map(&:to_api)}.to_json
+      { status: 'succ', data: @comments.map{|c| c.to_api.merge({customer: c.customer.wechat_info})}}.to_json
     end
   end
 
