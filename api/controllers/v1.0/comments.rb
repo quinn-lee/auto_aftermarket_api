@@ -133,9 +133,14 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/comments' do
               ]
           },
           "customer": {
-            "nickName"=>"nonki",
-            "avatarUrl"=>"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwG"
-        }
+                "city": "Taizhou",
+                "gender": 1,
+                "country": "China",
+                "language": "zh_CN",
+                "nickName": "nonki",
+                "province": "Zhejiang",
+                "avatarUrl": "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwG"
+            }
       }
   ]
 =end
