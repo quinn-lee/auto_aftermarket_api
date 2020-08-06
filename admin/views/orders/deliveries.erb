@@ -53,19 +53,6 @@
             </div>
           </div>
         </div>
-        <% form_tag url(:orders, :delivered), :class=>"form-horizontal", :method => 'get' do %>
-        <div class="form-group-inner">
-            <div class="login-btn-inner">
-                <div class="row">
-                    <div class="col-lg-3"></div>
-                    <div class="col-lg-9">
-                        <div class="login-horizental cancel-wp pull-left">
-                          <%=submit_tag "发货完成", :class => "btn btn-sm btn-primary login-submit-cs"%>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <table>
             <tr>
                 <th style="width: 10%;"><input type="checkbox" onclick="checkAll(this)">订单号</th>
@@ -94,16 +81,66 @@
                       <button type="button" class="btn btn-custon-four btn-danger dropdown-toggle" data-toggle="dropdown">操作 <i class="fa fa-angle-down"></i>
     </button>
                       <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-five" role="menu">
-                          <li><a href="<%=url(:orders, :delivered, :ids => [order.id])%>">发货完成</a></li>
+                          <li><a href="#" data-toggle="modal" data-target="#delivered" >发货完成</a></li>
 
                       </ul>
+                      <div id="delivered" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-close-area modal-close-df">
+                                      <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                                  </div>
+                                  <div class="modal-body">
+                                      <div class="modal-login-form-inner">
+                                          <div class="row">
+                                              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                  <div class="basic-login-inner modal-basic-inner">
+                                                      <% form_tag url(:orders, :delivered, :id=>order.id), :class=>"form-horizontal", :method => 'post' do %>
+                                                          <div class="form-group-inner">
+                                                              <div class="row">
+                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                      <label class="login2">物流单号</label>
+                                                                  </div>
+                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                      <%=text_field_tag(:shpmt_num, :class => "form-control")%>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                          <div class="form-group-inner">
+                                                              <div class="row">
+                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                      <label class="login2">物流商</label>
+                                                                  </div>
+                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                      <%=text_field_tag(:logi_company, :class => "form-control")%>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                          <div class="login-btn-inner">
+                                                              <div class="row">
+                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                      <div class="login-horizental">
+                                                                          <button class="btn btn-sm btn-primary login-submit-cs" type="submit">提交</button>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      <% end %>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
                   </div>
                 </td>
             </tr>
             <% end %>
 
         </table>
-        <% end %>
         <%= will_paginate @orders %>
 
     </div>

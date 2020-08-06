@@ -86,17 +86,19 @@ AutoAftermarketApi::Admin.controllers :orders do
   end
 
   # 发货完成
-  get :delivered do
+  post :delivered, :with => :id do
     begin
-      raise "请勾选需要操作的记录" if params[:ids].blank?
-      @orders = Order.where(id: params[:ids])
-      @orders.update_all(status: "delivered", delivere_time: Time.now)
-      SubOrder.where(sub_type: "delivery").where(order_id: params[:ids]).update(status: "delivered")
-      flash[:success] = e.message
+      @order = Order.find(params[:id])
+      raise "单号不能为空" if params[:shpmt_num].blank?
+      raise "物流商不能为空" if params[:logi_company].blank?
+      logi_info = {shpmt_num: params[:shpmt_num], logi_company: params[:logi_company]}
+      @order.update(status: "delivered", delivere_time: Time.now, delivery_info: (@order.delivery_info||{}).merge(logi_info))
+      @order.sub_orders.where(sub_type: "delivery").update_all(status: "delivered")
+      flash[:success] = "操作成功"
       redirect(url(:orders, :deliveries))
     rescue => e
       logger.info e.backtrace
-      flash[:error] = "操作成功"
+      flash[:error] = e.message
       redirect(url(:orders, :deliveries))
     end
   end

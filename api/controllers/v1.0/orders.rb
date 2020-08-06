@@ -349,7 +349,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         name: "aaa",
         address: "bbb",
         contact_name: "aaa",
-        contact_phone: "ccc"
+        contact_phone: "ccc",
+        shpmt_num: "12346788",
+        logi_company=>"啊啊"
       },
       contact_info: {
         name: "李富元",
