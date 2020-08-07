@@ -14,6 +14,7 @@ class Question < ActiveRecord::Base
     {
       id: id,
       content: content,
+      images: images.try{|i| i.map(&:url)},
       topic: topic.to_api,
       customer: customer.present? ? customer.wechat_info : nil,
       customer_answers_num: answers.where(account_id: nil).count,
