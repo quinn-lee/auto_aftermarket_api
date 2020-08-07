@@ -15,7 +15,8 @@ class Comment < ActiveRecord::Base
       rating: rating,
       images: images.try{|i| i.map(&:url)},
       order: order.order_no,
-      sku: t_sku.to_api_order
+      sku: t_sku.to_api_order,
+      created_at: created_at.strftime("%F %T")
     }
   end
 
