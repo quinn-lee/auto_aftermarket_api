@@ -18,7 +18,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
   end
 
   # 提问
-  # params {"content": "", "topic_id": 1, "anonymous": 't'/'f', "sku_id": 2}
+  # params {"content": "", "topic_id": 1, "anonymous": 't'/'f', "sku_id": 2, "images": ["",""]} 图片通过Base64编码串
   # content--提问内容，topic_id--提问时选择的话题id，anonymous--是否匿名提问't'为是，'f'为否，sku_id--商品id
   # data {}
   post "/create", :provides => [:json] do
@@ -29,6 +29,20 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
         topic = Topic.find(@request_params['topic_id'])
         @question = Question.new(content: @request_params['content'], merchant_id: @merchant.id, topic_id: topic.id, t_sku_id: @request_params['sku_id'])
         @question.customer_id = @customer.id if @request_params['anonymous'] != "t" # 不匿名时才记录提问者
+        i = 0
+        images = []
+        if @request_params['images'].present? # 保存图片
+          @request_params['images'].each do |img|
+            file_path = "public/uploads/tmp/questions#{Time.now.strftime('%Y%m%d%H%M%S')}#{i}"
+            decode_base64_content = Base64.decode64(img)
+            File.delete(file_path) if File.exists?(file_path)
+            File.open(file_path, "wb"){|f| f.write decode_base64_content}
+            # File.open(file_path, "rb"){|f| @answer.images = f }
+            images << File.open(file_path, "rb")
+            i += 1
+          end
+        end
+        @question.images = images
         @question.save!
       end
 

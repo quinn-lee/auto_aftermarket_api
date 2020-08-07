@@ -8,6 +8,8 @@ class Question < ActiveRecord::Base
 
   validates :content, :merchant_id, :topic_id, presence: true
 
+  mount_uploaders :images, FileUploader
+
   def to_api(current_customer=nil)
     {
       id: id,

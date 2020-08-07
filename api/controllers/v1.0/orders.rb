@@ -487,6 +487,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       data << {status: 'favorite', count: @customer.favorites.count}
       data << {status: 'sku_views', count: @customer.sku_views.count > 100 ? 100 : @customer.sku_views.count}
       data << {status: 'coupon', count: @customer.coupon_receives.where(status: 0).count}
+      data << {status: 'to_comment_skus', count: OrderSku.where(comment_status: 0).where("(SELECT orders.customer_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{@customer.id}").count}
       { status: 'succ', data: data}.to_json
     end
   end
