@@ -94,4 +94,10 @@ class Customer < ActiveRecord::Base
     end
   end
 
+  def agent
+    if dist_agent_id.present?
+      Customer.find(dist_agent_id)
+    end
+  end
+
 end

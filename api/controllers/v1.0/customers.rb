@@ -9,7 +9,32 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   # 注册或登录
   # params {"code": "011EewQl0V6Juq13KWNl01SgQl0EewQ-", "dist_share_id": 10}
   # dist_share_id 为分享记录的id，只有在新用户注册的时候需要传输（通过点击别人分享的内容进入小程序时 ）
-  # data {"token": "", "role": 1}  role=1代表销售员，role=2代表分销员，role=3或者空代表普通客户
+  # data
+=begin
+  {
+    "token": "",
+    "role": 1,
+    "agent":{
+        "id": 1,
+        "name": "a",
+        "mobile": "1330001102",
+        "token": "",
+        "email": "lifuyuan@hotmail.com",
+        "wx_barcode": "/uploads/customer/wx_barcode/1/wx_barcode120200722222956",
+        "avatar": "/uploads/customer/avatar/1/avatar120200722222956",
+        "wechat_info": {
+            "city": "Taizhou",
+            "gender": 1,
+            "country": "China",
+            "language": "zh_CN",
+            "nickName": "nonki",
+            "province": "Zhejiang",
+            "avatarUrl": "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwG"
+        }
+    }
+  }
+=end
+  # role=1代表销售员，role=2代表分销员，role=3或者空代表普通客户
   # 此处获得的token，需要在后续请求中加入到header中，key='token', value='token值'
   post "/", :provides => [:json] do
     api_rescue do
@@ -34,7 +59,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         end
       end
 
-      { status: 'succ', data: {token: @cus.token, role: @cus.role_id_t}}.to_json
+      { status: 'succ', data: {token: @cus.token, role: @cus.role_id_t, agent: @cus.agent.try{|a| a.to_agent_api}}}.to_json
     end
   end
 
