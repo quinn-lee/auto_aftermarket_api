@@ -98,6 +98,7 @@ AutoAftermarketApi::Admin.controllers :orders do
       logi_info = {shpmt_num: params[:shpmt_num], logi_company: params[:logi_company]}
       @order.update(status: "delivered", delivere_time: Time.now, delivery_info: (@order.delivery_info||{}).merge(logi_info))
       @order.sub_orders.where(sub_type: "delivery").update_all(status: "delivered")
+      @order.delivery_subscribe
       flash[:success] = "操作成功"
       redirect(url(:orders, :deliveries))
     rescue => e
