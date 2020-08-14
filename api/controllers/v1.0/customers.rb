@@ -38,6 +38,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   # 此处获得的token，需要在后续请求中加入到header中，key='token', value='token值'
   post "/", :provides => [:json] do
     api_rescue do
+      unless @merchant = Merchant.find_by(appid: env['HTTP_APPID'])
+        raise "appid invalid"
+      end
       code,body=WebFunctions.method_url_call("get","https://api.weixin.qq.com/sns/jscode2session?appid=#{Settings.wechat.appId}&secret=#{Settings.wechat.appSecret}&js_code=#{@request_params["code"]}&grant_type=authorization_code",{},"JSON")
       if code!="200"
         logger.info("call api weixin expection , [#{code}]")
@@ -54,7 +57,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
               agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员或找出最早分享客户
               dist_agent_id = agent.id #记录新用户归属
             end
-            @cus = Customer.create(dist_share_id: dist_share_id, dist_agent_id: dist_agent_id, openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
+            @cus = Customer.create(merchant_id: @merchant.id, dist_share_id: dist_share_id, dist_agent_id: dist_agent_id, openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
           end
         end
       end

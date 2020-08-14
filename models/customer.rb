@@ -11,8 +11,10 @@ class Customer < ActiveRecord::Base
   has_many :seckill_buyers, :class_name => 'SeckillBuyer', :dependent => :destroy
   has_many :favorites, :class_name => 'Favorite', :dependent => :destroy
   has_many :comments, :class_name => 'Comment', :dependent => :destroy
+  has_many :agent_changes, :class_name => 'AgentChange', :dependent => :destroy
 
   belongs_to :role,   :class_name => 'Role'
+  belongs_to :merchant,   :class_name => 'Merchant'
 
   APPSTATUS = {
     0 => '待审核',

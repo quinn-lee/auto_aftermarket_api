@@ -1,0 +1,88 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="product-status-wrap">
+        <div class="row">
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <h4>更换分销员申请列表</h4>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+          </div>
+        </div>
+        <table>
+            <tr>
+                <th style="width: 20%;">客户</th>
+                <th style="width: 60%;">申请内容</th>
+                <th style="width: 15%;"></th>
+            </tr>
+            <% @agent_changes.each do |ac| %>
+            <tr>
+                <td><%=(ac.customer.wechat_info||{})['nickName']%></td>
+                <td><%=ac.content%></td>
+                <td>
+                  <div class="button-drop-style-one btn-danger-bg">
+                      <button type="button" class="btn btn-custon-four btn-danger dropdown-toggle" data-toggle="dropdown">操作 <i class="fa fa-angle-down"></i>
+    </button>
+                      <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-five" role="menu">
+                          <li><a href="#" data-toggle="modal" data-target="#agent" >更换分销员</a></li>
+
+                      </ul>
+                      <div id="agent" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-close-area modal-close-df">
+                                      <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                                  </div>
+                                  <div class="modal-body">
+                                      <div class="modal-login-form-inner">
+                                          <div class="row">
+                                              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                  <div class="basic-login-inner modal-basic-inner">
+                                                      <% form_tag url(:agent_changes, :change, :id=>ac.id), :class=>"form-horizontal", :method => 'post' do %>
+
+                                                          <div class="form-group-inner">
+                                                              <div class="row">
+                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                      <label class="login2">分销员</label>
+                                                                  </div>
+                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                      <%=select_tag(:new_agent_id, :options => current_account.merchant.agents, :class => "form-control custom-select-value")%>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                          <div class="login-btn-inner">
+                                                              <div class="row">
+                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                      <div class="login-horizental">
+                                                                          <button class="btn btn-sm btn-primary login-submit-cs" type="submit">提交</button>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      <% end %>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </td>
+            </tr>
+            <% end %>
+
+        </table>
+        <%= will_paginate @agent_changes %>
+
+    </div>
+</div>
+
+<style>
+.dropdown-menu.another-drop-pro-five{
+  left: 79% !important;
+  top: auto;
+}
+</style>
