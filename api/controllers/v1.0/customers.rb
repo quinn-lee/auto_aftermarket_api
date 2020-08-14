@@ -379,4 +379,36 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
       { status: 'succ', data: {url: @url}}.to_json
     end
   end
+
+
+  # 客户所属分销员
+  # params 空
+  # data
+=begin
+  {
+        "id": 1,
+        "name": "a",
+        "mobile": "1330001102",
+        "token": "",
+        "email": "lifuyuan@hotmail.com",
+        "wx_barcode": "/uploads/customer/wx_barcode/1/wx_barcode120200722222956",
+        "avatar": "/uploads/customer/avatar/1/avatar120200722222956",
+        "wechat_info": {
+            "city": "Taizhou",
+            "gender": 1,
+            "country": "China",
+            "language": "zh_CN",
+            "nickName": "nonki",
+            "province": "Zhejiang",
+            "avatarUrl": "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwG"
+        }
+    }
+=end
+  post :dist_agent, :provides => [:json] do
+    api_rescue do
+      authenticate
+
+      { status: 'succ', data: @customer.agent.try{|a| a.to_agent_api}}.to_json
+    end
+  end
 end
