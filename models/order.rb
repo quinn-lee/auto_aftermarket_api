@@ -155,17 +155,17 @@ class Order < ActiveRecord::Base
         access_token = res['access_token']
         t_sku = OrderSku.where(id: sub_orders.find_by(sub_type: "delivery").order_sku_ids).first.t_sku
         data = {
-          "character_string1.DATA"=>order_no,
-          "character_string2.DATA"=>delivery_info['shpmt_num'],
-          "thing3.DATA"=>t_sku.present? ? t_sku.title : "",
-          "thing4.DATA"=>"您的订单已发货"
+          "character_string1"=>{value: order_no},
+          "character_string2"=>{value: delivery_info['shpmt_num']},
+          "thing3"=>{value: t_sku.present? ? t_sku.title : ""},
+          "thing4"=>{value: "您的订单已发货"}
         }
         param = {
           touser: customer.openid,
           template_id: "PRP-auu9CmP6bQF3lEySj3E6OI3SSo5Dz3IxDQVJrdU",
           page: "/pages/orders/show?id=#{id}",
           data: data,
-          miniprogram_state: "trial"
+          miniprogram_state: "developer"
         }
         code,body=WebFunctions.method_url_call("post","https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=#{access_token}",param,"JSON")
         if code!="200"
