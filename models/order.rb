@@ -153,7 +153,7 @@ class Order < ActiveRecord::Base
         raise res['errmsg']
       else
         access_token = res['access_token']
-        t_sku = TSku.where(id: sub_orders.find_by(sub_type: "delivery").order_sku_ids).first
+        t_sku = OrderSku.where(id: sub_orders.find_by(sub_type: "delivery").order_sku_ids).first.t_sku
         data = {
           "character_string1.DATA"=>order_no,
           "character_string2.DATA"=>delivery_info['shpmt_num'],
