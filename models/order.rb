@@ -22,6 +22,7 @@ class Order < ActiveRecord::Base
     "appointed" => '已预约待安装',
     "done" => '已完成',
     "delete" => '已删除',
+    "cancelling" => '申请取消待审核',
     "cancelled" => '已取消'
   }.stringify_keys
 
@@ -43,7 +44,7 @@ class Order < ActiveRecord::Base
 
   # 仅在支付成功后，可取消
   def can_cancel?
-    return false if status != "paid"
+    return false if status != "received" && status != "appointing" && status != "paid"
     if order_type == "group" # 团购需要判断是否已成团
       return false if group_buyer.group.status == 2  #已成团不可取消
     end
@@ -51,7 +52,7 @@ class Order < ActiveRecord::Base
   end
 
   def do_cancel
-    update!(status: "cancelled")
+    update!(status: "cancelled", cancel_time: Time.now)
     if order_type == "group" && group_buyer.present?
       group_buyer.update!(status: 0)
     end

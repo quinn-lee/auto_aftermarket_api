@@ -23,6 +23,7 @@ class SubOrder < ActiveRecord::Base
       shop_info: shop_info,
       delivery_info: order.delivery_info,
       contact_info: order.contact_info,
+      status: status,
       items: items
     }
   end

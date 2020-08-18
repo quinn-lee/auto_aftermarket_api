@@ -41,4 +41,20 @@ class TCategory < ActiveRecord::Base
   def brands
     TBrand.where(id: TCategoryBrand.where(t_category_id: id).map(&:t_brand_id))
   end
+
+  # 目录是否可删除
+  def can_delete?
+    if if_parent
+      TCategory.where(parent_id: id).each{|tc| return false if tc.t_spus.count > 0}
+    else
+      return false if t_spus.count > 0
+    end
+    return true
+  end
+
+  # 删除目录
+  def do_delete!
+    TCategory.where(parent_id: id).each{|tc| tc.destroy!}
+    self.destroy!
+  end
 end

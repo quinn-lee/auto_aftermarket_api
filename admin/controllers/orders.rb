@@ -23,7 +23,8 @@ AutoAftermarketApi::Admin.controllers :orders do
 
   # 待发货列表
   get :deliveries do
-    @orders = current_account.merchant.orders.where(status: 'received').where("(SELECT sub_orders.sub_type FROM sub_orders WHERE orders.id = sub_orders.order_id) = 'delivery'")
+    # 根据子订单状态查询待发货列表
+    @orders = current_account.merchant.orders.where("(SELECT sub_orders.sub_type FROM sub_orders WHERE orders.id = sub_orders.order_id) = 'delivery'").where("(SELECT sub_orders.status FROM sub_orders WHERE orders.id = sub_orders.order_id) = 'received'")
     @orders = @orders.where(order_no: params[:order_no]) if params[:order_no].present?
     @orders = @orders.order("created_at desc").paginate(page: params[:page], per_page: 30)
     render 'orders/deliveries'
@@ -33,7 +34,7 @@ AutoAftermarketApi::Admin.controllers :orders do
   get :cancel, :with => :id do
     begin
       @order = Order.find(params[:id])
-      @order.update!(status: "cancelled", cancel_time: Time.now)
+      @order.do_cancel
       flash[:success] = "取消成功"
       redirect(url(:orders, :index))
     rescue => e
@@ -48,6 +49,7 @@ AutoAftermarketApi::Admin.controllers :orders do
     begin
       @order = Order.find(params[:id])
       @order.update!(status: "done")
+      @order.sub_orders.update_all(status: "done")
       flash[:success] = "订单状态修改成功"
       redirect(url(:orders, :index))
     rescue => e
@@ -73,6 +75,7 @@ AutoAftermarketApi::Admin.controllers :orders do
           if OrderSku.where(order_no: order.order_no).where("lack_quantity > 0").count == 0
             # 更新订单状态
             order.update!(status: "received")
+            order.sub_orders.where(sub_type: "delivery").update_all(status: "received")
             if order.sub_orders.where(sub_type: "install").present?
               order.update!(status: "appointing") #更新为待预约
               order.sub_orders.where(sub_type: "install").update_all(status: "appointing")
@@ -96,7 +99,8 @@ AutoAftermarketApi::Admin.controllers :orders do
       raise "单号不能为空" if params[:shpmt_num].blank?
       raise "物流商不能为空" if params[:logi_company].blank?
       logi_info = {shpmt_num: params[:shpmt_num], logi_company: params[:logi_company]}
-      @order.update(status: "delivered", delivere_time: Time.now, delivery_info: (@order.delivery_info||{}).merge(logi_info))
+      status = (@order.status == "received" ? "delivered" : @order.status)
+      @order.update(status: status, delivere_time: Time.now, delivery_info: (@order.delivery_info||{}).merge(logi_info))
       @order.sub_orders.where(sub_type: "delivery").update_all(status: "delivered")
       @order.delivery_subscribe
       flash[:success] = "操作成功"

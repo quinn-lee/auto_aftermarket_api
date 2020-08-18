@@ -121,7 +121,13 @@
                         <td><%= sku.sale_attrs_desc %></td>
                         <td><%= sku.sku_code%></td>
                         <td>
-                          <a href="<%=url(@from, :new, :sku_id =>sku.id) %>" title="选择" class="pd-setting-ed" style="margin-right: 5px;"><%=@mod%>该商品</a>
+                          <% if @from == :groups && sku.groups.where(status: 1).where("end_time > '#{Time.now.strftime('%F %T')}'").present?%>
+                            已是团购商品
+                          <% elsif @from == :seckills && sku.seckills.where(status: 1).where("end_time > '#{Time.now.strftime('%F %T')}'").present?%>
+                            已是秒杀商品
+                          <% else %>
+                            <a href="<%=url(@from, :new, :sku_id =>sku.id) %>" title="选择" class="pd-setting-ed" style="margin-right: 5px;"><%=@mod%>该商品</a>
+                          <% end %>
                         </td>
                     </tr>
                     <% end %>

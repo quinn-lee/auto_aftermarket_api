@@ -331,6 +331,7 @@
               </div>
           </div>
           <!-- Mobile Menu end -->
+          <!--
           <div class="breadcome-area" style="margin-top: 60px;">
               <div class="container-fluid">
                   <div class="row">
@@ -344,7 +345,7 @@
                                       <ul class="breadcome-menu">
                                           <li><a href="/">首页</a> <span class="bread-slash">/</span>
                                           </li>
-                                          <li><span class="bread-blod"><%=@local%></span>
+                                          <li><span class="bread-blod"><#%=@local%></span>
                                           </li>
                                       </ul>
                                   </div>
@@ -354,11 +355,12 @@
                   </div>
               </div>
           </div>
+          -->
         </div>
 
         <div class="product-cart-area mg-tb-15">
             <div class="container-fluid">
-                <div class="row">
+                <div class="row" style="margin-top: 60px;">
                   <%= {:error => 'danger', :warning => 'warning', :success => 'success', :notice => 'info'}.map { |type, class_name| flash_tag(type, :class => "alert alert-#{class_name} fade in", :bootstrap => true) }.join.html_safe %>
                   <%= yield %>
                 </div>

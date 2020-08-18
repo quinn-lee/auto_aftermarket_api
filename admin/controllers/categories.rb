@@ -104,5 +104,34 @@ AutoAftermarketApi::Admin.controllers :categories do
     end
   end
 
+  # 隐藏/展示
+  get :hidden, with: :id do
+    begin
+      @category = TCategory.find(params[:id])
+      @category.update!(is_hidden: params[:is_hidden])
+      flash[:notice] = "目录修改成功"
+      redirect(url(:categories, :index))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:categories, :index))
+    end
+  end
+
+  # 删除
+  get :delete, with: :id do
+    begin
+      @category = TCategory.find(params[:id])
+      raise "该目录无法删除" unless @category.can_delete?
+      @category.do_delete!
+      flash[:notice] = "目录删除成功"
+      redirect(url(:categories, :index))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:categories, :index))
+    end
+  end
+
 
 end

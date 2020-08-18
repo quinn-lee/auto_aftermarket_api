@@ -13,6 +13,8 @@ class TSku < ActiveRecord::Base
   has_many :favorites, :class_name => 'Favorite', :dependent => :destroy
   has_many :sku_views, :class_name => 'SkuView', :dependent => :destroy
   has_many :comments, :class_name => 'Comment', :dependent => :destroy
+  has_many :groups, :class_name => 'Group', :dependent => :destroy
+  has_many :seckills, :class_name => 'Seckill', :dependent => :destroy
 
   PREFERRED = {
     1 => '优选',
@@ -21,6 +23,8 @@ class TSku < ActiveRecord::Base
   }.stringify_keys
 
   def to_api
+    group = groups.where(status: 1).where("end_time > '#{Time.now.strftime('%F %T')}'").first
+    seckill = seckills.where(status: 1).where("end_time > '#{Time.now.strftime('%F %T')}'").first
     {
       id: id,
       spu: t_spu.to_api_simple,
@@ -35,11 +39,15 @@ class TSku < ActiveRecord::Base
       images: images.try{|i| i.map(&:url)},
       sale_attrs: sale_attrs,
       attrs: attrs,
-      detail: detail.try{|i| i.map(&:url)}
+      # detail: detail.try{|i| i.map(&:url)},
+      group: group.present? ? {group_id: group.id, group_price: group.group_price} : nil,
+      seckill: seckill.present? ? {seckill_id: seckill.id, seckill_price: seckill.seckill_price} : nil
     }
   end
 
   def to_api_simple
+    group = groups.where(status: 1).where("end_time > '#{Time.now.strftime('%F %T')}'").first
+    seckill = seckills.where(status: 1).where("end_time > '#{Time.now.strftime('%F %T')}'").first
     {
       id: id,
       title: title,
@@ -53,7 +61,9 @@ class TSku < ActiveRecord::Base
       images: images.try{|i| i.map(&:url)},
       sale_attrs: sale_attrs,
       attrs: attrs,
-      detail: detail.try{|i| i.map(&:url)}
+      # detail: detail.try{|i| i.map(&:url)},
+      group: group.present? ? {group_id: group.id, group_price: group.group_price} : nil,
+      seckill: seckill.present? ? {seckill_id: seckill.id, seckill_price: seckill.seckill_price} : nil
     }
   end
 

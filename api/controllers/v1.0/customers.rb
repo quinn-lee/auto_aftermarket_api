@@ -414,4 +414,16 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
       { status: 'succ', data: @customer.agent.try{|a| a.to_agent_api}}.to_json
     end
   end
+
+
+  # 分销员名下客户数量
+  # params 空
+  # data {"count": 10}
+  post :sub_customers_count, :provides => [:json] do
+    api_rescue do
+      authenticate
+
+      { status: 'succ', data: {count: Customer.where(dist_agent_id: @customer.id).count}}.to_json
+    end
+  end
 end

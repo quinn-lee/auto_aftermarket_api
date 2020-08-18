@@ -6,13 +6,13 @@
         </div>
         <table>
             <tr>
-                <th style="width: 12%;">一级目录</th>
-                <th style="width: 12%;">二级目录</th>
-                <th style="width: 33%;">品牌</th>
-                <th style="width: 33%;">属性</th>
-                <th style="width: 8%;"></th>
+                <th style="width: 10%;">一级目录</th>
+                <th style="width: 10%;">二级目录</th>
+                <th style="width: 30%;">品牌</th>
+                <th style="width: 30%;">属性</th>
+                <th style="width: 18%;"></th>
             </tr>
-            <% @categories.where(parent_id: nil).each do |category| %>
+            <% @categories.where(parent_id: nil).order("id asc").each do |category| %>
               <tr>
                   <td><a class="toggle-button" data-id="<%=category.id%>" href="javascript:void(0)"><%= category.name%></a></td>
                   <td></td>
@@ -20,6 +20,14 @@
                   <td></td>
                   <td><a href="<%=url(:categories, :new, :parent_id =>category.id) %>" title="新增二级目录" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                     <a href="<%=url(:spus, :index, :category_1 =>category.id)%>" title="查看商品" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    <% if category.is_hidden %>
+                      <a href="<%=url(:categories, :hidden, :id =>category.id, :is_hidden=>'false')%>" title="" class="pd-setting-ed" style="margin-right: 5px;">展示</a>
+                    <% else %>
+                      <a href="<%=url(:categories, :hidden, :id =>category.id, :is_hidden=>'true')%>" title="" class="pd-setting-ed" style="margin-right: 5px;">隐藏</a>
+                    <% end %>
+                    <% if category.can_delete?%>
+                      <a href="<%=url(:categories, :delete, :id =>category.id)%>" title="" class="pd-setting-ed" style="margin-right: 5px;">删除</a>
+                    <% end %>
                   </td>
               </tr>
               <% @categories.where(parent_id: category.id).each do |sub_category|%>
@@ -114,7 +122,16 @@
                   </td>
                   <td><a href="<%=url(:categories, :new_attribute, :id =>sub_category.id) %>" title="添加属性" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-file sub-icon-mg" aria-hidden="true"></i></a>
                     <a href="<%=url(:categories, :new_brands, :id =>sub_category.id) %>" title="添加品牌" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa big-icon fa-desktop icon-wrap" aria-hidden="true"></i></a>
-                  <a href="<%=url(:spus, :index, :category_2 =>sub_category.id)%>" title="查看商品" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+                    <a href="<%=url(:spus, :index, :category_2 =>sub_category.id)%>" title="查看商品" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                  <% if sub_category.is_hidden %>
+                    <a href="<%=url(:categories, :hidden, :id =>sub_category.id, :is_hidden=>'false')%>" title="" class="pd-setting-ed" style="margin-right: 5px;">展示</a>
+                  <% else %>
+                    <a href="<%=url(:categories, :hidden, :id =>sub_category.id, :is_hidden=>'true')%>" title="" class="pd-setting-ed" style="margin-right: 5px;">隐藏</a>
+                  <% end %>
+                  <% if sub_category.can_delete?%>
+                    <a href="<%=url(:categories, :delete, :id =>sub_category.id)%>" title="" class="pd-setting-ed" style="margin-right: 5px;">删除</a>
+                  <% end %>
+                  </td>
               </tr>
               <% end %>
             <% end %>

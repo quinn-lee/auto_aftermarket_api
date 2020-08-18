@@ -33,7 +33,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                           "image": null,
                           "letter": "M"
                       },
-                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别",
+                      "details": ["/uploads/t_spu/details/10/Screenshot_20200813_145442.png"]
                   },
                   "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
                   "sku_code": "AN01224235",
@@ -79,7 +80,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                           "image": null,
                           "letter": "M"
                       },
-                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别",
+                      "details": ["/uploads/t_spu/details/10/Screenshot_20200813_145442.png"]
                   },
                   "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
                   "sku_code": "AN01224236",
@@ -169,7 +171,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                           "image": null,
                           "letter": "M"
                       },
-                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别",
+                      "details": ["/uploads/t_spu/details/10/Screenshot_20200813_145442.png"]
                   },
                   "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
                   "sku_code": "AN01224235",
@@ -215,7 +218,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                           "image": null,
                           "letter": "M"
                       },
-                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别",
+                      "details": ["/uploads/t_spu/details/10/Screenshot_20200813_145442.png"]
                   },
                   "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
                   "sku_code": "AN01224236",
@@ -305,7 +309,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                           "image": null,
                           "letter": "M"
                       },
-                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别",
+                      "details": ["/uploads/t_spu/details/10/Screenshot_20200813_145442.png"]
                   },
                   "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （4L装）",
                   "sku_code": "AN01224235",
@@ -351,7 +356,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                           "image": null,
                           "letter": "M"
                       },
-                      "detail": "新老包装更替中，实物包装可能与图片略有差别"
+                      "detail": "新老包装更替中，实物包装可能与图片略有差别",
+                      "details": ["/uploads/t_spu/details/10/Screenshot_20200813_145442.png"]
                   },
                   "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 0W-20 SN级 （1L装）",
                   "sku_code": "AN01224236",
@@ -1248,6 +1254,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
           "name": "机油"
       },
       "detail": "新老包装更替中，实物包装可能与图片略有差别",
+      "details": ["/uploads/t_spu/details/10/Screenshot_20200813_145442.png"]
       "brand": {
           "id": 1,
           "name": "美孚",
@@ -1426,7 +1433,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
                   "机油种类": "全合成机油",
                   "机油等级": "SN",
                   "建议更换周期": "10000公里"
-              }
+              },
+              "group": {:group_id=>3, :group_price=>10},
+              "seckill": {:seckill_id=>3, :seckill_price=>59}
           }
       ]
   }
@@ -1465,7 +1474,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
               "image": null,
               "letter": "M"
           },
-          "detail": "新老包装更替中，实物包装可能与图片略有差别"
+          "detail": "新老包装更替中，实物包装可能与图片略有差别",
+          "details": ["/uploads/t_spu/details/10/Screenshot_20200813_145442.png"]
       },
       "title": "【正品授权】美孚/Mobil 美孚1号全合成机油 5W-30 SN级 （4L装）",
       "sku_code": "AN01224231",
@@ -1495,7 +1505,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
           "机油种类": "全合成机油",
           "机油等级": "SN",
           "建议更换周期": "10000公里"
-      }
+      },
+      "group": {:group_id=>3, :group_price=>10},
+      "seckill": {:seckill_id=>3, :seckill_price=>59}
   }
 =end
   post :sku, :provides => [:json] do

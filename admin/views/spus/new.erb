@@ -6,7 +6,7 @@
             <li><a disable='true'><i class="fa fa-ticket" aria-hidden="true"></i> 3、添加商品(SKU)</a></li>
         </ul>
         <div id="myTabContent" class="tab-content custom-product-edit">
-            <% form_for @spu, url(:spus, :create), :class=>"form-horizontal", :method => 'post' do |f| %>
+            <% form_for @spu, url(:spus, :create), :class=>"form-horizontal", :method => 'post', multipart: true do |f| %>
             <div class="product-tab-list tab-pane fade active in">
               <%=f.hidden_field "t_category_id" %>
               <%=f.hidden_field "merchant_id" %>
@@ -44,6 +44,19 @@
                             <%=f.text_field(:detail, :class => "form-control")%>
                           </div>
                       </div>
+                  </div>
+              </div>
+              <div class="form-group-inner">
+                  <div class="row">
+                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                          <label class="login2 pull-right pull-right-pro">产品详情图片</label>
+                      </div>
+                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                          <div class="form-select-list">
+                            <%=f.file_field(:details, :class => "form-control", multiple: true)%>
+                          </div>
+                      </div>
+
                   </div>
               </div>
               <div class="form-group-inner">

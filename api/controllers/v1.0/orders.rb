@@ -392,6 +392,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
                         "contact_name": "李富元",
                         "contact_phone": "13917050000"
                     },
+                    "status": "received",
                     "items": [
                         {
                             "id": 5,
@@ -468,7 +469,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       ActiveRecord::Base.transaction do
         @order = Order.find(@request_params['order_id'])
         raise "can not cancel status=#{@order.status}" unless @order.can_cancel?
-        @order.do_cancel
+        @order.update!(status: "cancelling")
       end
 
       { status: 'succ', data: {}}.to_json

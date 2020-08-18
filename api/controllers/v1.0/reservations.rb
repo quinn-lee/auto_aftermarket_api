@@ -79,4 +79,38 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/reservations' do
         { status: 'succ', data: {}}.to_json
     end
   end
+
+  # 订单预约修改
+  # params {shop_id: 1, order_no: "1111", booking_time_from: "2020-06-07 09:00:00", booking_time_to: "2020-06-07 10:30:00"}
+  # data
+  post "/update", :provides => [:json] do
+    api_rescue do
+      authenticate
+        @shop = Shop.find(@request_params['shop_id'])
+        @order = Order.find_by(order_no: @request_params['order_no'])
+        ActiveRecord::Base.transaction do
+          OrderReservation.where(order_no: @order.order_no).delete_all
+          OrderReservation.create!(shop_id: @shop.id, order_no: @order.order_no, booking_date: Time.parse(@request_params['booking_time_from']).strftime("%F"), booking_time_from: @request_params['booking_time_from'], booking_time_to: @request_params['booking_time_to'])
+          @order.update!(status: "appointed")
+          @order.sub_orders.where(sub_type: "install").update_all(status: "appointed")
+        end
+        { status: 'succ', data: {}}.to_json
+    end
+  end
+
+  # 订单预约取消
+  # params {order_no: "1111"}
+  # data
+  post "/cancel", :provides => [:json] do
+    api_rescue do
+      authenticate
+        @order = Order.find_by(order_no: @request_params['order_no'])
+        ActiveRecord::Base.transaction do
+          OrderReservation.where(order_no: @order.order_no).delete_all
+          @order.update!(status: "appointing")
+          @order.sub_orders.where(sub_type: "install").update_all(status: "appointing")
+        end
+        { status: 'succ', data: {}}.to_json
+    end
+  end
 end

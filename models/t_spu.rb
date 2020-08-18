@@ -1,6 +1,8 @@
 # encoding: utf-8
 # 产品SPU表
+require 'carrierwave/orm/activerecord'
 class TSpu < ActiveRecord::Base
+  mount_uploaders :details, FileUploader
 
   validates :t_category_id, :title, presence: true
 
@@ -19,8 +21,9 @@ class TSpu < ActiveRecord::Base
       title: title,
       category: t_category.to_api_simple,
       detail: detail,
-      brand: t_brand.to_api,
+      brand: t_brand.try{|tb| tb.to_api},
       sale_attrs: spu_attrs,
+      details: details.try{|i| i.map(&:url)},
       skus: t_skus.map(&:to_api_simple)
     }
   end
@@ -30,8 +33,9 @@ class TSpu < ActiveRecord::Base
       id: id,
       title: title,
       category: t_category.to_api_simple,
-      brand: t_brand.to_api,
-      detail: detail
+      brand: t_brand.try{|tb| tb.to_api},
+      detail: detail,
+      details: details.try{|i| i.map(&:url)}
     }
   end
 

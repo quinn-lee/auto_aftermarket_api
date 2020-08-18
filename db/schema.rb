@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 100) do
+ActiveRecord::Schema.define(version: 102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -536,6 +536,7 @@ ActiveRecord::Schema.define(version: 100) do
     t.integer "sort"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_hidden", default: false
   end
 
   create_table "t_category_brands", force: :cascade do |t|
@@ -578,6 +579,7 @@ ActiveRecord::Schema.define(version: 100) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "dist_percent", precision: 10, scale: 2
+    t.json "details"
   end
 
   create_table "topics", force: :cascade do |t|
