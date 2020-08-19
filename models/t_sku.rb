@@ -40,8 +40,8 @@ class TSku < ActiveRecord::Base
       sale_attrs: sale_attrs,
       attrs: attrs,
       # detail: detail.try{|i| i.map(&:url)},
-      group: group.present? ? {group_id: group.id, group_price: group.group_price} : nil,
-      seckill: seckill.present? ? {seckill_id: seckill.id, seckill_price: seckill.seckill_price} : nil
+      group: group.present? ? {group_id: group.id, group_price: group.group_price, end_time: group.end_time.try{|et| et.strftime("%F %T")}} : nil,
+      seckill: seckill.present? ? {seckill_id: seckill.id, seckill_price: seckill.seckill_price, end_time: seckill.end_time.try{|et| et.strftime("%F %T")}} : nil
     }
   end
 
@@ -62,8 +62,8 @@ class TSku < ActiveRecord::Base
       sale_attrs: sale_attrs,
       attrs: attrs,
       # detail: detail.try{|i| i.map(&:url)},
-      group: group.present? ? {group_id: group.id, group_price: group.group_price} : nil,
-      seckill: seckill.present? ? {seckill_id: seckill.id, seckill_price: seckill.seckill_price} : nil
+      group: group.present? ? {group_id: group.id, group_price: group.group_price, end_time: group.end_time.try{|et| et.strftime("%F %T")}} : nil,
+      seckill: seckill.present? ? {seckill_id: seckill.id, seckill_price: seckill.seckill_price, end_time: seckill.end_time.try{|et| et.strftime("%F %T")}} : nil
     }
   end
 
