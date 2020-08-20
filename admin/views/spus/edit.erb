@@ -47,6 +47,18 @@
               <div class="form-group-inner">
                   <div class="row">
                       <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                          <label class="login2 pull-right pull-right-pro">商品分销佣金比例</label>
+                      </div>
+                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                          <div class="form-select-list">
+                            <%=f.text_field(:dist_percent, :class => "form-control")%>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="form-group-inner">
+                  <div class="row">
+                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                           <label class="login2 pull-right pull-right-pro">产品详情图片</label>
                       </div>
                       <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
@@ -57,18 +69,30 @@
 
                   </div>
               </div>
+              <% if @spu.details.present? %>
               <div class="form-group-inner">
+                <div class="row">
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                        <label class="login2 pull-right pull-right-pro"></label>
+                    </div>
+                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                      <a href="<%=url(:spus, :ordering_imgs, :id=>@spu.id)%>">调整图片顺序</a>
+                    </div>
+                </div>
+                  <% i = 1%>
+                  <% @spu.details.each do |detail|%>
                   <div class="row">
                       <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">商品分销佣金比例</label>
+                          <label class="login2 pull-right pull-right-pro">已上传图片<%=i%></label>
                       </div>
                       <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:dist_percent, :class => "form-control")%>
-                          </div>
+                        <img src="<%=detail.url%>">
                       </div>
                   </div>
+                  <% i += 1%>
+                  <% end %>
               </div>
+              <% end %>
               <div class="form-group-inner">
                   <div class="login-btn-inner">
                       <div class="row">

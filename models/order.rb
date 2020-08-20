@@ -102,6 +102,7 @@ class Order < ActiveRecord::Base
       need_lift_hours: need_lift_hours,
       reservation_time: reservation_time,
       items: items,
+      can_cancel: can_cancel?,
       sub_orders: sub_orders.map(&:to_api)
     }
     return h
