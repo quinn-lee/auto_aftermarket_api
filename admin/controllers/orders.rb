@@ -78,6 +78,7 @@ AutoAftermarketApi::Admin.controllers :orders do
             order.sub_orders.where(sub_type: "delivery").update_all(status: "received")
             if order.sub_orders.where(sub_type: "install").present?
               order.update!(status: "appointing") #更新为待预约
+              order.appoint_subscribe #订阅消息
               order.sub_orders.where(sub_type: "install").update_all(status: "appointing")
             end
           end
@@ -109,6 +110,32 @@ AutoAftermarketApi::Admin.controllers :orders do
       logger.info e.backtrace
       flash[:error] = e.message
       redirect(url(:orders, :deliveries))
+    end
+  end
+
+  # 取消审核列表
+  get :cancelling do
+    @orders = current_account.merchant.orders
+    @orders = @orders.where(status: "cancelling")
+    @orders = @orders.order("created_at desc").paginate(page: params[:page], per_page: 30)
+    render 'orders/cancelling'
+  end
+
+  # 取消审核
+  get :cancel_check, :with => :id do
+    begin
+      @order = Order.find(params[:id])
+      if params[:status] == 'cancelled'
+        @order.do_cancel
+      else
+        @order.do_cancel_reject
+      end
+      flash[:success] = "操作成功"
+      redirect(url(:orders, :cancelling))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:orders, :cancelling))
     end
   end
 end

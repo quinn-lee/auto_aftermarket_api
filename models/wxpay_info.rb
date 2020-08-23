@@ -28,6 +28,7 @@ class WxpayInfo < ActiveRecord::Base
           if order.status == "received"
             order.update!(status: "appointing") #更新为待预约
             so.update!(status: "appointing") #更新为待预约
+            order.appoint_subscribe #订阅消息
           end
         end
         SubOrder.create!(order_id: order.id, sub_type: "delivery", order_sku_ids: delivery_list, status: order.status) if delivery_list.present?

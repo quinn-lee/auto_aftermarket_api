@@ -59,6 +59,11 @@ class Order < ActiveRecord::Base
     if order_type == "seckill" && seckill_buyer.present?
       seckill_buyer.update!(status: 0)
     end
+    sub_orders.update(status: "cancelled")
+  end
+
+  def do_cancel_reject
+    update!(status: sub_orders.last.status)
   end
 
   def reservation_time
@@ -165,6 +170,40 @@ class Order < ActiveRecord::Base
         param = {
           touser: customer.openid,
           template_id: "PRP-auu9CmP6bQF3lEySj3E6OI3SSo5Dz3IxDQVJrdU",
+          page: "/pages/orders/show?id=#{id}",
+          data: data,
+          miniprogram_state: "trial"
+        }
+        code,body=WebFunctions.method_url_call("post","https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=#{access_token}",param,"JSON")
+        if code!="200"
+          logger.info("call api subscribe expection , [#{code}]")
+          raise "call api subscribe timeout,please try again"
+        else
+          logger.info("call api subscribe success")
+        end
+      end
+    end
+  end
+
+  # 订阅消息 预约提醒
+  def appoint_subscribe
+    code,body=WebFunctions.method_url_call("get","https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=#{Settings.wechat.appId}&secret=#{Settings.wechat.appSecret}",{},"JSON")
+    if code!="200"
+      logger.info("call api weixin expection , [#{code}]")
+      raise "call api weixin timeout,please try again"
+    else
+      res=JSON.parse body
+      if res["errcode"].present?
+        raise res['errmsg']
+      else
+        access_token = res['access_token']
+        data = {
+          "character_string1"=>{value: order_no[0..31]},
+          "thing5"=>{value: "您的订单商品已备齐，请您尽快预约安装时间"}
+        }
+        param = {
+          touser: customer.openid,
+          template_id: "HeP4mRcMWyUREX-enXlcYYzeAZZ1ltgguxG1-KwvfU0",
           page: "/pages/orders/show?id=#{id}",
           data: data,
           miniprogram_state: "trial"
