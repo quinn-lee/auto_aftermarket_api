@@ -75,112 +75,7 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-    <div class="left-sidebar-pro">
-        <nav id="sidebar" class="" style="margin-top: 60px;">
-            <div class="sidebar-header">
-              <!--
-                <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
-                <strong><img src="img/logo/logosn.png" alt="" /></strong>
-              -->
-            </div>
-            <div class="left-custom-menu-adp-wrap comment-scrollbar">
-                <nav class="sidebar-nav left-sidebar-menu-pro">
-                    <ul class="metismenu" id="menu1">
-                        <li>
-                          <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">商品</span></a>
-                          <ul class="submenu-angle" aria-expanded="false">
-                              <li><a title="目录" href="<%=url(:categories, :index)%>"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">目录</span></a></li>
-                              <li><a title="商品" href="<%=url(:spus, :index)%>"><i class="fa fa-map-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">商品</span></a></li>
-                              <li><a title="商品榜单（点击量，销量，销售额）" href="#"><i class="fa fa-file-pdf-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">商品榜单</span></a></li>
-                          </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#">
-            								   <i class="fa big-icon fa-home icon-wrap"></i>
-            								   <span class="mini-click-non">客户</span>
-            								</a>
-                            <ul class="submenu-angle" aria-expanded="true">
-                                <li><a title="客户画像" href="<%=url(:agent_changes, :index)%>"><i class="fa fa-bullseye sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">更换分销员申请</span></a></li>
-                                <li><a title="客户画像" href="#"><i class="fa fa-bullseye sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">客户画像</span></a></li>
-                                <li><a title="客户活跃度" href="#"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">客户活跃度</span></a></li>
-                                <li><a title="客户行为统计" href="#"><i class="fa fa-cube sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">客户行为统计</span></a></li>
-                                <li><a title="标签管理" href="#"><i class="fa fa-female sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">标签管理</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-envelope icon-wrap"></i> <span class="mini-click-non">员工</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="BOSS雷达" href="#"><i class="fa fa-inbox sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">BOSS雷达</span></a></li>
-                                <li><a title="员工列表" href="#"><i class="fa fa-television sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">员工列表</span></a></li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">汽车基础数据</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="汽车品牌" href="#"><i class="fa fa-folder sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">汽车品牌</span></a></li>
-                                <li><a title="车型" href="#"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">车型</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-bar-chart-o icon-wrap"></i> <span class="mini-click-non">订单管理</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="订单列表" href="<%=url(:orders, :index)%>"><i class="fa fa-line-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">订单列表</span></a></li>
-                                <li><a title="待采购" href="<%=url(:orders, :purchases)%>"><i class="fa fa-line-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">待采购</span></a></li>
-                                <li><a title="待发货" href="<%=url(:orders, :deliveries)%>"><i class="fa fa-line-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">待发货</span></a></li>
-                                <li><a title="取消审核" href="<%=url(:orders, :cancelling)%>"><i class="fa fa-line-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">取消审核</span></a></li>
-                                <li><a title="员工订单统计" href="#"><i class="fa fa-area-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">员工订单统计</span></a></li>
-                                <li><a title="员工佣金统计" href="#"><i class="fa fa-pie-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">员工佣金统计</span></a></li>
-                                <li><a title="特权折扣" href="#"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">特权折扣</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-table icon-wrap"></i> <span class="mini-click-non">营销活动</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="秒杀" href="<%=url(:seckills, :index)%>"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">秒杀</span></a></li>
-                                <li><a title="团购" href="<%=url(:groups, :index)%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">团购</span></a></li>
-                                <li><a title="优惠券" href="<%=url(:coupons, :index )%>"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优惠券</span></a></li>
-                                <li><a title="优选标签" href="<%=url(:labels, :preferred_labels )%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优选标签</span></a></li>
-                                <li><a title="优选商品" href="<%=url(:skus, :preferred )%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">优选商品</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-table icon-wrap"></i> <span class="mini-click-non">分销</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="设置" href="<%=url(:dist_settings, :new )%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">分销设置</span></a></li>
-                                <li><a title="营销活动" href="<%=url(:activities, :index )%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">营销活动</span></a></li>
-                                <li><a title="审核" href="<%=url(:customers, :agents )%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">销售/分销员审核</span></a></li>
-                                <li><a title="提现" href="<%=url(:withdraws, :index )%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">提现申请处理</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-desktop icon-wrap"></i> <span class="mini-click-non">问答</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="话题" href="<%=url(:questions, :topics)%>"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">话题</span></a></li>
-                                <li><a title="问答" href="<%=url(:questions, :index)%>"><i class="fa fa-th sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">问答</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-table icon-wrap"></i> <span class="mini-click-non">财务</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="财务对账" href="#"><i class="fa fa-pencil sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">财务对账</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-desktop icon-wrap"></i> <span class="mini-click-non">小程序设置</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="聊天设置" href="#"><i class="fa fa-external-link-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">聊天设置</span></a></li>
-                                <li><a title="首页栏目" href="#"><i class="fa fa-crop sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">首页栏目</span></a></li>
-                                <li><a title="手机号授权" href="#"><i class="fa fa-building sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">手机号授权</span></a></li>
-
-                            </ul>
-                        </li>
-
-                    </ul>
-                </nav>
-            </div>
-        </nav>
-    </div>
+    <%= partial 'layouts/sidebar' %>
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
 
@@ -250,81 +145,16 @@
                           <div class="mobile-menu">
                               <nav id="dropdown">
                                   <ul class="mobile-menu-nav">
-                                      <li><a data-toggle="collapse" data-target="#others" href="#">商品 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                        <ul id="others" class="collapse dropdown-header-top">
-                                          <li><a title="目录" href="<%=url(:categories, :index)%>">目录</a></li>
-                                          <li><a title="商品" href="<%=url(:spus, :index)%>">商品</a></li>
-                                          <li><a title="商品榜单（点击量，销量，销售额）" href="#">商品榜单</a></li>
-                                        </ul>
-                                      </li>
-                                      <li><a data-toggle="collapse" data-target="#Charts" href="#">客户 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                          <ul class="collapse dropdown-header-top">
-                                              <li><a href="<%=url(:agent_changes, :index)%>">更换分销员申请</a></li>
-                                              <li><a href="#">客户画像</a></li>
-                                              <li><a href="#">客户活跃度</a></li>
-                                              <li><a href="#">客户行为统计</a></li>
-                                              <li><a href="#">标签管理</a></li>
+                                        <% sidebar_menu_active.each do |item| %>
+                                        <li>
+                                          <a data-toggle="collapse" data-target="#<%= item[:field] %>" href="#"><%= item[:label] %> <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                          <ul id="<%= item[:field] %>" class="collapse dropdown-header-top">
+                                            <% item[:options].each do |option| %>
+                                                <li><a href="<%= option[:url] %>"><%= option[:label] %></a></li>
+                                            <% end %>
                                           </ul>
-                                      </li>
-                                      <li><a data-toggle="collapse" data-target="#demo" href="#">员工 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                          <ul id="demo" class="collapse dropdown-header-top">
-                                            <li><a title="BOSS雷达" href="#">BOSS雷达</a></li>
-                                            <li><a title="员工列表" href="#">员工列表</a></li>
-                                          </ul>
-                                      </li>
-
-                                      <li><a data-toggle="collapse" data-target="#Miscellaneousmob" href="#">汽车基础数据 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                          <ul id="Miscellaneousmob" class="collapse dropdown-header-top">
-                                            <li><a title="汽车品牌" href="#">汽车品牌</a></li>
-                                            <li><a title="车型" href="#">车型</a></li>
-                                          </ul>
-                                      </li>
-                                      <li><a data-toggle="collapse" data-target="#Chartsmob" href="#">订单管理 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                          <ul id="Chartsmob" class="collapse dropdown-header-top">
-                                            <li><a title="订单列表" href="url(:orders, :index)">订单列表</a></li>
-                                            <li><a title="待采购" href="url(:orders, :purchases)">待采购</a></li>
-                                            <li><a title="待发货" href="url(:orders, :deliveries)">待发货</a></li>
-                                            <li><a title="取消审核" href="url(:orders, :cancelling)">取消审核</a></li>
-                                            <li><a title="员工订单统计" href="#">员工订单统计</a></li>
-                                            <li><a title="员工佣金统计" href="#">员工佣金统计</a></li>
-                                            <li><a title="特权折扣" href="#">特权折扣</a></li>
-                                          </ul>
-                                      </li>
-                                      <li><a data-toggle="collapse" data-target="#Tablesmob" href="#">营销活动 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                          <ul id="Tablesmob" class="collapse dropdown-header-top">
-                                            <li><a title="秒杀" href="<%=url(:seckills, :index)%>">秒杀</a></li>
-                                            <li><a title="团购" href="<%=url(:groups, :index)%>">团购</a></li>
-                                            <li><a title="优惠券" href="<%=url(:coupons, :index )%>">优惠券</a></li>
-                                            <li><a title="优选标签" href="<%=url(:labels, :preferred_labels )%>">优选标签</a></li>
-                                            <li><a title="优选商品" href="<%=url(:skus, :preferred )%>">优选商品</a></li>
-                                          </ul>
-                                      </li>
-                                      <li><a data-toggle="collapse" data-target="#Dist" href="#">分销 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                          <ul id="Dist" class="collapse dropdown-header-top">
-                                            <li><a title="分销设置" href="<%=url(:dist_settings, :new )%>">分销设置</a></li>
-                                            <li><a title="营销活动" href="<%=url(:activities, :index )%>">营销活动</a></li>
-                                            <li><a title="审核" href="<%=url(:customers, :agents )%>">销售/分销员审核</a></li>
-                                            <li><a title="提现" href="<%=url(:withdraws, :index )%>">提现申请处理</a></li>
-                                          </ul>
-                                      </li>
-                                      <li><a data-toggle="collapse" data-target="#Question" href="#">问答 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                          <ul id="Question" class="collapse dropdown-header-top">
-                                            <li><a title="话题" href="<%=url(:questions, :topics)%>">话题</a></li>
-                                            <li><a title="问答" href="<%=url(:questions, :index)%>">问答</a></li>
-                                          </ul>
-                                      </li>
-                                      <li><a data-toggle="collapse" data-target="#formsmob" href="#">财务 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                          <ul id="formsmob" class="collapse dropdown-header-top">
-                                              <li><a title="财务对账" href="#">财务对账</a></li>
-                                          </ul>
-                                      </li>
-                                      <li><a data-toggle="collapse" data-target="#Appviewsmob" href="#">小程序设置 <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                          <ul id="Appviewsmob" class="collapse dropdown-header-top">
-                                            <li><a title="聊天设置" href="#">聊天设置</a></li>
-                                            <li><a title="首页栏目" href="#">首页栏目</a></li>
-                                            <li><a title="手机号授权" href="#">手机号授权</a></li>
-                                          </ul>
-                                      </li>
+                                        </li>
+                                        <% end %>
                                   </ul>
                               </nav>
                           </div>

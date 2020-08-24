@@ -73,8 +73,10 @@
 
 
 .sidebar-nav .metismenu li .icon-wrap{
-	margin-right:10px;
-	font-size:20px;
+    margin-right:10px;
+    font-size:20px;
+    width: 20px;
+    text-align: center;
 }
 .sidebar-nav .metismenu li .sub-icon-mg{
 	margin-right:5px;

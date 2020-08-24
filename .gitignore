@@ -9,3 +9,4 @@ config/database.rb
 config/application.yml
 .*.sw*
 public/uploads/
+.idea/
