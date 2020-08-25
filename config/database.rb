@@ -13,15 +13,15 @@
 #     :socket    => '/tmp/mysql.sock'
 #   }
 #
-ActiveRecord::Base.configurations[:development] = {
-  :adapter   => 'postgresql',
-  :database  => 'auto_aftermarket_api_development',
-  :username  => 'fuyuan',
-  :password  => 'fuyuan',
-  :host      => 'localhost',
-  :port      => 5432
-
-}
+# ActiveRecord::Base.configurations[:development] = {
+#   :adapter   => 'postgresql',
+#   :database  => 'auto_aftermarket_api_development',
+#   :username  => 'fuyuan',
+#   :password  => 'fuyuan',
+#   :host      => 'localhost',
+#   :port      => 5432
+#
+# }
 
 ActiveRecord::Base.configurations[:production] = {
   :adapter   => 'postgresql',
@@ -33,7 +33,7 @@ ActiveRecord::Base.configurations[:production] = {
 
 }
 
-ActiveRecord::Base.configurations[:test] = {
+ActiveRecord::Base.configurations[:development] = {
   :adapter   => 'postgresql',
   :database  => 'auto_aftermarket_api_test',
   :username  => 'europe_time',

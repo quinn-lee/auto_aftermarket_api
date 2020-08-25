@@ -88,6 +88,12 @@ module AutoAftermarketApi
             { :label => '手机号授权', :icon => '', :url => '#' }
           ]
         }
+        nav_css_demo = {
+          :label => 'CSS DEMO', :icon => 'css3', :field => 'nav_css_demo',
+          :options => [
+            { :label => '基础样式', :icon => '', :url => url(:css_demo, :index) }
+          ]
+        }
 
         menu = []
         menu << nav_commodities
@@ -100,6 +106,7 @@ module AutoAftermarketApi
         menu << nav_questions
         menu << nav_finance
         menu << nav_miniprogram
+        menu << nav_css_demo
         menu # return
       end
 

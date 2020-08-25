@@ -1,0 +1,46 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">表单基础样式 1 (.form-group)</h4>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6 form-group">
+            <label>文本</label>
+            <%= text_field_tag :text, :value => nil, :class => 'form-control' %>
+        </div>
+        <div class="col-xs-6 form-group">
+            <label>选择栏</label>
+            <%= select_tag :select, :options => %w[option1 option2], :class => 'form-control' %>
+        </div>
+        <div class="col-xs-6 form-group">
+            <label>文件</label>
+            <%= file_field_tag :file %>
+        </div>
+    </div>
+    <div class="form-group-btn">
+        <button type="button" class="btn btn-submit">提交</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">表单基础样式 2 (.form-group-row)</h4>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 form-group-row">
+            <label>文本</label>
+            <%= text_field_tag :text, :value => nil, :class => 'form-control' %>
+        </div>
+        <div class="col-xs-12 form-group-row">
+            <label>选择栏</label>
+            <%= select_tag :select, :options => %w[option1 option2], :class => 'form-control' %>
+        </div>
+        <div class="col-xs-12 form-group-row">
+            <label>文件</label>
+            <%= file_field_tag :file %>
+        </div>
+    </div>
+    <div class="form-group-row-btn">
+        <button type="button" class="btn btn-submit">提交</button>
+    </div>
+</div>

@@ -1026,8 +1026,8 @@ ul.two-part-sp li{
 }
 .header-top-area {
     position: fixed;
-    background: -webkit-linear-gradient(178deg, #e12503 0%, #85060c 100%);
-    background: linear-gradient(178deg, #e12503 0%, #85060c 100%);
+    background: -webkit-linear-gradient(-10deg, #e12503 0%, #85060c 100%);
+    background: linear-gradient(-10deg, #e12503 0%, #85060c 100%);
     z-index: 99;
     left: 0px;
     right: 0;

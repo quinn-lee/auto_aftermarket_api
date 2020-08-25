@@ -1,0 +1,105 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">表格基础样式</h4>
+    </div>
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
+                <i class="fa fa-search"></i> 搜索
+            </button>
+            <button class="btn btn-default" type="button">
+                <i class="fa fa-plus"></i> 新增
+            </button>
+        </div>
+    </div>
+    <!-- 表格主体内容 -->
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th>目录</th>
+            <th>品牌</th>
+            <th>标题</th>
+            <th>可销售</th>
+            <th>说明</th>
+            <th>SKU数量</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>维修保养/机油</td>
+            <td>美孚</td>
+            <td>【正品授权】美孚/Mobil 美孚1号全合成机油</td>
+            <td><span class="status status-valid">是</span></td>
+            <td>新老包装更替中，实物包装可能与图片略有差别</td>
+            <td>6</td>
+            <td class="action">
+                <a href="#"><i class="fa fa-edit"></i></a>
+                <a href="#"><i class="fa fa-info-circle"></i></a>
+                <a href="#"><i class="fa fa-plus-circle"></i></a>
+                <a href="#"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        <tr>
+            <td>维修保养/机油</td>
+            <td>美孚</td>
+            <td>【正品授权】美孚/Mobil 美孚1号全合成机油</td>
+            <td><span class="status status-invalid">否</span></td>
+            <td>新老包装更替中，实物包装可能与图片略有差别</td>
+            <td>6</td>
+            <td class="action">
+                <a href="#"><i class="fa fa-edit"></i></a>
+                <a href="#"><i class="fa fa-info-circle"></i></a>
+                <a href="#"><i class="fa fa-plus-circle"></i></a>
+                <a href="#"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+      <span class="previous_page disabled">&lt;</span>
+      <em class="current">1</em>
+      <a rel="next" href="/admin/css_demo?page=2">2</a>
+      <a href="/admin/css_demo?page=3">3</a>
+      <a href="/admin/css_demo?page=4">4</a>
+      <a href="/admin/css_demo?page=5">5</a>
+      <a href="/admin/css_demo?page=6">6</a>
+      <a href="/admin/css_demo?page=7">7</a>
+      <a class="next_page" rel="next" href="/admin/css_demo?page=2">&gt;</a>
+    </div>
+
+    <%#= will_paginate Customer.all.paginate(:page => 1, :per_page => 1) %>
+</div>
+<div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">搜索模态框</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>文本</label>
+                            <%= text_field_tag :text, :value => nil, :class => 'form-control' %>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>选择栏</label>
+                            <%= select_tag :select, :options => %w[option1 option2], :class => 'form-control' %>
+                        </div>
+                    </div>
+
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-submit">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+</style>
