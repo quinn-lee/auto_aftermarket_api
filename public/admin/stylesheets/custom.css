@@ -9,9 +9,9 @@
 
 /* .btn 按键 */
 .btn { border-radius: 0 !important; }
-.btn-submit { color: #fff; background-color: #e12503; border-color: #e12503; }
+.btn-submit { color: #fff; background-color: #e12503; border-color: #e12503; padding-left: 20px; padding-right: 20px;}
 .btn-submit:hover { color: #fff; background-color: #333; border-color: #333; }
-.btn-back { color: #333; background-color: #fff; border-color: #ccc; }
+.btn-back { color: #333; background-color: #fff; border-color: #ccc; padding-left: 20px; padding-right: 20px; }
 .btn-back:hover { color:#333; background-color:#e6e6e6; border-color:#adadad; }
 
 /* .card 卡片 */
