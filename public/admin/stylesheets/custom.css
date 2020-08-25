@@ -4,7 +4,7 @@
 
 /*
  按样式字母序排序, 依次为
- .btn, .card, .form-group, .image-preview, .modal, .pagination, .status, .table
+ .btn, .card, .dropdown, .form-group, .image-preview, .modal, .pagination, .status, .table
  */
 
 /* .btn 按键 */
@@ -30,6 +30,10 @@
     border-image: linear-gradient(to right, #e12503, #ffffff) 1 1;
 }
 .card-toolbar{ margin-bottom: 10px; }
+
+/* .dropdown */
+.dropdown-menu { border-radius: 0; }
+.dropdown-menu li i { margin-right: 5px; }
 
 /* .form-group */
 .form-group-row { display: flex; align-items: center; margin-bottom: 15px; }
@@ -122,6 +126,7 @@ input[type=file].form-control{
 
 /* .table 表格 */
 .table-bordered-y { border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; }
+.table .action { padding: 3px; }
 .table .action i { padding: 0 1px; }
 
 /************************

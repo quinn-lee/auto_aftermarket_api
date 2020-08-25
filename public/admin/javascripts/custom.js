@@ -24,7 +24,7 @@ $(function(){
 function load_second_cell(id){
     $(".first-cell").each(function() {
         $(this).removeClass("active");
-    })
+    });
     $(".first-cell_"+id).addClass("active");
     $.ajax({
         type:'GET',
@@ -32,10 +32,10 @@ function load_second_cell(id){
         async: false,
         url:'/admin/categories/load_second_cell?id='+id,
         success:function(data){
-            var cell_form = $(".second-index")
-            var sub_c = data['sub_categories']
-            var is_hidden = data['is_hidden']
-            var can_delete = data['can_delete']
+            var cell_form = $(".second-index");
+            var sub_c = data['sub_categories'];
+            var is_hidden = data['is_hidden'];
+            var can_delete = data['can_delete'];
             cell_form.html('')
             cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/new?parent_id=" + id + "'>新增二级目录</a></div>")
             if(is_hidden){
@@ -56,7 +56,7 @@ function load_second_cell(id){
 function load_third_cell(id){
     $(".second-cell").each(function() {
         $(this).removeClass("active");
-    })
+    });
     $(".second-cell_"+id).addClass("active");
     $.ajax({
         type:'GET',
@@ -64,24 +64,24 @@ function load_third_cell(id){
         async: false,
         url:'/admin/categories/load_third_cell?id='+id,
         success:function(data){
-            var form_brand = $(".form-brand")
-            var brands = data['brands']
-            form_brand.html('')
+            var form_brand = $(".form-brand");
+            var brands = data['brands'];
+            form_brand.html('');
             for(let i = 0 ; i < brands.length ; i++){
                 form_brand.append("<button class='cell-col'>" + brands[i].name + "</button>")
             }
 
-            var form_attr = $(".form-attr")
-            var attrs = data['attrs']
-            form_attr.html('')
+            var form_attr = $(".form-attr");
+            var attrs = data['attrs'];
+            form_attr.html('');
             for(let i = 0 ; i < attrs.length ; i++){
                 form_attr.append("<button class='cell-col-attr' data-toggle='modal' data-target='#showAttribute' onclick='load_attr_modal("+attrs[i].id+")'>" + attrs[i].name + "</button>")
             }
 
-            var form_operate = $(".form-operate")
-            var is_hidden = data['is_hidden']
-            var can_delete = data['can_delete']
-            form_operate.html('')
+            var form_operate = $(".form-operate");
+            var is_hidden = data['is_hidden'];
+            var can_delete = data['can_delete'];
+            form_operate.html('');
             if(can_delete){
                 form_operate.append("<a href='/admin/categories/delete/"+id+"' class='pd-setting-ed'>删除</a>")
             }
