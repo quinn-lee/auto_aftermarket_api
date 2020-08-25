@@ -1,0 +1,188 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="product-status-wrap">
+        <h4>目录列表</h4>
+        <div class="add-product">
+            <a href="<%=url(:categories, :new)%>">新增一级目录</a>
+        </div>
+        <table>
+            <tr>
+                <th style="width: 10%;">一级目录</th>
+                <th style="width: 10%;">二级目录</th>
+                <th style="width: 30%;">品牌</th>
+                <th style="width: 30%;">属性</th>
+                <th style="width: 18%;"></th>
+            </tr>
+            <% @categories.where(parent_id: nil).order("id asc").each do |category| %>
+              <tr>
+                  <td><a class="toggle-button" data-id="<%=category.id%>" href="javascript:void(0)"><%= category.name%></a></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><a href="<%=url(:categories, :new, :parent_id =>category.id) %>" title="新增二级目录" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a href="<%=url(:spus, :index, :category_1 =>category.id)%>" title="查看商品" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    <% if category.is_hidden %>
+                      <a href="<%=url(:categories, :hidden, :id =>category.id, :is_hidden=>'false')%>" title="" class="pd-setting-ed" style="margin-right: 5px;">展示</a>
+                    <% else %>
+                      <a href="<%=url(:categories, :hidden, :id =>category.id, :is_hidden=>'true')%>" title="" class="pd-setting-ed" style="margin-right: 5px;">隐藏</a>
+                    <% end %>
+                    <% if category.can_delete?%>
+                      <a href="<%=url(:categories, :delete, :id =>category.id)%>" title="" class="pd-setting-ed" style="margin-right: 5px;">删除</a>
+                    <% end %>
+                  </td>
+              </tr>
+              <% @categories.where(parent_id: category.id).each do |sub_category|%>
+              <tr class="sub_categories sub_<%=category.id%>">
+                  <td></td>
+                  <td><%= sub_category.name%></td>
+                  <td>
+                    <% sub_category.brands.each do |brand|%>
+                      <button class="pd-setting"><%= brand.name%></button>
+                    <% end %>
+                  </td>
+                  <td>
+                    <div class="modal-area-button">
+                    <% sub_category.t_attributes.each do |attr|%>
+                      <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#showAttribute<%=attr.id%>"><%=attr.name%></a>
+                    <% end %>
+                    </div>
+                    <% sub_category.t_attributes.each do |attr|%>
+                      <div id="showAttribute<%=attr.id%>" class="modal modal-adminpro-general default-popup-PrimaryModal fade" role="dialog">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-close-area modal-close-df">
+                                      <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="row">
+                                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                          <div class="hpanel responsive-mg-b-30">
+                                              <div class="panel-body">
+                                                  <div class="stats-title pull-left" style="margin-right: 10px;">
+                                                      <h4 style="font-size: 16px;">属性名称：</h4>
+                                                  </div>
+                                                  <div class="stats-icon pull-left">
+                                                      <h4 style="color: #3498db;font-size: 16px;"><%=attr.name%></h4>
+                                                  </div>
+                                              </div>
+                                              <div class="panel-body">
+                                                  <div class="stats-title pull-left" style="margin-right: 10px;">
+                                                      <h4 style="font-size: 16px;">属性类别：</h4>
+                                                  </div>
+                                                  <div class="stats-icon pull-left">
+                                                      <h4 style="color: #3498db;font-size: 16px;"><%=attr.selling_desc%></h4>
+                                                  </div>
+                                              </div>
+                                              <div class="panel-body">
+                                                  <div class="stats-title pull-left" style="margin-right: 10px;">
+                                                      <h4 style="font-size: 16px;">前端是否可搜索？：</h4>
+                                                  </div>
+                                                  <div class="stats-icon pull-left">
+                                                      <h4 style="color: #3498db;font-size: 16px;"><%=attr.searching_desc%></h4>
+                                                  </div>
+                                              </div>
+                                              <div class="panel-body">
+                                                  <div class="stats-title pull-left" style="margin-right: 10px;">
+                                                      <h4 style="font-size: 16px;">属性值单位：</h4>
+                                                  </div>
+                                                  <div class="stats-icon pull-left">
+                                                      <h4 style="color: #3498db;font-size: 16px;"><%=attr.unit%></h4>
+                                                  </div>
+                                              </div>
+                                              <div class="panel-body">
+                                                  <div class="stats-title pull-left" style="margin-right: 10px;">
+                                                      <h4 style="font-size: 16px;">属性可选值：</h4>
+                                                  </div>
+                                                  <div class="stats-icon pull-left">
+                                                      <h4 style="color: #3498db;font-size: 16px;"><%=attr.t_attrvalues.map(&:value).join(",")%></h4>
+                                                  </div>
+                                              </div>
+                                              <div class="panel-body">
+                                                  <% form_tag url(:categories, :create_attrvalues, :attr_id=>attr.id), :class=>"form-horizontal", :method => 'post' do %>
+                                                  <div class="stats-title pull-left" style="margin-right: 10px;">
+                                                      <h4 style="font-size: 16px;">新增属性值：</h4>
+                                                  </div>
+                                                  <div class="stats-icon pull-left">
+                                                      <%=text_field_tag(:attr_values, :class => "form-control", placeholder: "多个属性值以三竖线('|||')分割")%>
+                                                  </div>
+                                                  <div class="stats-icon pull-left">
+                                                    <button class="btn btn-sm btn-primary login-submit-cs" type="submit" style="border-radius: 0px;height: 34px;">新增</button>
+                                                  </div>
+                                                  <% end %>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+                          </div>
+                      </div>
+                    <% end %>
+
+                  </td>
+                  <td><a href="<%=url(:categories, :new_attribute, :id =>sub_category.id) %>" title="添加属性" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-file sub-icon-mg" aria-hidden="true"></i></a>
+                    <a href="<%=url(:categories, :new_brands, :id =>sub_category.id) %>" title="添加品牌" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa big-icon fa-desktop icon-wrap" aria-hidden="true"></i></a>
+                    <a href="<%=url(:spus, :index, :category_2 =>sub_category.id)%>" title="查看商品" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                  <% if sub_category.is_hidden %>
+                    <a href="<%=url(:categories, :hidden, :id =>sub_category.id, :is_hidden=>'false')%>" title="" class="pd-setting-ed" style="margin-right: 5px;">展示</a>
+                  <% else %>
+                    <a href="<%=url(:categories, :hidden, :id =>sub_category.id, :is_hidden=>'true')%>" title="" class="pd-setting-ed" style="margin-right: 5px;">隐藏</a>
+                  <% end %>
+                  <% if sub_category.can_delete?%>
+                    <a href="<%=url(:categories, :delete, :id =>sub_category.id)%>" title="" class="pd-setting-ed" style="margin-right: 5px;">删除</a>
+                  <% end %>
+                  </td>
+              </tr>
+              <% end %>
+            <% end %>
+
+        </table>
+
+    </div>
+</div>
+<style>
+.modal-area-button a{
+	padding: 10px 10px;
+    text-decoration: none;
+    color: #fff;
+    position: relative;
+    z-index: 11;
+    font-size: 14px;
+	display:inline-block;
+  text-align: center;
+}
+
+.modal-area-button a.Primary:before{
+	width:100%;
+}
+.modal-area-button a.Information:before{
+	width:100%;
+}
+.modal-area-button a.Warning:before{
+	width:100%;
+}
+.modal-area-button a.Danger:before{
+	width:100%;
+}
+.modal-area-button a.Primary:after{
+	width:100%;
+}
+.modal-area-button a.Information:after{
+	width:100%;
+}
+.modal-area-button a.Warning:after{
+	width:100%;
+}
+.modal-area-button a.Danger:after{
+	width:100%;
+}
+.product-status-wrap .pd-setting{
+  margin-bottom: 5px;
+}
+.panel-body{
+  padding: 0px;
+}
+.hpanel .panel-body{
+  padding: 0px;
+}
+</style>

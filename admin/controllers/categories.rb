@@ -6,6 +6,7 @@ AutoAftermarketApi::Admin.controllers :categories do
   # 目录列表
   get :index do
     @categories = TCategory.all
+    @first_category = @categories.where(parent_id: nil).order("id asc").first
     render "categories/index"
   end
 
@@ -133,5 +134,22 @@ AutoAftermarketApi::Admin.controllers :categories do
     end
   end
 
+  get :load_second_cell do
+    category = TCategory.find(params[:id])
+    sub_categories = TCategory.all.where(parent_id: params[:id]).order("id asc").map{|sub_category|{:id=>sub_category.id , :name=>sub_category.name} }
+    {:sub_categories => sub_categories , :is_hidden=>category.is_hidden , :can_delete=>category.can_delete?}.to_json
+  end
+
+  get :load_third_cell do
+    t_category = TCategory.find(params[:id])
+    brands = t_category.brands.map{|brand|{:name=>brand.name}}
+    attrs = t_category.t_attributes.map{|t_attribute|{:name=>t_attribute.name, :id=> t_attribute.id}}
+    {:brands => brands,:attrs => attrs, :is_hidden=>t_category.is_hidden, :can_delete=>t_category.can_delete?}.to_json
+  end
+
+  get :load_attr do
+    t_attr = TAttribute.find(params[:id])
+    {:name=>t_attr.name,:selling_desc=>t_attr.selling_desc,:searching_desc=>t_attr.searching_desc,:unit=>t_attr.unit,:t_attrvalues=>t_attr.t_attrvalues.map(&:value).join(",")}.to_json
+  end
 
 end
