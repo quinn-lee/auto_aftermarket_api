@@ -4,7 +4,7 @@
 
 /*
  按样式字母序排序, 依次为
- .btn, .card, .form-group, .pagination, .status, .table
+ .btn, .card, .form-group, .image-preview, .modal, .pagination, .status, .table
  */
 
 /* .btn 按键 */
@@ -30,6 +30,50 @@
     border-image: linear-gradient(to right, #e12503, #ffffff) 1 1;
 }
 .card-toolbar{ margin-bottom: 10px; }
+
+/* .form-group */
+.form-group-row { display: flex; align-items: center; margin-bottom: 15px; }
+.form-group-row label { width: 25%; padding-left: 15px; padding-right: 15px; }
+.form-group-row .form-control,
+.form-group-row input[type=file]{ width: 75%; }
+.form-group-row-btn { margin-left: 25%; }
+input[type=file].form-control{
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    padding-left: 0;
+}
+/* .image-preview 图片预览 */
+.image-preview { display: flex; flex-wrap: wrap; }
+.image-preview>img {
+    width: 128px; height: 128px; margin-right: 10px; margin-bottom: 10px;
+    display: block;
+    padding: 4px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.img-upload {
+    display: inline-block;
+    width: 128px;
+    height: 128px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 4px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.img-upload-mask {
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='70px' height='70px' viewBox='0 0 70 70' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 64 %2893537%29 - https://sketch.com --%3E%3Ctitle%3Eshangchuan%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cg stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg transform='translate%28-15.000000, -384.000000%29'%3E%3Cg transform='translate%2815.000000, 384.000000%29'%3E%3Crect fill='%23F7F7F7' x='0' y='0' width='70' height='70'%3E%3C/rect%3E%3Cpath d='M35.5,28 C36.0522847,28 36.5,28.4477153 36.5,29 L36.5,34.5 L42,34.5 C42.5522847,34.5 43,34.9477153 43,35.5 C43,36.0522847 42.5522847,36.5 42,36.5 L36.5,36.5 L36.5,42 C36.5,42.5522847 36.0522847,43 35.5,43 C34.9477153,43 34.5,42.5522847 34.5,42 L34.499,36.5 L29,36.5 C28.4477153,36.5 28,36.0522847 28,35.5 C28,34.9477153 28.4477153,34.5 29,34.5 L34.5,34.5 L34.5,29 C34.5,28.4477153 34.9477153,28 35.5,28 Z' fill='%23818181'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.inbox-file{ width: 100%; height: 100%; opacity: 0; }
+
 /* .modal 模态框 */
 .modal-custom .modal-content { border-radius: 0; }
 .modal-custom .modal-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: none; padding-bottom: 0; }
@@ -41,13 +85,6 @@
     border-image: -moz-linear-gradient(to right, #e12503, #ffffff) 1 1;
     border-image: linear-gradient(to right, #e12503, #ffffff) 1 1;
 }
-
-/* .form-group */
-.form-group-row { display: flex; align-items: center; margin-bottom: 15px; }
-.form-group-row label { width: 25%; padding-left: 15px; padding-right: 15px; }
-.form-group-row .form-control,
-.form-group-row input[type=file]{ width: 75%; }
-.form-group-row-btn { margin-left: 25%; }
 
 /* .pagination 分页 */
 .pagination { margin: 0; display: flex; }
