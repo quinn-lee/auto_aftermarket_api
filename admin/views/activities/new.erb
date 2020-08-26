@@ -14,11 +14,14 @@
                           <label class="login2 pull-right pull-right-pro">活动海报*</label>
                       </div>
                       <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.file_field(:image, :class => "form-control")%>
+                          <div class="image-preview">
+                              <div class="img-upload">
+                                  <div class="img-upload-mask">
+                                      <%=f.file_field(:image, :class => "inbox-file")%>
+                                  </div>
+                              </div>
                           </div>
                       </div>
-
                   </div>
               </div>
 

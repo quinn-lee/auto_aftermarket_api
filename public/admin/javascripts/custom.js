@@ -36,19 +36,19 @@ function load_second_cell(id){
             var sub_c = data['sub_categories'];
             var is_hidden = data['is_hidden'];
             var can_delete = data['can_delete'];
-            cell_form.html('')
-            cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/new?parent_id=" + id + "'>新增二级目录</a></div>")
-            if(is_hidden){
-                cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/hidden/"+id+"?is_hidden=false'>展示目录</a></div>")
-            }else{
-                cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/hidden/"+id+"?is_hidden=true'>隐藏目录</a></div>")
-            }
-            if (can_delete) {
-                cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/delete/"+id+"'>删除目录</a></div>")
-            }
-            for(let i = 0 ; i < sub_c.length ; i++){
-                cell_form.append("<div class='second-cell second-cell_"+ sub_c[i]['id'] +"' onclick='load_third_cell(" +sub_c[i]['id']+")'>"+sub_c[i]['name']+"</div>")
-            }
+            // cell_form.html('')
+            // cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/new?parent_id=" + id + "'>新增二级目录</a></div>")
+            // if(is_hidden){
+            //     cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/hidden/"+id+"?is_hidden=false'>展示目录</a></div>")
+            // }else{
+            //     cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/hidden/"+id+"?is_hidden=true'>隐藏目录</a></div>")
+            // }
+            // if (can_delete) {
+            //     cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/delete/"+id+"'>删除目录</a></div>")
+            // }
+            // for(let i = 0 ; i < sub_c.length ; i++){
+            //     cell_form.append("<div class='second-cell second-cell_"+ sub_c[i]['id'] +"' onclick='load_third_cell(" +sub_c[i]['id']+")'>"+sub_c[i]['name']+"</div>")
+            // }
         }
     })
 }

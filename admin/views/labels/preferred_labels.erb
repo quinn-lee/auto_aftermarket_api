@@ -1,183 +1,143 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="product-status-wrap">
-        <h4>优选标签列表</h4>
-        <table>
-            <tr>
-                <th style="width: 85%;">标签</th>
-                <th style="width: 10%;"></th>
-            </tr>
-            <tr>
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">优选标签列表</h4>
+    </div>
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
+                <i class="fa fa-plus"></i>新增标签
+            </button>
+        </div>
+    </div>
+    <!-- 表格主体内容 -->
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th>标签</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
                 <td>
                     <div class="modal-area-button">
                     <% @labels.each do |label|%>
                       <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#editLabel<%=label.id%>"><%=label.name%></a>
-
-                      <div id="editLabel<%=label.id%>" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
-                          <div class="modal-dialog">
-                              <div class="modal-content">
-                                  <div class="modal-close-area modal-close-df">
-                                      <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
-                                  </div>
-                                  <div class="modal-body">
-                                      <div class="modal-login-form-inner">
-                                          <div class="row">
-                                              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                  <div class="basic-login-inner modal-basic-inner">
-                                                      <% form_for label, url(:labels, :update_preferred_label, label_id: label.id), :class=>"form-horizontal", :method => 'post' do |f| %>
-                                                          <div class="form-group-inner">
-                                                              <div class="row">
-                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                                      <label class="login2">标签名称</label>
-                                                                  </div>
-                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                      <%=f.text_field(:name, :class => "form-control")%>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-
-                                                          <div class="form-group-inner">
-                                                              <div class="row">
-                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                                      <label class="login2">标签图片</label>
-                                                                  </div>
-                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                      <div class="form-select-list">
-                                                                        <%=f.file_field(:image, :class => "form-control")%>
-                                                                      </div>
-                                                                  </div>
-
-                                                              </div>
-                                                          </div>
-                                                          <% if label.image.present?%>
-                                                          <div class="form-group-inner">
-                                                              <div class="row">
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                                </div>
-                                                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                  <img src="<%=label.image.url%>">
-                                                                </div>
-                                                              </div>
-                                                          </div>
-                                                          <% end %>
-                                                          <div class="login-btn-inner">
-                                                              <div class="row">
-                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
-                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                      <div class="login-horizental">
-                                                                          <button class="btn btn-sm btn-primary login-submit-cs" type="submit">提交</button>
-                                                                      </div>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                      <% end %>
+                      <div class="modal modal-custom fade" id="editLabel<%=label.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title underline">新增标签</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <% form_for label, url(:labels, :update_preferred_label, label_id: label.id), :method => 'post' do |f| %>
+                                        <div class="row">
+                                            <div class="col-xs-6 form-group">
+                                                <label>标签名称</label>
+                                                <%=f.text_field(:name, :class => "form-control")%>
+                                            </div>
+                                            <div class="col-xs-12 form-group">
+                                              <label>标签图片</label>
+                                              <div class="image-preview">
+                                                  <div class="img-upload">
+                                                      <div class="img-upload-mask">
+                                                          <%=f.file_field(:image, :class => "inbox-file")%>
+                                                      </div>
                                                   </div>
+                                                  <% if label.image.present?%>
+                                                    <img src="<%=label.image.url%>">
+                                                  <%end%>
                                               </div>
                                           </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                    <% end %>
+                                        </div>
+                                        <div align="right">
+                                            <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                                            <button type="submit" class="btn btn-submit">提交</button>
+                                        </div>
+                                    <%end%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  <% end %>
+                </div>
+              </td>
+          </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">新增标签</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <% form_for Label.new, url(:labels, :create_preferred_label) , :method => 'post', multipart: true do |f| %>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>标签名称</label>
+                            <%=f.text_field(:name, :class => "form-control")%>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-xs-12 form-group">
+                            <label>标签图片</label>
+                            <div class="image-preview">
+                                <div class="img-upload">
+                                    <div class="img-upload-mask">
+                                        <%=f.file_field(:image, :class => "inbox-file")%>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-              </td>
-              <td><a  href="#" data-toggle="modal" data-target="#newLabel">新增标签</a></td>
-              <div id="newLabel" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                          <div class="modal-close-area modal-close-df">
-                              <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
-                          </div>
-                          <div class="modal-body">
-                              <div class="modal-login-form-inner">
-                                  <div class="row">
-                                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                          <div class="basic-login-inner modal-basic-inner">
-                                              <% form_for Label.new, url(:labels, :create_preferred_label), :class=>"form-horizontal", :method => 'post', multipart: true do |f| %>
-                                                  <div class="form-group-inner">
-                                                      <div class="row">
-                                                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                              <label class="login2">标签名称</label>
-                                                          </div>
-                                                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                              <%=f.text_field(:name, :class => "form-control")%>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-group-inner">
-                                                      <div class="row">
-                                                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                              <label class="login2">标签图片</label>
-                                                          </div>
-                                                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                              <div class="form-select-list">
-                                                                <%=f.file_field(:image, :class => "form-control")%>
-                                                              </div>
-                                                          </div>
-
-                                                      </div>
-                                                  </div>
-                                                  <div class="login-btn-inner">
-                                                      <div class="row">
-                                                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
-                                                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                              <div class="login-horizental">
-                                                                  <button class="btn btn-sm btn-primary login-submit-cs" type="submit">提交</button>
-                                                              </div>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                              <% end %>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </tr>
-
-        </table>
-
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-submit">提交</button>
+                    </div>
+                <%end%>
+            </div>
+        </div>
     </div>
 </div>
 <style>
 .modal-area-button a{
-	padding: 10px 10px;
-    text-decoration: none;
-    color: #fff;
-    position: relative;
-    z-index: 11;
-    font-size: 14px;
-	display:inline-block;
+  padding: 10px 10px;
+  text-decoration: none;
+  color: #fff;
+  position: relative;
+  z-index: 11;
+  font-size: 14px;
+  display:inline-block;
   text-align: center;
 }
 
 .modal-area-button a.Primary:before{
-	width:100%;
+  width:100%;
 }
 .modal-area-button a.Information:before{
-	width:100%;
+  width:100%;
 }
 .modal-area-button a.Warning:before{
-	width:100%;
+  width:100%;
 }
 .modal-area-button a.Danger:before{
-	width:100%;
+  width:100%;
 }
 .modal-area-button a.Primary:after{
-	width:100%;
+  width:100%;
 }
 .modal-area-button a.Information:after{
-	width:100%;
+  width:100%;
 }
 .modal-area-button a.Warning:after{
-	width:100%;
+  width:100%;
 }
 .modal-area-button a.Danger:after{
-	width:100%;
+  width:100%;
 }
 .product-status-wrap .pd-setting{
   margin-bottom: 5px;

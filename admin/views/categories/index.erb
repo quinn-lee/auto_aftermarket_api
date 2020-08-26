@@ -1,19 +1,39 @@
 <script src="/admin/javascripts/custom.js"></script>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="card">
     <div class="product-status-wrap">
-        <h4>目录列表</h4>
-<!--         <div class="add-product">
-            <a href="<%=url(:categories, :new)%>">新增一级目录</a>
-        </div> -->
+      <div class="card-title">
+          <h4 class="underline">目录列表</h4>
+      </div>
+      <div class="card-toolbar">
+        <div class="btn-group btn-group-sm" style="margin-right: 20px">
+            <button class="btn btn-default" type="button">
+                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">新增一级目录</a>
+            </button>
+        </div>
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button">
+                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">新增二级目录</a>
+            </button>
+            <button class="btn btn-default" type="button">
+                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">查看商品</a>
+            </button>
+            <button class="btn btn-default" type="button">
+                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">隐藏</a>
+            </button>
+            <button class="btn btn-default" type="button">
+                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">删除</a>
+            </button>
+        </div>
+      </div>
         <div class="categories_form">
           <div class="first-index">
-              <div class="first-cell-operate"><a href="<%=url(:categories, :new)%>">新增一级目录</a></div>
               <% @categories.where(parent_id: nil).order("id asc").each_with_index do |category,index| %>
-                <div class="first-cell first-cell_<%= category.id%> <%= index == 0 ? 'active' : ''%>" onclick="load_second_cell(<%= category.id%>)"><%=category.name%></div>
+                <div class="first-cell first-cell_<%= category.id%> <%= index == 0 ? 'active' : ''%>" onclick="load_second_cell(<%= category.id%>)"><%=category.name%>
+                </div>
               <% end %>
           </div>
           <div class="second-index">
-              <div class="second-cell-operate"><a href="<%=url(:categories, :new, :parent_id =>@first_category.id) %>" >新增二级目录</a></div>
+              <!-- <div class="second-cell-operate"><a href="<%=url(:categories, :new, :parent_id =>@first_category.id) %>" >新增二级目录</a></div>
               <div class="second-cell-operate">
                 <% if @first_category.is_hidden %>
                     <a href="<%=url(:categories, :hidden, :id =>@first_category.id, :is_hidden=>'false')%>">展示目录</a>
@@ -25,7 +45,7 @@
               <div class="second-cell-operate">
                   <a href="<%=url(:categories, :delete, :id =>@first_category.id)%>">删除目录</a>
               </div>
-              <% end %>
+              <% end %> -->
               <% @categories.where(parent_id: @first_category.id).order("id asc").each_with_index do |sub_category ,index|%>
                 <div class="second-cell second-cell_<%= sub_category.id%> <%= index == 0 ? 'active' : ''%>" onclick="load_third_cell(<%= sub_category.id%>)"><%=sub_category.name%></div>
               <%end%>
@@ -152,20 +172,20 @@
   }
 
   .second-index{
-    height:700px ;
+    height:440px ;
     overflow-y: scroll;
     width: 16%;
     display: inline-block;
   }
 
   .third-index{
-    height: 700px;
+    height: 440px;
     width: 65%;
     display: inline-block;
   }
 
   .categories_form .first-cell , .categories_form .first-cell-operate , .categories_form .second-cell,.categories_form .second-cell-operate{
-    line-height: 60px;
+    line-height: 35px;
     font-size: 16px;
     text-align: center;
     cursor:pointer;
@@ -181,7 +201,7 @@
   }
 
   .categories_form .third-cell{
-    height: 310px;
+    height: 200px;
     width: 100%;
     margin-left: 10px;
   }
@@ -207,11 +227,11 @@
 
   .cell-col,.cell-col-attr{
     display: inline-block;
-    line-height: 50px;
+    line-height: 25px;
     text-align: center;
-    min-width: 150px;
+    min-width: 80px;
     background: #24caa1;
-    border-radius: 3px;
+    border-radius: 5px;
     color: #fff;
     margin-right: 10px;
     margin-bottom: 10px;
@@ -233,7 +253,11 @@
     margin-right: 10px;
     margin-bottom: 10px;
     text-align: center;
-    padding: 10px 30px;
+    padding: 5px 15px;
     float: right;
+  }
+
+  .panel-body{
+    box-shadow: none !important;
   }
 </style>

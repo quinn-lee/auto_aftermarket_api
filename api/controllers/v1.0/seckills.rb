@@ -55,7 +55,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/seckills' do
     api_rescue do
       authenticate
 
-      { status: 'succ', data: @merchant.seckills.map(&:to_api)}.to_json
+      { status: 'succ', data: @merchant.seckills.where("end_time > ?" , "#{Time.now}").map(&:to_api)}.to_json
     end
   end
 

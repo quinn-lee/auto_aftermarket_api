@@ -1,30 +1,34 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="product-status-wrap">
-        <div class="row">
-          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-            <h4>团购列表</h4>
-          </div>
-          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-          </div>
-          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-            <div class="add-product">
-                <a href="<%=url(:groups, :select_sku, :from => 'groups')%>">创建团购</a>
-            </div>
-          </div>
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">团购列表</h4>
+    </div>
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
+                <i class="fa fa-search"></i> 搜索
+            </button>
+            <button class="btn btn-default" type="button">
+                <a href="<%=url(:groups, :select_sku, :from => 'groups')%>"><i class="fa fa-plus"></i>创建团购</a>
+            </button>
         </div>
-        <table>
-            <tr>
-                <th style="width: 10%;">拼团标题</th>
-                <th style="width: 13%;">拼团描述</th>
-                <th style="width: 15%;">商品</th>
-                <th style="width: 15%;">开始结束时间</th>
-                <th style="width: 10%;">团购价(原价)</th>
-                <th style="width: 8%;">人数限制</th>
-                <th style="width: 7%;">销售数</th>
-                <th style="width: 10%;">状态</th>
-                <th style="width: 10%;"></th>
-            </tr>
-            <% @groups.each do |group| %>
+    </div>
+    <!-- 表格主体内容 -->
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th style="width: 10%;">拼团标题</th>
+            <th style="width: 13%;">拼团描述</th>
+            <th style="width: 15%;">商品</th>
+            <th style="width: 15%;">开始结束时间</th>
+            <th style="width: 10%;">团购价(原价)</th>
+            <th style="width: 8%;">人数限制</th>
+            <th style="width: 7%;">销售数</th>
+            <th style="width: 10%;">状态</th>
+            <th style="width: 10%;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @groups.each do |group| %>
             <tr>
                 <td><%=group.title%></td>
                 <td><%=group.detail%></td>
@@ -41,37 +45,60 @@
                 <td><%=group.group_buyers.purchased.count%></td>
                 <td><%=Group::STATUS[group.status.to_s]%></td>
                 <td>
-                  <div class="button-drop-style-one btn-danger-bg">
-                      <button type="button" class="btn btn-custon-four btn-danger dropdown-toggle" data-toggle="dropdown">操作 <i class="fa fa-angle-down"></i>
-    </button>
-                      <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-five" role="menu">
-                          <% if group.status == 1%>
-                          <li><a href="<%=url(:groups, :change_status, :id => group.id, :status => '0')%>">下架</a></li>
-                          <li><a href="<%=url(:groups, :change_status, :id => group.id, :status => '2')%>">成团</a></li>
-                          <li><a href="<%=url(:groups, :change_status, :id => group.id, :status => '3')%>">未成团</a></li>
-                          <li><a href="<%=url(:groups, :edit, :id => group.id)%>">修改拼团信息</a></li>
-                          <% elsif group.status == 0%>
-                          <li><a href="<%=url(:groups, :change_status, :id => group.id, :status => '1')%>">上架</a></li>
-                          <% end %>
+                  <div class="dropdown">
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-gear"></i> <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                      <% if group.status == 1%>
+                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '0')%>">下架</a></li>
+                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '2')%>">成团</a></li>
+                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '3')%>">未成团</a></li>
+                        <li role="presentation"><a href="<%=url(:groups, :edit, :id => group.id)%>">修改拼团信息</a></li>
+                        <% elsif group.status == 0%>
+                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '1')%>">上架</a></li>
+                        <% end %>
 
-                          <% if group.group_buyers.count > 0%>
-                          <li><a href="<%=url(:groups, :show, :id => group.id)%>">购买记录</a></li>
-                          <% end %>
-                      </ul>
+                        <% if group.group_buyers.count > 0%>
+                        <li role="presentation"><a href="<%=url(:groups, :show, :id => group.id)%>">购买记录</a></li>
+                      <% end %>
+                    </ul>
                   </div>
                 </td>
             </tr>
             <% end %>
-
-        </table>
-        <%= will_paginate @groups %>
-
+        </tbody>
+    </table>
+    <div class="pagination">
+      <%= will_paginate @groups %>
     </div>
 </div>
+<div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">搜索模态框</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>文本</label>
+                            <%= text_field_tag :text, :value => nil, :class => 'form-control' %>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>选择栏</label>
+                            <%= select_tag :select, :options => %w[option1 option2], :class => 'form-control' %>
+                        </div>
+                    </div>
 
-<style>
-.dropdown-menu.another-drop-pro-five{
-  left: 79% !important;
-  top: auto;
-}
-</style>
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-submit">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
