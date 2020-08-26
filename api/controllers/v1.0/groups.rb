@@ -56,7 +56,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/groups' do
     api_rescue do
       authenticate
 
-      { status: 'succ', data: @merchant.groups.map(&:to_api)}.to_json
+      { status: 'succ', data: @merchant.groups.where("end_time > ?" , "#{Time.now}").map(&:to_api)}.to_json
     end
   end
 
