@@ -16,6 +16,22 @@
     <table class="table table-condensed table-striped table-bordered-y">
         <thead>
         <tr>
+            <th class="action-batch">
+                <input type="checkbox" onclick="checkAll(this)">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <button type="submit" class="menu-item"><i class="fa fa-check-circle"></i> 批量操作1</button>
+                        </li>
+                        <li>
+                            <button type="submit" class="menu-item"><i class="fa fa-check-circle"></i> 批量操作2</button>
+                        </li>
+                    </ul>
+                </div>
+            </th>
             <th>目录</th>
             <th>品牌</th>
             <th>标题</th>
@@ -27,6 +43,7 @@
         </thead>
         <tbody>
         <tr>
+            <td><input type="checkbox" name="ids[]" value="1"></td>
             <td>维修保养/机油</td>
             <td>美孚</td>
             <td>【正品授权】美孚/Mobil 美孚1号全合成机油</td>
@@ -41,6 +58,7 @@
             </td>
         </tr>
         <tr>
+            <td><input type="checkbox" name="ids[]" value="2"></td>
             <td>维修保养/机油</td>
             <td>美孚</td>
             <td>【正品授权】美孚/Mobil 美孚1号全合成机油</td>
@@ -56,13 +74,13 @@
                         <li>
                             <a href="#"><i class="fa fa-edit"></i> 编辑</a>
                         </li>
-                        <li role="presentation">
+                        <li>
                             <a href="#"><i class="fa fa-info-circle"></i> 查看详情</a>
                         </li>
-                        <li role="presentation">
+                        <li>
                             <a href="#"><i class="fa fa-plus-circle"></i> 新增</a>
                         </li>
-                        <li role="presentation">
+                        <li>
                             <a href="#"><i class="fa fa-trash"></i> 删除</a>
                         </li>
                     </ul>
@@ -114,3 +132,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    function checkAll(object)
+    {
+        var ids = document.getElementsByName("ids[]");
+        var length = ids.length;
+        var checked = object.checked;
+        for (var i = 0; i < length; i++) {
+            ids[i].checked=checked;
+        }
+    }
+</script>
