@@ -6,23 +6,20 @@
       </div>
       <div class="card-toolbar">
         <div class="btn-group btn-group-sm" style="margin-right: 20px">
-            <button class="btn btn-default" type="button">
-                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">新增一级目录</a>
-            </button>
+              <a href="<%=url(:categories, :new)%>" class="btn btn-default"><i class="fa fa-plus"></i>新增一级目录</a>
         </div>
         <div class="btn-group btn-group-sm">
-            <button class="btn btn-default" type="button">
-                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">新增二级目录</a>
-            </button>
-            <button class="btn btn-default" type="button">
-                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">查看商品</a>
-            </button>
-            <button class="btn btn-default" type="button">
-                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">隐藏</a>
-            </button>
-            <button class="btn btn-default" type="button">
-                <i class="fa fa-plus"></i> <a href="<%=url(:categories, :new)%>">删除</a>
-            </button>
+                <a href="<%=url(:categories, :new, :parent_id =>@first_category.id) %>" class="btn btn-default" id="second-new"><i class="fa fa-plus"></i>新增二级目录</a>
+              <% if @first_category.is_hidden %>
+                  <a href="<%=url(:categories, :hidden, :id =>@first_category.id, :is_hidden=>'false')%>" class="btn btn-default" id="second-hide"><i class="fa fa-tag"></i>展示目录</a>
+                <% else %>
+                  <a href="<%=url(:categories, :hidden, :id =>@first_category.id, :is_hidden=>'true')%>" class="btn btn-default" id="second-hide"><i class="fa fa-tag"></i>隐藏目录</a>
+              <% end %>
+              <% if  @first_category.can_delete?%>
+                  <a href="<%=url(:categories, :delete, :id =>@first_category.id)%>" class="btn btn-default" id="second-delete"><i class="fa fa-tag"></i>删除目录</a>
+              <% else %>
+                  <a href="#" class="btn btn-default" id="second-delete" style="color:red;"><i class="fa fa-tag"></i>删除目录</a>
+              <% end %>
         </div>
       </div>
         <div class="categories_form">
@@ -33,19 +30,6 @@
               <% end %>
           </div>
           <div class="second-index">
-              <!-- <div class="second-cell-operate"><a href="<%=url(:categories, :new, :parent_id =>@first_category.id) %>" >新增二级目录</a></div>
-              <div class="second-cell-operate">
-                <% if @first_category.is_hidden %>
-                    <a href="<%=url(:categories, :hidden, :id =>@first_category.id, :is_hidden=>'false')%>">展示目录</a>
-                  <% else %>
-                    <a href="<%=url(:categories, :hidden, :id =>@first_category.id, :is_hidden=>'true')%>">隐藏目录</a>
-                  <% end %>
-              </div>
-              <% if  @first_category.can_delete?%>
-              <div class="second-cell-operate">
-                  <a href="<%=url(:categories, :delete, :id =>@first_category.id)%>">删除目录</a>
-              </div>
-              <% end %> -->
               <% @categories.where(parent_id: @first_category.id).order("id asc").each_with_index do |sub_category ,index|%>
                 <div class="second-cell second-cell_<%= sub_category.id%> <%= index == 0 ? 'active' : ''%>" onclick="load_third_cell(<%= sub_category.id%>)"><%=sub_category.name%></div>
               <%end%>
@@ -91,9 +75,6 @@
 <div id="showAttribute" class="modal modal-adminpro-general default-popup-PrimaryModal fade" role="dialog">
 <div class="modal-dialog" style="width: 800px">
     <div class="modal-content">
-        <div class="modal-close-area modal-close-df">
-            <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
-        </div>
         <div class="modal-body">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
