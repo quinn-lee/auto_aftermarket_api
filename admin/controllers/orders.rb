@@ -174,4 +174,10 @@ AutoAftermarketApi::Admin.controllers :orders do
       redirect(url(:orders, :cancelling))
     end
   end
+
+  # 到店安装预约时间表
+  get :reservations do
+    @orders = Order.where.not(status: ['unpaid','appointing','done','delete','cancelling','cancelled']).joins(:sub_orders).where('sub_orders.sub_type' => 'install', 'sub_orders.status' => 'appointed')
+    render 'orders/reservations'
+  end
 end

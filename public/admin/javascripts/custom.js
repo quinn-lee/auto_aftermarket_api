@@ -1,4 +1,6 @@
 $(function(){
+    $('[data-toggle="popover"]').popover();
+
     // 表单上传图片预览
     function image_preview(file,ele) {
         var img = new Image(), url = img.src = URL.createObjectURL(file);
@@ -122,7 +124,7 @@ function load_third_cell(id){
             }
             form_operate.append("<a href='/admin/categories/new_attribute/"+id+"' class='pd-setting-ed'>添加属性</a>")
             form_operate.append("<a href='/admin/categories/new_brands/"+id+"' class='pd-setting-ed'>添加品牌</a>")
-            form_operate.append("<a href='/admin/spus?category_2="+id+"' class='pd-setting-ed'>查看商品</a>") 
+            form_operate.append("<a href='/admin/spus?category_2="+id+"' class='pd-setting-ed'>查看商品</a>")
         }
     })
 }
