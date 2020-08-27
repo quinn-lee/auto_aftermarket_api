@@ -5,7 +5,8 @@ class TSku < ActiveRecord::Base
   mount_uploaders :images, FileUploader
   mount_uploaders :detail, FileUploader
 
-  validates :t_spu_id, :merchant_id, :title, :images, :price, :stock_num, :available_num, presence: true
+  validates :t_spu_id, :merchant_id, :title, :images, :price, :stock_num, :available_num, :sku_code, presence: true
+  validates :sku_code, uniqueness: true
 
   belongs_to :t_spu,   :class_name => 'TSpu'
   belongs_to :merchant,   :class_name => 'Merchant'
