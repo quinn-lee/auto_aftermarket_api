@@ -4,6 +4,15 @@
         <div class="third-cell-operate" style="margin-left: 100px;">
             <div class="form-operate">
                 <a href="<%=url(:orders, :index) %>" class="pd-setting-ed">返回</a>
+                <% if @order.status != "unpaid" && @order.status != "done" && @order.status != "cancelled" && @order.status != "cancelling"%>
+                  <a href="<%=url(:orders, :done, :id=>@order.id) %>" class="pd-setting-ed">完成订单</a>
+                <% end %>
+                <% if @order.status != "unpaid" && @order.status != "done" && @order.status != "cancelled"%>
+                  <a href="#" data-toggle="modal" data-target="#cancel" class="pd-setting-ed">取消订单</a>
+                <% end %>
+                <% if @order.status == "unpaid"%>
+                  <a href="#" data-toggle="modal" data-target="#editPayAmount" class="pd-setting-ed">修改支付金额</a>
+                <% end %>
             </div>
         </div>
     </div>
@@ -17,13 +26,18 @@
             </tr>
             <tr style="background-color: #f9f9f9;">
               <td style="width: 33%;">订单金额： ￥<%= @order.amount %></td>
-              <td style="width: 33%;">支付金额： ￥<%= @order.pay_amount %></td>
-              <td style="width: 33%;">支付时间： <%= @order.pay_time.try{|pt| pt.strftime('%Y%m%d')} %></td>
+              <td style="width: 33%;">支付金额： <%if @order.old_pay_amount.present?%><del>(￥<%= @order.old_pay_amount %>)</del><% end %>￥<%= @order.pay_amount %></td>
+              <td style="width: 33%;">使用优惠券金额： ￥<%= @order.coupon_log.present? ? @order.coupon_log.coupon_amount : 0 %></td>
             </tr>
             <tr style="background-color: #f9f9f9;">
+              <td style="width: 33%;">支付时间： <%= @order.pay_time.try{|pt| pt.strftime('%Y%m%d')} %></td>
               <td style="width: 33%;">取消时间： <%= @order.cancel_time.try{|ct| ct.strftime('%Y%m%d')} %></td>
-              <td style="width: 33%;">退款金额： </td>
-              <td style="width: 33%;">预约时间： <%= (@order.reservation_time || {})['booking_date'] %> </td>
+              <td style="width: 33%;">退款金额： ￥<%= @order.refund_amount%></td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+              <td style="width: 33%;">预约时间段： <%= @order.order_reservation.present? ? "#{@order.order_reservation.booking_time_from.strftime('%F %H:%M')} ~ #{@order.order_reservation.booking_time_to.strftime('%H:%M')}" : ""%> </td>
+              <td style="width: 33%;"></td>
+              <td style="width: 33%;"></td>
             </tr>
         </tbody>
     </table>
@@ -68,50 +82,99 @@
     </table>
 </div>
 <% end %>
-  <div class="admintab-wrap mg-t-30">
-      <ul class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
-          <li class="active"><a data-toggle="tab" href="#TabSubOrders" style="font-size: 18px;font-weight: 700;"><span class="adminpro-icon adminpro-analytics tab-custon-ic"></span>商品信息</a>
-          </li>
-          <li><a data-toggle="tab" href="#TabDelivery" style="font-size: 18px;font-weight: 700;"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic"></span>物流信息</a>
-          </li>
-      </ul>
-      <div class="tab-content">
-          <div id="TabSubOrders" class="tab-pane in active animated flipInX custon-tab-style1">
-              <% @order.sub_orders.each do |sub_order|%>
-              <div class="card">
-                  <div class="card-title">
-                      <h4 class="underline"><%=SubOrder::SUBTYPE[sub_order.sub_type]%>子订单</h4>
-                      <span style="margin-left: 40px;">状态： <%=Order::STATUS[sub_order.status]%></span>
-                  </div>
-
-                  <table class="table table-condensed table-bordered-y" style="margin-bottom: 0px;">
-                      <tbody>
-                          <% OrderSku.where(id: sub_order.order_sku_ids).each_with_index do |order_sku, i|%>
-                            <tr style="background-color: #f9f9f9;">
-                              <td style="width: 78%;">商品<%=i+1%>： <%=order_sku.t_sku.title%></td>
-                              <td style="width: 20%;">数量： <%=order_sku.quantity%></td>
-                            </tr>
-                          <% end %>
-                      </tbody>
-                  </table>
-              </div>
-              <% end %>
-          </div>
-          <div id="TabDelivery" class="tab-pane animated flipInX custon-tab-style1">
+<div class="admintab-wrap mg-t-30">
+    <ul class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
+        <li class="active"><a data-toggle="tab" href="#TabSubOrders" style="font-size: 18px;font-weight: 700;"><span class="adminpro-icon adminpro-analytics tab-custon-ic"></span>商品信息</a>
+        </li>
+        <li><a data-toggle="tab" href="#TabDelivery" style="font-size: 18px;font-weight: 700;"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic"></span>物流信息</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="TabSubOrders" class="tab-pane in active animated flipInX custon-tab-style1">
+            <% @order.sub_orders.each do |sub_order|%>
             <div class="card">
+                <div class="card-title">
+                    <h4 class="underline"><%=SubOrder::SUBTYPE[sub_order.sub_type]%>子订单</h4>
+                    <span style="margin-left: 40px;">状态： <%=Order::STATUS[sub_order.status]%></span>
+                </div>
+
                 <table class="table table-condensed table-bordered-y" style="margin-bottom: 0px;">
                     <tbody>
-                        <tr style="background-color: #f9f9f9;">
-                          <td style="width: 33%;">快递单号： <%= @order.delivery_info['shpmt_num'] %></td>
-                          <td style="width: 33%;">物流公司： <%= @order.delivery_info['logi_company'] %></td>
-                          <td style="width: 33%;"></td>
-                        </tr>
+                        <% OrderSku.where(id: sub_order.order_sku_ids).each_with_index do |order_sku, i|%>
+                          <tr style="background-color: #f9f9f9;">
+                            <td style="width: 78%;">商品<%=i+1%>： <%=order_sku.t_sku.title%></td>
+                            <td style="width: 20%;">数量： <%=order_sku.quantity%></td>
+                          </tr>
+                        <% end %>
                     </tbody>
                 </table>
             </div>
+            <% end %>
+        </div>
+        <div id="TabDelivery" class="tab-pane animated flipInX custon-tab-style1">
+          <div class="card">
+              <table class="table table-condensed table-bordered-y" style="margin-bottom: 0px;">
+                  <tbody>
+                      <tr style="background-color: #f9f9f9;">
+                        <td style="width: 33%;">快递单号： <%= @order.delivery_info['shpmt_num'] %></td>
+                        <td style="width: 33%;">物流公司： <%= @order.delivery_info['logi_company'] %></td>
+                        <td style="width: 33%;"></td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
-      </div>
-  </div>
+        </div>
+    </div>
+</div>
+<div class="modal modal-custom fade" id="cancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">取消订单</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <% form_tag url(:orders, :cancel, :id => @order.id), :method => :get do %>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>退款金额</label>
+                            <%=text_field_tag :refund_amount, :value => @order.pay_amount, :class => 'form-control' %>
+                        </div>
+                    </div>
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-submit">提交</button>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-custom fade" id="editPayAmount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">修改支付金额</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <% form_tag url(:orders, :update_pay_amount, :id => @order.id), :method => :get do %>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>支付金额</label>
+                            <%=text_field_tag :pay_amount, :value => @order.pay_amount, :class => 'form-control' %>
+                        </div>
+                    </div>
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-submit">提交</button>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
 <style>
 .pd-setting-ed{
   background: linear-gradient(178deg, #e12503 0%, #85060c 100%);

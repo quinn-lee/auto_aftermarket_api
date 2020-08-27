@@ -51,8 +51,12 @@ class Order < ActiveRecord::Base
     return true
   end
 
-  def do_cancel
-    update!(status: "cancelled", cancel_time: Time.now)
+  def do_cancel(refund_amount=nil)
+    if refund_amount.present?
+      update!(status: "cancelled", cancel_time: Time.now, refund_amount: refund_amount)
+    else
+      update!(status: "cancelled", cancel_time: Time.now, refund_amount: pay_amount)
+    end
     if order_type == "group" && group_buyer.present?
       group_buyer.update!(status: 0)
     end
@@ -62,12 +66,16 @@ class Order < ActiveRecord::Base
     sub_orders.update(status: "cancelled")
   end
 
-  def do_cancel_reject
-    update!(status: sub_orders.last.status)
+  def do_cancel_reject(reject_reason)
+    update!(status: sub_orders.last.status, reject_reason: reject_reason)
+  end
+
+  def order_reservation
+    OrderReservation.find_by(order_no: order_no)
   end
 
   def reservation_time
-    if order_reservation = OrderReservation.find_by(order_no: order_no)
+    if order_reservation.present?
       order_reservation.to_api
     end
   end
@@ -95,7 +103,10 @@ class Order < ActiveRecord::Base
       order_no: order_no,
       order_type: order_type,
       pay_amount: pay_amount,
+      old_pay_amount: old_pay_amount,
+      #reject_reason: reject_reason,
       amount: amount,
+      refund_amount: refund_amount,
       coupon_amount: coupon_log.present? ? coupon_log.coupon_amount : 0,
       group_buyer_id: group_buyer.present? ? group_buyer.id : nil,
       group: group_buyer.present? ? group_buyer.group.to_api : {},
