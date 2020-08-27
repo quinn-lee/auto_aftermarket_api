@@ -45,3 +45,4 @@ gem 'builder', '~> 3.2', '>= 3.2.2'
 gem 'will_paginate', '~> 3.1.0'
 
 gem "roo", "~> 2.8.0"
+gem 'spreadsheet', '~> 1.2', '>= 1.2.6'

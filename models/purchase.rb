@@ -36,6 +36,7 @@ class Purchase < ActiveRecord::Base
               if install_order = order.sub_orders.find_by(sub_type: "install")
                 install_order.update!(status: "appointing")
                 order.update!(status: "appointing")
+                order.appoint_subscribe
               end
               if delivery_order = order.sub_orders.find_by(sub_type: "delivery")
                 delivery_order.update!(status: "received")
