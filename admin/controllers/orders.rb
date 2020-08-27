@@ -128,6 +128,26 @@ AutoAftermarketApi::Admin.controllers :orders do
     end
   end
 
+  # 采购完成操作
+  get :delivery_export do
+    begin
+      raise "请勾选需要操作的记录" if params[:ids].blank?
+      @orders = Order.where(id: params[:ids])
+      pdf = CombinePDF.new
+      @orders.each{|order| OrderBuilder.new.build(order); pdf << CombinePDF.load(order.order_file_path);}
+      dir_path = "public/uploads/tmp/orders/"
+      Dir.mkdir dir_path unless Dir.exist? dir_path
+      file_path = "#{dir_path}/#{current_account.id}_#{Time.now.strftime("%Y%m%d%H%M")}_order.pdf"
+      pdf.save file_path
+      send_file(file_path,:type => 'charset=utf-8; header=present',:filename => "order_export.pdf", :disposition =>'attachment', :encoding => 'gb2312')
+
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:orders, :deliveries))
+    end
+  end
+
   # 发货完成
   post :delivered, :with => :id do
     begin

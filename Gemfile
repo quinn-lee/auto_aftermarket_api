@@ -44,5 +44,13 @@ gem 'builder', '~> 3.2', '>= 3.2.2'
 
 gem 'will_paginate', '~> 3.1.0'
 
+# excel读取
 gem "roo", "~> 2.8.0"
+# excel导出
 gem 'spreadsheet', '~> 1.2', '>= 1.2.6'
+
+# 合并/拆分pdf
+gem 'combine_pdf', '~> 1.0', '>= 1.0.18'
+# pdf generate
+gem 'prawn', '~> 2.3'
+gem 'prawn-table', '~> 0.2.2'
