@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 102) do
+ActiveRecord::Schema.define(version: 105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -384,6 +384,9 @@ ActiveRecord::Schema.define(version: 102) do
     t.datetime "delivere_time"
     t.integer "dist_share_id"
     t.integer "dist_agent_id"
+    t.decimal "old_pay_amount", precision: 10, scale: 2
+    t.decimal "refund_amount", precision: 10, scale: 2
+    t.string "reject_reason"
   end
 
   create_table "page_views", force: :cascade do |t|

@@ -51,13 +51,30 @@ AutoAftermarketApi::Admin.controllers :orders do
   get :cancel, :with => :id do
     begin
       @order = Order.find(params[:id])
-      @order.do_cancel
+      raise "退款金额必须填写" if params[:refund_amount].blank?
+      @order.do_cancel(params[:refund_amount])
       flash[:success] = "取消成功"
-      redirect(url(:orders, :index))
+      redirect(url(:orders, :show, :id=>@order.id))
     rescue => e
       logger.info e.backtrace
       flash[:error] = e.message
-      redirect(url(:orders, :index))
+      redirect(url(:orders, :show, :id=>@order.id))
+    end
+  end
+
+  # 修改订单金额
+  get :update_pay_amount, :with => :id do
+    begin
+      @order = Order.find(params[:id])
+      raise "支付金额必须填写" if params[:pay_amount].blank?
+      raise "该订单不能修改支付金额" if @order.status != 'unpaid'
+      @order.update(old_pay_amount: (@order.old_pay_amount || @order.pay_amount), pay_amount: params[:pay_amount])
+      flash[:success] = "支付金额修改成功"
+      redirect(url(:orders, :show, :id=>@order.id))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:orders, :show, :id=>@order.id))
     end
   end
 
@@ -68,11 +85,11 @@ AutoAftermarketApi::Admin.controllers :orders do
       @order.update!(status: "done")
       @order.sub_orders.update_all(status: "done")
       flash[:success] = "订单状态修改成功"
-      redirect(url(:orders, :index))
+      redirect(url(:orders, :show, :id=>@order.id))
     rescue => e
       logger.info e.backtrace
       flash[:error] = e.message
-      redirect(url(:orders, :index))
+      redirect(url(:orders, :show, :id=>@order.id))
     end
   end
 
@@ -143,9 +160,11 @@ AutoAftermarketApi::Admin.controllers :orders do
     begin
       @order = Order.find(params[:id])
       if params[:status] == 'cancelled'
-        @order.do_cancel
+        raise "退款金额必须填写" if params[:refund_amount].blank?
+        @order.do_cancel(params[:refund_amount])
       else
-        @order.do_cancel_reject
+        raise "审核不通过原因必须填写" if params[:reject_reason].blank?
+        @order.do_cancel_reject(params[:reject_reason])
       end
       flash[:success] = "操作成功"
       redirect(url(:orders, :cancelling))

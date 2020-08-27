@@ -36,18 +36,70 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li>
-                                <% link_to url(:orders, :cancel_check, :id => order.id, :status => 'cancelled') do %>
-                                     <%= content_tag :i, nil, :class => 'fa fa-circle-o' %> 审核通过
-                                <% end %>
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#cancelled_<%= order.id %>"><i class="fa fa-circle-o"></i> 审核通过</a>
+                                </li>
                             </li>
+                            <!--
                             <li>
-                                <% link_to url(:orders, :cancel_check, :id => order.id, :status => 'reject') do %>
-                                    <%= content_tag :i, nil, :class => 'fa fa-times' %> 审核不通过
-                                <% end %>
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#reject_<#%= order.id %>"><i class="fa fa-times"></i> 审核不通过</a>
+                                </li>
                             </li>
+                            -->
                         </ul>
                     </div>
                 </td>
+                <div class="modal modal-custom fade" id="cancelled_<%= order.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title underline">取消订单审核通过</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <% form_tag url(:orders, :cancel_check, :id => order.id), :method => :get do %>
+                                    <%=hidden_field_tag :status, :value=>'cancelled'%>
+                                    <div class="row">
+                                        <div class="col-xs-6 form-group">
+                                            <label>退款金额</label>
+                                            <%=text_field_tag :refund_amount, :value => order.pay_amount, :class => 'form-control' %>
+                                        </div>
+                                    </div>
+                                    <div align="right">
+                                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                                        <button type="submit" class="btn btn-submit">提交</button>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal modal-custom fade" id="reject_<%= order.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title underline">取消订单审核不通过</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <% form_tag url(:orders, :cancel_check, :id => order.id), :method => :get do %>
+                                    <%=hidden_field_tag :status, :value=>'reject'%>
+                                    <div class="row">
+                                        <div class="col-xs-6 form-group">
+                                            <label>审核不通过原因</label>
+                                            <%=text_field_tag :reject_reason, :class => 'form-control' %>
+                                        </div>
+                                    </div>
+                                    <div align="right">
+                                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                                        <button type="submit" class="btn btn-submit">提交</button>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tr>
         <% end %>
         </tbody>
