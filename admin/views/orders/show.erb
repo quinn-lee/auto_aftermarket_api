@@ -1,0 +1,120 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">订单详情</h4>
+        <div class="third-cell-operate" style="margin-left: 100px;">
+            <div class="form-operate">
+                <a href="<%=url(:orders, :index) %>" class="pd-setting-ed">返回</a>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-condensed table-bordered-y" style="margin-bottom: 0px;">
+        <tbody>
+            <tr style="background-color: #f9f9f9;">
+              <td style="width: 33%;">订单号： <%= @order.order_no %></td>
+              <td style="width: 33%;">订单类型： <%= Order::ORDERTYPE[@order.order_type] %></td>
+              <td style="width: 33%;">订单状态： <%= Order::STATUS[@order.status] %></td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+              <td style="width: 33%;">订单金额： ￥<%= @order.amount %></td>
+              <td style="width: 33%;">支付金额： ￥<%= @order.pay_amount %></td>
+              <td style="width: 33%;">支付时间： <%= @order.pay_time.try{|pt| pt.strftime('%Y%m%d')} %></td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+              <td style="width: 33%;">取消时间： <%= @order.cancel_time.try{|ct| ct.strftime('%Y%m%d')} %></td>
+              <td style="width: 33%;">退款金额： </td>
+              <td style="width: 33%;">预约时间： <%= (@order.reservation_time || {})['booking_date'] %> </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<% if @order.delivery_info.present?%>
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">收件信息</h4>
+    </div>
+
+    <table class="table table-condensed table-bordered-y" style="margin-bottom: 0px;">
+        <tbody>
+            <tr style="background-color: #f9f9f9;">
+              <td style="width: 33%;">姓名： <%= @order.delivery_info['name'] %></td>
+              <td style="width: 33%;">电话： <%= @order.delivery_info['mobile'] %></td>
+              <td style="width: 33%;">地址： <%= @order.delivery_info['address'] %></td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+              <td style="width: 33%;">省份： <%= @order.delivery_info['province'] %></td>
+              <td style="width: 33%;">城市： <%= @order.delivery_info['city'] %></td>
+              <td style="width: 33%;">区县： <%= @order.delivery_info['district'] %></td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+              <td style="width: 33%;">快递单号： <%= @order.delivery_info['shpmt_num'] %></td>
+              <td style="width: 33%;">物流公司： <%= @order.delivery_info['logi_company'] %></td>
+              <td style="width: 33%;"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<% end %>
+<% if @order.contact_info.present?%>
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">联系人信息</h4>
+    </div>
+
+    <table class="table table-condensed table-bordered-y" style="margin-bottom: 0px;">
+        <tbody>
+            <tr style="background-color: #f9f9f9;">
+              <td style="width: 33%;">姓名： <%= @order.contact_info['name'] %></td>
+              <td style="width: 33%;">电话： <%= @order.contact_info['mobile'] %></td>
+              <td style="width: 33%;"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<% end %>
+  <div class="admintab-wrap mg-t-30">
+      <ul class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
+          <li class="active"><a data-toggle="tab" href="#TabSubOrders" style="font-size: 18px;font-weight: 700;"><span class="adminpro-icon adminpro-analytics tab-custon-ic"></span>商品信息</a>
+          </li>
+          <li><a data-toggle="tab" href="#TabDelivery" style="font-size: 18px;font-weight: 700;"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic"></span>物流信息</a>
+          </li>
+      </ul>
+      <div class="tab-content">
+          <div id="TabSubOrders" class="tab-pane in active animated flipInX custon-tab-style1">
+              <% @order.sub_orders.each do |sub_order|%>
+              <div class="card">
+                  <div class="card-title">
+                      <h4 class="underline"><%=SubOrder::SUBTYPE[sub_order.sub_type]%>子订单</h4>
+                      <span style="margin-left: 40px;">状态： <%=Order::STATUS[sub_order.status]%></span>
+                  </div>
+
+                  <table class="table table-condensed table-bordered-y" style="margin-bottom: 0px;">
+                      <tbody>
+                          <% OrderSku.where(id: sub_order.order_sku_ids).each_with_index do |order_sku, i|%>
+                            <tr style="background-color: #f9f9f9;">
+                              <td style="width: 78%;">商品<%=i+1%>： <%=order_sku.t_sku.title%></td>
+                              <td style="width: 20%;">数量： <%=order_sku.quantity%></td>
+                            </tr>
+                          <% end %>
+                      </tbody>
+                  </table>
+              </div>
+              <% end %>
+          </div>
+          <div id="TabDelivery" class="tab-pane animated flipInX custon-tab-style1">
+
+          </div>
+      </div>
+  </div>
+<style>
+.pd-setting-ed{
+  background: linear-gradient(178deg, #e12503 0%, #85060c 100%);
+  border-radius: 3px;
+  color: #fff;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 5px 15px;
+  float: right;
+}
+</style>

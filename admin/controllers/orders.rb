@@ -9,8 +9,24 @@ AutoAftermarketApi::Admin.controllers :orders do
     @orders = @orders.where(status: params[:status]) if params[:status].present?
     @orders = @orders.where(order_type: params[:order_type]) if params[:order_type].present?
     @orders = @orders.where(order_no: params[:order_no]) if params[:order_no].present?
+    @orders = @orders.where("delivery_info->>'name' like '%#{params[:rcpt_name]}%'") if params[:rcpt_name].present?
+    @orders = @orders.where("delivery_info->>'mobile' like '%#{params[:rcpt_phone]}%'") if params[:rcpt_phone].present?
+    @orders = @orders.where("contact_info->>'name' like '%#{params[:contact_name]}%'") if params[:contact_name].present?
+    @orders = @orders.where("contact_info->>'mobile' like '%#{params[:contact_phone]}%'") if params[:contact_phone].present?
     @orders = @orders.order("created_at desc").paginate(page: params[:page], per_page: 30)
     render 'orders/index'
+  end
+
+  # 订单详情
+  get :show, :with => :id do
+    begin
+      @order = Order.find(params[:id])
+      render 'orders/show'
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:orders, :index))
+    end
   end
 
   # 采购列表
