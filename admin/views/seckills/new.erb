@@ -1,8 +1,16 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="card">
     <div class="review-tab-pro-inner">
       <ul id="myTab3" class="tab-review-design">
-          <li><a disable='true'><i class="fa fa-tag" aria-hidden="true"></i> 1、选择秒杀商品</a></li>
-          <li class="active"><a disable='true'><i class="fa fa-pencil" aria-hidden="true"></i> 2、填写秒杀信息</a></li>
+        <li class="active" style="margin-right: 30px;color: #909090">
+          <div class="card-title">
+            <h4><i class="fa fa-tag" aria-hidden="true"></i> 1、选择秒杀商品</h4>
+          </div>
+        </li>
+        <li>
+          <div class="card-title">
+            <h4 class="underline"><i class="fa fa-pencil" aria-hidden="true"></i> 2、填写秒杀信息</h4>
+          </div>
+        </li>
       </ul>
         <div id="myTabContent" class="tab-content custom-product-edit">
             <% form_for @seckill, url(:seckills, :create), :class=>"form-horizontal", :method => 'post' do |f| %>
@@ -12,7 +20,7 @@
 
               <div class="form-group-inner">
                   <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
                           <label class="login2 pull-right pull-right-pro">秒杀标题*</label>
                       </div>
                       <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
@@ -27,7 +35,7 @@
               </div>
               <div class="form-group-inner">
                   <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
                           <label class="login2 pull-right pull-right-pro">秒杀描述*</label>
                       </div>
                       <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
@@ -39,7 +47,7 @@
               </div>
               <div class="form-group-inner">
                   <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
                           <label class="login2 pull-right pull-right-pro">开始结束时间*</label>
                       </div>
                       <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
@@ -61,7 +69,7 @@
               </div>
               <div class="form-group-inner">
                   <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
                           <label class="login2 pull-right pull-right-pro">秒杀价*</label>
                       </div>
                       <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
@@ -77,7 +85,7 @@
               </div>
               <div class="form-group-inner">
                   <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
                           <label class="login2 pull-right pull-right-pro">秒杀商品数量*</label>
                       </div>
                       <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
@@ -90,7 +98,7 @@
               <div class="form-group-inner">
                   <div class="login-btn-inner">
                       <div class="row">
-                          <div class="col-lg-3"></div>
+                          <div class="col-lg-2"></div>
                           <div class="col-lg-9">
                               <div class="login-horizental cancel-wp pull-left">
                                   <a href="<%=url(:groups, :select_sku, :from=>'seckills')%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">重新选择商品</a>

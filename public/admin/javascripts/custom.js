@@ -60,17 +60,23 @@ function load_second_cell(id){
             var is_hidden = data['is_hidden'];
             var can_delete = data['can_delete'];
             cell_form.html('')
-            cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/new?parent_id=" + id + "'>新增二级目录</a></div>")
-            if(is_hidden){
-                cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/hidden/"+id+"?is_hidden=false'>展示目录</a></div>")
-            }else{
-                cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/hidden/"+id+"?is_hidden=true'>隐藏目录</a></div>")
-            }
-            if (can_delete) {
-                cell_form.append("<div class='second-cell-operate'><a href='/admin/categories/delete/"+id+"'>删除目录</a></div>")
-            }
             for(let i = 0 ; i < sub_c.length ; i++){
                 cell_form.append("<div class='second-cell second-cell_"+ sub_c[i]['id'] +"' onclick='load_third_cell(" +sub_c[i]['id']+")'>"+sub_c[i]['name']+"</div>")
+            }
+            $("#second-new").attr('href' , "/admin/categories/new?parent_id=" + id)
+            if(is_hidden){
+                $("#second-hide").attr('href' , "/admin/categories/hidden/"+id+"?is_hidden=false")
+                $("#second-hide").html('<i class="fa fa-tag"></i>展示目录')
+            }else{
+                $("#second-hide").attr('href' , "/admin/categories/hidden/"+id+"?is_hidden=true")
+                $("#second-hide").html('<i class="fa fa-tag"></i>隐藏目录')
+            }
+            if (can_delete) {
+                $("#second-delete").attr('href' , "/admin/categories/delete/"+id)
+                $("#second-delete").attr('style' , "color:#333")
+            }else{
+                $("#second-delete").attr('href' , "#")
+                $("#second-delete").attr('style' , "color:red")
             }
         }
     })

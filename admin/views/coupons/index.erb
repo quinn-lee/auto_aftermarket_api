@@ -1,33 +1,35 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="product-status-wrap">
-        <div class="row">
-          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-            <h4>优惠券列表</h4>
-          </div>
-          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-          </div>
-          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-            <div class="add-product">
-                <a href="<%=url(:coupons, :new)%>">创建优惠券</a>
-            </div>
-          </div>
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">优惠券列表</h4>
+    </div>
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
+                <i class="fa fa-search"></i> 搜索
+            </button>
+            <a href="<%=url(:coupons, :new)%>" class="btn btn-default"><i class="fa fa-plus"></i>创建优惠券</a>
         </div>
-        <table>
-            <tr>
-                <th style="width: 8%;">标题</th>
-                <th style="width: 8%;">秒杀描述</th>
-                <th style="width: 8%;">类型</th>
-                <th style="width: 12%;">结束时间</th>
-                <th style="width: 7%;">金额</th>
-                <th style="width: 10%;">使用条件</th>
-                <th style="width: 7%;">折扣</th>
-                <th style="width: 7%;">可领取数</th>
-                <th style="width: 7%;">领取数</th>
-                <th style="width: 7%;">使用数</th>
-                <th style="width: 8%;">状态</th>
-                <th style="width: 7%;"></th>
-            </tr>
-            <% @coupons.each do |coupon| %>
+    </div>
+    <!-- 表格主体内容 -->
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th style="width: 8%;">标题</th>
+            <th style="width: 8%;">秒杀描述</th>
+            <th style="width: 8%;">类型</th>
+            <th style="width: 12%;">结束时间</th>
+            <th style="width: 7%;">金额</th>
+            <th style="width: 10%;">使用条件</th>
+            <th style="width: 7%;">折扣</th>
+            <th style="width: 7%;">可领取数</th>
+            <th style="width: 7%;">领取数</th>
+            <th style="width: 7%;">使用数</th>
+            <th style="width: 8%;">状态</th>
+            <th style="width: 7%;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @coupons.each do |coupon| %>
             <tr>
                 <td><%=coupon.title%></td>
                 <td><%=coupon.remarks%></td>
@@ -45,35 +47,57 @@
                 <td><%=coupon.coupon_logs.count%></td>
                 <td><%=Coupon::STATUS[coupon.status.to_s]%></td>
                 <td>
-                  <div class="button-drop-style-one btn-danger-bg">
-                      <button type="button" class="btn btn-custon-four btn-danger dropdown-toggle" data-toggle="dropdown">操作 <i class="fa fa-angle-down"></i>
-    </button>
-                      <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-five" role="menu">
+                  <div class="dropdown">
+                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                          <i class="fa fa-gear"></i> <i class="fa fa-angle-down"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu">
                           <% if coupon.status == 1%>
-                          <li><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '0')%>">下架</a></li>
+                          <li role="presentation"><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '0')%>">下架</a></li>
                           <% if coupon.coupon_receives.count == 0%>
-                            <li><a href="<%=url(:coupons, :select_spu, :id => coupon.id)%>">指定商品</a></li>
-                            <li><a href="<%=url(:coupons, :edit, :id => coupon.id)%>">修改秒杀信息</a></li>
+                            <li role="presentation"><a href="<%=url(:coupons, :select_spu, :id => coupon.id)%>">指定商品</a></li>
+                            <li role="presentation"><a href="<%=url(:coupons, :edit, :id => coupon.id)%>">修改秒杀信息</a></li>
                           <% end %>
                           <% elsif coupon.status == 0%>
-                          <li><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '1')%>">上架</a></li>
+                          <li role="presentation"><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '1')%>">上架</a></li>
                           <% end %>
-
                       </ul>
                   </div>
                 </td>
             </tr>
             <% end %>
-
-        </table>
-        <%= will_paginate @coupons %>
-
+        </tbody>
+    </table>
+    <div class="pagination">
+      <%= will_paginate @coupons %>
     </div>
 </div>
+<div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">搜索模态框</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>文本</label>
+                            <%= text_field_tag :text, :value => nil, :class => 'form-control' %>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>选择栏</label>
+                            <%= select_tag :select, :options => %w[option1 option2], :class => 'form-control' %>
+                        </div>
+                    </div>
 
-<style>
-.dropdown-menu.another-drop-pro-five{
-  left: 79% !important;
-  top: auto;
-}
-</style>
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-submit">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
