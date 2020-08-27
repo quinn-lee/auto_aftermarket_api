@@ -33,6 +33,17 @@
     border-image: -moz-linear-gradient(to right, #e12503, #ffffff) 1 1;
     border-image: linear-gradient(to right, #e12503, #ffffff) 1 1;
 }
+.card-title .nav{ margin-bottom: 10px; }
+.card-title .nav>li { margin-right: 20px; }
+.card-title .nav>li>h4 { color: #ccc; padding-bottom: 10px; padding-right: 10px; }
+.card-title .nav>li.active>h4 {
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    border-image: -webkit-linear-gradient(to right, #e12503, #ffffff) 1 1;
+    border-image: -moz-linear-gradient(to right, #e12503, #ffffff) 1 1;
+    border-image: linear-gradient(to right, #e12503, #ffffff) 1 1;
+}
+
 .card-toolbar{ margin-bottom: 10px; }
 
 /* .dropdown */
@@ -59,9 +70,10 @@
 
 /* .form-group */
 .form-group-row { display: flex; align-items: center; margin-bottom: 15px; }
-.form-group-row label { width: 25%; padding-left: 15px; padding-right: 15px; }
-.form-group-row .form-control,
-.form-group-row input[type=file]{ width: 75%; }
+.form-group-row>label { width: 25%; padding-left: 15px; padding-right: 15px; }
+.form-group-row>.form-control,
+.form-group-row>.form-control-div,
+.form-group-row>input[type=file]{ width: 75%; }
 .form-group-row-btn { margin-left: 25%; }
 input[type=file].form-control{
     border: none;
@@ -70,6 +82,10 @@ input[type=file].form-control{
     box-shadow: none;
     padding-left: 0;
 }
+.form-group-bordered-top { border-top: 1px solid #ddd; padding-top: 15px; }
+
+.form-group .input-group .input-group-addon { min-width: 120px; }
+
 /* .image-preview 图片预览 */
 .image-preview { display: flex; flex-wrap: wrap; }
 .image-preview img {

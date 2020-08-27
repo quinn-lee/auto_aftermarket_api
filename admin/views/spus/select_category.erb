@@ -1,49 +1,31 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="review-tab-pro-inner">
-        <ul id="myTab3" class="tab-review-design">
-            <li class="active"><a disable='true'><i class="fa fa-tag" aria-hidden="true"></i> 1、选择产品目录</a></li>
-            <li><a disable='true'><i class="fa fa-pencil" aria-hidden="true"></i> 2、填写产品(SPU)信息</a></li>
-            <li><a disable='true'><i class="fa fa-ticket" aria-hidden="true"></i> 3、添加商品(SKU)</a></li>
+<div class="card">
+    <div class="card-title">
+        <ul class="nav nav-pills">
+            <li class="active"><h4>1、选择产品目录</h4></li>
+            <li><h4>2、填写产品(SPU)信息</h4></li>
+            <li><h4>3、添加商品(SKU)</h4></li>
         </ul>
-        <div id="myTabContent" class="tab-content custom-product-edit">
-            <% form_tag url(:spus, :new), :class=>"form-horizontal", :method => 'post' do %>
-            <div class="product-tab-list tab-pane fade active in">
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">请选择商品目录</label>
-                      </div>
-                      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-                          <div class="form-select-list">
-                            <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
-                          </div>
-                      </div>
-                      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12" id="cc" style="display: none;">
-                          <div class="form-select-list">
-                            <%=select_tag(:category_2, :options => [], :class => "form-control custom-select-value", id: "category_2")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="login-btn-inner">
-                      <div class="row">
-                          <div class="col-lg-3"></div>
-                          <div class="col-lg-9">
-                              <div class="login-horizental cancel-wp pull-left">
-                                  <button class="btn btn-sm btn-primary login-submit-cs" type="submit">下一步</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
-            <span style="display: none">
-              <% @categories.each do |category| %>
-                <%=hidden_field_tag "categoryid_#{category.id}", id: "categoryid_#{category.id}", :value => "#{category.name}", class: "category_class_#{category.parent_id}"%>
-              <% end %>
-            </span>
-            <% end %>
-        </div>
     </div>
+
+    <% form_tag url(:spus, :new), :method => :post do %>
+        <div class="row">
+            <div class="col-xs-12 form-group-row">
+                <label>请选择商品目录</label>
+                <%=select_tag :category_1, :options => @categories.where(parent_id: nil).map{|category| [category.name, category.id]}.unshift([nil,nil]),
+                              :class => 'form-control', :onchange => 'change_category(this);' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>&nbsp;</label>
+                <%=select_tag :category_2, :options => [], :class => 'form-control', :id => 'category_2' %>
+            </div>
+        </div>
+
+        <div class="form-group-row-btn">
+            <%= submit_tag '下一步', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
 </div>
+
+<% @categories.each do |category| %>
+    <%=hidden_field_tag "categoryid_#{category.id}", id: "categoryid_#{category.id}", :value => "#{category.name}", class: "category_class_#{category.parent_id}"%>
+<% end %>

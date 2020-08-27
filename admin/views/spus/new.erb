@@ -1,92 +1,46 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="review-tab-pro-inner">
-        <ul id="myTab3" class="tab-review-design">
-            <li><a disable='true'><i class="fa fa-tag" aria-hidden="true"></i> 1、选择产品目录</a></li>
-            <li class="active"><a disable='true'><i class="fa fa-pencil" aria-hidden="true"></i> 2、填写产品(SPU)信息</a></li>
-            <li><a disable='true'><i class="fa fa-ticket" aria-hidden="true"></i> 3、添加商品(SKU)</a></li>
+<div class="card">
+    <div class="card-title">
+        <ul class="nav nav-pills">
+            <li><h4>1、选择产品目录</h4></li>
+            <li class="active"><h4>2、填写产品(SPU)信息</h4></li>
+            <li><h4>3、添加商品(SKU)</h4></li>
         </ul>
-        <div id="myTabContent" class="tab-content custom-product-edit">
-            <% form_for @spu, url(:spus, :create), :class=>"form-horizontal", :method => 'post', multipart: true do |f| %>
-            <div class="product-tab-list tab-pane fade active in">
-              <%=f.hidden_field "t_category_id" %>
-              <%=f.hidden_field "merchant_id" %>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">选择品牌</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.select(:t_brand_id, :options => @brands.map{|brand| [brand.name, brand.id]}.unshift([nil,nil]), :class => "form-control custom-select-value")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">产品标题*</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:title, :class => "form-control")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">产品说明</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:detail, :class => "form-control")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">产品详情图片</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.file_field(:details, :class => "form-control", multiple: true)%>
-                          </div>
-                      </div>
-
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">商品分销佣金比例</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:dist_percent, :class => "form-control")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="login-btn-inner">
-                      <div class="row">
-                          <div class="col-lg-3"></div>
-                          <div class="col-lg-9">
-                              <div class="login-horizental cancel-wp pull-left">
-                                  <a href="<%=url(:spus, :select_category)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">重新选择商品目录</a>
-                                  <%=f.submit "下一步", :class => "btn btn-sm btn-primary login-submit-cs"%>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
-            <% end %>
-        </div>
     </div>
+
+    <% form_for @spu, url(:spus, :create), :method => :post, multipart: true do |f| %>
+        <%= f.hidden_field :t_category_id %>
+        <%= f.hidden_field :merchant_id %>
+        <div class="row">
+            <div class="col-xs-12 form-group-row">
+                <label>选择品牌</label>
+                <%= f.select :t_brand_id, :options => @brands.map{|brand| [brand.name, brand.id]}.unshift([nil,nil]), :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>产品标题*</label>
+                <%= f.text_field :title, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>产品说明</label>
+                <%= f.text_field :detail, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>产品详情图片</label>
+                <div class="image-preview">
+                    <div class="img-upload">
+                        <div class="img-upload-mask">
+                            <%= f.file_field :details, :multiple => true, :class => 'inbox-file' %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>商品分销佣金比例</label>
+                <%= f.text_field :dist_percent, :class => 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group-row-btn">
+            <%= link_to '上一步', 'javascript:history.go(-1);', :class => 'btn btn-back' %>
+            <%= f.submit '下一步', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
 </div>

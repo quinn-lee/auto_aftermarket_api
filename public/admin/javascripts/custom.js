@@ -20,6 +20,7 @@ $(function(){
         }
     });
 
+    // 点击选择图片进行排序
     $('.thumbnail-filter').bind('click', function(){
         var _seq_input_ = $('input[name=_seq_]');
         var _seq_ = _seq_input_.val() ? _seq_input_.val().split(',') : [];
