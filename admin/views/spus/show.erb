@@ -1,52 +1,67 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="product-status-wrap">
-        <h4><%=@spu.category_desc%>--<%=@spu.t_brand.name if @spu.t_brand%>--<%=@spu.title%></h4>
-        <table>
-            <tr>
-                <th style="width: 10%;">SKU代码</th>
-                <th style="width: 22%;">标题</th>
-                <th style="width: 18%;">销售属性</th>
-                <th style="width: 10%;">可销售?</th>
-                <th style="width: 10%;">价格</th>
-                <th style="width: 10%;">库存(可销售)</th>
-                <th style="width: 15%;"></th>
-            </tr>
-            <% @spu.t_skus.each do |sku| %>
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline"><%=@spu.category_desc%>--<%=@spu.t_brand.name if @spu.t_brand%>--<%=@spu.title%></h4>
+    </div>
+
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th style="width: 10%;">SKU代码</th>
+            <th style="width: 40%;">标题</th>
+            <th style="width: 15%;">销售属性</th>
+            <th style="width: 10%;">可销售?</th>
+            <th style="width: 10%;">价格</th>
+            <th style="width: 10%;">库存(可销售)</th>
+            <th style="width: 5%;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @spu.t_skus.each do |sku| %>
             <tr>
                 <td><%= sku.sku_code%></td>
                 <td><%= sku.title %></td>
                 <td><%= sku.sale_attrs_desc %></td>
-                <td>
-                    <button class="<%= sku.saleable_class%>"><%= sku.saleable_desc%></button>
-                </td>
+                <td><%= content_tag :span, sku.saleable ? '是' : '否', :class => "status status-#{sku.saleable ? 'valid' : 'invalid'}" %></td>
                 <td>￥<%= sku.price %></td>
                 <td><%= sku.stock_num %>(<%= sku.available_num %>)</td>
-                <td>
-                  <a href="<%=url(:spus, :edit_sku, :sku_id =>sku.id) %>" title="修改" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                  <a href="<%=url(:spus, :show_sku, :sku_id =>sku.id)%>" title="查看SKU" class="pd-setting-ed" style="margin-right: 5px;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
-                  <% if sku.saleable %>
-                  <a href="<%=url(:spus, :change_sku_sale, :sku_id =>sku.id, :action =>'offsale')%>" title="下架" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                  <% else %>
-                  <a href="<%=url(:spus, :change_sku_sale, :sku_id =>sku.id, :action =>'onsale')%>" title="上架" class="pd-setting-ed"><i class="fa fa-check" aria-hidden="true"></i></a>
-                  <% end %>
-
-                  <a href="<%=url(:spus, :select_car_model, :sku_id =>sku.id) %>" title="匹配" class="pd-setting-ed">匹配车型</a>
+                <td class="action">
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-gear"></i> <i class="fa fa-angle-down"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li>
+                                <% link_to url(:spus, :edit_sku, :sku_id => sku.id) do %>
+                                    <%= content_tag :i, nil, :class => 'fa fa-edit' %> 修改
+                                <% end %>
+                            </li>
+                            <li>
+                                <% link_to url(:spus, :show_sku, :sku_id => sku.id) do %>
+                                    <%= content_tag :i, nil, :class => 'fa fa-info-circle' %> 查看详情
+                                <% end %>
+                            </li>
+                            <li>
+                                <% if sku.saleable %>
+                                    <% link_to url(:spus, :change_sku_sale, :sku_id => sku.id, :action => 'offsale') do %>
+                                        <%= content_tag :i, nil, :class => 'fa fa-arrow-circle-down' %> 下架
+                                    <% end %>
+                                <% else %>
+                                    <% link_to url(:spus, :change_sku_sale, :sku_id => sku.id, :action => 'onsale') do %>
+                                        <%= content_tag :i, nil, :class => 'fa fa-arrow-circle-up' %> 上架
+                                    <% end %>
+                                <% end %>
+                            </li>
+                            <li>
+                                <% link_to url(:spus, :select_car_model, :sku_id => sku.id) do %>
+                                    <%= content_tag :i, nil, :class => 'fa fa-car' %> 匹配车型
+                                <% end %>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
-            <% end %>
-
-        </table>
-        <div class="form-group-inner">
-            <div class="login-btn-inner">
-                <div class="row">
-                    <div class="col-lg-3"></div>
-                    <div class="col-lg-9">
-                        <div class="login-horizental cancel-wp pull-left">
-                            <a href="<%=url(:spus, :index)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <% end %>
+        </tbody>
+    </table>
+    <%= link_to '返回', url(:spus, :index), :class => 'btn btn-back' %>
 </div>

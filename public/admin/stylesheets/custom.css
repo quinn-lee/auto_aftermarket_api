@@ -4,7 +4,8 @@
 
 /*
  按样式字母序排序, 依次为
- .alert, .btn, .card, .dropdown, .form-group, .image-preview, .modal, .pagination, .status, .table
+ .alert, .btn, .card, .dropdown, .form-group, .image-preview, .modal, .pagination, .status, .table, .text,
+ .thumbnail
  */
 /* .alert */
 .alert { padding: 10px 15px; margin-bottom: 10px; border-radius: 0;  }
@@ -153,6 +154,9 @@ input[type=file].form-control{
 .table td.action i { padding: 0 1px; }
 .table th.action-batch { white-space: nowrap; padding: 2px 5px; vertical-align: middle; }
 .table th.action-batch .dropdown { display: inline-block; }
+
+/* .text 文本 */
+.text-red { color: #e12503; }
 
 /* .thumbnail 缩略图 */
 .thumbnail-filter {
