@@ -43,9 +43,16 @@ module AutoAftermarketApi
             { :label => '待采购', :icon => '', :url => url(:orders, :purchases) },
             { :label => '待发货', :icon => '', :url => url(:orders, :deliveries) },
             { :label => '取消审核', :icon => '', :url => url(:orders, :cancelling) },
+            { :label => '预约时间表', :icon => '', :url => url(:orders, :reservations) },
             { :label => '员工订单统计', :icon => '', :url => '#' },
             { :label => '员工佣金统计', :icon => '', :url => '#' },
             { :label => '特权折扣', :icon => '', :url => '#' }
+          ]
+        }
+        nav_purchases = {
+          :label => '采购管理', :icon => 'css3', :field => 'nav_purchase_data',
+          :options => [
+            { :label => '采购列表', :icon => '', :url => url(:purchases, :index) }
           ]
         }
         nav_activities = {
@@ -101,6 +108,7 @@ module AutoAftermarketApi
         menu << nav_staffs
         menu << nav_car_data
         menu << nav_orders
+        menu << nav_purchases
         menu << nav_activities
         menu << nav_dist
         menu << nav_questions

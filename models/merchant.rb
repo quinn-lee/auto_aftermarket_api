@@ -5,6 +5,7 @@ class Merchant < ActiveRecord::Base
   has_many :t_spus, :class_name => 'TSpu', :dependent => :destroy
   has_many :t_skus, :class_name => 'TSku', :dependent => :destroy
   has_many :orders, :class_name => 'Order', :dependent => :destroy
+  has_many :purchases, :class_name => 'Purchase', :dependent => :destroy
   has_many :accounts, :class_name => 'Account', :dependent => :destroy
 
   has_many :groups, :class_name => 'Group', :dependent => :destroy

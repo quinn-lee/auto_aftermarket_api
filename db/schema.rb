@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 105) do
+ActiveRecord::Schema.define(version: 107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -393,6 +393,25 @@ ActiveRecord::Schema.define(version: 105) do
     t.integer "customer_id"
     t.datetime "visit_time"
     t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "purchase_skus", force: :cascade do |t|
+    t.integer "purchase_id"
+    t.integer "t_sku_id"
+    t.integer "current_stock"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.string "purchase_no"
+    t.string "summary"
+    t.jsonb "code_info"
+    t.integer "merchant_id"
+    t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

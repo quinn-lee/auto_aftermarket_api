@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">采购详情</h4>
+    </div>
+    <div class="card-toolbar">
+        采购编号：<%=@purchase.purchase_no%><br/>
+        采购说明：<%=@purchase.summary%>
+    </div>
+
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th style="width: 15%;">Sku Code</th>
+            <th style="width: 55%;">Sku名称</th>
+            <th style="width: 14%;">采购前库存</th>
+            <th style="width: 14%;">采购数量</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @purchase.purchase_skus.each do |psku| %>
+            <tr>
+                <td><%=psku.t_sku.sku_code%></td>
+                <td><%=psku.t_sku.title %></td>
+                <td><%=psku.current_stock%></td>
+                <td><%=psku.quantity%></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+    <div class="form-group-row-btn">
+        <%= link_to '返回', 'javascript:history.go(-1);', :class => 'btn btn-back' %>
+    </div>
+</div>

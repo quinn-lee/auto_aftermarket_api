@@ -1,0 +1,37 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">新增采购预览</h4>
+    </div>
+    <div class="card-toolbar">
+        采购说明：<%=@summary%>
+    </div>
+
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th style="width: 20%;">Sku Code</th>
+            <th style="width: 65%;">Sku名称</th>
+            <th style="width: 10%;">采购数量</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% (2..@spreadsheet.last_row).each do |i| %>
+            <% row = @spreadsheet.row(i) %>
+            <% sku = TSku.find_by(sku_code: row[0].to_s.strip)%>
+            <tr>
+                <td><%=row[0].to_s%></td>
+                <td><%=sku.present? ? sku.title : '系统不存在该商品'%></td>
+                <td><%=row[1].to_s%></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+    <% form_tag url(:purchases, :create), :method => :post do |f| %>
+      <%=hidden_field_tag :summary, :value=>@summary%>
+      <%=hidden_field_tag :file_path, :value=>@file_path%>
+      <div class="form-group-row-btn">
+          <%= link_to '返回修改', 'javascript:history.go(-1);', :class => 'btn btn-back' %>
+          <button type="submit" class="btn btn-submit">确认上传</button>
+      </div>
+    <% end %>
+</div>
