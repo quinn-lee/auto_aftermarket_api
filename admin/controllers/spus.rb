@@ -216,27 +216,42 @@ AutoAftermarketApi::Admin.controllers :spus do
   end
 
   # 调整图片顺序
-  post :ordered_imgs, :with => :id do
-    begin
-      logger.info params
-      @spu = TSpu.find(params[:id])
-      arr_h = {}
-      params.each do |k,v|
-        arr_h[k.to_s.delete("order_")]=v if k.to_s.include?"order_"
-      end
-      details = []
-      (arr_h.sort_by {|k,v| v}).each{|item| details << @spu.details[item[0].to_i-1]}
-      @spu.update!(details: details)
-      flash[:success] = "图片顺序修改成功"
-      redirect(url(:spus, :edit, :id => @spu.id))
+  # post :ordered_imgs, :with => :id do
+  #   begin
+  #     logger.info params
+  #     @spu = TSpu.find(params[:id])
+  #     arr_h = {}
+  #     params.each do |k,v|
+  #       arr_h[k.to_s.delete("order_")]=v if k.to_s.include?"order_"
+  #     end
+  #     details = []
+  #     (arr_h.sort_by {|k,v| v}).each{|item| details << @spu.details[item[0].to_i-1]}
+  #     @spu.update!(details: details)
+  #     flash[:success] = "图片顺序修改成功"
+  #     redirect(url(:spus, :edit, :id => @spu.id))
+  #
+  #   rescue => e
+  #     logger.info e.backtrace
+  #     flash[:error] = e.message
+  #     render 'spus/ordering_imgs'
+  #   end
+  # end
 
+  # 调整产品详情图片顺序
+  post :reorder_details, :with => :id do
+    begin
+      seq = params[:_seq_].split(',').map(&:to_i)
+      @spu = TSpu.find(params[:id])
+      details = []
+      seq.each{ |i| details << @spu.details[i] }
+      @spu.update!(details: details)
+      flash[:success] = '图片顺序修改成功'
+      redirect(url(:spus, :edit, :id => @spu.id))
     rescue => e
-      logger.info e.backtrace
       flash[:error] = e.message
       render 'spus/ordering_imgs'
     end
   end
-
 
   # 商品匹配车型
   get :select_car_model, :with => :sku_id do

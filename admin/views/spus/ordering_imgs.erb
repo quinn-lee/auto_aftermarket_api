@@ -1,49 +1,74 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="review-tab-pro-inner">
-        <ul id="myTab3" class="tab-review-design">
-            <li class="active"><a disable='true'><i class="fa fa-pencil" aria-hidden="true"></i> 调整产品详情图片顺序</a></li>
-        </ul>
-        <div id="myTabContent" class="tab-content custom-product-edit">
-            <% form_for @spu, url(:spus, :ordered_imgs, :id => @spu.id), :class=>"form-horizontal", :method => 'post' do |f| %>
-            <div class="product-tab-list tab-pane fade active in">
-              <% if @spu.details.present? %>
-              <div class="form-group-inner">
-                  <% i = 1%>
-                  <% @spu.details.each do |detail|%>
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">已上传图片<%=i%></label>
-                      </div>
-                      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <img src="<%=detail.url%>">
-                      </div>
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">调整顺序为</label>
-                      </div>
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <%=select_tag("order_#{i}", :options => @spu.details.count.times.map{|i| i+1}, value: i, :class => "form-control custom-select-value")%>
-                      </div>
-                  </div>
-                  <% i += 1%>
-                  <% end %>
-              </div>
-              <% end %>
-              <div class="form-group-inner">
-                  <div class="login-btn-inner">
-                      <div class="row">
-                          <div class="col-lg-3"></div>
-                          <div class="col-lg-9">
-                              <div class="login-horizental cancel-wp pull-left">
-                                  <a href="<%=url(:spus, :index)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
-                                  <%=f.submit "提交", :class => "btn btn-sm btn-primary login-submit-cs"%>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">按次序点击图片</h4>
+    </div>
 
+    <% form_for @spu, url(:spus, :reorder_details, :id => @spu.id), :method => :post do |f| %>
+        <%= hidden_field_tag :'_seq_' %>
+
+        <div class="image-preview">
+            <% @spu.details.each_with_index do |detail, index| %>
+                <div>
+                    <%= content_tag :div, nil, :class => 'thumbnail-filter', :id => "filter_#{index}" %>
+                    <%= image_tag detail.url, :class => 'thumbnail' %>
+                </div>
             <% end %>
         </div>
-    </div>
+
+        <div align="center">
+            <%= link_to '返回', url(:spus, :edit, :id => @spu.id), :class => 'btn btn-back' %>
+            <%= f.submit '提交', :class => 'btn btn-submit', :id => 'filter_submit', :disabled => true %>
+        </div>
+    <% end %>
 </div>
+
+
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+    <!--<div class="review-tab-pro-inner">-->
+        <!--<ul id="myTab3" class="tab-review-design">-->
+            <!--<li class="active"><a disable='true'><i class="fa fa-pencil" aria-hidden="true"></i> 调整产品详情图片顺序</a></li>-->
+        <!--</ul>-->
+        <!--<div id="myTabContent" class="tab-content custom-product-edit">-->
+            <!--<%# form_for @spu, url(:spus, :ordered_imgs, :id => @spu.id), :class=>"form-horizontal", :method => 'post' do |f| %>-->
+            <!--<div class="product-tab-list tab-pane fade active in">-->
+              <!--<% if @spu.details.present? %>-->
+              <!--<div class="form-group-inner">-->
+                  <!--<% i = 1%>-->
+                  <!--<% @spu.details.each do |detail|%>-->
+                  <!--<div class="row">-->
+                      <!--<div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">-->
+                          <!--<label class="login2 pull-right pull-right-pro">已上传图片<%=i%></label>-->
+                      <!--</div>-->
+                      <!--<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">-->
+                        <!--<img src="<%=detail.url%>">-->
+                      <!--</div>-->
+                      <!--<div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">-->
+                          <!--<label class="login2 pull-right pull-right-pro">调整顺序为</label>-->
+                      <!--</div>-->
+                      <!--<div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">-->
+                          <!--<%#=select_tag("order_#{i}", :options => @spu.details.count.times.map{|i| i+1}, value: i, :class => "form-control custom-select-value")%>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <!--<% i += 1%>-->
+                  <!--<% end %>-->
+              <!--</div>-->
+              <!--<% end %>-->
+              <!--<div class="form-group-inner">-->
+                  <!--<div class="login-btn-inner">-->
+                      <!--<div class="row">-->
+                          <!--<div class="col-lg-3"></div>-->
+                          <!--<div class="col-lg-9">-->
+                              <!--<div class="login-horizental cancel-wp pull-left">-->
+                                  <!--<a href="<%= url(:spus, :edit, :id => @spu.id)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>-->
+                                  <!--<%#=f.submit "提交", :class => "btn btn-sm btn-primary login-submit-cs"%>-->
+                              <!--</div>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                  <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+            <!--<%# end %>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

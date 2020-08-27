@@ -24,9 +24,10 @@ AutoAftermarketApi::Admin.controllers :orders do
   # 待发货列表
   get :deliveries do
     # 根据子订单状态查询待发货列表
-    @orders = current_account.merchant.orders.where("(SELECT sub_orders.sub_type FROM sub_orders WHERE orders.id = sub_orders.order_id) = 'delivery'").where("(SELECT sub_orders.status FROM sub_orders WHERE orders.id = sub_orders.order_id) = 'received'")
-    @orders = @orders.where(order_no: params[:order_no]) if params[:order_no].present?
-    @orders = @orders.order("created_at desc").paginate(page: params[:page], per_page: 30)
+    # @orders = current_account.merchant.orders.where("(SELECT sub_orders.sub_type FROM sub_orders WHERE orders.id = sub_orders.order_id) = 'delivery'").where("(SELECT sub_orders.status FROM sub_orders WHERE orders.id = sub_orders.order_id) = 'received'")
+    @orders = current_account.merchant.orders.joins(:sub_orders).where('sub_orders.sub_type' => 'delivery', 'sub_orders.status' => 'received')
+    @orders = @orders.where('orders.order_no' => params[:order_no].strip) if params[:order_no].present?
+    @orders = @orders.distinct.order("created_at desc").paginate(page: params[:page], per_page: 30)
     render 'orders/deliveries'
   end
 

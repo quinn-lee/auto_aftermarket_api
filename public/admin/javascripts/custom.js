@@ -19,6 +19,29 @@ $(function(){
             image_preview(files[i], ele);
         }
     });
+
+    $('.thumbnail-filter').bind('click', function(){
+        var _seq_input_ = $('input[name=_seq_]');
+        var _seq_ = _seq_input_.val() ? _seq_input_.val().split(',') : [];
+        var _len_ = $('.thumbnail-filter').length;
+        var _id_  = this.id.split('_')[1];
+        // 更新样式 + 排序
+        if(this.className.includes('active')){
+            $(this).removeClass('active');
+            $(this).html('');
+            _seq_.splice(_seq_.indexOf(_id_), 1);
+        }else{
+            $(this).addClass('active');
+            _seq_.push(_id_);
+        }
+        _seq_input_.val(_seq_);
+        // 刷新显示序号
+        _seq_.forEach(function(i){
+            $('#filter_' + i).html(_seq_.indexOf(i) + 1);
+        });
+        // 全排序后激活提交按键
+        document.getElementById('filter_submit').disabled = _seq_.length != _len_;
+    });
 });
 
 function load_second_cell(id){

@@ -1,168 +1,111 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="product-status-wrap">
-        <div class="row">
-          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-            <h4>待发货列表</h4>
-          </div>
-          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-          </div>
-          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-            <div class="modal-bootstrap modal-login-form">
-                <a class="zoomInDown mg-t" href="#" data-toggle="modal" data-target="#searchZoom">搜索</a>
-            </div>
-            <div id="searchZoom" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">待发货列表</h4>
+    </div>
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
+                <i class="fa fa-search"></i> 搜索
+            </button>
+        </div>
+    </div>
+
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th style="width: 15%;">订单号</th>
+            <th style="width: 10%;">订单类型</th>
+            <th style="width: 50%;">商品</th>
+            <th style="width: 20%;">地址</th>
+            <th style="width: 5%;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @orders.each do |order| %>
+            <tr>
+                <td><%= order.order_no %></td>
+                <td><%= Order::ORDERTYPE[order.order_type] %></td>
+                <td>
+                    <table>
+                        <% OrderSku.where(id: order.sub_orders.find_by(sub_type: "delivery").order_sku_ids).each do |order_sku| %>
+                            <tr>
+                                <td><%= order_sku.t_sku.title %></td>
+                                <td><%= order_sku.quantity %></td>
+                            </tr>
+                        <% end %>
+                    </table>
+                </td>
+                <td><%= order.delivery_address %></td>
+                <td class="action">
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-gear"></i> <i class="fa fa-angle-down"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#delivered_<%= order.id %>"><i class="fa fa-truck"></i> 发货完成</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+            <div class="modal modal-custom fade" id="delivered_<%= order.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-close-area modal-close-df">
-                            <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                        <div class="modal-header">
+                            <h4 class="modal-title underline">发货完成 - <%= order.order_no %></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <div class="modal-login-form-inner">
+                            <% form_tag url(:orders, :delivered, :id => order.id), :method => :post do %>
                                 <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="basic-login-inner modal-basic-inner">
-                                            <% form_tag url(:orders, :deliveries), :class=>"form-horizontal", :method => 'get' do %>
-                                                <div class="form-group-inner">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                            <label class="login2">订单号</label>
-                                                        </div>
-                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                            <%=text_field_tag(:order_no, :class => "form-control")%>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="login-btn-inner">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
-                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                            <div class="login-horizental">
-                                                                <button class="btn btn-sm btn-primary login-submit-cs" type="submit">搜索</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <% end %>
-                                        </div>
+                                    <div class="col-xs-6 form-group">
+                                        <label>物流单号</label>
+                                        <%=text_field_tag :shpmt_num, :class => 'form-control' %>
+                                    </div>
+                                    <div class="col-xs-6 form-group">
+                                        <label>物流商</label>
+                                        <%=text_field_tag :logi_company, :class => 'form-control' %>
                                     </div>
                                 </div>
-                            </div>
+                                <div align="right">
+                                    <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                                    <button type="submit" class="btn btn-submit">提交</button>
+                                </div>
+                            <% end %>
                         </div>
                     </div>
                 </div>
             </div>
-          </div>
-        </div>
-        <table>
-            <tr>
-                <th style="width: 10%;"><input type="checkbox" onclick="checkAll(this)">订单号</th>
-                <th style="width: 10%;">订单类型</th>
-                <th style="width: 47%;">商品</th>
-                <th style="width: 20%;">地址</th>
-                <th style="width: 8%;"></th>
-            </tr>
-            <% @orders.each do |order| %>
-            <tr>
-                <td><input type="checkbox" name="ids[]" value="<%=order.id%>"><%=order.order_no%></td>
-                <td><%=Order::ORDERTYPE[order.order_type]%></td>
-                <td>
-                  <table>
-                  <% OrderSku.where(id: order.sub_orders.find_by(sub_type: "delivery").order_sku_ids).each do |order_sku|%>
-                  <tr>
-                    <td><%=order_sku.t_sku.title%></td>
-                    <td><%=order_sku.quantity%></td>
-                  </tr>
-                  <% end %>
-                  </table>
-                </td>
-                <td><%=order.delivery_address%></td>
-                <td>
-                  <div class="button-drop-style-one btn-danger-bg">
-                      <button type="button" class="btn btn-custon-four btn-danger dropdown-toggle" data-toggle="dropdown">操作 <i class="fa fa-angle-down"></i>
-    </button>
-                      <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-five" role="menu">
-                          <li><a href="#" data-toggle="modal" data-target="#delivered" >发货完成</a></li>
-
-                      </ul>
-                      <div id="delivered" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
-                          <div class="modal-dialog">
-                              <div class="modal-content">
-                                  <div class="modal-close-area modal-close-df">
-                                      <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
-                                  </div>
-                                  <div class="modal-body">
-                                      <div class="modal-login-form-inner">
-                                          <div class="row">
-                                              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                  <div class="basic-login-inner modal-basic-inner">
-                                                      <% form_tag url(:orders, :delivered, :id=>order.id), :class=>"form-horizontal", :method => 'post' do %>
-                                                          <div class="form-group-inner">
-                                                              <div class="row">
-                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                                      <label class="login2">物流单号</label>
-                                                                  </div>
-                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                      <%=text_field_tag(:shpmt_num, :class => "form-control")%>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                          <div class="form-group-inner">
-                                                              <div class="row">
-                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                                      <label class="login2">物流商</label>
-                                                                  </div>
-                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                      <%=text_field_tag(:logi_company, :class => "form-control")%>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                          <div class="login-btn-inner">
-                                                              <div class="row">
-                                                                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
-                                                                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                      <div class="login-horizental">
-                                                                          <button class="btn btn-sm btn-primary login-submit-cs" type="submit">提交</button>
-                                                                      </div>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                      <% end %>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                </td>
-            </tr>
-            <% end %>
-
-        </table>
-        <%= will_paginate @orders %>
-
-    </div>
+        <% end %>
+        </tbody>
+    </table>
+    <%= will_paginate @orders %>
 </div>
 
-<style>
-.dropdown-menu.another-drop-pro-five{
-  left: 79% !important;
-  top: auto;
-}
-</style>
-<script>
-function checkAll(object)
-{
-   var ids = document.getElementsByName("ids[]");
-   var length = ids.length;
-   var checked = object.checked;
-   //alert(checked)
-   for (var i = 0; i < length; i++)
-   {
-     ids[i].checked=checked;
-   }
-}
 
-</script>
+<div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">搜索栏</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <% form_tag url(:orders, :deliveries), :method => 'get' do %>
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <label>订单号</label>
+                            <%=text_field_tag :order_no, :class => 'form-control' %>
+                        </div>
+                    </div>
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-submit">提交</button>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

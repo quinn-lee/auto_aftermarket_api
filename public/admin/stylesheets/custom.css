@@ -4,8 +4,10 @@
 
 /*
  按样式字母序排序, 依次为
- .btn, .card, .dropdown, .form-group, .image-preview, .modal, .pagination, .status, .table
+ .alert, .btn, .card, .dropdown, .form-group, .image-preview, .modal, .pagination, .status, .table
  */
+/* .alert */
+.alert { padding: 10px 15px; margin-bottom: 10px; border-radius: 0;  }
 
 /* .btn 按键 */
 .btn { border-radius: 0 !important; }
@@ -69,7 +71,7 @@ input[type=file].form-control{
 }
 /* .image-preview 图片预览 */
 .image-preview { display: flex; flex-wrap: wrap; }
-.image-preview>img {
+.image-preview img {
     width: 128px; height: 128px; margin-right: 10px; margin-bottom: 10px;
     display: block;
     padding: 4px;
@@ -151,6 +153,23 @@ input[type=file].form-control{
 .table td.action i { padding: 0 1px; }
 .table th.action-batch { white-space: nowrap; padding: 2px 5px; vertical-align: middle; }
 .table th.action-batch .dropdown { display: inline-block; }
+
+/* .thumbnail 缩略图 */
+.thumbnail-filter {
+    width: 128px;
+    height: 128px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: #fff;
+    font-size: 40px;
+}
+.thumbnail-filter.active {
+    background: rgba(0, 0, 0, 0.3);
+}
 
 /************************
  ***** 其他样式分割线 *****
