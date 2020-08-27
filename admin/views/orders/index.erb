@@ -27,7 +27,7 @@
         <tbody>
         <% @orders.each do |order| %>
             <tr>
-                <td><%= order.order_no %></td>
+                <td><% link_to url(:orders, :show, :id => order.id) do %><%= order.order_no %><%end%></td>
                 <td><%= Order::ORDERTYPE[order.order_type] %></td>
                 <td>￥<%= order.amount %></td>
                 <td>￥<%= order.pay_amount %></td>
@@ -97,15 +97,31 @@
                     <div class="row">
                         <div class="col-xs-6 form-group">
                             <label>订单状态</label>
-                            <%= select_tag :status, :options => Order::STATUS.invert.to_a.unshift([nil,nil]), :class => 'form-control' %>
+                            <%= select_tag :status, :options => Order::STATUS.invert.to_a.unshift([nil,nil]), :value=>params[:status], :class => 'form-control' %>
                         </div>
                         <div class="col-xs-6 form-group">
                             <label>订单类型</label>
-                            <%= select_tag :order_type, :options => Order::ORDERTYPE.invert.to_a.unshift([nil,nil]), :class => 'form-control' %>
+                            <%= select_tag :order_type, :options => Order::ORDERTYPE.invert.to_a.unshift([nil,nil]), :value=>params[:order_type], :class => 'form-control' %>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>收件人姓名</label>
+                            <%= text_field_tag :rcpt_name, :value=>params[:rcpt_name], :class => 'form-control' %>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>收件人电话</label>
+                            <%= text_field_tag :rcpt_phone, :value=>params[:rcpt_phone], :class => 'form-control' %>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>联系人姓名</label>
+                            <%= text_field_tag :contact_name, :value=>params[:contact_name], :class => 'form-control' %>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>联系人电话</label>
+                            <%= text_field_tag :contact_phone, :value=>params[:contact_phone], :class => 'form-control' %>
                         </div>
                         <div class="col-xs-6 form-group">
                             <label>订单号</label>
-                            <%= text_field_tag :order_no, :class => 'form-control' %>
+                            <%= text_field_tag :order_no, :value=>params[:order_no], :class => 'form-control' %>
                         </div>
                     </div>
                     <div align="right">
