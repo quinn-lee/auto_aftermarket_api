@@ -49,16 +49,16 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
                       <% if group.status == 1%>
-                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '0')%>">下架</a></li>
-                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '2')%>">成团</a></li>
-                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '3')%>">未成团</a></li>
-                        <li role="presentation"><a href="<%=url(:groups, :edit, :id => group.id)%>">修改拼团信息</a></li>
+                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '0')%>"><i class="fa fa-arrow-circle-down"></i>下架</a></li>
+                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '2')%>"><i class="fa fa-check"></i>成团</a></li>
+                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '3')%>"><i class="fa fa-close"></i>未成团</a></li>
+                        <li role="presentation"><a href="<%=url(:groups, :edit, :id => group.id)%>"><i class="fa fa-edit"></i>修改拼团信息</a></li>
                         <% elsif group.status == 0%>
-                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '1')%>">上架</a></li>
+                        <li role="presentation"><a href="<%=url(:groups, :change_status, :id => group.id, :status => '1')%>"><i class="fa fa-arrow-circle-up"></i>上架</a></li>
                         <% end %>
 
                         <% if group.group_buyers.count > 0%>
-                        <li role="presentation"><a href="<%=url(:groups, :show, :id => group.id)%>">购买记录</a></li>
+                        <li role="presentation"><a href="<%=url(:groups, :show, :id => group.id)%>"><i class="fa fa-list"></i>购买记录</a></li>
                       <% end %>
                     </ul>
                   </div>

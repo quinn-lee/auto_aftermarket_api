@@ -53,13 +53,13 @@
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right" role="menu">
                           <% if coupon.status == 1%>
-                          <li role="presentation"><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '0')%>">下架</a></li>
+                          <li role="presentation"><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '0')%>"><i class="fa fa-arrow-circle-down"></i>下架</a></li>
                           <% if coupon.coupon_receives.count == 0%>
-                            <li role="presentation"><a href="<%=url(:coupons, :select_spu, :id => coupon.id)%>">指定商品</a></li>
-                            <li role="presentation"><a href="<%=url(:coupons, :edit, :id => coupon.id)%>">修改优惠券信息</a></li>
+                            <li role="presentation"><a href="<%=url(:coupons, :select_spu, :id => coupon.id)%>"><i class="fa fa-magic"></i>指定商品</a></li>
+                            <li role="presentation"><a href="<%=url(:coupons, :edit, :id => coupon.id)%>"><i class="fa fa-edit"></i>修改优惠券信息</a></li>
                           <% end %>
                           <% elsif coupon.status == 0%>
-                          <li role="presentation"><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '1')%>">上架</a></li>
+                          <li role="presentation"><a href="<%=url(:coupons, :change_status, :id => coupon.id, :status => '1')%>"><i class="fa fa-arrow-circle-up"></i>上架</a></li>
                           <% end %>
                       </ul>
                   </div>
