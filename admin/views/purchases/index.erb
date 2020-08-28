@@ -1,0 +1,34 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">采购列表</h4>
+    </div>
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <% link_to url(:purchases, :new), :class => 'btn btn-default' do %>
+                <%= content_tag :i, nil, :class => 'fa fa-plus' %> 新增采购
+            <% end %>
+        </div>
+    </div>
+
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th style="width: 20%;">采购编号</th>
+            <th style="width: 40%;">采购说明</th>
+            <th style="width: 20%;">操作员</th>
+            <th style="width: 15%;">采购数量</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @purchases.each do |purchase| %>
+            <tr>
+                <td><% link_to url(:purchases, :show, :id => purchase.id) do %><%= purchase.purchase_no %><%end%></td>
+                <td><%= purchase.summary%></td>
+                <td><%= purchase.account.name%> <%= purchase.account.surname%></td>
+                <td><%= purchase.purchase_skus.each.sum(&:quantity)%></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+    <%= will_paginate @purchases %>
+</div>

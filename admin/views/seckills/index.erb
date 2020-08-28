@@ -50,14 +50,14 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                     <% if seckill.status == 1%>
-                    <li role="presentation"><a href="<%=url(:seckills, :change_status, :id => seckill.id, :status => '0')%>">下架</a></li>
-                    <li role="presentation"><a href="<%=url(:seckills, :edit, :id => seckill.id)%>">修改秒杀信息</a></li>
+                    <li role="presentation"><a href="<%=url(:seckills, :change_status, :id => seckill.id, :status => '0')%>"><i class="fa fa-arrow-circle-down"></i>下架</a></li>
+                    <li role="presentation"><a href="<%=url(:seckills, :edit, :id => seckill.id)%>"><i class="fa fa-edit"></i>修改秒杀信息</a></li>
                     <% elsif seckill.status == 0%>
-                    <li role="presentation"><a href="<%=url(:seckills, :change_status, :id => seckill.id, :status => '1')%>">上架</a></li>
+                    <li role="presentation"><a href="<%=url(:seckills, :change_status, :id => seckill.id, :status => '1')%>"><i class="fa fa-arrow-circle-up"></i>上架</a></li>
                     <% end %>
 
                     <% if seckill.seckill_buyers.count > 0%>
-                    <li role="presentation"><a href="<%=url(:seckills, :show, :id => seckill.id)%>">购买记录</a></li>
+                    <li role="presentation"><a href="<%=url(:seckills, :show, :id => seckill.id)%>"><i class="fa fa-list"></i>购买记录</a></li>
                     <% end %>
                 </ul>
             </div>

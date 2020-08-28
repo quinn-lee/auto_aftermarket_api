@@ -1,80 +1,73 @@
-<div class="blog-details-area mg-tb-15">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="blog-details-inner">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="latest-blog-single blog-single-full-view">
-                                <div class="blog-details blog-sig-details">
-                                    <div class="details-blog-dt blog-sig-details-dt">
-                                        <span><a><i class="fa fa-user"></i> <%= @question.nickname %></a></span>
-                                        <span><a><i class="fa fa-calendar"></i> <%=@question.created_at.strftime("%F %T")%></a></span>
-                                        <span><a><i class="fa fa-comments-o"></i> <%=@question.answers.count%>个 回复</a></span>
-                                    </div>
-                                    <h1><a class="blog-ht" href="#">问题内容</a></h1>
-                                    <p>#<%=@question.topic.title%>#   <%=@question.content%></p>
-                                    <% if @question.images.count > 0 %>
-                                      <% @question.images.each do |img|%>
-                                        <img src="<%=img.url%>">
-                                      <% end %>
-                                    <% end %>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="comment-head">
-                                <h3>已回复</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <% @question.answers.order("created_at desc").each do |answer|%>
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="user-comment">
-                                <div class="comment-details">
-                                    <h4> <%=answer.nickname%>  <%=answer.created_at.strftime("%F %T")%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><a><i class="fa fa-heart"></i> <%=answer.answer_likes.count%> Likes</a></span></h4>
-                                    <% if answer.content %>
-                                    <p><%=answer.content%></p><br/>
-                                    <% end %>
-                                    <% if answer.images.count > 0 %>
-                                      <% answer.images.each do |img|%>
-                                        <img src="<%=img.url%>">
-                                      <% end %>
-                                    <% end %>
-                                    <br/>
-                                    <% if answer.audio.present? %>
-                                      <audio controls>
-                                        <source src="<%=answer.audio.url%>">
-                                        语音回复
-                                      </audio>
-                                    <% end %>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="card">
+    <div class="card-title">
+        <ul class="nav nav-pills">
+            <li><h4><i class="fa fa-user"></i> <%= @question.nickname %></h4></li>
+            <li><h4><i class="fa fa-calendar"></i> <%=@question.created_at.strftime("%F %T")%></h4></li>
+            <li><h4><i class="fa fa-comments-o"></i> <%=@question.answers.count%>个 回复</h4></li>
+        </ul>
+    </div>
+    <div class="card-title">
+        <h4 class="underline">问题内容</h4>
+    </div>
+    <div class="row">
+        <div class="card" style="box-shadow: none;">
+            <div class="latest-blog-single blog-single-full-view">
+                <p>#<%=@question.topic.title%>#   <%=@question.content%></p>
+                <% if @question.images.count > 0 %>
+                    <% @question.images.each do |img|%>
+                        <img src="<%=img.url%>" style="width: 150px;height: 150px;">
                     <% end %>
-                    <div class="form-group-inner">
-                        <div class="login-btn-inner">
-                            <div class="row">
-                                <div class="col-lg-3"></div>
-                                <div class="col-lg-9">
-                                    <div class="login-horizental cancel-wp pull-left">
-                                        <a href="<%=url(:questions, :index)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="comment-head">
+                <h3>已回复</h3>
+            </div>
+        </div>
+    </div>
+    <% @question.answers.order("created_at desc").each do |answer|%>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="user-comment">
+                <div class="comment-details">
+                    <h4> <%=answer.nickname%>  <%=answer.created_at.strftime("%F %T")%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><a><i class="fa fa-heart"></i> <%=answer.answer_likes.count%> Likes</a></span></h4>
+                    <% if answer.content %>
+                    <p><%=answer.content%></p><br/>
+                    <% end %>
+                    <% if answer.images.count > 0 %>
+                        <% answer.images.each do |img|%>
+                            <img src="<%=img.url%>" style="width: 150px;height: 150px;">
+                        <% end %>
+                    <% end %>
+                    <br/>
+                    <% if answer.audio.present? %>
+                        <audio controls>
+                        <source src="<%=answer.audio.url%>">
+                        语音回复
+                        </audio>
+                    <% end %>
                 </div>
             </div>
         </div>
     </div>
+    <% end %>
+    <div class="form-group-inner">
+        <div class="login-btn-inner">
+            <div class="login-horizental cancel-wp">
+                <a href="<%=url(:questions, :index)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
+            </div>
+        </div>
+    </div>
 </div>
+
 <style>
 .user-comment {
   border-bottom: none !important;
+}
+.card-title .nav > li > h4{
+    color: #000;
 }
 </style>

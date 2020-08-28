@@ -129,10 +129,22 @@ class Order < ActiveRecord::Base
       "#{delivery_info['province']}#{delivery_info['city']}#{delivery_info['district']} #{delivery_info['address']}  #{delivery_info['name']} #{delivery_info['mobile']}"
     end
   end
+  def delivery_address_s
+    if delivery_info.present?
+      "#{delivery_info['province']}#{delivery_info['city']}#{delivery_info['district']} #{delivery_info['address']}"
+    end
+  end
   def contact_info_s
     if contact_info.present?
       "#{contact_info['name']} #{contact_info['mobile']}"
     end
+  end
+
+  # 发货单文件路径
+  def order_file_path
+    dir_path = "public/uploads/orders/#{self.created_at.strftime("%y%m%d")}"
+    FileUtils.mkdir_p dir_path unless Dir.exist? dir_path
+    return "#{dir_path}/#{order_no}.pdf"
   end
 
 
