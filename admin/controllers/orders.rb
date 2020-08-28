@@ -98,32 +98,53 @@ AutoAftermarketApi::Admin.controllers :orders do
     begin
       raise "请勾选需要操作的记录" if params[:ids].blank?
       @order_skus = OrderSku.where(id: params[:ids])
-      ActiveRecord::Base.transaction do
-        @order_skus.each do |order_sku|
-          sku = TSku.find(order_sku.t_sku_id)
-          # 更新库存数量
-          sku.update!(stock_num: (sku.stock_num||0)+order_sku.lack_quantity, available_num: (sku.available_num||0)+order_sku.lack_quantity)
-          # 更新需采购数量
-          order_sku.update!(lack_quantity: 0)
-          order = Order.find_by(order_no: order_sku.order_no)
-          if OrderSku.where(order_no: order.order_no).where("lack_quantity > 0").count == 0
-            # 更新订单状态
-            order.update!(status: "received")
-            order.sub_orders.where(sub_type: "delivery").update_all(status: "received")
-            if order.sub_orders.where(sub_type: "install").present?
-              order.update!(status: "appointing") #更新为待预约
-              order.appoint_subscribe #订阅消息
-              order.sub_orders.where(sub_type: "install").update_all(status: "appointing")
-            end
-          end
-        end
+      book = Spreadsheet::Workbook.new
+      sheet1 = book.create_worksheet
+      sheet1.row(0).concat %w{商品名称 商品规格 SKU代码 订单号	需采购数量}
+      format = Spreadsheet::Format.new :color => :blue,:weight => :bold,:size => 12
+      sheet1.row(0).default_format = format
+      sheet1.row(0).height = 18
+      i = 1
+      @order_skus.each do |order_sku|
+        sheet1.row(i).replace [
+            order_sku.t_sku.title,
+            order_sku.t_sku.sale_attrs_desc,
+            order_sku.t_sku.sku_code,
+            order_sku.order_no,
+            order_sku.lack_quantity
+        ]
+        i += 1
       end
-      flash[:success] = "操作成功"
-      redirect(url(:orders, :purchases))
+      dir_path = "public/uploads/tmp/purchases/"
+      Dir.mkdir dir_path unless Dir.exist? dir_path
+      file_path = "#{dir_path}/#{current_account.id}_#{Time.now.strftime("%Y%m%d%H%M")}_purchases.xls"
+      book.write file_path
+      send_file(file_path,:type => 'charset=utf-8; header=present',:filename => "purchases_export.xls", :disposition =>'attachment', :encoding => 'gb2312')
+
     rescue => e
       logger.info e.backtrace
       flash[:error] = e.message
       redirect(url(:orders, :purchases))
+    end
+  end
+
+  # 采购完成操作
+  get :delivery_export do
+    begin
+      raise "请勾选需要操作的记录" if params[:ids].blank?
+      @orders = Order.where(id: params[:ids])
+      pdf = CombinePDF.new
+      @orders.each{|order| OrderBuilder.new.build(order); pdf << CombinePDF.load(order.order_file_path);}
+      dir_path = "public/uploads/tmp/orders/"
+      Dir.mkdir dir_path unless Dir.exist? dir_path
+      file_path = "#{dir_path}/#{current_account.id}_#{Time.now.strftime("%Y%m%d%H%M")}_order.pdf"
+      pdf.save file_path
+      send_file(file_path,:type => 'charset=utf-8; header=present',:filename => "order_export.pdf", :disposition =>'attachment', :encoding => 'gb2312')
+
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      redirect(url(:orders, :deliveries))
     end
   end
 
@@ -173,5 +194,11 @@ AutoAftermarketApi::Admin.controllers :orders do
       flash[:error] = e.message
       redirect(url(:orders, :cancelling))
     end
+  end
+
+  # 到店安装预约时间表
+  get :reservations do
+    @orders = Order.where.not(status: ['unpaid','appointing','done','delete','cancelling','cancelled']).joins(:sub_orders).where('sub_orders.sub_type' => 'install', 'sub_orders.status' => 'appointed')
+    render 'orders/reservations'
   end
 end

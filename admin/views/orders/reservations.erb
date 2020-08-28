@@ -1,0 +1,42 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">到店安装预约时间表</h4>
+    </div>
+
+    <table class="table table-condensed table-bordered-y table-bordered-x">
+        <thead>
+        <tr style="background-color: #d9edf7;">
+            <th style="width: 16%;">时间段</th>
+            <th style="width: 12%;"><%=Time.now.strftime('%F')%><br/><%=Time.now.strftime('%A')%></th>
+            <th style="width: 12%;"><%=(Time.now+1.days).strftime('%F')%><br/><%=(Time.now+1.days).strftime('%A')%></th>
+            <th style="width: 12%;"><%=(Time.now+2.days).strftime('%F')%><br/><%=(Time.now+2.days).strftime('%A')%></th>
+            <th style="width: 12%;"><%=(Time.now+3.days).strftime('%F')%><br/><%=(Time.now+3.days).strftime('%A')%></th>
+            <th style="width: 12%;"><%=(Time.now+4.days).strftime('%F')%><br/><%=(Time.now+4.days).strftime('%A')%></th>
+            <th style="width: 12%;"><%=(Time.now+5.days).strftime('%F')%><br/><%=(Time.now+5.days).strftime('%A')%></th>
+            <th style="width: 12%;"><%=(Time.now+6.days).strftime('%F')%><br/><%=(Time.now+6.days).strftime('%A')%></th>
+        </tr>
+        </thead>
+        <tbody>
+            <% (8..20).each do |hour|%>
+            <%time=Time.mktime(Time.now.strftime('%Y'),Time.now.strftime('%m'),Time.now.strftime('%d'),hour,0)%>
+            <%orders0 = @orders.where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) >= '#{time.strftime('%F %H:%M')}'").where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) < '#{(time+1.hours).strftime('%F %H:%M')}'")%>
+            <%orders1 = @orders.where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) >= '#{(time+1.days).strftime('%F %H:%M')}'").where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) < '#{(time+1.days+1.hours).strftime('%F %H:%M')}'")%>
+            <%orders2 = @orders.where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) >= '#{(time+2.days).strftime('%F %H:%M')}'").where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) < '#{(time+2.days+1.hours).strftime('%F %H:%M')}'")%>
+            <%orders3 = @orders.where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) >= '#{(time+3.days).strftime('%F %H:%M')}'").where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) < '#{(time+3.days+1.hours).strftime('%F %H:%M')}'")%>
+            <%orders4 = @orders.where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) >= '#{(time+4.days).strftime('%F %H:%M')}'").where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) < '#{(time+4.days+1.hours).strftime('%F %H:%M')}'")%>
+            <%orders5 = @orders.where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) >= '#{(time+5.days).strftime('%F %H:%M')}'").where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) < '#{(time+5.days+1.hours).strftime('%F %H:%M')}'")%>
+            <%orders6 = @orders.where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) >= '#{(time+6.days).strftime('%F %H:%M')}'").where("(SELECT order_reservations.booking_time_from FROM order_reservations WHERE orders.order_no = order_reservations.order_no) < '#{(time+6.days+1.hours).strftime('%F %H:%M')}'")%>
+            <tr>
+              <td style="height: 57px;"><%=time.strftime("%H:%M")%>~<%=(time+1.hours).strftime("%H:%M")%></td>
+              <td style="height: 57px;"><% if orders0.present? %><button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="已预约订单" data-placement="top" data-content="<%=orders0.map{|order| [order.order_no, (order.contact_info||{})['name'], (order.contact_info||{})['mobile']].join('，')}.join('   ')%>"><%=orders0.count%>个订单</button><% end %></td>
+              <td style="height: 57px;"><% if orders1.present? %><button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="已预约订单" data-placement="top" data-content="<%=orders1.map{|order| [order.order_no, (order.contact_info||{})['name'], (order.contact_info||{})['mobile']].join('，')}.join('   ')%>"><%=orders1.count%>个订单</button><% end %></td>
+              <td style="height: 57px;"><% if orders2.present? %><button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="已预约订单" data-placement="top" data-content="<%=orders2.map{|order| [order.order_no, (order.contact_info||{})['name'], (order.contact_info||{})['mobile']].join('，')}.join('   ')%>"><%=orders2.count%>个订单</button><% end %></td>
+              <td style="height: 57px;"><% if orders3.present? %><button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="已预约订单" data-placement="top" data-content="<%=orders3.map{|order| [order.order_no, (order.contact_info||{})['name'], (order.contact_info||{})['mobile']].join('，')}.join('   ')%>"><%=orders3.count%>个订单</button><% end %></td>
+              <td style="height: 57px;"><% if orders4.present? %><button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="已预约订单" data-placement="top" data-content="<%=orders4.map{|order| [order.order_no, (order.contact_info||{})['name'], (order.contact_info||{})['mobile']].join('，')}.join('   ')%>"><%=orders4.count%>个订单</button><% end %></td>
+              <td style="height: 57px;"><% if orders5.present? %><button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="已预约订单" data-placement="top" data-content="<%=orders5.map{|order| [order.order_no, (order.contact_info||{})['name'], (order.contact_info||{})['mobile']].join('，')}.join('   ')%>"><%=orders5.count%>个订单</button><% end %></td>
+              <td style="height: 57px;"><% if orders6.present? %><button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="已预约订单" data-placement="top" data-content="<%=orders6.map{|order| [order.order_no, (order.contact_info||{})['name'], (order.contact_info||{})['mobile']].join('，')}.join('   ')%>"><%=orders6.count%>个订单</button><% end %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
