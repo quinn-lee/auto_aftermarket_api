@@ -116,8 +116,8 @@
               <table class="table table-condensed table-bordered-y" style="margin-bottom: 0px;">
                   <tbody>
                       <tr style="background-color: #f9f9f9;">
-                        <td style="width: 33%;">快递单号： <%= @order.delivery_info['shpmt_num'] %></td>
-                        <td style="width: 33%;">物流公司： <%= @order.delivery_info['logi_company'] %></td>
+                        <td style="width: 33%;">快递单号： <%= @order.delivery_info['shpmt_num'] if @order.delivery_info.present? %></td>
+                        <td style="width: 33%;">物流公司： <%= @order.delivery_info['logi_company'] if @order.delivery_info.present? %></td>
                         <td style="width: 33%;"></td>
                       </tr>
                   </tbody>
