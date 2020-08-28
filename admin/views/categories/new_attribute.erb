@@ -1,89 +1,34 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="review-tab-pro-inner">
-        <ul id="myTab3" class="tab-review-design">
-            <li class="active"><a disable='true'><i class="fa fa-pencil" aria-hidden="true"></i> 创建属性</a></li>
-        </ul>
-        <div id="myTabContent" class="tab-content custom-product-edit">
-            <% form_for @attribute, url(:categories, :create_attribute ), :class=>"form-horizontal", :method => 'post' do |f| %>
-            <div class="product-tab-list tab-pane fade active in">
-              <%=f.hidden_field "t_category_id" %>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">目录</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=text_field_tag(:category_name, :value=>TCategory.find(@attribute.t_category_id).name, :class => "form-control", readonly: true)%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">属性名称*</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:name, :class => "form-control")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">属性类别*</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.select(:selling, :options => [['展示属性','false'], ['销售属性','true']], :class => "form-control custom-select-value")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">属性可搜索？*</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.select(:searching, :options => [['否','false'], ['是','true']], :class => "form-control custom-select-value")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">属性值单位</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:unit, :class => "form-control")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="form-group-inner">
-                  <div class="login-btn-inner">
-                      <div class="row">
-                          <div class="col-lg-3"></div>
-                          <div class="col-lg-9">
-                              <div class="login-horizental cancel-wp pull-left">
-                                  <a href="<%=url(:categories, :index)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
-                                  <%=f.submit "提交", :class => "btn btn-sm btn-primary login-submit-cs"%>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
-            <% end %>
-        </div>
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">新增属性</h4>
     </div>
+
+    <% form_for @attribute, url(:categories, :create_attribute ), :method => :post do |f| %>
+        <div class="row">
+            <div class="col-xs-12 form-group-row">
+                <label>目录</label>
+                <%= text_field_tag :category_name, :value=> TCategory.find(@attribute.t_category_id).name, :readonly => true, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>属性名称*</label>
+                <%= f.text_field :name, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>属性类别*</label>
+                <%= f.select :selling, :options => [['展示属性','false'], ['销售属性','true']], :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>属性可搜索？*</label>
+                <%= f.select :searching, :options => [['否','false'], ['是','true']], :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>属性值单位</label>
+                <%=f.text_field :unit, :class => 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group-row-btn">
+            <%= link_to '返回', 'javascript:history.go(-1);', :class => 'btn btn-back' %>
+            <%= f.submit '提交', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
 </div>

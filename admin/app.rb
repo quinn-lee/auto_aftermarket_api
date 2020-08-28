@@ -33,6 +33,7 @@ module AutoAftermarketApi
     access_control.roles_for :any do |role|
       role.protect '/'
       role.allow   '/sessions'
+      role.allow   '/css_demo'
     end
 
     access_control.roles_for :admin do |role|

@@ -1,59 +1,26 @@
 <div class="card">
-    <div class="review-tab-pro-inner">
-        <ul id="myTab3" class="tab-review-design">
-            <li class="active">
-              <div class="card-title">
-                <h4 class="underline"><i class="fa fa-pencil" aria-hidden="true"></i>创建目录</h4>
-              </div>
-            </li>
-        </ul>
-        <div id="myTabContent" class="tab-content custom-product-edit">
-            <% form_for @category, url(:categories, :create), :class=>"form-horizontal", :method => 'post' do |f| %>
-            <div class="product-tab-list tab-pane fade active in">
-              <%=f.hidden_field "parent_id" %>
-              <% if @category.parent_id.present? %>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">上级目录名称*</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=text_field_tag(:parent_name, :value=>TCategory.find(@category.parent_id).name, :class => "form-control", readonly: true)%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <% end %>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">目录名称*</label>
-                      </div>
-                      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:name, :class => "form-control")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="form-group-inner">
-                  <div class="login-btn-inner">
-                      <div class="row">
-                          <div class="col-lg-2"></div>
-                          <div class="col-lg-9">
-                              <div class="login-horizental cancel-wp pull-left">
-                                  <a href="<%=url(:categories, :index)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
-                                  <%=f.submit "提交", :class => "btn btn-sm btn-primary login-submit-cs"%>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
-            <% end %>
-        </div>
+    <div class="card-title">
+        <h4 class="underline">新增目录</h4>
     </div>
+
+    <% form_for @category, url(:categories, :create), :method => :post do |f| %>
+        <%= f.hidden_field :parent_id %>
+        <div class="row">
+            <% if @category.parent_id.present? %>
+                <div class="col-xs-12 form-group-row">
+                    <label>上级目录名称*</label>
+                    <%= text_field_tag :parent_name, :value => TCategory.find(@category.parent_id).name,
+                                       :readonly => true, :class => 'form-control' %>
+                </div>
+            <% end %>
+            <div class="col-xs-12 form-group-row">
+                <label>目录名称*</label>
+                <%= f.text_field :name, :class => 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group-row-btn">
+            <%= link_to '返回', 'javascript:history.go(-1);', :class => 'btn btn-back' %>
+            <%= f.submit '提交', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
 </div>
