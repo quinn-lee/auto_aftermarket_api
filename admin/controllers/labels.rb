@@ -5,8 +5,8 @@ AutoAftermarketApi::Admin.controllers :labels do
 
   # 优选标签列表
   get :preferred_labels do
-    @labels = Label.all.where(ltype: 1)
-    @labels_event = Label.all.where("ltype > 1")
+    @labels = Label.all.where(ltype: 1).order("created_at asc")
+    @labels_event = Label.all.where("ltype > 1").order("created_at asc")
     render "labels/preferred_labels"
   end
 

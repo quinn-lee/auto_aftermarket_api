@@ -1556,7 +1556,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   post :group_labels, :provides => [:json] do
     api_rescue do
       authenticate
-      @labels = Label.where(ltype: 3)
+      @labels = Label.where(ltype: 3).last
       { status: 'succ', data: @labels.to_api}.to_json
     end
   end
@@ -1573,7 +1573,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   post :seckill_labels, :provides => [:json] do
     api_rescue do
       authenticate
-      @labels = Label.where(ltype: 4)
+      @labels = Label.where(ltype: 4).last
       { status: 'succ', data: @labels.to_api}.to_json
     end
   end
