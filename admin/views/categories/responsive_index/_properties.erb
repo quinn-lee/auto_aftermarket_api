@@ -1,3 +1,9 @@
+<ul class="breadcrumb">
+    <li><%= sub_category.parent.name %></li>
+    <li><%= sub_category.name %></li>
+    <%= link_to '查看商品', url(:spus, :index, :category_2 => sub_category.id), :class => 'pull-right' %>
+</ul>
+
 <div class="cat-title">
     <h5 class="underline">品牌</h5>
 </div>
@@ -21,7 +27,6 @@
         <%= content_tag :i, ' 新增属性', :class => 'fa fa-plus-circle' %>
     <% end %>
 </div>
-<%= link_to '查看商品', url(:spus, :index, :category_2 => sub_category.id) %>
 
 <div class="modal modal-custom fade" id="attrModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
