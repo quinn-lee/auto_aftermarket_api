@@ -71,6 +71,12 @@
     background: #e12503;
 }
 
+
+.sidebar-nav .metismenu a[disabled] {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
 .sidebar-nav .metismenu li .icon-wrap{
     margin-right: 10px;
     /*font-size: 20px;*/

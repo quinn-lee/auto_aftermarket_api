@@ -18,9 +18,11 @@
                             <ul class="submenu-angle" aria-expanded="<%= item[:active] ? 'true' : 'false' %>">
                                 <% item[:options].each do |option| %>
                                     <li>
-                                        <a title="<%= option[:label] %>" href="<%= option[:url] %>" class="<%= option[:active] ? 'active' : '' %>">
-                                            <i class="fa fa-<%= option[:icon] %> sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro"><%= option[:label] %></span>
-                                        </a>
+                                        <% link_to option[:url], :title => option[:label], :class => option[:active] ? 'active' : '', :disabled => option[:url].blank? do %>
+                                            <%= content_tag :i, nil, :class => "fa fa-#{option[:icon]} sub-icon-mg" %>
+                                            <%= content_tag :span, option[:label], :class => 'mini-sub-pro' %>
+                                        <% end %>
+
                                     </li>
                                 <% end %>
                             </ul>

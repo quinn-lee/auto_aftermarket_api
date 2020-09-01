@@ -9,31 +9,31 @@ module AutoAftermarketApi
           :options => [
             { :label => '目录', :icon => '', :url => url(:categories, :index) },
             { :label => '商品', :icon => '', :url => url(:spus, :index) },
-            { :label => '商品榜单', :icon => '', :url => '#' }
+            { :label => '商品榜单', :icon => '', :url => '' }
           ]
         }
         nav_customers = {
           :label => '客户', :icon => 'users', :field => 'nav_customers',
           :options => [
             { :label => '更换分销员申请', :icon => '', :url => url(:agent_changes, :index) },
-            { :label => '客户画像', :icon => '', :url => '#' },
-            { :label => '客户活跃度', :icon => '', :url => '#' },
-            { :label => '客户行为统计', :icon => '', :url => '#' },
-            { :label => '标签管理', :icon => '', :url => '#' }
+            { :label => '客户画像', :icon => '', :url => '' },
+            { :label => '客户活跃度', :icon => '', :url => '' },
+            { :label => '客户行为统计', :icon => '', :url => '' },
+            { :label => '标签管理', :icon => '', :url => '' }
           ]
         }
         nav_staffs = {
           :label => '员工', :icon => 'user', :field => 'nav_staffs',
           :options => [
-            { :label => 'BOSS雷达', :icon => '', :url => '#' },
-            { :label => '员工列表', :icon => '', :url => '#' }
+            { :label => 'BOSS雷达', :icon => '', :url => '' },
+            { :label => '员工列表', :icon => '', :url => '' }
           ]
         }
         nav_car_data = {
           :label => '汽车基础数据', :icon => 'car', :field => 'nav_car_data',
           :options => [
-            { :label => '汽车品牌', :icon => '', :url => '#' },
-            { :label => '车型', :icon => '', :url => '#' }
+            { :label => '汽车品牌', :icon => '', :url => '' },
+            { :label => '车型', :icon => '', :url => '' }
           ]
         }
         nav_orders = {
@@ -44,9 +44,9 @@ module AutoAftermarketApi
             { :label => '待发货', :icon => '', :url => url(:orders, :deliveries) },
             { :label => '取消审核', :icon => '', :url => url(:orders, :cancelling) },
             { :label => '预约时间表', :icon => '', :url => url(:orders, :reservations) },
-            { :label => '员工订单统计', :icon => '', :url => '#' },
-            { :label => '员工佣金统计', :icon => '', :url => '#' },
-            { :label => '特权折扣', :icon => '', :url => '#' }
+            { :label => '员工订单统计', :icon => '', :url => '' },
+            { :label => '员工佣金统计', :icon => '', :url => '' },
+            { :label => '特权折扣', :icon => '', :url => '' }
           ]
         }
         nav_purchases = {
@@ -84,15 +84,15 @@ module AutoAftermarketApi
         nav_finance = {
           :label => '财务', :icon => 'table', :field => 'nav_finance',
           :options => [
-            { :label => '财务对账', :icon => '', :url => '#'}
+            { :label => '财务对账', :icon => '', :url => ''}
           ]
         }
         nav_miniprogram = {
           :label => '小程序设置', :icon => 'mobile', :field => 'miniprogram',
           :options => [
-            { :label => '聊天设置', :icon => '', :url => '#' },
-            { :label => '首页栏目', :icon => '', :url => '#' },
-            { :label => '手机号授权', :icon => '', :url => '#' }
+            { :label => '聊天设置', :icon => '', :url => '' },
+            { :label => '首页栏目', :icon => '', :url => '' },
+            { :label => '手机号授权', :icon => '', :url => '' }
           ]
         }
         nav_css_demo = {
