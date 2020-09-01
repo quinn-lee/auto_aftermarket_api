@@ -4,8 +4,10 @@ class TCategory < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
 
+  belongs_to :parent, :class_name => 'TCategory'
   has_many :t_spus, :class_name => 'TSpu', :dependent => :destroy
   has_many :t_attributes, :class_name => 'TAttribute', :dependent => :destroy
+  has_many :children, :class_name => 'TCategory', :foreign_key => :parent_id
 
   def to_api
     {

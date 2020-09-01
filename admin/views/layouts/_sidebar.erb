@@ -1,33 +1,35 @@
 <div class="left-sidebar-pro">
-  <nav id="sidebar" class="" style="margin-top: 60px;">
-    <div class="sidebar-header">
-      <!--
-        <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
-        <strong><img src="img/logo/logosn.png" alt="" /></strong>
-      -->
-    </div>
-    <div class="left-custom-menu-adp-wrap comment-scrollbar">
-      <nav class="sidebar-nav left-sidebar-menu-pro">
-        <ul class="metismenu" id="menu1">
-          <% sidebar_menu_active.each do |item| %>
-            <li>
-              <a class="has-arrow" href="#" aira-expanded="false">
-                <i class="fa fa-<%= item[:icon] %> big-icon icon-wrap"></i>
-                <span class="mini-click-non"><%= item[:label] %></span>
-              </a>
-              <ul class="submenu-angle" aria-expanded="false">
-                <% item[:options].each do |option| %>
-                    <li>
-                      <a title="<%= option[:label] %>" href="<%= option[:url] %>">
-                        <i class="fa fa-<%= option[:icon] %> sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro"><%= option[:label] %></span>
-                      </a>
-                    </li>
-                <% end %>
-              </ul>
-            </li>
-          <% end %>
-        </ul>
-      </nav>
-    </div>
-  </nav>
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <!--
+                <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                <strong><img src="img/logo/logosn.png" alt="" /></strong>
+            -->
+        </div>
+        <div class="left-custom-menu-adp-wrap comment-scrollbar">
+            <nav class="sidebar-nav left-sidebar-menu-pro">
+                <ul class="metismenu" id="menu1">
+                    <% sidebar_menu_active.each do |item| %>
+                        <li class="<%= item[:active] ? 'active' : '' %>">
+                            <a class="has-arrow" href="#" aira-expanded="false">
+                                <i class="fa fa-<%= item[:icon] %> big-icon icon-wrap"></i>
+                                <span class="mini-click-non"><%= item[:label] %></span>
+                            </a>
+                            <ul class="submenu-angle" aria-expanded="<%= item[:active] ? 'true' : 'false' %>">
+                                <% item[:options].each do |option| %>
+                                    <li>
+                                        <% link_to option[:url], :title => option[:label], :class => option[:active] ? 'active' : '', :disabled => option[:url].blank? do %>
+                                            <%= content_tag :i, nil, :class => "fa fa-#{option[:icon]} sub-icon-mg" %>
+                                            <%= content_tag :span, option[:label], :class => 'mini-sub-pro' %>
+                                        <% end %>
+
+                                    </li>
+                                <% end %>
+                            </ul>
+                        </li>
+                    <% end %>
+                </ul>
+            </nav>
+        </div>
+    </nav>
 </div>

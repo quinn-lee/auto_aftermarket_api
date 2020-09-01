@@ -1,0 +1,17 @@
+<ul class="cat-list-sub">
+    <% sub_categories.each do |cat_2nd| %>
+        <li class="cat-list-sub-item <%= cat_2nd.is_hidden ? 'cat-hidden' : '' %>" data-id="<%= cat_2nd.id %>">
+            <%= link_to cat_2nd.name, 'javascript:void(0);', :onclick => 'loadCategoryProperties(this);', :data => { :id => cat_2nd.id } %>
+            <div class="action">
+                <%= link_to('<i class="fa fa-trash"></i>'.html_safe, url(:categories, :delete, :id => cat_2nd.id), :title => '删除') if cat_2nd.can_delete? %>
+                <% if cat_2nd.is_hidden %>
+                    <%= link_to '<i class="fa fa-eye-slash"></i>'.html_safe, 'javascript:void(0);', :title => '隐藏',
+                                :onclick => 'responsiveCategoryHidden(this);', :data => { :id => cat_2nd.id } %>
+                <% else %>
+                    <%= link_to '<i class="fa fa-eye"></i>'.html_safe, 'javascript:void(0);', :title => '展示',
+                              :onclick => 'responsiveCategoryHidden(this);', :data => { :id => cat_2nd.id } %>
+                <% end %>
+            </div>
+        </li>
+    <% end %>
+</ul>

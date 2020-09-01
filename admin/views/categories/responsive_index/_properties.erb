@@ -1,0 +1,42 @@
+<ul class="breadcrumb">
+    <li><%= sub_category.parent.name %></li>
+    <li><%= sub_category.name %></li>
+    <%= link_to '查看商品', url(:spus, :index, :category_2 => sub_category.id), :class => 'pull-right' %>
+</ul>
+
+<div class="cat-title">
+    <h5 class="underline">品牌</h5>
+</div>
+<div class="cat-brands">
+    <% sub_category.brands.each do |brand| %>
+        <div class="cat-brand"><%= brand.name %></div>
+    <% end %>
+    <% link_to url(:categories, :new_brands, :id => sub_category.id), :class => 'btn btn-submit' do %>
+        <%= content_tag :i, ' 新增品牌', :class => 'fa fa-plus-circle' %>
+    <% end %>
+</div>
+
+<div class="cat-title">
+    <h5 class="underline">属性</h5>
+</div>
+<div class="cat-attrs">
+    <% sub_category.t_attributes.each do |attr| %>
+        <div class="cat-attr" onclick="loadAttrDetail(this);" data-id="<%= attr.id %>"><%= attr.name %></div>
+    <% end %>
+    <% link_to url(:categories, :new_attribute, :id => sub_category.id), :class => 'btn btn-submit' do %>
+        <%= content_tag :i, ' 新增属性', :class => 'fa fa-plus-circle' %>
+    <% end %>
+</div>
+
+<div class="modal modal-custom fade" id="attrModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">属性详情</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>

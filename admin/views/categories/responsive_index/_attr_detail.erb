@@ -1,0 +1,31 @@
+<div class="detail">
+    <span class="dk">属性名称:</span>
+    <span class="dv text-blue"><%= attr.name %></span>
+</div>
+<div class="detail">
+    <span class="dk">属性类别:</span>
+    <span class="dv text-blue"><%= attr.selling_desc %></span>
+</div>
+<div class="detail">
+    <span class="dk">前端是否可搜索:</span>
+    <span class="dv text-blue"><%= attr.searching_desc %></span>
+</div>
+<div class="detail">
+    <span class="dk">属性值单位:</span>
+    <span class="dv text-blue"><%= attr.unit %></span>
+</div>
+<div class="detail">
+    <span class="dk">属性可选值:</span>
+    <span class="dv text-blue"><%= attr.t_attrvalues.map(&:value).join(', ') %></span>
+</div>
+<% form_tag url(:categories, :create_attrvalues, :attr_id => attr.id), :method => :post do %>
+    <div class="form-group">
+        <label>新增属性值</label>
+        <div class="input-group">
+            <%= text_field_tag :attr_values, :class => 'form-control', :placeholder => "多个属性值以三竖线('|||')分割" %>
+            <span class="input-group-btn">
+                <%= submit_tag '新增', :class => 'btn btn-submit' %>
+            </span>
+        </div>
+    </div>
+<% end %>

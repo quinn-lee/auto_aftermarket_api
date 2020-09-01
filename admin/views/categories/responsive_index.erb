@@ -1,0 +1,46 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">目录列表</h4>
+    </div>
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <% link_to url(:categories, :new), :class => 'btn btn-default' do %>
+                <%= content_tag :i, ' 新增一级目录', :class => 'fa fa-plus-circle' %>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3">
+            <ul class="cat-list" id="cat_list">
+                <% @categories.each do |cat| %>
+                    <li class="cat-list-item">
+                        <div class="cat-list-item-hd <%= cat.is_hidden ? 'cat-hidden' : '' %>">
+                            <%= link_to cat.name, "#cat_#{cat.id}", :data => { :toggle => 'collapse', :id => cat.id, :loaded => false } %>
+                            <div class="action">
+                                <%= link_to '<i class="fa fa-plus-circle"></i>'.html_safe, url(:categories, :new, :parent_id => cat.id), :title => '新增二级目录' %>
+                                <%= link_to('<i class="fa fa-trash"></i>'.html_safe, url(:categories, :delete, :id => cat.id), :title => '删除') if cat.can_delete? %>
+                                <% if cat.is_hidden %>
+                                    <%= link_to '<i class="fa fa-eye-slash"></i>'.html_safe, 'javascript:void(0);', :title => '隐藏',
+                                                :onclick => 'responsiveCategoryHidden(this);', :data => { :id => cat.id } %>
+                                <% else %>
+                                    <%= link_to '<i class="fa fa-eye"></i>'.html_safe, 'javascript:void(0);', :title => '展示',
+                                                :onclick => 'responsiveCategoryHidden(this);', :data => { :id => cat.id } %>
+                                <% end %>
+                            </div>
+                        </div>
+                        <div id="cat_<%= cat.id %>" class="collapse">
+                            <div class="cat-list-loading">
+                                <div class="loading">
+                                    <span></span><span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                <% end %>
+            </ul>
+        </div>
+
+        <div class="col-xs-9" id="properties_wrapper"></div>
+    </div>
+</div>

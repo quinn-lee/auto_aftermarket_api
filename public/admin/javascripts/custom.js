@@ -1,6 +1,26 @@
 $(function(){
     $('[data-toggle="popover"]').popover();
-
+    // 商品目录手风琴效果
+    $('.cat-list a[data-toggle=collapse]').bind('click', function(e){ $('.cat-list .collapse').collapse('hide'); });
+    // 加载二级商品目录
+    $('.cat-list-item-hd>a[data-toggle=collapse]').bind('click', function(e){
+        var dataset = e.currentTarget.dataset;
+        if(dataset.loaded == 'false'){
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: '/admin/categories/load_cat_list_sub/' + dataset.id +'?remote=true',
+                success: function(res){
+                    if(res.status == 'succ'){
+                        $('#cat_' + dataset.id).html(res.html);
+                        e.currentTarget.dataset.loaded = true;
+                    }else{
+                        alert(res.reason);
+                    }
+                }
+            })
+        }
+    });
     // 表单上传图片预览
     function image_preview(file,ele) {
         var img = new Image(), url = img.src = URL.createObjectURL(file);
@@ -46,6 +66,66 @@ $(function(){
         document.getElementById('filter_submit').disabled = _seq_.length != _len_;
     });
 });
+// 加载品牌 + 属性
+function loadCategoryProperties(ele){
+    $('.cat-list-sub-item').removeClass('active');
+    $('.cat-list-sub-item[data-id=' + ele.dataset.id + ']').addClass('active');
+    $('#properties_wrapper').html('<div class="loading"><span></span><span></span><span></span><span></span><span></span></div>');
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/admin/categories/load_properties/' + ele.dataset.id + '?remote=true',
+        success: function(res){
+            if(res.status == 'succ'){
+                $('#properties_wrapper').html(res.html);
+            }else{
+                alert(res.reason);
+            }
+        }
+    })
+}
+// 加载属性详情
+function loadAttrDetail(ele){
+    $('#attrModal .modal-body').html('<div class="loading"><span></span><span></span><span></span><span></span><span></span></div>');
+    $('#attrModal').modal('show');
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/admin/categories/load_attr_detail/' + ele.dataset.id + '?remote=true',
+        success: function(res){
+            if(res.status == 'succ'){
+                $('#attrModal .modal-body').html(res.html);
+            }else{
+                alert(res.reason);
+            }
+        }
+    })
+}
+// 隐藏/展示
+function responsiveCategoryHidden(ele){
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/admin/categories/responsive_hidden/' + ele.dataset.id + '?remote=true',
+        success: function(res){
+            if(res.status == 'succ'){
+                if(res.is_hidden){
+                    ele.title = '隐藏';
+                    $(ele).children('i.fa')[0].className = 'fa fa-eye-slash';
+                    $(ele).parent().parent().addClass('cat-hidden');
+                }else{
+                    ele.title = '展示';
+                    $(ele).children('i.fa')[0].className = 'fa fa-eye';
+                    $(ele).parent().parent().removeClass('cat-hidden');
+                }
+            }else{
+                alert(res.reason);
+            }
+        }
+
+    })
+}
+
 
 function load_second_cell(id){
     $(".first-cell").each(function() {
