@@ -1,111 +1,46 @@
 <div class="card">
-    <div class="review-tab-pro-inner">
-      <ul id="myTab3" class="tab-review-design">
-          <li class="active">
-            <div class="card-title">
-              <h4 class="underline"><i class="fa fa-pencil" aria-hidden="true"></i> 修改秒杀信息</h4>
-            </div>
-          </li>
-      </ul>
-        <div id="myTabContent" class="tab-content custom-product-edit">
-            <% form_for @seckill, url(:seckills, :update, :id => @seckill.id), :class=>"form-horizontal", :method => 'post' do |f| %>
-            <div class="product-tab-list tab-pane fade active in">
-              <%=f.hidden_field "t_sku_id" %>
-              <%=f.hidden_field "merchant_id" %>
-
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">秒杀标题*</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:title, :class => "form-control")%>
-                          </div>
-                      </div>
-                      <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
-                        <label class="login2 pull-left pull-left-pro" style="color: #EC7063">秒杀描述，将展示在秒杀商品页</label>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">秒杀描述*</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:detail, :class => "form-control")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">开始结束时间*</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="input-group">
-                              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                              <%=f.text_field(:begin_time, :class => "form-control datetimePicker")%>
-                          </div>
-                      </div>
-                      <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">至</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="input-group">
-                              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                              <%=f.text_field(:end_time, :class => "form-control datetimePicker")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">秒杀价*</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="input-group">
-                              <span class="input-group-addon">￥</span>
-                              <%=f.text_field(:seckill_price, :class => "form-control")%>
-                          </div>
-                      </div>
-                      <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
-                        <label class="login2 pull-left pull-left-pro" style="color: #EC7063">商品原价：￥<%=@seckill.t_sku.price%></label>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">秒杀商品数量*</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:num, :class => "form-control")%>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="login-btn-inner">
-                      <div class="row">
-                          <div class="col-lg-2"></div>
-                          <div class="col-lg-9">
-                              <div class="login-horizental cancel-wp pull-left">
-                                  <a href="<%=url(:seckills, :index)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">返回</a>
-                                  <%=f.submit "提交", :class => "btn btn-sm btn-primary login-submit-cs"%>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
-            <% end %>
-        </div>
+    <div class="card-title">
+        <h4 class="underline">修改秒杀信息</h4>
     </div>
+
+    <% form_for @seckill, url(:seckills, :update, :id => @seckill.id), :method => 'post' do |f| %>
+        <%=f.hidden_field "t_sku_id" %>
+        <%=f.hidden_field "merchant_id" %>
+        <div class="row">
+            <div class="col-xs-12 form-group-row">
+                <label style="height: 18px;">秒杀标题*<span style="color: #EC7063;">(秒杀描述，将展示在秒杀商品页)</span></label>
+                <%= f.text_field :title, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>秒杀描述*</label>
+                <%= f.text_field :detail, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>开始时间*</label>
+                <div class="input-group" style="width: 75%">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <%=f.text_field(:begin_time, :class => "form-control datetimePicker")%>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>结束时间*</label>
+                <div class="input-group" style="width: 75%">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <%=f.text_field(:end_time, :class => "form-control datetimePicker")%>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label style="height: 18px;">秒杀价*<span style="color: #EC7063;">(商品原价：￥<%=@seckill.t_sku.price%>)</span></label>
+                <%= f.text_field :seckill_price, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>秒杀商品数量*</label>
+                <%= f.text_field :num, :class => 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group-row-btn">
+            <%= link_to '返回', url(:seckills, :index), :class => 'btn btn-back' %>
+            <%=f.submit '提交', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
 </div>

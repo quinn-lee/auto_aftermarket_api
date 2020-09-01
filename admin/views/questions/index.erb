@@ -14,7 +14,8 @@
         <thead>
         <tr>
             <th style="width: 10%;">话题</th>
-            <th style="width: 62%;">问题内容</th>
+            <th style="width: 15%;">提问时间</th>
+            <th style="width: 50%;">问题内容</th>
             <th style="width: 10%;">已回复？</th>
             <th style="width: 15%;"></th>
         </tr>
@@ -23,8 +24,15 @@
           <% @questions.each do |question| %>
             <tr>
                 <td><%= question.topic.title%></td>
-                <td><%= question.content %></td>
-                <td><%= question.answers.where.not(account_id: nil).count > 0 ? '已回复' : '未回复' %></td>
+                <td><%= question.created_at.strftime('%Y-%m-%d %H:%M')%></td>
+                <td><div  style="display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;overflow: hidden;"><%= question.content %></div></td>
+                <td>
+                    <%if question.answers.where.not(account_id: nil).count > 0%>
+                        <span class="status status-valid">已回复</span>
+                    <%else%>
+                        <span class="status status-invalid">未回复</span>
+                    <%end%>
+                </td>
                 <td>
                   <a href="<%=url(:questions, :new_answer, :id=>question.id)%>" title="回复" class="pd-setting-ed" style="margin-right: 5px;">回复</a>
                   <a href="<%=url(:questions, :answers, :id=>question.id)%>" title="查看" class="pd-setting-ed" style="margin-right: 5px;">问题详情</a>

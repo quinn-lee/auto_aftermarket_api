@@ -32,8 +32,8 @@
         </tr>
         </thead>
         <tbody>
-        <% @spus.each do |spu| %>
-        <tr>
+        <% @spus.each_with_index do |spu ,index| %>
+        <tr class="table-type-<%= index%2%>">
             <td><%= spu.category_desc%></td>
             <td><%= spu.t_brand.name if spu.t_brand %></td>
             <td><%= spu.title %></td>
@@ -131,3 +131,11 @@
         </div>
     </div>
 </div>
+<style>
+    .table-type-0{
+        background:#f9f9f9;
+    }
+    .table-type-1{
+        background:#fff !important;
+    }
+</style>
