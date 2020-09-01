@@ -124,8 +124,8 @@ module AutoAftermarketApi
         @sidebar_menu.each do |item|
           item[:options].each do |option|
             if option[:url] == @active_path
-              item[:show] = 'show'
-              option[:active] = 'active'
+              item[:active] = true
+              option[:active] = true
             end
           end
         end

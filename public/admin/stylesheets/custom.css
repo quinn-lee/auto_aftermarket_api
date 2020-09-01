@@ -7,6 +7,8 @@
  .alert, .btn, .card, .dropdown, .form-group, .image-preview, .loading, .modal, .pagination, .status, .table, .text,
  .thumbnail
  */
+.main-area { margin-top: 70px; }
+
 /* .alert */
 .alert { padding: 10px 15px; margin-bottom: 10px; border-radius: 0;  }
 
