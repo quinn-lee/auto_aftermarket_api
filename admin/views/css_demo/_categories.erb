@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-title">
-        <h4 class="underline">商品目录样式(.nav)</h4>
+        <h4 class="underline">商品目录样式</h4>
     </div>
     <div class="card-toolbar">
       <div class="btn-group btn-group-sm">
@@ -24,6 +24,32 @@
                     </div>
                     <div id="cat_1" class="collapse">
                         <ul class="cat-list-sub">
+                            <li class="cat-list-sub-item active">
+                                <%= link_to '新增用户', '#' %>
+                                <div class="action">
+                                    <a href="#"><i class="fa fa-eye-slash"></i></a>
+                                    <%= link_to '<i class="fa fa-trash"></i>'.html_safe, '#' %>
+                                </div>
+                            </li>
+                            <li class="cat-list-sub-item">
+                                <%= link_to '新增用户', '#' %>
+                            </li>
+                            <li class="cat-list-sub-item">
+                                <%= link_to '新增用户', '#' %>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="cat-list-item">
+                    <div class="cat-list-item-hd">
+                        <a data-toggle="collapse" data-target="#cat_2">菜单管理</a>
+                        <div class="action">
+                            <a href="#"><i class="fa fa-eye-slash"></i></a>
+                            <%= link_to '<i class="fa fa-trash"></i>'.html_safe, '#' %>
+                        </div>
+                    </div>
+                    <div id="cat_2" class="collapse">
+                        <ul class="cat-list-sub">
                             <li class="cat-list-sub-item">
                                 <%= link_to '新增用户', '#' %>
                                 <div class="action">
@@ -40,32 +66,25 @@
                         </ul>
                     </div>
                 </li>
-              <li class="cat-list-item">
-                <div class="cat-list-item-hd">
-                  <a data-toggle="collapse" data-target="#cat_2">菜单管理</a>
-                  <div class="action">
-                    <a href="#"><i class="fa fa-eye-slash"></i></a>
-                    <%= link_to '<i class="fa fa-trash"></i>'.html_safe, '#' %>
-                  </div>
-                </div>
-                <div id="cat_2" class="collapse">
-                  <ul class="cat-list-sub">
-                    <li class="cat-list-sub-item">
-                      <%= link_to '新增用户', '#' %>
-                      <div class="action">
-                        <a href="#"><i class="fa fa-eye-slash"></i></a>
-                        <%= link_to '<i class="fa fa-trash"></i>'.html_safe, '#' %>
-                      </div>
-                    </li>
-                    <li class="cat-list-sub-item">
-                      <%= link_to '新增用户', '#' %>
-                    </li>
-                    <li class="cat-list-sub-item">
-                      <%= link_to '新增用户', '#' %>
-                    </li>
-                  </ul>
-                </div>
-              </li>
+                <li class="cat-list-item">
+                    <div class="cat-list-item-hd">
+                        <a data-toggle="collapse" data-target="#cat_3">加载中</a>
+                        <div class="action">
+                            <%= link_to '<i class="fa fa-trash"></i>'.html_safe, '#' %>
+                        </div>
+                    </div>
+                    <div id="cat_3" class="collapse">
+                        <div class="cat-list-loading">
+                        <div class="loading">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
 
@@ -92,61 +111,3 @@
         </div>
     </div>
 </div>
-<script> $('.cat-list a[data-toggle=collapse]').bind('click', function(e){ $('.cat-list .collapse').collapse('hide'); })</script>
-<style>
-
-  .cat-list, .cat-list a { color: #333; }
-  .cat-list>.cat-list-item>.cat-list-item-hd{
-      background-color: #fff;
-      border-left: 1px solid #ddd;
-      border-right: 1px solid #ddd;
-      border-bottom: 1px solid #ddd;
-      display: flex;
-      justify-content: space-between;
-  }
-  .cat-list>.cat-list-item>.cat-list-item-hd:hover { background-color: #eee; }
-  .cat-list>.cat-list-item:first-child>.cat-list-item-hd { border-top: 1px solid #ddd; }
-  .cat-list>.cat-list-item>.cat-list-item-hd>[data-toggle=collapse],
-  .cat-list-sub>.cat-list-sub-item>a { padding: 6px 15px; flex: 1; }
-  .cat-list>.cat-list-item>.cat-list-item-hd>.action { padding: 6px 15px; }
-  .cat-list>.cat-list-item>.cat-list-item-hd>.action a,
-  .cat-list-sub>.cat-list-sub-item>.action a { margin-left: 3px; }
-  .cat-list-sub { border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; }
-  .cat-list-sub>.cat-list-sub-item {
-      background-color: #fff;
-      display: flex;
-      justify-content: space-between;
-      border-left: 5px solid #e12503;
-  }
-  .cat-list-sub>.cat-list-sub-item>a{ padding: 6px 15px; flex: 1; }
-  .cat-list-sub>.cat-list-sub-item>.action { padding: 6px 15px; }
-  .cat-list-sub-item:hover, .cat-list-sub-item.active { background-color: #eee; }
-  /*.cat-list>.cat-list-item>div[data-toggle=collapse]::before{*/
-      /*display: block;*/
-      /*position: absolute;*/
-      /*top: 50%;*/
-      /*right: 1rem;*/
-      /*color: #aaa;*/
-      /*font-family: 'FontAwesome';*/
-      /*content: '\f104';*/
-      /*font-weight: 900;*/
-      /*-webkit-transform: translateY(-50%);*/
-      /*transform: translateY(-50%);*/
-  /*}*/
-  /*.cat-list>.cat-list-item>div[data-toggle=collapse][aria-expanded=true]::before {*/
-      /*content: '\f107';*/
-  /*}*/
-  .cat-title { display: flex; }
-  .cat-title h5.underline {
-      padding-bottom: 5px;
-      padding-right: 50px;
-      border-bottom: 1px solid #e12503;
-      border-image: -webkit-linear-gradient(to right, #e12503, #ffffff) 1 1;
-      border-image: -moz-linear-gradient(to right, #e12503, #ffffff) 1 1;
-      border-image: linear-gradient(to right, #e12503, #ffffff) 1 1;
-  }
-  .cat-brands, .cat-attrs { display: flex; flex-wrap: wrap; margin-bottom: 10px; }
-  .cat-brand, .cat-attr { background: #fff; border: 1px solid #ddd; padding: 4px 15px; margin-right: 5px; margin-bottom: 5px; }
-  .cat-brand:hover, .cat-attr:hover { background: #eee; }
-  .cat-brands .btn, .cat-attrs .btn { padding: 4px 15px; margin-right: 5px; margin-bottom: 5px; }
-</style>

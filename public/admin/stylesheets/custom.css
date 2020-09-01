@@ -4,7 +4,7 @@
 
 /*
  按样式字母序排序, 依次为
- .alert, .btn, .card, .dropdown, .form-group, .image-preview, .modal, .pagination, .status, .table, .text,
+ .alert, .btn, .card, .dropdown, .form-group, .image-preview, .loading, .modal, .pagination, .status, .table, .text,
  .thumbnail
  */
 /* .alert */
@@ -116,6 +116,20 @@ input[type=file].form-control{
 }
 .inbox-file{ width: 100%; height: 100%; opacity: 0; }
 
+/* .loading 加载中样式 */
+.loading{ height: 15px; margin: 0 auto; text-align: center; }
+.loading span{ display: inline-block; width: 10px; height: 10px; margin-right: 5px; background: #e12503; -webkit-animation: load 1.04s ease infinite; }
+.loading span:last-child{ margin-right: 0; }
+@-webkit-keyframes load{
+    0%{ opacity: 1; -webkit-transform: scale(1.2); }
+    100%{ opacity: .2; -webkit-transform: scale(.2); }
+}
+.loading span:nth-child(1){ -webkit-animation-delay:0.13s; }
+.loading span:nth-child(2){ -webkit-animation-delay:0.26s; }
+.loading span:nth-child(3){ -webkit-animation-delay:0.39s; }
+.loading span:nth-child(4){ -webkit-animation-delay:0.52s; }
+.loading span:nth-child(5){ -webkit-animation-delay:0.65s; }
+
 /* .modal 模态框 */
 .modal-custom .modal-content { border-radius: 0; }
 .modal-custom .modal-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: none; padding-bottom: 0; }
@@ -173,7 +187,9 @@ input[type=file].form-control{
 
 /* .text 文本 */
 .text-red { color: #e12503; }
+.text-blue { color: #1587d4; }
 
+.text-bold { font-weight: bold; }
 /* .thumbnail 缩略图 */
 .thumbnail-filter {
     width: 128px;
@@ -194,3 +210,46 @@ input[type=file].form-control{
 /************************
  ***** 其他样式分割线 *****
  ************************/
+
+/* .cat-list 商品目录样式 */
+.cat-list, .cat-list a { color: #333; }
+.cat-hidden a { color: #aaa; text-decoration: line-through; }
+.cat-list>.cat-list-item>.cat-list-item-hd{
+    background-color: #fff;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+.cat-list>.cat-list-item>.cat-list-item-hd:hover { background-color: #fff0f0; }
+.cat-list>.cat-list-item:first-child>.cat-list-item-hd { border-top: 1px solid #ddd; }
+.cat-list>.cat-list-item>.cat-list-item-hd>[data-toggle=collapse],
+.cat-list-sub>.cat-list-sub-item>a { padding: 6px 15px; flex: 1; }
+.cat-list>.cat-list-item>.cat-list-item-hd>.action { padding: 6px 15px; }
+.cat-list>.cat-list-item>.cat-list-item-hd>.action a,
+.cat-list-sub>.cat-list-sub-item>.action a { margin-left: 3px; }
+.cat-list-sub { border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; }
+.cat-list-sub>.cat-list-sub-item { background-color: #fff; display: flex; justify-content: space-between; border-left: 5px solid #e12503; }
+.cat-list-sub>.cat-list-sub-item>a{ padding: 6px 15px; flex: 1; }
+.cat-list-sub>.cat-list-sub-item>.action { padding: 6px 15px; }
+.cat-list-sub-item:hover, .cat-list-sub-item.active { background-color: #fff0f0; }
+.cat-title { display: flex; }
+.cat-title h5.underline {
+    padding-bottom: 5px;
+    padding-right: 50px;
+    border-bottom: 1px solid #e12503;
+    border-image: -webkit-linear-gradient(to right, #e12503, #ffffff) 1 1;
+    border-image: -moz-linear-gradient(to right, #e12503, #ffffff) 1 1;
+    border-image: linear-gradient(to right, #e12503, #ffffff) 1 1;
+}
+.cat-brands, .cat-attrs { display: flex; flex-wrap: wrap; margin-bottom: 10px; }
+.cat-brand, .cat-attr { background: #fff; border: 1px solid #ddd; padding: 4px 15px; margin-right: 5px; margin-bottom: 5px; }
+.cat-attr:hover { background: #fff0f0; cursor: pointer; }
+.cat-brands .btn, .cat-attrs .btn { padding: 4px 15px; margin-right: 5px; margin-bottom: 5px; }
+.cat-list-loading { padding: 6px 0 11px; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-left: 5px solid #e12503; }
+
+/* .detail 详情展示 */
+.detail { margin-bottom: 10px; }
+.dk { margin-right: 10px; }
+.dv { }
