@@ -1,9 +1,9 @@
-<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12" style="padding-left: 0px;">
     <div id="myTabContent1" class="tab-content">
         <% i = 1%>
         <% @sku.images.each do |image| %>
         <div class="product-tab-list tab-pane fade <%= i==1 ? 'active' : ''%> in" id="single-tab<%=i%>">
-            <img src="<%=image.url%>" alt="" />
+            <img src="<%=image.url%>" alt=""  style="height: 300px" />
         </div>
         <% i += 1%>
         <% end %>
@@ -20,70 +20,105 @@
 </div>
 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
     <div class="single-product-details res-pro-tb">
-        <h1><%= @sku.title %></h1>
+        <h4><%= @sku.title %></h4>
         <span class="single-pro-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>
         <div class="single-pro-price">
-            <span class="single-regular">￥<%=@sku.price%></span>
+            <view class="price-text">价格</view>
+            <span class="single-regular" style="color: #e12503">￥<%=@sku.price%></span>
         </div>
-        <% @sku.sale_attrs.to_a.each do |sa|%>
-        <div class="single-pro-size">
-            <h6 style="display: inline; margin-right: 20px;"><%=sa[0]%></h6>
-            <span><%=sa[1]%></span>
-        </div>
-        <% end %>
-        <% if @sku.service_fee.present? %>
-        <div class="single-pro-size">
-            <h6 style="display: inline; margin-right: 20px;">可选服务</h6>
-            <% @sku.service_fee.each do |k,v|%>
-              <span><%="#{k}：￥#{v}"%></span>
-            <% end %>
-        </div>
-        <% end %>
-
     </div>
 </div>
 
-
-
-
-<div class="single-pro-review-area mt-t-30 mg-b-15">
+<div class="single-pro-review-area mt-t-30 mg-b-15" >
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 30px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 tab-review-title" style="">
                 <ul id="myTab" class="tab-review-design">
-                    <li class="active" style="margin-right: 20px;"><a href="#description">商品描述</a></li>
-                    <li><a href="#INFORMATION">规格</a></li>
+                    <li class="active"><a href="#information">规格参数</a></li>
+                    <%if @sku.service_fee.present?%>
+                        <li><a href="#service">可选服务</a></li>
+                    <%end%>
+                    <li><a href="#description">商品介绍</a></li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
-                    <div class="product-tab-list product-details-ect tab-pane fade active in" id="description">
+                    <div class="product-tab-list product-details-ect tab-pane fade" id="description">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="review-content-section">
                                     <% if @sku.t_spu.details.present? %>
-                                      <% @sku.t_spu.details.each do |detail| %>
-                                        <img src="<%=detail.url%>" alt="" />
+                                      <% @sku.t_spu.details.each do |image| %>
+                                        <img src="<%=image.url%>" alt="" />
                                       <% end %>
                                     <% end %>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="product-tab-list tab-pane fade" id="INFORMATION">
+                    <div class="product-tab-list tab-pane fade active in" id="information">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="review-content-section">
                                   <% @sku.attrs.to_a.each do |sa|%>
-                                  <div class="single-pro-size">
-                                      <h6 style="display: inline; margin-right: 20px;"><%=sa[0]%></h6>
-                                      <span><%=sa[1]%></span>
-                                  </div>
-                                  <% end %>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 attr">
+                                        <span class="attr-label"><%=sa[0]%> : </span>
+                                        <span class="attr-value"><%=sa[1]%></span>
+                                    </div>
+                                <% end %>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <%if @sku.service_fee.present?%>
+                    <div class="product-tab-list tab-pane fade" id="service">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="review-content-section">
+                                  <% @sku.service_fee.each do |k,v|%>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 attr">
+                                        <span class="attr-label"><%=k%> : </span>
+                                        <span class="attr-value"><%=v%></span>
+                                    </div>
+                                <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%end%>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<style>
+    ul.tab-review-design{
+        padding: 0;
+    }
+    ul.tab-review-design li{
+        padding: 10px 20px;
+    }
+
+    ul.tab-review-design li.active{
+        background-color: #e12503;
+    }
+
+    ul.tab-review-design li.active a{
+        color: #fff !important;
+    }
+
+    .review-content-section .attr{
+        margin: 10px 0px;
+    }
+    .single-pro-price .price-text{
+        line-height: 27px;
+        margin-right: 20px;
+        display: inline-block;
+    }
+    .tab-review-title{
+        margin-top: 30px;
+        background: #fff;
+        padding: 0 0 20px 0;
+    }
+    .review-content-section img{
+        width: 100%;
+    }
+</style>

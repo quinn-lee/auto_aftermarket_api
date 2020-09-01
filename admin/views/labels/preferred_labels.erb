@@ -20,13 +20,53 @@
         <tr>
                 <td>
                     <div class="modal-area-button">
+                    <% @labels_event.each do |label|%>
+                        <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#editLabel<%=label.id%>"><%=label.name%></a>
+                        <div class="modal modal-custom fade" id="editLabel<%=label.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h4 class="modal-title underline">修改标签</h4>
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <% form_for label, url(:labels, :update_event_label, label_id: label.id), :method => 'post' do |f| %>
+                                          <div class="row">
+                                              <div class="col-xs-6 form-group">
+                                                  <label>标签名称</label>
+                                                  <%=f.text_field(:name, :class => "form-control" ,:disabled=>"disabled")%>
+                                              </div>
+                                              <div class="col-xs-12 form-group">
+                                                <label>标签图片</label>
+                                                <div class="image-preview">
+                                                    <div class="img-upload">
+                                                        <div class="img-upload-mask">
+                                                            <%=f.file_field(:image, :class => "inbox-file")%>
+                                                        </div>
+                                                    </div>
+                                                    <% if label.image.present?%>
+                                                      <img src="<%=label.image.url%>">
+                                                    <%end%>
+                                                </div>
+                                            </div>
+                                          </div>
+                                          <div align="right">
+                                              <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                                              <button type="submit" class="btn btn-submit">提交</button>
+                                          </div>
+                                      <%end%>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    <% end %>
                     <% @labels.each do |label|%>
                       <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#editLabel<%=label.id%>"><%=label.name%></a>
                       <div class="modal modal-custom fade" id="editLabel<%=label.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title underline">新增标签</h4>
+                                    <h4 class="modal-title underline">修改标签</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">

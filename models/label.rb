@@ -7,7 +7,10 @@ class Label < ActiveRecord::Base
   mount_uploader :image, FileUploader
 
   LTYPE = {
-    1 => '优选标签'
+    1 => '优选标签',
+    2 => '优选',
+    3 => '团购',
+    4 => '秒杀',
   }.stringify_keys
 
   def to_api

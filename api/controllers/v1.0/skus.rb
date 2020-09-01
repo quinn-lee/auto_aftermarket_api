@@ -1538,11 +1538,45 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   post :preferred_labels, :provides => [:json] do
     api_rescue do
       authenticate
+      @label_prederred = Label.where(ltype: 2)
       @labels = Label.where(ltype: 1)
-      { status: 'succ', data: @labels.map(&:to_api)}.to_json
+      { status: 'succ', data: @label_prederred.map(&:to_api)+@labels.map(&:to_api)}.to_json
     end
   end
 
+  # 团购商品标签
+  # data
+=begin
+    {
+        "id": 1,
+        "name": "haha1aa",
+        "image": "/uploads/label/image/4/Screenshot_20200623_161707.png"
+    }
+=end
+  post :group_labels, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @labels = Label.where(ltype: 3).last
+      { status: 'succ', data: @labels.to_api}.to_json
+    end
+  end
+
+  # 秒杀商品标签
+  # data
+=begin
+    {
+        "id": 1,
+        "name": "haha1aa",
+        "image": "/uploads/label/image/4/Screenshot_20200623_161707.png"
+    }
+=end
+  post :seckill_labels, :provides => [:json] do
+    api_rescue do
+      authenticate
+      @labels = Label.where(ltype: 4).last
+      { status: 'succ', data: @labels.to_api}.to_json
+    end
+  end
 
   # 优选商品列表
   # params {"category_id": 1, "title": "美孚", "brand_id": [1,2], "label_id": 1
