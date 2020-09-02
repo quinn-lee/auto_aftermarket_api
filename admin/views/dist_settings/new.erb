@@ -1,105 +1,34 @@
 <div class="card">
-    <div class="review-tab-pro-inner">
-      <ul id="myTab3" class="tab-review-design">
-          <li class="active">
-            <div class="card-title">
-              <h4 class="underline"><i class="fa fa-pencil" aria-hidden="true"></i>分销设置</h4>
-            </div>
-          </li>
-      </ul>
-        <div id="myTabContent" class="tab-content custom-product-edit">
-            <% form_for @dist_setting, url(:dist_settings, :update, :id => @dist_setting.id), :class=>"form-horizontal", :method => 'post' do |f| %>
-            <div class="product-tab-list tab-pane fade active in">
-              <%=f.hidden_field "merchant_id" %>
-
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">是否开启分销</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.select(:dist_switch, :options => [['是',true],['否','false']], :class => "form-control custom-select-value")%>
-                          </div>
-                      </div>
-
-                  </div>
-              </div>
-
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">申请成为分销员成交金额限制</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:amount_limit, :class => "form-control")%>
-                          </div>
-                      </div>
-                      <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
-                        <label class="login2 pull-left pull-left-pro" style="color: #EC7063">成交金额与发展客户数满足一个条件，客户就可申请成为分销员</label>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">申请成为分销员发展客户数限制</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:number_limit, :class => "form-control")%>
-                          </div>
-                      </div>
-
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">销售员佣金比例</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:sales_percent, :class => "form-control")%>
-                          </div>
-                      </div>
-                      <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
-                        <label class="login2 pull-left pull-left-pro" style="color: #EC7063">公司专职销售</label>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group-inner">
-                  <div class="row">
-                      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label class="login2 pull-right pull-right-pro">分销员佣金比例</label>
-                      </div>
-                      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                          <div class="form-select-list">
-                            <%=f.text_field(:dist_percent, :class => "form-control")%>
-                          </div>
-                      </div>
-                      <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
-                        <label class="login2 pull-left pull-left-pro" style="color: #EC7063">客户申请，审核通过后成为分销员</label>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="form-group-inner">
-                  <div class="login-btn-inner">
-                      <div class="row">
-                          <div class="col-lg-2"></div>
-                          <div class="col-lg-9">
-                              <div class="login-horizental cancel-wp pull-left">
-                                  <%=f.submit "提交", :class => "btn btn-sm btn-primary login-submit-cs"%>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
-            <% end %>
-        </div>
+    <div class="card-title">
+        <h4 class="underline">分销设置</h4>
     </div>
+
+    <% form_for @dist_setting, url(:dist_settings, :update, :id => @dist_setting.id), :method => 'post' do |f| %>
+        <%=f.hidden_field "merchant_id" %>
+        <div class="row">
+            <div class="col-xs-12 form-group-row">
+                <label>是否开启分销*</label>
+                <%=f.select(:dist_switch, :options => [['是',true],['否','false']], :class => "form-control custom-select-value")%>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label style="height: 36px;">申请成为分销员成交金额限制*<span style="color: #EC7063;">(成交金额与发展客户数满足一个条件，客户就可申请成为分销员)</span></label>
+                <%= f.text_field :amount_limit, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>申请成为分销员发展客户数限制*</label>
+                <%= f.text_field :number_limit, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label style="height: 18px;">销售员佣金比例*<span style="color: #EC7063;">(公司专职销售)</span></label>
+                <%= f.text_field :sales_percent, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label style="height: 18px;">分销员佣金比例*<span style="color: #EC7063;">(客户申请，审核通过后成为分销员)</span></label>
+                <%= f.text_field :dist_percent, :class => 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group-row-btn">
+            <%=f.submit '提交', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
 </div>

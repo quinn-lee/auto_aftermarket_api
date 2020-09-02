@@ -2,58 +2,21 @@
     <div class="card-title">
         <h4 class="underline">添加优选商品</h4>
     </div>
-    <div class="card-toolbar">
-        <div class="btn-group btn-group-sm">
-            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
-                <i class="fa fa-search"></i> 搜索
-            </button>
-        </div>
-    </div>
-    <!-- 表格主体内容 -->
     <table class="table table-condensed table-striped table-bordered-y">
         <thead>
         <tr>
-            <th style="width: 15%;">目录</th>
-            <th style="width: 10%;">品牌</th>
-            <th style="width: 23%;">标题</th>
-            <th style="width: 10%;">可销售?</th>
-            <th style="width: 20%;">说明</th>
-            <th style="width: 10%;">SKU数量</th>
+            <th style="width: 10%;">价格</th>
+            <th style="width: 10%;">库存(可销售)</th>
+            <th style="width: 25%;">标题</th>
+            <th style="width: 10%;">可销售？</th>
+            <th style="width: 20%;">销售属性</th>
+            <th style="width: 10%;">SKU代码</th>
             <th style="width: 10%;"></th>
         </tr>
         </thead>
         <tbody>
-        <% @spus.each_with_index do |spu ,index| %>
-          <tr class="table-type-<%= index%2%>">
-              <td><%= spu.category_desc%></td>
-              <td><%= spu.t_brand.name if spu.t_brand %></td>
-              <td><%= spu.title %></td>
-              <td>
-                  <%if spu.saleable%>
-                      <span class="status status-valid">是</span>
-                  <%else%>
-                      <span class="status status-invalid">否</span>
-                  <%end%>
-              </td>
-              <td><%= spu.detail %></td>
-              <td><%= spu.t_skus.count %></td>
-              <td>
-                  <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<%=spu.id%>">查看SKU</a>
-              </td>
-            </tr>
-            <tbody id="collapse<%=spu.id%>" class="panel-collapse panel-ic collapse" style="border: 2px solid #000">
-              <tr>
-                  <td>价格</td>
-                  <td>库存(可销售)</td>
-                  <td>标题</td>
-                  <td>可销售？</td>
-                  <td>销售属性</td>
-                  <td>SKU代码</td>
-                  <td>
-                  </td>
-              </tr>
-              <% spu.t_skus.each do |sku|%>
-              <tr>
+            <% @skus.each do |sku|%>
+                <tr>
                   <td>￥<%= sku.price %></td>
                   <td><%= sku.stock_num %>(<%= sku.available_num %>)</td>
                   <td><%= sku.title %></td>
@@ -125,54 +88,15 @@
                         </div>
                     </div>
                   </td>
-              </tr>
-              <% end %>
-            </tbody>
-          <% end %>
+                </tr>
+            <%end%>
         </tbody>
     </table>
-    <div class="pagination">
-      <%= will_paginate @spus %>
-    </div>
-</div>
-<div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title underline">搜索</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-                <% form_tag url(:skus, :select_sku) , :method => 'get' do %>
-                    <div class="row">
-                        <div class="col-xs-6 form-group">
-                            <label>目录</label>
-                            <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).order("id asc").map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
-                        </div>
-                        <div class="col-xs-6 form-group">
-                            <label>&nbsp;</label>
-                            <%=select_tag(:category_2, :options => [], :class => "form-control custom-select-value", id: "category_2")%>
-                        </div>
-                        <div class="col-xs-12 form-group">
-                            <label>标题</label>
-                            <%=text_field_tag(:title, :class => "form-control")%>
-                        </div>
-                    </div>
-
-                    <div align="right">
-                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
-                        <button type="submit" class="btn btn-submit">提交</button>
-                    </div>
-                <%end%>
+    <div class="form-group-inner">
+        <div class="login-btn-inner">
+            <div class="login-horizental cancel-wp">
+                <a href="<%=url(:skus, :select_spu)%>" class="btn btn-warning" style="border-radius: 0px;background-color: #ccc;border-color: #ccc;">重新选择商品</a>
             </div>
         </div>
     </div>
 </div>
-<style>
-    .table-type-0{
-        background:#f9f9f9;
-    }
-    .table-type-1{
-        background:#fff !important;
-    }
-</style>

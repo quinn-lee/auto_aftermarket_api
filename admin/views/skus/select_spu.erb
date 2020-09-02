@@ -1,16 +1,7 @@
 <div class="card">
-    <ul id="myTab3" class="tab-review-design">
-      <li class="active" style="margin-right: 30px">
-        <div class="card-title">
-        <h4 class=""><i class="fa fa-tag" aria-hidden="true"></i> 1、选择<%=@mod%>商品</h4>
-        </div>
-      </li>
-      <li style="color: #909090">
-        <div class="card-title">
-        <h4><i class="fa fa-pencil" aria-hidden="true"></i> 2、填写<%=@mod%>信息</h4>
-        </div>
-      </li>
-    </ul>
+    <div class="card-title">
+        <h4 class="underline">添加优选商品</h4>
+    </div>
     <div class="card-toolbar">
         <div class="btn-group btn-group-sm">
             <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
@@ -18,6 +9,7 @@
             </button>
         </div>
     </div>
+    <!-- 表格主体内容 -->
     <table class="table table-condensed table-striped table-bordered-y">
         <thead>
         <tr>
@@ -32,22 +24,24 @@
         </thead>
         <tbody>
         <% @spus.each do |spu | %>
-        <tr>
-            <td><%= spu.category_desc%></td>
-            <td><%= spu.t_brand.name if spu.t_brand %></td>
-            <td><%= spu.title %></td>
-            <td>
-                <%if spu.saleable%>
-                    <span class="status status-valid">是</span>
-                <%else%>
-                    <span class="status status-invalid">否</span>
-                <%end%>
-            </td>
-            <td><%= spu.detail %></td>
-            <td><%= spu.t_skus.count %></td>
-            <td><a href="<%=url(:groups, :selected_sku, :spu_id =>spu.id , :from=>params[:from]) %>">查看SKU</a></td>
-        </tr>
-        <%end%>
+          <tr>
+              <td><%= spu.category_desc%></td>
+              <td><%= spu.t_brand.name if spu.t_brand %></td>
+              <td><%= spu.title %></td>
+              <td>
+                  <%if spu.saleable%>
+                      <span class="status status-valid">是</span>
+                  <%else%>
+                      <span class="status status-invalid">否</span>
+                  <%end%>
+              </td>
+              <td><%= spu.detail %></td>
+              <td><%= spu.t_skus.count %></td>
+              <td>
+                <a href="<%=url(:skus, :select_sku, :spu_id =>spu.id ) %>">查看SKU</a>
+              </td>
+            </tr>
+          <% end %>
         </tbody>
     </table>
     <div class="pagination">
@@ -58,12 +52,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title underline">搜索<%=@mod%>商品</h4>
+                <h4 class="modal-title underline">搜索</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
-                <% form_tag url(:groups, :select_sku), :method => 'get' do %>
-                    <%=hidden_field_tag 'from', value: @from%>
+                <% form_tag url(:skus, :select_spu) , :method => 'get' do %>
                     <div class="row">
                         <div class="col-xs-6 form-group">
                             <label>目录</label>
@@ -78,6 +71,7 @@
                             <%=text_field_tag(:title, :class => "form-control")%>
                         </div>
                     </div>
+
                     <div align="right">
                         <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
                         <button type="submit" class="btn btn-submit">提交</button>
