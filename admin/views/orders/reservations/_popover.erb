@@ -1,0 +1,16 @@
+<div class="popover-scroll">
+<% data.each_with_index do |obj, index| %>
+    <div>
+        <span class="dk">订单<%= index + 1 %>:</span>
+        <span class="dv text-blue"><%= obj[:order_no] %></span>
+    </div>
+    <div>
+        <span class="dk">联系人:</span>
+        <span class="dv text-blue"><%= obj[:name] %></span>
+    </div>
+    <div style="margin-bottom: 15px;">
+        <span class="dk">联系电话:</span>
+        <span class="dv text-blue"><%= obj[:mobile] %></span>
+    </div>
+<% end %>
+</div>

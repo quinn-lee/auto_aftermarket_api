@@ -38,7 +38,7 @@
                     <label>已上传详情图片</label>
                     <div class="image-preview">
                         <% @spu.details.each do |detail| %>
-                            <%= link_to (image_tag detail.url, :class => 'thumbnail'), detail.url, :target => '_blank' %>
+                            <%= link_to (image_tag detail.url(:thumb), :class => 'thumbnail'), detail.url, :target => '_blank' %>
                         <% end %>
                     </div>
                 </div>

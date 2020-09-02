@@ -10,7 +10,7 @@
             <% @spu.details.each_with_index do |detail, index| %>
                 <div>
                     <%= content_tag :div, nil, :class => 'thumbnail-filter', :id => "filter_#{index}" %>
-                    <%= image_tag detail.url, :class => 'thumbnail' %>
+                    <%= image_tag detail.url(:thumb), :class => 'thumbnail' %>
                 </div>
             <% end %>
         </div>
