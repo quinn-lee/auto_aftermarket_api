@@ -50,7 +50,7 @@ module AutoAftermarketApi
           ]
         }
         nav_purchases = {
-          :label => '采购管理', :icon => 'css3', :field => 'nav_purchase_data',
+          :label => '采购管理', :icon => 'cart-plus', :field => 'nav_purchase_data',
           :options => [
             { :label => '采购列表', :icon => '', :url => url(:purchases, :index) }
           ]

@@ -198,7 +198,46 @@ AutoAftermarketApi::Admin.controllers :orders do
 
   # 到店安装预约时间表
   get :reservations do
-    @orders = Order.where.not(status: ['unpaid','appointing','done','delete','cancelling','cancelled']).joins(:sub_orders).where('sub_orders.sub_type' => 'install', 'sub_orders.status' => 'appointed')
+    query = Order.joins(:sub_orders).joins('LEFT JOIN order_reservations on order_reservations.order_no = orders.order_no').
+      where.not('orders.status' => %w[unpaid appointing done delete cancelling cancelled]).
+      where('sub_orders.sub_type' => 'install', 'sub_orders.status' => 'appointed')
+
+    @current_week = Time.parse(params[:date_from]) rescue Time.now.beginning_of_week  # 按周统计, 设定初始日
+    @date_axis = []  # 日期轴
+    @result = {}  # 页面呈现数据
+    (8..20).each do |i|
+      tag = "#{sprintf('%02d', i)}:00~#{sprintf('%02d', i+1)}:00"
+      @result[tag] = []
+    end
+    weekdays = %w[一 二 三 四 五 六 日]
+    7.times do |d|
+      date = @current_week + d.days
+      is_today = date.today?
+      @date_axis << { date: date.strftime('%F'), wday: weekdays[date.wday - 1], today: is_today }
+      orders = query.where('order_reservations.booking_date' => date).
+        select('orders.order_no, orders.contact_info, order_reservations.booking_time_from AS booking_time_from')  # 按日读取数据
+
+      # 按日初始化数据格式
+      @result.each do |key, val|
+        val[d] ||= {}
+        val[d][:today] = is_today
+        val[d][:data] ||= []
+      end
+      # 按小时分配数据
+      orders.each do |order|
+        h = order.booking_time_from.hour
+        if (8..20).include? h
+          tag = "#{sprintf('%02d', h)}:00~#{sprintf('%02d', h+1)}:00"
+          @result[tag][d][:data] << {
+            order_no: order.order_no,
+            name: (order.contact_info['name'] rescue nil),
+            mobile: (order.contact_info['mobile'] rescue nil)
+          }
+        else
+          # 超过预约时间范围的数据处理, 待定
+        end
+      end
+    end
     render 'orders/reservations'
   end
 end
