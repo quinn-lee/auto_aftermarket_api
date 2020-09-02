@@ -78,23 +78,18 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
-                <form>
+                <% form_tag url(:seckills, :index), :method => 'get' do %>
                     <div class="row">
-                        <div class="col-xs-6 form-group">
-                            <label>文本</label>
-                            <%= text_field_tag :text, :value => nil, :class => 'form-control' %>
-                        </div>
-                        <div class="col-xs-6 form-group">
-                            <label>选择栏</label>
-                            <%= select_tag :select, :options => %w[option1 option2], :class => 'form-control' %>
+                        <div class="col-xs-12 form-group">
+                            <label>秒杀标题</label>
+                            <%= text_field_tag :title, :value => params[:title], :class => 'form-control' %>
                         </div>
                     </div>
-
                     <div align="right">
                         <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-submit">提交</button>
+                        <button type="submit" class="btn btn-submit">提交</button>
                     </div>
-                </form>
+                <%end%>
             </div>
         </div>
     </div>
