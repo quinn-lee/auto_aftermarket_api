@@ -1,17 +1,7 @@
 <div class="card">
-    <ul id="myTab3" class="tab-review-design">
-      <li class="active" style="margin-right: 30px;color: #909090">
-        <div class="card-title">
-          <h4><i class="fa fa-tag" aria-hidden="true"></i> 1、选择秒杀商品</h4>
-        </div>
-      </li>
-      <li>
-        <div class="card-title">
-          <h4 class=""><i class="fa fa-pencil" aria-hidden="true"></i> 2、填写秒杀信息</h4>
-        </div>
-      </li>
-    </ul>
-
+    <div class="card-title">
+        <h4 class="underline">填写秒杀信息</h4>
+    </div>
     <% form_for @seckill, url(:seckills, :create), :method => 'post' do |f| %>
         <%=f.hidden_field "t_sku_id" %>
         <%=f.hidden_field "merchant_id" %>
