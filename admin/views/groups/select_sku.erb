@@ -111,13 +111,13 @@
                     <div class="row">
                         <div class="col-xs-6 form-group">
                             <label>目录</label>
-                            <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
+                            <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).order("id asc").map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
                         </div>
                         <div class="col-xs-6 form-group">
                             <label>&nbsp;</label>
                             <%=select_tag(:category_2, :options => [], :class => "form-control custom-select-value", id: "category_2")%>
                         </div>
-                        <div class="col-xs-6 form-group">
+                        <div class="col-xs-12 form-group">
                             <label>标题</label>
                             <%=text_field_tag(:title, :class => "form-control")%>
                         </div>
