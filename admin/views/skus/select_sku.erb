@@ -23,8 +23,8 @@
         </tr>
         </thead>
         <tbody>
-        <% @spus.each do |spu| %>
-          <tr>
+        <% @spus.each_with_index do |spu ,index| %>
+          <tr class="table-type-<%= index%2%>">
               <td><%= spu.category_desc%></td>
               <td><%= spu.t_brand.name if spu.t_brand %></td>
               <td><%= spu.title %></td>
@@ -147,7 +147,7 @@
                     <div class="row">
                         <div class="col-xs-6 form-group">
                             <label>目录</label>
-                            <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
+                            <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).order("id asc").map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
                         </div>
                         <div class="col-xs-6 form-group">
                             <label>&nbsp;</label>
@@ -168,8 +168,11 @@
         </div>
     </div>
 </div>
-<span style="display: none">
-  <% @categories.each do |category| %>
-    <%=hidden_field_tag "categoryid_#{category.id}", id: "categoryid_#{category.id}", :value => "#{category.name}", class: "category_class_#{category.parent_id}"%>
-  <% end %>
-</span>
+<style>
+    .table-type-0{
+        background:#f9f9f9;
+    }
+    .table-type-1{
+        background:#fff !important;
+    }
+</style>

@@ -213,6 +213,16 @@ AutoAftermarketApi::Admin.controllers :categories do
 
       { :status => 'succ', is_hidden: @category.is_hidden, if_parent: @category.if_parent }.to_json
     rescue Exception => e
+      
+    end
+  end
+
+  #读取二级目录
+  get :change_category do
+    begin
+      sub_categories = TCategory.all.where(parent_id: params[:id]).order("id asc").map{|sub_category|{:id=>sub_category.id , :name=>sub_category.name} }
+      {:status => 'succ' ,:sub_categories => sub_categories}.to_json
+    rescue Exception => e
       { :status => 'fail', :reason => e.message }.to_json
     end
   end
