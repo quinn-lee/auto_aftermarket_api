@@ -5,7 +5,7 @@ AutoAftermarketApi::Admin.controllers :questions do
 
   # 话题列表
   get :topics do
-    @topics = Topic.all.order
+    @topics = Topic.all.order("created_at asc")
     render "questions/topics"
   end
 
