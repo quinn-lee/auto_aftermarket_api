@@ -35,6 +35,7 @@ AutoAftermarketApi::Admin.controllers :seckills do
   # 秒杀列表
   get :index do
     @seckills = current_account.merchant.seckills
+    @seckills = @seckills.where("title like ?" ,"%#{params[:title]}%") if params[:title].present?
     @seckills = @seckills.order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'seckills/index'
   end

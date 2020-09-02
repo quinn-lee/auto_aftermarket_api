@@ -1,5 +1,4 @@
 <div class="card">
-  <div class="review-tab-pro-inner">
     <ul id="myTab3" class="tab-review-design">
       <li class="active" style="margin-right: 30px">
         <div class="card-title">
@@ -32,8 +31,8 @@
         </tr>
         </thead>
         <tbody>
-        <% @spus.each do |spu| %>
-        <tr>
+        <% @spus.each_with_index do |spu ,index| %>
+        <tr class="table-type-<%= index%2%>">
             <td><%= spu.category_desc%></td>
             <td><%= spu.t_brand.name if spu.t_brand %></td>
             <td><%= spu.title %></td>
@@ -91,13 +90,7 @@
     <div class="pagination">
       <%= will_paginate @spus %>
     </div>
-  </div>
 </div>
-<span style="display: none">
-  <% @categories.each do |category| %>
-  <%=hidden_field_tag "categoryid_#{category.id}", id: "categoryid_#{category.id}", :value => "#{category.name}", class: "category_class_#{category.parent_id}"%>
-  <% end %>
-</span>
 <div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -111,13 +104,13 @@
                     <div class="row">
                         <div class="col-xs-6 form-group">
                             <label>目录</label>
-                            <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
+                            <%=select_tag(:category_1, :options => @categories.where(parent_id: nil).order("id asc").map{|category| [category.name, category.id]}.unshift([nil,nil]), :class => "form-control custom-select-value", :onchange => 'change_category(this);')%>
                         </div>
                         <div class="col-xs-6 form-group">
                             <label>&nbsp;</label>
                             <%=select_tag(:category_2, :options => [], :class => "form-control custom-select-value", id: "category_2")%>
                         </div>
-                        <div class="col-xs-6 form-group">
+                        <div class="col-xs-12 form-group">
                             <label>标题</label>
                             <%=text_field_tag(:title, :class => "form-control")%>
                         </div>
@@ -131,3 +124,11 @@
         </div>
     </div>
 </div>
+<style>
+    .table-type-0{
+        background:#f9f9f9;
+    }
+    .table-type-1{
+        background:#fff !important;
+    }
+</style>

@@ -50,6 +50,7 @@ AutoAftermarketApi::Admin.controllers :groups do
   # 拼团列表
   get :index do
     @groups = current_account.merchant.groups
+    @groups = @groups.where("title like ?" ,"%#{params[:title]}%") if params[:title].present?
     @groups = @groups.order("created_at asc").paginate(page: params[:page], per_page: 30)
     render 'groups/index'
   end

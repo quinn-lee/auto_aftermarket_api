@@ -3,7 +3,7 @@
         <% i = 1%>
         <% @sku.images.each do |image| %>
         <div class="product-tab-list tab-pane fade <%= i==1 ? 'active' : ''%> in" id="single-tab<%=i%>">
-            <img src="<%=image.url%>" alt=""  style="height: 300px" />
+            <img src="<%=image.url%>" alt=""  style="height: 400px;width: 95%" />
         </div>
         <% i += 1%>
         <% end %>
