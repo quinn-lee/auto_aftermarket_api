@@ -19,6 +19,17 @@ AutoAftermarketApi::Admin.controllers :groups do
     render 'groups/select_sku'
   end
 
+  # 选择sku
+  get :selected_sku do
+    @spu = TSpu.find(params[:spu_id])
+    @skus = @spu.t_skus
+    @from = params[:from].present? ? params[:from].to_s.to_sym : :groups
+    @mod = @from == :groups ? "拼团" : "秒杀"
+    @title = @from == :groups ? "拼团" : "秒杀"
+    @local = @from == :groups ? "拼团" : "秒杀"
+    render 'groups/selected_sku'
+  end
+
   # 新建拼团
   get :new do
     @sku = TSku.find(params[:sku_id])

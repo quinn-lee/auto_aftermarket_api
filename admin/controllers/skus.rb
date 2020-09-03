@@ -18,7 +18,7 @@ AutoAftermarketApi::Admin.controllers :skus do
   end
 
   # 选择优选商品页面
-  get :select_sku do
+  get :select_spu do
     @spus = current_account.merchant.t_spus
     @categories = TCategory.all
     @spus = @spus.where(t_category_id: TCategory.where(parent_id: params[:category_1]).map(&:id)) if params[:category_1].present?
@@ -26,6 +26,12 @@ AutoAftermarketApi::Admin.controllers :skus do
     @spus = @spus.where(t_brand_id: params[:brand_id]) if params[:brand_id].present?
     @spus = @spus.where("title like '%#{params[:title]}%'") if params[:title].present?
     @spus = @spus.order("created_at asc").paginate(page: params[:page], per_page: 30)
+    render 'skus/select_spu'
+  end
+
+   get :select_sku do
+    @spu = TSpu.find(params[:spu_id])
+    @skus = @spu.t_skus
     render 'skus/select_sku'
   end
 
@@ -52,7 +58,7 @@ AutoAftermarketApi::Admin.controllers :skus do
           redirect(url(:skus, :preferred))
         else
           flash[:notice] = "添加为优选商品成功，您可以继续添加"
-          redirect(url(:skus, :select_sku))
+          redirect(url(:skus, :select_spu))
         end
       end
     rescue => e
@@ -64,7 +70,7 @@ AutoAftermarketApi::Admin.controllers :skus do
         if params[:from] == "modify" # 修改广告语
           redirect(url(:skus, :preferred))
         else
-          redirect(url(:skus, :select_sku))
+          redirect(url(:skus, :select_spu))
         end
       end
     end
