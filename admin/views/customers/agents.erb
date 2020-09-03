@@ -1,40 +1,60 @@
 <div class="card">
     <div class="card-title">
-        <h4 class="underline">分销员审核列表</h4>
+        <h4 class="underline">销售/分销员审核列表</h4>
     </div>
     <!-- 表格主体内容 -->
     <table class="table table-condensed table-striped table-bordered-y">
         <thead>
         <tr>
-            <th style="width: 10%;">昵称</th>
-            <th style="width: 10%;">角色</th>
-            <th style="width: 10%;">成交订单数</th>
-            <th style="width: 10%;">成交额</th>
-            <th style="width: 10%;">完成订单数</th>
-            <th style="width: 10%;">完成金额</th>
-            <th style="width: 10%;">发展粉丝数</th>
-            <th style="width: 10%;">状态</th>
-            <th style="width: 15%;"></th>
+            <th style="width: 15%;">昵称</th>
+            <th style="width: 12%;">成交订单数</th>
+            <th style="width: 12%;">成交额</th>
+            <th style="width: 12%;">完成订单数</th>
+            <th style="width: 12%;">完成金额</th>
+            <th style="width: 12%;">发展粉丝数</th>
+            <th style="width: 20%;"></th>
         </tr>
         </thead>
         <tbody>
         <% @customers.each do |customer| %>
             <tr>
                 <td><%=(customer.wechat_info||{})['nickName']%></td>
-                <td><%=customer.role.name%></td>
                 <td><%=customer.paid_orders.count%></td>
                 <td>￥<%=customer.paid_orders.each.sum(&:pay_amount)%></td>
                 <td><%=customer.done_orders.count%></td>
                 <td>￥<%=customer.done_orders.each.sum(&:pay_amount)%></td>
                 <td><%=customer.dist_customers.count%></td>
-                <td><%=Customer::APPSTATUS[customer.app_status.to_s]%></td>
                 <td>
-                  <% if customer.app_status == 0%>
-                  <a href="<%=url(:customers, :check_agent, :id =>customer.id, :status => '1') %>" title="审核通过" class="pd-setting-ed">审核通过</a>
+                  <a href="#" data-toggle="modal" data-target="#check_agent_<%= customer.id %>" class="pd-setting-ed">审核通过</a>
                   <a href="<%=url(:customers, :check_agent, :id =>customer.id, :status => '2') %>" title="审核不通过" class="pd-setting-ed">审核不通过</a>
-                  <% end %>
                 </td>
             </tr>
+            <div class="modal modal-custom fade" id="check_agent_<%= customer.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title underline">选择角色</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <% form_tag url(:customers, :check_agent, :id => customer.id), :method => :get do %>
+                                <%=hidden_field_tag :status, value: '1'%>
+                                <div class="row">
+                                    <div class="col-xs-6 form-group">
+                                        <label>角色</label>
+                                        <%=select_tag(:role_id, :options => [['',''],['销售员','1'],['分销员','2']], :class => "form-control custom-select-value")%>
+                                    </div>
+
+                                </div>
+                                <div align="right">
+                                    <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                                    <button type="submit" class="btn btn-submit">提交</button>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
           <% end %>
         </tbody>
     </table>

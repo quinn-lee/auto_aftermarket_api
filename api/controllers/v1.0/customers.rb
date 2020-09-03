@@ -225,18 +225,16 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   end
 
   # 申请成为销售员/分销员
-  # params {'role': 1}
-  # role 1=>销售员 2=>分销员
-  # 公司内部员工申请成为销售员（可直接申请，无需判断），客户申请成为分销员（需要先调用can_agent接口判断能否申请），
+  # params 空
   # 后台审核通过后才能访问商户版小程序
   # data 空
   post :agent_apply, :provides => [:json] do
     api_rescue do
       authenticate
       raise "已经是分销员或销售员了" if [1, 2].include? @customer.role_id
-      raise "角色错误" unless [1, 2].include? @request_params['role'].to_i
-      raise "不符合申请条件" unless @customer.can_dist_apply?
-      @customer.update!(role_id: @request_params['role'].to_i, app_status: 0)
+      #raise "角色错误" unless [1, 2].include? @request_params['role'].to_i
+      #raise "不符合申请条件" unless @customer.can_dist_apply?
+      @customer.update!(app_status: 0)
       { status: 'succ', data: {}}.to_json
     end
   end
