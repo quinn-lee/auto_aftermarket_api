@@ -3,6 +3,7 @@
 class Account < ActiveRecord::Base
   belongs_to :merchant,   :class_name => 'Merchant'
   belongs_to :shop,   :class_name => 'Shop'
+  belongs_to :role,   :class_name => 'Role'
 
   attr_accessor :password, :password_confirmation
 

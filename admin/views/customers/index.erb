@@ -1,0 +1,79 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">客户列表</h4>
+    </div>
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
+                <i class="fa fa-search"></i> 搜索
+            </button>
+        </div>
+    </div>
+    <!-- 表格主体内容 -->
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th style="width: 12%;">昵称</th>
+            <th style="width: 10%;">电话</th>
+            <th style="width: 13%;">邮箱</th>
+            <th style="width: 10%;">成交订单数</th>
+            <th style="width: 10%;">成交额</th>
+            <th style="width: 10%;">完成订单数</th>
+            <th style="width: 10%;">完成金额</th>
+            <th style="width: 10%;">角色</th>
+            <th style="width: 10%;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @customers.each do |customer| %>
+            <tr>
+                <td><%=(customer.wechat_info||{})['nickName']%></td>
+                <td><%=customer.mobile%></td>
+                <td><%=customer.email%></td>
+                <td><%=customer.paid_orders.count%></td>
+                <td>￥<%=customer.paid_orders.each.sum(&:pay_amount)%></td>
+                <td><%=customer.done_orders.count%></td>
+                <td>￥<%=customer.done_orders.each.sum(&:pay_amount)%></td>
+                <td><%=customer.role.name%></td>
+                <td>
+                  <a href="<%=url(:orders, :index, :customer_id =>customer.id) %>" class="pd-setting-ed">订单列表</a>
+                </td>
+            </tr>
+          <% end %>
+        </tbody>
+    </table>
+    <div class="pagination">
+      <%= will_paginate @customers %>
+    </div>
+</div>
+
+<div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">搜索栏</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <% form_tag url(:customers, :index), :method => :get do %>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>角色</label>
+                            <%= select_tag :role_id, :options => Role.where(role_type: "customer").map{|r| [r.name, r.id]}.unshift([nil,nil]), :value=>params[:role_id], :class => 'form-control' %>
+                        </div>
+
+                        <div class="col-xs-6 form-group">
+                            <label>昵称</label>
+                            <%= text_field_tag :nickname, :value=>params[:nickname], :class => 'form-control' %>
+                        </div>
+
+                    </div>
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-submit">提交</button>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
