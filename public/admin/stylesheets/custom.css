@@ -186,6 +186,12 @@ input[type=file].form-control{
 .table th.action-batch { white-space: nowrap; padding: 2px 5px; vertical-align: middle; }
 .table th.action-batch .dropdown { display: inline-block; }
 
+table#reservations>thead>tr { background: #fff0f0; }
+table#reservations>thead>tr>th { vertical-align: middle; text-align: center; }
+table#reservations>tbody>tr>td { text-align: center; height: 45px; }
+table#reservations>thead>tr>th.today { background: #ffe0e0; }
+table#reservations>tbody>tr>td.today { background: #f3f3f3; }
+table#reservations .popover {  max-width: 320px; }
 /* .text 文本 */
 .text-red { color: #e12503; }
 .text-blue { color: #1587d4; }
