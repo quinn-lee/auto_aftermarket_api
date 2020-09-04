@@ -1,72 +1,92 @@
 AutoAftermarketApi::Admin.controllers :accounts do
 
   get :index do
-    @title = "Accounts"
+    @title = "用户"
     @accounts = Account.all
+    @accounts = @accounts.where(role_id: params[:role_id]) if params[:role_id].present?
+    @accounts = @accounts.where("name like '%#{params[:name]}%'") if params[:name].present?
+    @accounts = @accounts.where("email like '%#{params[:email]}%'") if params[:email].present?
+    @accounts = @accounts.order("created_at desc").paginate(page: params[:page], per_page: 30)
     render 'accounts/index'
   end
 
   get :new do
     @title = pat(:new_title, :model => 'account')
+    @from = 'new'
     @account = Account.new
     render 'accounts/new'
   end
 
   post :create do
     @account = Account.new(params[:account])
+    @account.merchant_id = current_account.merchant_id
+    @account.shop_id = current_account.shop_id
+    @from = params[:from]
     if @account.save
-      @title = pat(:create_title, :model => "account #{@account.id}")
-      flash[:success] = pat(:create_success, :model => 'Account')
-      params[:save_and_continue] ? redirect(url(:accounts, :index)) : redirect(url(:accounts, :edit, :id => @account.id))
+      @title = '创建用户'
+      flash[:success] = "用户创建成功"
+      redirect(url(:accounts, :index))
     else
-      @title = pat(:create_title, :model => 'account')
-      flash[:error] = pat(:create_error, :model => 'account')
+      @title = '创建用户'
+      flash[:error] = "用户创建失败"
       render 'accounts/new'
     end
   end
 
   get :edit, :with => :id do
-    @title = pat(:edit_title, :model => "account #{params[:id]}")
+    @title = '编辑用户'
+    @from = 'edit'
     @account = Account.find(params[:id])
     if @account
       render 'accounts/edit'
     else
-      flash[:warning] = pat(:create_error, :model => 'account', :id => "#{params[:id]}")
+      flash[:warning] = '用户未找到'
+      halt 404
+    end
+  end
+
+  get :edit_password, :with => :id do
+    @title = '修改密码'
+    @from = 'edit_password'
+    @account = Account.find(params[:id])
+    if @account
+      render 'accounts/edit_password'
+    else
+      flash[:warning] = '用户未找到'
       halt 404
     end
   end
 
   put :update, :with => :id do
-    @title = pat(:update_title, :model => "account #{params[:id]}")
+    @title = '修改用户'
+    @from = params[:from]
     @account = Account.find(params[:id])
     if @account
       if @account.update_attributes(params[:account])
-        flash[:success] = pat(:update_success, :model => 'Account', :id =>  "#{params[:id]}")
-        params[:save_and_continue] ?
-          redirect(url(:accounts, :index)) :
-          redirect(url(:accounts, :edit, :id => @account.id))
+        flash[:success] = '用户修改成功'
+        redirect(url(:accounts, :index))
       else
-        flash[:error] = pat(:update_error, :model => 'account')
-        render 'accounts/edit'
+        flash[:error] = '用户修改失败'
+        render "accounts/#{params[:from]}"
       end
     else
-      flash[:warning] = pat(:update_warning, :model => 'account', :id => "#{params[:id]}")
+      flash[:warning] = '用户未找到'
       halt 404
     end
   end
 
-  delete :destroy, :with => :id do
+  get :destroy, :with => :id do
     @title = "Accounts"
     account = Account.find(params[:id])
     if account
       if account != current_account && account.destroy
-        flash[:success] = pat(:delete_success, :model => 'Account', :id => "#{params[:id]}")
+        flash[:success] = '用户删除成功'
       else
-        flash[:error] = pat(:delete_error, :model => 'account')
+        flash[:error] = '用户删除失败'
       end
       redirect url(:accounts, :index)
     else
-      flash[:warning] = pat(:delete_warning, :model => 'account', :id => "#{params[:id]}")
+      flash[:warning] = '用户未找到'
       halt 404
     end
   end

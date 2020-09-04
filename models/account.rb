@@ -33,6 +33,12 @@ class Account < ActiveRecord::Base
     ::BCrypt::Password.new(crypted_password) == password
   end
 
+  def role
+    if role_id.present? && r = Role.find(role_id)
+      return r.name
+    end
+  end
+
   private
 
   def encrypt_password

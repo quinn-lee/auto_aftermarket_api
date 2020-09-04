@@ -36,11 +36,11 @@ module AutoAftermarketApi
       role.allow   '/css_demo'
     end
 
-    access_control.roles_for :admin do |role|
+    access_control.roles_for :'管理员' do |role|
       role.project_module :accounts, '/accounts'
     end
 
-    # Custom error management 
+    # Custom error management
     error(403) { @title = "Error 403"; render('errors/403', :layout => :error) }
     error(404) { @title = "Error 404"; render('errors/404', :layout => :error) }
     error(500) { @title = "Error 500"; render('errors/500', :layout => :error) }

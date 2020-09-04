@@ -1,9 +1,11 @@
-<ul class="nav nav-tabs">
-  <li> <%= link_to tag_icon(:list, pat(:list)), url(:accounts, :index) %></li>
-  <li class="active"> <%= link_to tag_icon(:plus, pat(:new)), url(:accounts, :new) %></li>
-</ul>
-<div class="tabs-content">
-  <% form_for :account, url(:accounts, :create), :class => 'form-horizontal' do |f| %>
-    <%= partial 'accounts/form', :locals => { :f => f } %>
- <% end %>
+<div class="card">
+    <div class="card-title">
+        <ul class="nav nav-pills">
+            <li class="active"><h4>新增用户</h4></li>
+        </ul>
+    </div>
+
+    <% form_for :account, url(:accounts, :create), :class => 'form-horizontal' do |f| %>
+      <%= partial 'accounts/form', :locals => { :f => f } %>
+    <% end %>
 </div>
