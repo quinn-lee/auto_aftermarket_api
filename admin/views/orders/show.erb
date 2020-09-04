@@ -1,6 +1,102 @@
 <div class="card">
     <div class="card-title">
         <h4 class="underline">订单详情</h4>
+    </div>
+
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <% link_to 'javascript:void(0);', :class => 'btn btn-default', :data => { :toggle => 'modal', :target => '#editPayAmount' } do %>
+                <%= content_tag :i, ' 修改支付金额', :class => 'fa fa-cny' %>
+            <% end if @order.status == 'unpaid' %>
+            <% link_to 'javascript:void(0);', :class => 'btn btn-default', :data => { :toggle => 'modal', :target => '#cancel' } do %>
+                <%= content_tag :i, ' 取消订单', :class => 'fa fa-times' %>
+            <% end if @order.status != 'unpaid' && @order.status != 'done' && @order.status != 'cancelled' %>
+            <% link_to url(:orders, :done, :id => @order.id), :class => 'btn btn-default' do %>
+                <%= content_tag :i, ' 完成订单', :class => 'fa fa-check' %>
+            <% end if @order.status != 'unpaid' && @order.status != 'done' && @order.status != 'cancelled' && @order.status != 'cancelling' %>
+            <%= link_to '返回', url(:orders, :index), :class => 'btn btn-default' %>
+        </div>
+    </div>
+
+    <div class="order-info-block">
+        <ul class="order-info-ul">
+            <li><span class="dk">订单号：</span><span class="dv"><%= @order.order_no %></span></li>
+            <li><span class="dk">订单类型：</span><span class="dv"><%= Order::ORDERTYPE[@order.order_type] %></span></li>
+            <li><span class="dk">订单状态：</span><span class="dv"><%= Order::STATUS[@order.status] %></span></li>
+            <li><span class="dk">支付时间：</span><span class="dv"><%= @order.pay_time.try{|pt| pt.strftime('%Y%m%d')} %></span></li>
+            <li><span class="dk">取消时间：</span><span class="dv"><%= @order.cancel_time.try{|ct| ct.strftime('%Y%m%d')} %></span></li>
+            <li><span class="dk">退款金额：</span><span class="dv">￥<%= @order.refund_amount %></span></li>
+            <li><span class="dk">预约时间段：</span><span class="dv"><%= @order.order_reservation.present? ? "#{@order.order_reservation.booking_time_from.strftime('%F %H:%M')} ~ #{@order.order_reservation.booking_time_to.strftime('%H:%M')}" : ""%></span></li>
+        </ul>
+    </div>
+
+    <div class="payment-info-block">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-8">
+                <ul class="payment-info-ul">
+                    <li><span class="dk">订单总价：</span><span class="dv">￥<%= @order.amount %></span></li>
+                    <li><span class="dk">优惠券减免：</span><span class="dv">￥<%= @order.coupon_log.present? ? @order.coupon_log.coupon_amount : 0 %></span></li>
+                    <% if @order.old_pay_amount.present? %>
+                        <li><span class="dk">原支付款：</span><span class="dv text-bold text-cancel">￥<%= @order.old_pay_amount %></span></li>
+                    <% end %>
+                    <li><span class="dk text-bold">实付款：</span><span class="dv text-red text-bold">￥<%= @order.pay_amount %></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-bordered commodity-info-block">
+        <thead>
+            <tr>
+                <th style="width: 66%;">商品信息</th>
+                <th style="width: 33%;">子订单信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @order.sub_orders.each do |sub_order| %>
+            <tr>
+                <td>
+                    <ul class="commodity-info-ul">
+                        <% OrderSku.where(id: sub_order.order_sku_ids).each do |order_sku| %>
+                            <li>
+                                <% link_to url(:spus, :show_sku, :sku_id => order_sku.t_sku_id ), :class => 'commodity-info-thumbnail' do %>
+                                    <%= image_tag order_sku.t_sku.images[0].url %>
+                                <% end %>
+                                <div class="commodity-info-title">
+                                    <%= link_to order_sku.t_sku.title, url(:spus, :show_sku, :sku_id => order_sku.t_sku_id ), :class => 'text-link' %>
+                                </div>
+                                <div class="commodity-info-price">￥<%= order_sku.price %></div>
+                                <div class="commodity-info-quantity">x<%= order_sku.quantity %></div>
+                            </li>
+                        <% end %>
+                    </ul>
+                </td>
+                <td>
+                    <ul class="sub-order-info-ul">
+                        <li><span class="dk">类型：</span><span class="dv"><%= SubOrder::SUBTYPE[sub_order.sub_type] %></span></li>
+                        <li><span class="dk">状态：</span><span class="dv"><%= Order::STATUS[sub_order.status] %></span></li>
+                        <% if sub_order.sub_type == 'install' %>
+                            <li><span class="dk">联系人信息：</span><span class="dv"><%= "#{@order.contact_info['name']}, #{@order.contact_info['mobile']}" %></span></li>
+                        <% elsif sub_order.sub_type == 'delivery' %>
+                            <li>
+                                <span class="dk">收货地址：</span>
+                                <span class="dv"><%= "#{@order.delivery_info['name']},#{@order.delivery_info['mobile']},#{@order.delivery_info['province']} #{@order.delivery_info['city']} #{@order.delivery_info['district']} #{@order.delivery_info['address']}" %></span>
+                            </li>
+                            <li><span class="dk">物流公司：</span><span class="dv"><%= @order.delivery_info['logi_company'] %></span></li>
+                            <li><span class="dk">快递单号：</span><span class="dv"><%= @order.delivery_info['shpmt_num'] %></span></li>
+                        <% end %>
+                    </ul>
+                </td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
+
+<!--
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">订单详情</h4>
         <div class="third-cell-operate" style="margin-left: 100px;">
             <div class="form-operate">
                 <a href="<%=url(:orders, :index) %>" class="pd-setting-ed">返回</a>
@@ -126,6 +222,7 @@
         </div>
     </div>
 </div>
+-->
 <div class="modal modal-custom fade" id="cancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -175,15 +272,3 @@
         </div>
     </div>
 </div>
-<style>
-.pd-setting-ed{
-  background: linear-gradient(178deg, #e12503 0%, #85060c 100%);
-  border-radius: 3px;
-  color: #fff;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  text-align: center;
-  padding: 5px 15px;
-  float: right;
-}
-</style>

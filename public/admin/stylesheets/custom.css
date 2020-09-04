@@ -196,7 +196,10 @@ table#reservations .popover {  max-width: 320px; }
 .text-red { color: #e12503; }
 .text-blue { color: #1587d4; }
 
+.text-cancel { color: #aaa; text-decoration: line-through; }
 .text-bold { font-weight: bold; }
+.text-link { color: #333; }
+.text-link:hover { color: #315efb; text-decoration: underline; }
 /* .thumbnail 缩略图 */
 .thumbnail-filter {
     width: 128px;
@@ -263,3 +266,18 @@ table#reservations .popover {  max-width: 320px; }
 
 /* .popover content 样式 */
 .popover-scroll { height: 80px; overflow-y: auto; }
+
+/* order-detail 订单详情页样式 */
+.order-info-block { background-color: #fff; border: 1px solid #ccc; margin-bottom: 10px; }
+.order-info-ul li { display: inline-block; width: 33%; padding: 5px; }
+.payment-info-block { background-color: #eee; margin-bottom: 10px; }
+.payment-info-ul li { padding: 5px 0; margin-right: 70px }
+.payment-info-ul li .dv { float: right; }
+.commodity-info-ul li { border-top: 1px solid #ddd; display: flex; align-items: center; padding: 10px 0; }
+.commodity-info-ul li:hover { background-color: #f5f5f5; }
+.commodity-info-ul li:first-child { border-top: none; }
+.commodity-info-thumbnail { width: 50px; height: 50px; margin-right: 30px; }
+.commodity-info-thumbnail img { width: 50px; height: 50px; }
+.commodity-info-title { flex: 1; }
+.commodity-info-price { width: 100px; text-align: center; }
+.commodity-info-quantity { width: 80px; text-align: center; }
