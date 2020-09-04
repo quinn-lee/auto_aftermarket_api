@@ -33,7 +33,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="user-comment">
                 <div class="comment-details">
-                    <h4> <%=answer.nickname%>  <%=answer.created_at.strftime("%F %T")%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><a><i class="fa fa-heart"></i> <%=answer.answer_likes.count%> Likes</a></span></h4>
+                    <h4> <%=answer.nickname%>  <%=answer.created_at.strftime("%F %T")%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><a><i class="fa fa-heart"></i> <%=answer.answer_likes.count%> Likes</a></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><a href="<%=url(:questions, :destroy_answer, :id=>@question, :answer_id => answer.id)%>"><i class="fa fa-trash-o"></i> 删除</a></span></h4>
                     <% if answer.content %>
                     <p><%=answer.content%></p><br/>
                     <% end %>

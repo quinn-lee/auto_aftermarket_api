@@ -19,14 +19,14 @@
                 <label>开始时间*</label>
                 <div class="input-group" style="width: 75%">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <%=f.text_field(:begin_time, :class => "form-control datetimePicker")%>
+                    <%=f.text_field(:begin_time, :class => "form-control datetimePicker", :value=>@group.begin_time.try(:strftime , '%Y/%m/%d %H:%M'))%>
                 </div>
             </div>
             <div class="col-xs-12 form-group-row">
                 <label>结束时间*</label>
                 <div class="input-group" style="width: 75%">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <%=f.text_field(:end_time, :class => "form-control datetimePicker")%>
+                    <%=f.text_field(:end_time, :class => "form-control datetimePicker", :value=>@group.end_time.try(:strftime , '%Y/%m/%d %H:%M'))%>
                 </div>
             </div>
             <div class="col-xs-12 form-group-row">

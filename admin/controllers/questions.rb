@@ -72,6 +72,14 @@ AutoAftermarketApi::Admin.controllers :questions do
     render "questions/new_answer"
   end
 
+  # 删除回复
+  get :destroy_answer, :with => :id do
+    @answer = Answer.find(params[:answer_id])
+    @answer.destroy!
+    flash[:success] = "回复删除成功"
+    redirect(url(:questions, :answers, :id => params[:id]))
+  end
+
   # 商家回复
   post :answer, :with => :id  do
     begin

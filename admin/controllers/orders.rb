@@ -6,6 +6,7 @@ AutoAftermarketApi::Admin.controllers :orders do
   # 订单列表
   get :index do
     @orders = current_account.merchant.orders
+    @orders = @orders.where(customer_id: params[:customer_id]) if params[:customer_id].present?
     @orders = @orders.where(status: params[:status]) if params[:status].present?
     @orders = @orders.where(order_type: params[:order_type]) if params[:order_type].present?
     @orders = @orders.where(order_no: params[:order_no]) if params[:order_no].present?

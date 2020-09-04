@@ -1,7 +1,4 @@
 AutoAftermarketApi::Admin.controllers :accounts do
-  before do
-    set_accounts_title_and_local
-  end
 
   get :index do
     @title = "Accounts"
