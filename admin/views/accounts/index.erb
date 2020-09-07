@@ -37,7 +37,9 @@
                             <li>
                                 <%= link_to '编辑', :href => url(:accounts, :edit, :id => account.id), :rel => :tooltip, :class => 'list-row-action-wrapper-link'%>
                                 <%= link_to '修改密码', :href => url(:accounts, :edit_password, :id => account.id), :rel => :tooltip, :class => 'list-row-action-wrapper-link'%>
-                                <%= link_to '删除', url(:accounts, :destroy, :id => account.id), :rel => :tooltip, :class => 'list-row-action-wrapper-link'%>
+                                <% if current_account != account %>
+                                  <%= link_to '删除', url(:accounts, :destroy, :id => account.id), :rel => :tooltip, :class => 'list-row-action-wrapper-link'%>
+                                <% end %>
                             </li>
                         </ul>
                     </div>
