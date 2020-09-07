@@ -31,9 +31,9 @@ class TCategory < ActiveRecord::Base
   def self.all_categories
     # 两级目录结构
     categories = []
-    self.where("parent_id is null").each do |category|
+    self.where("parent_id is null").where(is_hidden: false).each do |category|
       cg = category.to_api
-      cs = self.where(parent_id: category.id)
+      cs = self.where(parent_id: category.id).where(is_hidden: false)
       cg['sub'] = cs.map(&:to_api)
       categories << cg
     end
