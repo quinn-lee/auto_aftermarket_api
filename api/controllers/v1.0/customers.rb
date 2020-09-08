@@ -57,7 +57,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
               agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员或找出最早分享客户
               dist_agent_id = agent.id #记录新用户归属
             end
-            @cus = Account.create(merchant_id: @merchant.id, dist_share_id: dist_share_id, dist_agent_id: dist_agent_id, openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
+            @cus = Account.create(role_id: 3, merchant_id: @merchant.id, dist_share_id: dist_share_id, dist_agent_id: dist_agent_id, openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
           end
         end
       end
