@@ -58,7 +58,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
               dist_agent_id = agent.id #记录新用户归属
             end
             pwd = RandomCode.generate_token
-            @cus = Account.create(email: "#{res['openid']}@hotmail.com",
+            email = RandomCode.generate_token
+            @cus = Account.create(email: "#{email}@hotmail.com",
               password: pwd,
               password_confirmation: pwd,
               role_id: 3,
