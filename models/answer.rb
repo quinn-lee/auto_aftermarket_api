@@ -3,7 +3,7 @@
 require 'carrierwave/orm/activerecord'
 class Answer < ActiveRecord::Base
   belongs_to :question,   :class_name => 'Question'
-  belongs_to :customer,   :class_name => 'Customer'
+  belongs_to :customer,   :class_name => 'Account'
   belongs_to :account,   :class_name => 'Account'
   has_many :answer_likes, :class_name => 'AnswerLike', :dependent => :destroy
 

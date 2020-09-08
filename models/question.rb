@@ -3,7 +3,7 @@
 class Question < ActiveRecord::Base
   belongs_to :topic,   :class_name => 'Topic'
   belongs_to :merchant,   :class_name => 'Merchant'
-  belongs_to :customer,   :class_name => 'Customer'
+  belongs_to :customer,   :class_name => 'Account'
   has_many :answers, :class_name => 'Answer', :dependent => :destroy
 
   validates :content, :merchant_id, :topic_id, presence: true

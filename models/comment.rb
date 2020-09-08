@@ -1,7 +1,7 @@
 # encoding: utf-8
 # 评论
 class Comment < ActiveRecord::Base
-  belongs_to :customer,   :class_name => 'Customer'
+  belongs_to :customer,   :class_name => 'Account'
   belongs_to :order,   :class_name => 'Order'
   belongs_to :t_sku,   :class_name => 'TSku'
   belongs_to :t_spu,   :class_name => 'TSpu'

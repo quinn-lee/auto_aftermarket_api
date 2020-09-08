@@ -2,7 +2,7 @@
 # 分销分享表
 
 class DistShare < ActiveRecord::Base
-  belongs_to :customer,   :class_name => 'Customer'
+  belongs_to :customer,   :class_name => 'Account'
 
 
   # 根据分享链，找出最近邻的分销员，注意返回的customer可能不是分销员

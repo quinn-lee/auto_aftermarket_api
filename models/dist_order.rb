@@ -3,7 +3,7 @@
 class DistOrder < ActiveRecord::Base
 
   belongs_to :order,   :class_name => 'Order'
-  belongs_to :customer, :class_name => 'Customer'
+  belongs_to :customer, :class_name => 'Account'
 
   def to_api
     {

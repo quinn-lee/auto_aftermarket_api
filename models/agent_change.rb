@@ -1,5 +1,5 @@
 class AgentChange < ActiveRecord::Base
-  belongs_to :customer,   :class_name => 'Customer'
+  belongs_to :customer,   :class_name => 'Account'
 
   # 更换分销员通知
   def change_subscribe

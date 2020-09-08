@@ -50,19 +50,19 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         if res["errcode"].present?
           raise res['errmsg']
         else
-          unless @cus = Customer.find_by(openid: res['openid'])
+          unless @cus = Account.find_by(openid: res['openid'])
             dist_agent_id = nil
             dist_share_id = @request_params["dist_share_id"]
             if @request_params["dist_share_id"].present?
               agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员或找出最早分享客户
               dist_agent_id = agent.id #记录新用户归属
             end
-            @cus = Customer.create(merchant_id: @merchant.id, dist_share_id: dist_share_id, dist_agent_id: dist_agent_id, openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
+            @cus = Account.create(merchant_id: @merchant.id, dist_share_id: dist_share_id, dist_agent_id: dist_agent_id, openid: res['openid'], unionid: res['unionid'], token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
           end
         end
       end
 
-      { status: 'succ', data: {token: @cus.token, role: @cus.role_id_t, agent: @cus.agent.try{|a| a.to_agent_api}}}.to_json
+      { status: 'succ', data: {token: @cus.token, role: @cus.role_id, agent: @cus.agent.try{|a| a.to_agent_api}}}.to_json
     end
   end
 
@@ -147,7 +147,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     end
   end
 
-  # 记录微信用户信息
+  # 记录微信用户位置信息
   # params: {
       # accuracy: 65
       # errMsg: "getLocation:ok"
@@ -255,7 +255,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
           raise res['errmsg']
         else
           # 后台审核通过后的分销员或销售员才能访问商户版小程序
-          unless cus = Customer.find_by(openid: res['openid'], role_id: [1, 2], app_status: 1)
+          unless cus = Account.find_by(openid: res['openid'], role_id: [1, 2], app_status: 1)
             raise "权限错误"
           end
         end
@@ -421,7 +421,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     api_rescue do
       authenticate
 
-      { status: 'succ', data: {count: Customer.where(dist_agent_id: @customer.id).count}}.to_json
+      { status: 'succ', data: {count: Account.where(dist_agent_id: @customer.id).count}}.to_json
     end
   end
 end

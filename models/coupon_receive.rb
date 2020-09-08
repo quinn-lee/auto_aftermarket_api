@@ -1,7 +1,7 @@
 # encoding: utf-8
 # 优惠券领取记录
 class CouponReceive < ActiveRecord::Base
-  belongs_to :customer,   :class_name => 'Customer'
+  belongs_to :customer,   :class_name => 'Account'
   belongs_to :coupon,   :class_name => 'Coupon'
 
   STATUS = {

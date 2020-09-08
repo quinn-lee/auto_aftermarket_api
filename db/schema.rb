@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 110) do
+ActiveRecord::Schema.define(version: 111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,21 @@ ActiveRecord::Schema.define(version: 110) do
     t.datetime "updated_at", null: false
     t.integer "shop_id"
     t.integer "role_id"
+    t.string "sex"
+    t.string "mobile"
+    t.datetime "birth"
+    t.jsonb "address"
+    t.string "openid"
+    t.string "unionid"
+    t.string "token"
+    t.jsonb "wechat_info", default: {}
+    t.jsonb "location_info", default: {}
+    t.jsonb "his_location_info"
+    t.json "wx_barcode"
+    t.integer "dist_share_id"
+    t.integer "dist_agent_id"
+    t.integer "app_status"
+    t.json "avatar"
   end
 
   create_table "activities", force: :cascade do |t|
