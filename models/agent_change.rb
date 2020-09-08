@@ -1,5 +1,5 @@
 class AgentChange < ActiveRecord::Base
-  belongs_to :customer,   :class_name => 'Account'
+  belongs_to :account,   :class_name => 'Account'
 
   # 更换分销员通知
   def change_subscribe
@@ -9,8 +9,8 @@ class AgentChange < ActiveRecord::Base
       raise "call api weixin timeout,please try again"
     else
       res=JSON.parse body
-      old_customer = Customer.find(old_agent_id)
-      now_customer = Customer.find(customer.dist_agent_id)
+      old_customer = Account.find(old_agent_id)
+      now_customer = Account.find(account.dist_agent_id)
       if res["errcode"].present?
         raise res['errmsg']
       else
@@ -21,7 +21,7 @@ class AgentChange < ActiveRecord::Base
           "thing3"=>{value: "您的专属客服已变更为#{(now_customer.wechat_info||{})['nickName']}"[0..19]}
         }
         param = {
-          touser: customer.openid,
+          touser: account.openid,
           template_id: "8eIYZ-5AYvtVoNIYPqpsMSX_qJXl4s2TNOvciP_YPjs",
           data: data,
           miniprogram_state: "trial"

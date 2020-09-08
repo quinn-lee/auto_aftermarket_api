@@ -3,7 +3,7 @@
 class Favorite < ActiveRecord::Base
 
   belongs_to :merchant,   :class_name => 'Merchant'
-  belongs_to :customer,   :class_name => 'Account'
+  belongs_to :account,   :class_name => 'Account'
   belongs_to :t_sku,   :class_name => 'TSku'
 
 

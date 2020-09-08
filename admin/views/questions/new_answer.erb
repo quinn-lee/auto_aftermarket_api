@@ -33,7 +33,7 @@
         <div class="coment-area">
           <% form_for @answer, url(:questions, :answer, :id => @question.id), :class=>"form-horizontal", :method => 'post', multipart: true do |f| %>
                 <%=f.hidden_field :question_id %>
-                <%=f.hidden_field :account_id %>
+                <%=f.hidden_field :staff_id %>
                 <div class="row">
                     <div class="col-xs-12 form-group-row">
                         <label>文字内容</label>

@@ -14,8 +14,8 @@ AutoAftermarketApi::Admin.controllers :agent_changes do
     begin
       @agent_change = AgentChange.find(params[:id])
       raise "分销员不能为空" if params[:new_agent_id].blank?
-      @agent_change.update!(old_agent_id: @agent_change.customer.dist_agent_id, account_id: current_account.id, status: 1)
-      @agent_change.customer.update!(dist_agent_id: params[:new_agent_id])
+      @agent_change.update!(old_agent_id: @agent_change.account.dist_agent_id, staff_id: current_account.id, status: 1)
+      @agent_change.account.update!(dist_agent_id: params[:new_agent_id])
       @agent_change.change_subscribe #订阅消息
       flash[:success] = "操作成功"
       redirect(url(:agent_changes, :index))

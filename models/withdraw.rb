@@ -2,7 +2,7 @@
 # 佣金提现表
 
 class Withdraw < ActiveRecord::Base
-  belongs_to :customer,   :class_name => 'Account'
+  belongs_to :account,   :class_name => 'Account'
 
   STATUS = {
     0 => '申请提现',

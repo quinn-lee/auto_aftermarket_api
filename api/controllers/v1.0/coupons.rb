@@ -80,8 +80,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/coupons' do
           raise "该优惠券已过结束时间" if @coupon.end_time < Time.now
           raise "该优惠券不可领取" if @coupon.status != 1
           raise "该优惠券已被抢光" if @coupon.max_num.present? && @coupon.coupon_receives.count > @coupon.max_num
-          raise "该客户已领取过该优惠券" if @coupon.coupon_receives.where(customer_id: @customer.id).count > 0
-          CouponReceive.create!(customer_id: @customer.id, coupon_id: @coupon.id, coupon_money: @coupon.money, full_money: @coupon.full_money, discount: @coupon.discount, status: 0)
+          raise "该客户已领取过该优惠券" if @coupon.coupon_receives.where(account_id: @customer.id).count > 0
+          CouponReceive.create!(account_id: @customer.id, coupon_id: @coupon.id, coupon_money: @coupon.money, full_money: @coupon.full_money, discount: @coupon.discount, status: 0)
         end
       end
       { status: 'succ', data: {}}.to_json

@@ -13,7 +13,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/agent_changes' do
     api_rescue do
       authenticate
       raise "申请内容不能为空" if @request_params['content'].blank?
-      AgentChange.create!(customer_id: @customer.id, merchant_id: @merchant.id, content: @request_params['content'], status: 0)
+      AgentChange.create!(account_id: @customer.id, merchant_id: @merchant.id, content: @request_params['content'], status: 0)
       { status: 'succ', data: {}}.to_json
     end
   end

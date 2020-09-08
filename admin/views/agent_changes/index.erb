@@ -14,7 +14,7 @@
         <tbody>
         <% @agent_changes.each do |ac| %>
             <tr>
-                <td><%= ac.customer.wechat_info['nickName'] rescue nil %></td>
+                <td><%= ac.account.wechat_info['nickName'] rescue nil %></td>
                 <td><%= ac.content %></td>
                 <td class="action">
                     <div class="dropdown">

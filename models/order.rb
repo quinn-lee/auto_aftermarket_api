@@ -6,7 +6,7 @@ class Order < ActiveRecord::Base
   has_many :dist_orders, :class_name => 'DistOrder', :dependent => :destroy
   has_many :comments, :class_name => 'Comment', :dependent => :destroy
   belongs_to :merchant,   :class_name => 'Merchant'
-  belongs_to :customer,   :class_name => 'Account'
+  belongs_to :account,   :class_name => 'Account'
   has_one :coupon_log, :class_name => 'CouponLog', :dependent => :destroy
   has_one :group_buyer, :class_name => 'GroupBuyer', :dependent => :destroy
   has_one :seckill_buyer, :class_name => 'SeckillBuyer', :dependent => :destroy
@@ -153,14 +153,14 @@ class Order < ActiveRecord::Base
     t_sku = TSku.where(id: OrderSku.where(order_no: order_no).map(&:t_sku_id)).first
     ds = DistSetting.first
     if status == "paid" #插入分销订单数据
-      if customer.dist_agent_id.present?
-        dist_agent = Customer.find(customer.dist_agent_id)
+      if account.dist_agent_id.present?
+        dist_agent = Account.find(account.dist_agent_id)
         percent = BigDecimal.new(dist_agent.dist_percent.to_s)
         commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s))
         # 分销金额>0 并且开启了分销，才插入分销订单数据
         #if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
         if dist_orders.blank? && ds.dist_switch
-          DistOrder.create(order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, customer_id: customer_id, merchant_id: merchant_id, pay_amount: pay_amount, commission: commission, pay_time: pay_time, complete_time: nil)
+          DistOrder.create(order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, account_id: account_id, merchant_id: merchant_id, pay_amount: pay_amount, commission: commission, pay_time: pay_time, complete_time: nil)
         end
       end
     elsif ['unpaid','delete','cancelled'].include? status #删除分销订单数据
@@ -191,7 +191,7 @@ class Order < ActiveRecord::Base
           "thing4"=>{value: "您的订单已发货"}
         }
         param = {
-          touser: customer.openid,
+          touser: account.openid,
           template_id: "PRP-auu9CmP6bQF3lEySj3E6OI3SSo5Dz3IxDQVJrdU",
           page: "/pages/orders/show?id=#{id}",
           data: data,
@@ -225,7 +225,7 @@ class Order < ActiveRecord::Base
           "thing5"=>{value: "您的订单商品已备齐，请您尽快预约安装时间"}
         }
         param = {
-          touser: customer.openid,
+          touser: account.openid,
           template_id: "HeP4mRcMWyUREX-enXlcYYzeAZZ1ltgguxG1-KwvfU0",
           page: "/pages/orders/show?id=#{id}",
           data: data,

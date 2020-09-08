@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 111) do
+ActiveRecord::Schema.define(version: 152) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 111) do
   end
 
   create_table "addresses", force: :cascade do |t|
-    t.integer "customer_id"
     t.string "province"
     t.string "city"
     t.string "district"
@@ -61,24 +60,25 @@ ActiveRecord::Schema.define(version: 111) do
     t.string "mobile"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "agent_changes", force: :cascade do |t|
     t.string "content"
     t.integer "status"
-    t.integer "customer_id"
     t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "old_agent_id"
     t.integer "merchant_id"
+    t.integer "staff_id"
   end
 
   create_table "answer_likes", force: :cascade do |t|
     t.integer "answer_id"
-    t.integer "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "answers", force: :cascade do |t|
@@ -86,10 +86,10 @@ ActiveRecord::Schema.define(version: 111) do
     t.string "content"
     t.json "images"
     t.json "audio"
-    t.integer "customer_id"
     t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "staff_id"
   end
 
   create_table "car_brands", force: :cascade do |t|
@@ -155,7 +155,6 @@ ActiveRecord::Schema.define(version: 111) do
   end
 
   create_table "cars", force: :cascade do |t|
-    t.integer "customer_id"
     t.integer "car_model_id"
     t.string "car_model_name"
     t.datetime "license_date"
@@ -165,6 +164,7 @@ ActiveRecord::Schema.define(version: 111) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_current"
+    t.integer "account_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -176,11 +176,10 @@ ActiveRecord::Schema.define(version: 111) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "t_spu_id"
-    t.integer "customer_id"
+    t.integer "account_id"
   end
 
   create_table "coupon_logs", force: :cascade do |t|
-    t.integer "customer_id"
     t.integer "coupon_receive_id"
     t.integer "order_id"
     t.decimal "order_original_amount", precision: 10, scale: 2
@@ -189,10 +188,10 @@ ActiveRecord::Schema.define(version: 111) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "coupon_receives", force: :cascade do |t|
-    t.integer "customer_id"
     t.integer "coupon_id"
     t.decimal "coupon_money", precision: 10, scale: 2
     t.decimal "full_money", precision: 10, scale: 2
@@ -200,6 +199,7 @@ ActiveRecord::Schema.define(version: 111) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "discount", precision: 10, scale: 2
+    t.integer "account_id"
   end
 
   create_table "coupons", force: :cascade do |t|
@@ -256,7 +256,6 @@ ActiveRecord::Schema.define(version: 111) do
     t.integer "order_id"
     t.integer "dist_agent_id"
     t.string "sku_info"
-    t.integer "customer_id"
     t.integer "merchant_id"
     t.decimal "pay_amount", precision: 10, scale: 2
     t.decimal "commission", precision: 10, scale: 2
@@ -264,6 +263,7 @@ ActiveRecord::Schema.define(version: 111) do
     t.datetime "complete_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "dist_settings", force: :cascade do |t|
@@ -278,7 +278,6 @@ ActiveRecord::Schema.define(version: 111) do
   end
 
   create_table "dist_shares", force: :cascade do |t|
-    t.integer "customer_id"
     t.integer "parent_id"
     t.integer "activity_id"
     t.integer "coupon_id"
@@ -286,19 +285,19 @@ ActiveRecord::Schema.define(version: 111) do
     t.integer "merchant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "favorites", force: :cascade do |t|
     t.integer "merchant_id"
-    t.integer "customer_id"
     t.integer "t_sku_id"
     t.decimal "price", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "group_buyers", force: :cascade do |t|
-    t.integer "customer_id"
     t.integer "group_id"
     t.integer "order_id"
     t.integer "t_sku_id"
@@ -308,6 +307,7 @@ ActiveRecord::Schema.define(version: 111) do
     t.decimal "group_amount", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -376,7 +376,6 @@ ActiveRecord::Schema.define(version: 111) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "customer_id"
     t.integer "merchant_id"
     t.datetime "order_date"
     t.string "order_no"
@@ -402,14 +401,15 @@ ActiveRecord::Schema.define(version: 111) do
     t.decimal "old_pay_amount", precision: 10, scale: 2
     t.decimal "refund_amount", precision: 10, scale: 2
     t.string "reject_reason"
+    t.integer "account_id"
   end
 
   create_table "page_views", force: :cascade do |t|
-    t.integer "customer_id"
     t.datetime "visit_time"
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "purchase_skus", force: :cascade do |t|
@@ -434,12 +434,12 @@ ActiveRecord::Schema.define(version: 111) do
   create_table "questions", force: :cascade do |t|
     t.string "content"
     t.integer "merchant_id"
-    t.integer "customer_id"
     t.integer "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "t_sku_id"
     t.json "images"
+    t.integer "account_id"
   end
 
   create_table "recommends", force: :cascade do |t|
@@ -472,7 +472,6 @@ ActiveRecord::Schema.define(version: 111) do
   end
 
   create_table "seckill_buyers", force: :cascade do |t|
-    t.integer "customer_id"
     t.integer "seckill_id"
     t.integer "order_id"
     t.integer "t_sku_id"
@@ -481,6 +480,7 @@ ActiveRecord::Schema.define(version: 111) do
     t.integer "seckill_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "seckills", force: :cascade do |t|
@@ -501,11 +501,11 @@ ActiveRecord::Schema.define(version: 111) do
   end
 
   create_table "shares", force: :cascade do |t|
-    t.integer "customer_id"
     t.string "url"
     t.jsonb "options"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "shops", force: :cascade do |t|
@@ -521,11 +521,11 @@ ActiveRecord::Schema.define(version: 111) do
   end
 
   create_table "sku_views", force: :cascade do |t|
-    t.integer "customer_id"
     t.datetime "visit_time"
     t.string "t_sku_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "sub_orders", force: :cascade do |t|
@@ -629,7 +629,6 @@ ActiveRecord::Schema.define(version: 111) do
   end
 
   create_table "withdraws", force: :cascade do |t|
-    t.integer "customer_id"
     t.integer "merchant_id"
     t.datetime "app_date"
     t.decimal "amount", precision: 10, scale: 2
@@ -639,6 +638,8 @@ ActiveRecord::Schema.define(version: 111) do
     t.datetime "pay_date"
     t.string "account_no"
     t.string "wechat_no"
+    t.integer "account_id"
+    t.integer "staff_id"
   end
 
   create_table "working_time_sets", force: :cascade do |t|
@@ -652,7 +653,6 @@ ActiveRecord::Schema.define(version: 111) do
 
   create_table "wxpay_infos", force: :cascade do |t|
     t.string "prepay_id"
-    t.integer "customer_id"
     t.string "order_no"
     t.datetime "expired_time"
     t.datetime "created_at", null: false
@@ -662,6 +662,7 @@ ActiveRecord::Schema.define(version: 111) do
     t.datetime "pay_time"
     t.string "status"
     t.decimal "amount", precision: 10, scale: 2
+    t.integer "account_id"
   end
 
 end

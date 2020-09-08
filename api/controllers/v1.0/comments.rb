@@ -27,7 +27,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/comments' do
     api_rescue do
       authenticate
 
-      @order_skus = OrderSku.where(comment_status: 0).where("(SELECT orders.customer_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{@customer.id}")
+      @order_skus = OrderSku.where(comment_status: 0).where("(SELECT orders.account_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{@customer.id}")
       { status: 'succ', data: @order_skus.map(&:to_api_comment)}.to_json
     end
   end
@@ -48,7 +48,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/comments' do
         order = Order.find(@request_params['order_id'])
         sku = TSku.find(@request_params['sku_id'])
         order_sku = OrderSku.find_by(order_no: order.order_no, t_sku_id: @request_params['sku_id'])
-        @comment = Comment.new(content: @request_params['content'], order_id: order.id, t_sku_id: sku.id, rating: @request_params['rating'], t_spu_id: sku.t_spu_id, customer_id: @customer.id)
+        @comment = Comment.new(content: @request_params['content'], order_id: order.id, t_sku_id: sku.id, rating: @request_params['rating'], t_spu_id: sku.t_spu_id, account_id: @customer.id)
         i = 0
         images = []
         if @request_params['images'].present? # 保存图片
@@ -156,7 +156,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/comments' do
       else
         @comments = Comment.where("1=2")
       end
-      { status: 'succ', data: @comments.map{|c| c.to_api.merge({customer: c.customer.wechat_info})}}.to_json
+      { status: 'succ', data: @comments.map{|c| c.to_api.merge({customer: c.account.wechat_info})}}.to_json
     end
   end
 

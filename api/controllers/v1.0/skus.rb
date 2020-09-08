@@ -1515,10 +1515,10 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       authenticate
 
       @sku = TSku.find(@request_params['sku_id'])
-      if sv = SkuView.find_by(customer_id: @customer.id, t_sku_id: @sku.id)
+      if sv = SkuView.find_by(account_id: @customer.id, t_sku_id: @sku.id)
         sv.update(visit_time: Time.now)
       else
-        SkuView.create(customer_id: @customer.id, t_sku_id: @sku.id, visit_time: Time.now)
+        SkuView.create(account_id: @customer.id, t_sku_id: @sku.id, visit_time: Time.now)
       end
       { status: 'succ', data: @sku.to_api}.to_json
     end
@@ -1609,7 +1609,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
   post :favorites, :provides => [:json] do
     api_rescue do
       authenticate
-      @favorites = Favorite.where(merchant_id: @merchant.id, customer_id: @customer.id)
+      @favorites = Favorite.where(merchant_id: @merchant.id, account_id: @customer.id)
       { status: 'succ', data: @favorites.order("created_at desc").map{|f| f.t_sku.to_api}}.to_json
     end
   end
@@ -1623,8 +1623,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       ActiveRecord::Base.transaction do
         raise "sku ID不能为空" if @request_params['sku_id'].blank?
         sku = TSku.find(@request_params['sku_id'])
-        if Favorite.where(merchant_id: @merchant.id, customer_id: @customer.id, t_sku_id: sku.id).count == 0
-          Favorite.create!(merchant_id: @merchant.id, customer_id: @customer.id, t_sku_id: sku.id)
+        if Favorite.where(merchant_id: @merchant.id, account_id: @customer.id, t_sku_id: sku.id).count == 0
+          Favorite.create!(merchant_id: @merchant.id, account_id: @customer.id, t_sku_id: sku.id)
         end
       end
       { status: 'succ', data: {}}.to_json
@@ -1640,7 +1640,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
       ActiveRecord::Base.transaction do
         raise "sku ID不能为空" if @request_params['sku_id'].blank?
         sku = TSku.find(@request_params['sku_id'])
-        if favorite = Favorite.find_by(merchant_id: @merchant.id, customer_id: @customer.id, t_sku_id: sku.id)
+        if favorite = Favorite.find_by(merchant_id: @merchant.id, account_id: @customer.id, t_sku_id: sku.id)
           favorite.destroy
         end
       end
@@ -1658,7 +1658,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/skus' do
         raise "sku ID不能为空" if @request_params['sku_id'].blank?
         sku = TSku.find(@request_params['sku_id'])
         @data = {"favorite": false}
-        if favorite = Favorite.find_by(merchant_id: @merchant.id, customer_id: @customer.id, t_sku_id: sku.id)
+        if favorite = Favorite.find_by(merchant_id: @merchant.id, account_id: @customer.id, t_sku_id: sku.id)
           @data = {"favorite": true}
         end
       end

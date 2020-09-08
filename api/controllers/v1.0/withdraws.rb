@@ -17,7 +17,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/withdraws' do
       raise "提现金额不能为空" if @request_params['apply_amount'].blank?
       raise "提现金额必须大于0" if BigDecimal.new(@request_params['apply_amount'].to_s) < 0.001
       raise "提现金额不能大于可提现金额" if BigDecimal.new(@request_params['apply_amount'].to_s) > @customer.can_withdraw_money(@merchant)
-      Withdraw.create!(account_no: @request_params['account_no'], wechat_no: @request_params['wechat_no'], customer_id: @customer.id, merchant_id: @merchant.id, app_date: Time.now, amount: BigDecimal.new(@request_params['apply_amount'].to_s), status: 0)
+      Withdraw.create!(account_no: @request_params['account_no'], wechat_no: @request_params['wechat_no'], account_id: @customer.id, merchant_id: @merchant.id, app_date: Time.now, amount: BigDecimal.new(@request_params['apply_amount'].to_s), status: 0)
       { status: 'succ', data: {}}.to_json
     end
   end
@@ -38,7 +38,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/withdraws' do
     api_rescue do
       authenticate
 
-      @wds = Withdraw.where(customer_id: @customer.id, merchant_id: @merchant.id).order("app_date desc")
+      @wds = Withdraw.where(account_id: @customer.id, merchant_id: @merchant.id).order("app_date desc")
 
       { status: 'succ', data: @wds.map(&:to_api)}.to_json
     end

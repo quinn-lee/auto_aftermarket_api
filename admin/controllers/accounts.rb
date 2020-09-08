@@ -2,7 +2,7 @@ AutoAftermarketApi::Admin.controllers :accounts do
 
   get :index do
     @title = "用户"
-    @accounts = Account.all
+    @accounts = Account.where("role_id > 3")
     @accounts = @accounts.where(role_id: params[:role_id]) if params[:role_id].present?
     @accounts = @accounts.where("name like '%#{params[:name]}%'") if params[:name].present?
     @accounts = @accounts.where("email like '%#{params[:email]}%'") if params[:email].present?

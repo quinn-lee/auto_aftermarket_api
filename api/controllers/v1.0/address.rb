@@ -12,7 +12,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/address' do
   post "/create", :provides => [:json] do
     api_rescue do
       authenticate
-      Address.create!(customer_id: @customer.id, province: @request_params['province'], city: @request_params['city'], district: @request_params['district'], address: @request_params['address'], name: @request_params['name'], mobile: @request_params['mobile'])
+      Address.create!(account_id: @customer.id, province: @request_params['province'], city: @request_params['city'], district: @request_params['district'], address: @request_params['address'], name: @request_params['name'], mobile: @request_params['mobile'])
       { status: 'succ', data: {}}.to_json
     end
   end
@@ -24,7 +24,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/address' do
     api_rescue do
       authenticate
       @address = Address.find(@request_params['id'])
-      @address.update!(customer_id: @customer.id, province: @request_params['province'], city: @request_params['city'], district: @request_params['district'], address: @request_params['address'], name: @request_params['name'], mobile: @request_params['mobile'])
+      @address.update!(account_id: @customer.id, province: @request_params['province'], city: @request_params['city'], district: @request_params['district'], address: @request_params['address'], name: @request_params['name'], mobile: @request_params['mobile'])
       { status: 'succ', data: {}}.to_json
     end
   end
@@ -47,7 +47,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/address' do
   post "/index", :provides => [:json] do
     api_rescue do
       authenticate
-      @address = Address.where(customer_id: @customer.id)
+      @address = Address.where(account_id: @customer.id)
 
       { status: 'succ', data: @address.map(&:to_api)}.to_json
     end

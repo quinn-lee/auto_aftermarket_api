@@ -26,7 +26,7 @@
         <tbody>
           <% @withdraws.each do |withdraw| %>
             <tr>
-                <td><%=(withdraw.customer.wechat_info||{})['nickName']%></td>
+                <td><%=(withdraw.account.wechat_info||{})['nickName']%></td>
                 <td>￥<%=withdraw.amount%></td>
                 <td><%=withdraw.account_no%></td>
                 <td><%=withdraw.wechat_no%></td>

@@ -3,7 +3,7 @@
 class SeckillBuyer < ActiveRecord::Base
   belongs_to :seckill,   :class_name => 'Seckill'
   belongs_to :order,   :class_name => 'Order'
-  belongs_to :customer, :class_name => 'Account'
+  belongs_to :account, :class_name => 'Account'
 
   scope :purchased,  lambda { where.not(status: 0) }
 

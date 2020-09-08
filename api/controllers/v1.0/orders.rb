@@ -67,7 +67,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "contact_info can not be null" if @request_params['contact_info'].blank?
         end
         @order = Order.new
-        @order.customer_id = @customer.id
+        @order.account_id = @customer.id
         @order.merchant_id = @merchant.id
         @order.order_date = Time.now
         @order.order_no = @order.gen_order_no
@@ -97,7 +97,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "该团已过期，无法购买" if group.end_time < Time.now
           raise "已超过最大成团人数，无法购买" if group.group_buyers.purchased.count >= group.max_num
           # 记录购买者
-          GroupBuyer.create!(customer_id: @customer.id, group_id: group.id, order_id: @order.id, t_sku_id: group.t_sku_id, group_quantity: 1, status: 1, group_price: group.group_price, group_amount: group.group_price)
+          GroupBuyer.create!(account_id: @customer.id, group_id: group.id, order_id: @order.id, t_sku_id: group.t_sku_id, group_quantity: 1, status: 1, group_price: group.group_price, group_amount: group.group_price)
         elsif @request_params['order_type'] == "seckill" # 秒杀商品
           seckill = Seckill.find(@request_params['seckill_id'])
           raise "该秒杀状态为不可购买" if seckill.status != 1
@@ -105,7 +105,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "该秒杀无剩余商品，无法购买" if seckill.remaining_num < 1
           # 修改剩余可秒杀商品数
           seckill.update!(remaining_num: seckill.remaining_num-1)
-          SeckillBuyer.create!(customer_id: @customer.id, seckill_id: seckill.id, order_id: @order.id, t_sku_id: seckill.t_sku_id, status: 1, seckill_price: seckill.seckill_price, seckill_amount: seckill.seckill_price)
+          SeckillBuyer.create!(account_id: @customer.id, seckill_id: seckill.id, order_id: @order.id, t_sku_id: seckill.t_sku_id, status: 1, seckill_price: seckill.seckill_price, seckill_amount: seckill.seckill_price)
         end
         if @request_params['coupon_receive_id'].present? #使用优惠券
           cr = CouponReceive.find(@request_params['coupon_receive_id'])
@@ -113,7 +113,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "该优惠券已过期，无法使用" if cr.coupon.end_time < Time.now
           cr.update!(status: 1) # 修改领取的优惠券状态为已使用
           # 记录使用的优惠券
-          CouponLog.create!(customer_id: @customer.id, coupon_receive_id: cr.id, order_id: @order.id, order_original_amount: @order.amount, coupon_amount: cr.coupon_money, order_final_amount: @order.pay_amount, status: 0)
+          CouponLog.create!(account_id: @customer.id, coupon_receive_id: cr.id, order_id: @order.id, order_original_amount: @order.amount, coupon_amount: cr.coupon_money, order_final_amount: @order.pay_amount, status: 0)
         end
         @request_params['items'].each do |item|
           item['skus'].each do |sku|
@@ -129,7 +129,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       ActiveRecord::Base.transaction do
         if BigDecimal.new(@order.pay_amount.to_s) < BigDecimal.new("0.0001")
           @wi=WxpayInfo.create!({
-            customer_id: @customer.id,
+            account_id: @customer.id,
             order_no: @order.order_no,
             amount: @order.pay_amount,
             expired_time: Time.now+1.hour
@@ -140,7 +140,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           if pay_res["status"]=="succ"
             @wi=WxpayInfo.create!({
               prepay_id: pay_res["info"]["prepay_id"],
-              customer_id: @customer.id,
+              account_id: @customer.id,
               order_no: @order.order_no,
               amount: @order.pay_amount,
               expired_time: Time.now+1.hour
@@ -167,7 +167,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         if pay_res["status"]=="succ"
           @wi=WxpayInfo.create!({
             prepay_id: pay_res["info"]["prepay_id"],
-            customer_id: @customer.id,
+            account_id: @customer.id,
             order_no: @order.order_no,
             amount: @order.pay_amount,
             expired_time: Time.now+1.hour
@@ -321,7 +321,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     api_rescue do
       authenticate
 
-      @orders = Order.where(customer_id: @customer.id).where.not(status: "delete").order("created_at desc")
+      @orders = Order.where(account_id: @customer.id).where.not(status: "delete").order("created_at desc")
       @orders = @orders.where(status: @request_params['status']) if @request_params['status'].present?
       @orders = @orders.where(order_type: @request_params['order_type']) if @request_params['order_type'].present?
       if @request_params['title'].present?
@@ -488,7 +488,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       data << {status: 'favorite', count: @customer.favorites.count}
       data << {status: 'sku_views', count: @customer.sku_views.count > 100 ? 100 : @customer.sku_views.count}
       data << {status: 'coupon', count: @customer.coupon_receives.where(status: 0).count}
-      data << {status: 'to_comment_skus', count: OrderSku.where(comment_status: 0).where("(SELECT orders.customer_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{@customer.id}").count}
+      data << {status: 'to_comment_skus', count: OrderSku.where(comment_status: 0).where("(SELECT orders.account_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{@customer.id}").count}
       { status: 'succ', data: data}.to_json
     end
   end
