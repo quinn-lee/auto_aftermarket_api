@@ -25,7 +25,7 @@ class Answer < ActiveRecord::Base
   end
 
   def staff
-    Account.find(staff_id)
+    Account.find(staff_id) if staff_id.present?
   end
 
   def nickname
