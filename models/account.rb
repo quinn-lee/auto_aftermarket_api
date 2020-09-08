@@ -19,14 +19,14 @@ class Account < ActiveRecord::Base
 
   # Validations
   validates_presence_of     :role_id
-  validates_presence_of     :email,                      :if => :admin_user
+  #validates_presence_of     :email,                      :if => :admin_user
   validates_presence_of     :password,                   :if => :password_required
   validates_presence_of     :password_confirmation,      :if => :password_required
   validates_length_of       :password, :within => 4..40, :if => :password_required
   validates_confirmation_of :password,                   :if => :password_required
-  validates_length_of       :email,    :within => 3..100,:if => :admin_user
-  validates_uniqueness_of   :email,    :case_sensitive => false, :if => :admin_user
-  validates_format_of       :email,    :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :if => :admin_user
+  #validates_length_of       :email,    :within => 3..100,:if => :admin_user
+  #validates_uniqueness_of   :email,    :case_sensitive => false, :if => :admin_user
+  #validates_format_of       :email,    :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :if => :admin_user
   #validates_format_of       :role,     :with => /[A-Za-z]/
 
   # Callbacks
