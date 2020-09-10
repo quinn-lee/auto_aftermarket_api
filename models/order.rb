@@ -4,6 +4,7 @@ class Order < ActiveRecord::Base
 
   has_many :sub_orders, :class_name => 'SubOrder', :dependent => :destroy
   has_many :dist_orders, :class_name => 'DistOrder', :dependent => :destroy
+  has_many :order_skus, :class_name => 'OrderSku', :dependent => :destroy
   has_many :comments, :class_name => 'Comment', :dependent => :destroy
   belongs_to :merchant,   :class_name => 'Merchant'
   belongs_to :account,   :class_name => 'Account'
@@ -152,15 +153,44 @@ class Order < ActiveRecord::Base
   def update_dist_orders
     t_sku = TSku.where(id: OrderSku.where(order_no: order_no).map(&:t_sku_id)).first
     ds = DistSetting.first
-    if status == "paid" #插入分销订单数据
+    if status == "paid" && dist_orders.blank?#插入分销订单数据
+      # 客户介绍人
       if account.dist_agent_id.present?
         dist_agent = Account.find(account.dist_agent_id)
         percent = BigDecimal.new(dist_agent.dist_percent.to_s)
         commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s))
         # 分销金额>0 并且开启了分销，才插入分销订单数据
         #if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
-        if dist_orders.blank? && ds.dist_switch
-          DistOrder.create(order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, account_id: account_id, merchant_id: merchant_id, pay_amount: pay_amount, commission: commission, pay_time: pay_time, complete_time: nil)
+        if ds.dist_switch
+          DistOrder.create(dist_percent: percent, dist_type: "客户介绍人", order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, account_id: account_id, merchant_id: merchant_id, pay_amount: pay_amount, commission: commission, pay_time: pay_time, complete_time: nil)
+        end
+      end
+      # 服务资讯人
+      if account.info_service_id.present?
+        dist_agent = Account.find(account.info_service_id)
+        percent = BigDecimal.new((ds.try{|ds| ds.info_service_percent } || 0).to_s)
+        commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s))
+        # 分销金额>0 并且开启了分销，才插入分销订单数据
+        #if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
+        if ds.dist_switch
+          DistOrder.create(dist_percent: percent, dist_type: "服务资讯人", order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, account_id: account_id, merchant_id: merchant_id, pay_amount: pay_amount, commission: commission, pay_time: pay_time, complete_time: nil)
+        end
+      end
+      # 商品促销人
+      order_skus.each do |order_sku|
+        if order_sku.dist_agent_id.present?
+          dist_agent = Account.find(order_sku.dist_agent_id)
+          percent = BigDecimal.new((ds.try{|ds| ds.spu_percent } || 0).to_s)
+          if order_sku.t_sku.t_spu.dist_percent.present?
+            percent = BigDecimal.new(order_sku.t_sku.t_spu.dist_percent.to_s)
+          end
+          this_amount = BigDecimal.new(order_sku.price.to_s)*BigDecimal.new(order_sku.quantity.to_s)
+          all_amount = order_skus.each.sum{|os| BigDecimal.new(os.price.to_s)*BigDecimal.new(os.quantity.to_s)}
+          commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent * (this_amount/all_amount)).to_s))
+          # 分销金额>0 并且开启了分销，才插入分销订单数据
+          if ds.dist_switch
+            DistOrder.create(dist_percent: percent, dist_type: "商品促销人", order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, account_id: account_id, merchant_id: merchant_id, pay_amount: BigDecimal.new(sprintf("%.2f", (pay_amount*this_amount/all_amount).to_s)), commission: commission, pay_time: pay_time, complete_time: nil)
+          end
         end
       end
     elsif ['unpaid','delete','cancelled'].include? status #删除分销订单数据

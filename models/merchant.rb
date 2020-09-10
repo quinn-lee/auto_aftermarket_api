@@ -17,6 +17,6 @@ class Merchant < ActiveRecord::Base
   has_many :activities, :class_name => 'Activity', :dependent => :destroy
 
   def agents
-    accounts.where.not(role_id: [1,2]).where(app_status: 1).map{|customer| [(customer.wechat_info||{})['nickName'], customer.id]}
+    accounts.where.not(role_id: [1,2]).map{|customer| [(customer.wechat_info||{})['nickName'], customer.id]}
   end
 end

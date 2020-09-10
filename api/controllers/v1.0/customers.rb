@@ -154,6 +154,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     api_rescue do
       authenticate
       @customer.wechat_info = @request_params
+      @customer.name = @request_params['nickName']
       @customer.save!
 
       { status: 'succ', data: {}}.to_json

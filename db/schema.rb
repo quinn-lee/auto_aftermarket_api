@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 155) do
+ActiveRecord::Schema.define(version: 158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -266,6 +266,7 @@ ActiveRecord::Schema.define(version: 155) do
     t.datetime "updated_at", null: false
     t.integer "account_id"
     t.string "dist_type"
+    t.decimal "dist_percent", precision: 10, scale: 2
   end
 
   create_table "dist_settings", force: :cascade do |t|
@@ -277,6 +278,8 @@ ActiveRecord::Schema.define(version: 155) do
     t.decimal "dist_percent", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "spu_percent", precision: 10, scale: 2
+    t.decimal "info_service_percent", precision: 10, scale: 2
   end
 
   create_table "dist_shares", force: :cascade do |t|
@@ -377,6 +380,7 @@ ActiveRecord::Schema.define(version: 155) do
     t.integer "comment_status", default: 0
     t.integer "dist_share_id"
     t.integer "dist_agent_id"
+    t.integer "order_id"
   end
 
   create_table "orders", force: :cascade do |t|

@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-title">
-        <h4 class="underline">更换分销员申请列表</h4>
+        <h4 class="underline">更换客服申请列表</h4>
     </div>
 
     <table class="table table-condensed table-striped table-bordered-y">
@@ -34,14 +34,14 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title underline">更换分销员</h4>
+                            <h4 class="modal-title underline">更换客服</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
                             <% form_tag url(:agent_changes, :change, :id=>ac.id), :method => 'post' do %>
                                 <div class="row">
                                     <div class="col-xs-12 form-group">
-                                        <label>分销员</label>
+                                        <label>专属客服</label>
                                         <%=select_tag :new_agent_id, :options => current_account.merchant.agents, :class => 'form-control' %>
                                     </div>
                                 </div>

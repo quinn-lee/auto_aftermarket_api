@@ -129,7 +129,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
               agent = DistShare.agent(sku["dist_share_id"]) #根据分享链，找出最近邻的分销员
               dist_agent_id = agent.id if ([1, 2].include?agent.role_id) #是分销员时，记录订单归属的分销员
             end
-            OrderSku.create!(dist_share_id: sku["dist_share_id"], dist_agent_id: dist_agent_id, order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'], lack_quantity: lack_quantity )
+            OrderSku.create!(order_id: @order.id, dist_share_id: sku["dist_share_id"], dist_agent_id: dist_agent_id, order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'], lack_quantity: lack_quantity )
           end
         end
       end
