@@ -68,7 +68,7 @@ AutoAftermarketApi::Admin.controllers :questions do
   # 回复
   get :new_answer, :with => :id do
     @question = Question.find(params[:id])
-    @answer = Answer.new(question_id: @question.id, account_id: current_account.id)
+    @answer = Answer.new(question_id: @question.id, staff_id: current_account.id)
     render "questions/new_answer"
   end
 

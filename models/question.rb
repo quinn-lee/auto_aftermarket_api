@@ -3,7 +3,7 @@
 class Question < ActiveRecord::Base
   belongs_to :topic,   :class_name => 'Topic'
   belongs_to :merchant,   :class_name => 'Merchant'
-  belongs_to :customer,   :class_name => 'Account'
+  belongs_to :account,   :class_name => 'Account'
   has_many :answers, :class_name => 'Answer', :dependent => :destroy
 
   validates :content, :merchant_id, :topic_id, presence: true
@@ -16,7 +16,7 @@ class Question < ActiveRecord::Base
       content: content,
       images: images.try{|i| i.map(&:url)},
       topic: topic.to_api,
-      customer: customer.present? ? customer.wechat_info : nil,
+      customer: account.present? ? account.wechat_info : nil,
       customer_answers_num: answers.where(account_id: nil).count,
       customer_answers: answers.where(account_id: nil).order("created_at desc").map{|answer| answer.to_api(current_customer)},
       account_answers: answers.where.not(account_id: nil).order("created_at desc").map{|answer| answer.to_api(current_customer)},
@@ -27,7 +27,7 @@ class Question < ActiveRecord::Base
   end
 
   def nickname
-    customer.present? ? (customer.wechat_info.present? ? (customer.wechat_info['nickName'] || '匿名') : '匿名') : '匿名'
+    account.present? ? (account.wechat_info.present? ? (account.wechat_info['nickName'] || '匿名') : '匿名') : '匿名'
   end
 
 end

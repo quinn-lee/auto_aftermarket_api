@@ -34,7 +34,7 @@
                 <td>￥<%=customer.paid_orders.each.sum(&:pay_amount)%></td>
                 <td><%=customer.done_orders.count%></td>
                 <td>￥<%=customer.done_orders.each.sum(&:pay_amount)%></td>
-                <td><%=customer.role.name%></td>
+                <td><%=customer.role%></td>
                 <td>
                   <a href="<%=url(:orders, :index, :customer_id =>customer.id) %>" class="pd-setting-ed">订单列表</a>
                 </td>

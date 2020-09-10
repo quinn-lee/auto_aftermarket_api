@@ -16,7 +16,7 @@ module AutoAftermarketApi
           :label => '客户', :icon => 'users', :field => 'nav_customers',
           :options => [
             { :label => '客户列表', :icon => '', :url => url(:customers, :index) },
-            { :label => '更换分销员申请', :icon => '', :url => url(:agent_changes, :index) },
+            { :label => '更换专属客服申请', :icon => '', :url => url(:agent_changes, :index) },
             { :label => '客户画像', :icon => '', :url => '' },
             { :label => '客户活跃度', :icon => '', :url => '' },
             { :label => '客户行为统计', :icon => '', :url => '' },

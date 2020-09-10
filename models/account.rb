@@ -81,13 +81,13 @@ class Account < ActiveRecord::Base
   # 可提现金额
   def can_withdraw_money(merchant)
     all_withdraw_money = dist_orders(merchant).where("complete_time <= '#{(Time.now - 7.days).strftime('%F %T')}'").each.sum(&:commission)
-    withdrawed_money = Withdraw.where(merchant_id: merchant.id, customer_id: id).where.not(status: 2).each.sum(&:amount)
+    withdrawed_money = Withdraw.where(merchant_id: merchant.id, account_id: id).where.not(status: 2).each.sum(&:amount)
     all_withdraw_money - withdrawed_money
   end
 
   # 上月提现金额
   def last_month_withdraw(merchant)
-    Withdraw.where(merchant_id: merchant.id, customer_id: id).where.not(status: 2).where("app_date >= '#{Date.today.last_month.at_beginning_of_month.strftime("%F %T")}'").where("app_date < '#{Date.today.at_beginning_of_month.strftime("%F %T")}'").each.sum(&:amount)
+    Withdraw.where(merchant_id: merchant.id, account_id: id).where.not(status: 2).where("app_date >= '#{Date.today.last_month.at_beginning_of_month.strftime("%F %T")}'").where("app_date < '#{Date.today.at_beginning_of_month.strftime("%F %T")}'").each.sum(&:amount)
   end
 
   # 成交订单
@@ -127,6 +127,13 @@ class Account < ActiveRecord::Base
   def agent
     if dist_agent_id.present?
       Account.find(dist_agent_id)
+    end
+  end
+
+  # 对应服务资讯人
+  def info_service_agent
+    if info_service_id.present?
+      Account.find(info_service_id)
     end
   end
 

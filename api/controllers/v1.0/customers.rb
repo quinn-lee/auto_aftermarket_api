@@ -55,7 +55,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
             dist_share_id = @request_params["dist_share_id"]
             if @request_params["dist_share_id"].present?
               agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员或找出最早分享客户
-              dist_agent_id = agent.id #记录新用户归属
+              dist_agent_id = agent.id if ([1, 2].include?agent.role_id)#记录新用户归属
+              info_service_id = dist_agent_id
             end
             pwd = RandomCode.generate_token
             email = RandomCode.generate_token
@@ -66,6 +67,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
               merchant_id: @merchant.id,
               dist_share_id: dist_share_id,
               dist_agent_id: dist_agent_id,
+              info_service_id: info_service_id,
               openid: res['openid'],
               unionid: res['unionid'],
               token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
@@ -73,7 +75,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         end
       end
 
-      { status: 'succ', data: {token: @cus.token, role: @cus.role_id, agent: @cus.agent.try{|a| a.to_agent_api}}}.to_json
+      { status: 'succ', data: {token: @cus.token, role: @cus.role_id, agent: @cus.info_service_agent.try{|a| a.to_agent_api}}}.to_json
     end
   end
 
@@ -86,8 +88,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
 
       @car_model = CarModel.find(@request_params["model_id"])
       ActiveRecord::Base.transaction do
-        Car.where(customer_id: @customer.id).update_all(is_current: false)
-        @current_car = Car.create!(customer_id: @customer.id, car_model_id: @car_model.id, car_model_name: "#{@car_model.car_model_name} #{@car_model.car_model_version}", is_current: true)
+        Car.where(account_id: @customer.id).update_all(is_current: false)
+        @current_car = Car.create!(account_id: @customer.id, car_model_id: @car_model.id, car_model_name: "#{@car_model.car_model_name} #{@car_model.car_model_version}", is_current: true)
       end
       { status: 'succ', data: @current_car.to_api}.to_json
     end
@@ -100,7 +102,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     api_rescue do
       authenticate
 
-      @cars = Car.where(customer_id: @customer.id).order(:id => :asc)
+      @cars = Car.where(account_id: @customer.id).order(:id => :asc)
       { status: 'succ', data: @cars.map(&:to_api)}.to_json
     end
   end
@@ -112,7 +114,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     api_rescue do
       authenticate
       ActiveRecord::Base.transaction do
-        Car.where(customer_id: @customer.id).update_all(is_current: false)
+        Car.where(account_id: @customer.id).update_all(is_current: false)
         @car = Car.find(@request_params["car_id"])
         @car.update!(is_current: true)
       end
@@ -152,6 +154,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     api_rescue do
       authenticate
       @customer.wechat_info = @request_params
+      @customer.name = @request_params['nickName']
       @customer.save!
 
       { status: 'succ', data: {}}.to_json
@@ -190,7 +193,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
   post :share, :provides => [:json] do
     api_rescue do
       authenticate
-      Share.create!(customer_id: @customer.id, url: @request_params['url'], options: @request_params['options'])
+      Share.create!(account_id: @customer.id, url: @request_params['url'], options: @request_params['options'])
       { status: 'succ', data: {}}.to_json
     end
   end
@@ -206,7 +209,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
       authenticate
       ActiveRecord::Base.transaction do
         @request_params['pv'].each do |pv|
-          PageView.create!(customer_id: @customer.id, visit_time: pv['timestamp'], url: pv['url'])
+          PageView.create!(account_id: @customer.id, visit_time: pv['timestamp'], url: pv['url'])
         end
       end
       { status: 'succ', data: {}}.to_json
@@ -420,7 +423,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     api_rescue do
       authenticate
 
-      { status: 'succ', data: @customer.agent.try{|a| a.to_agent_api}}.to_json
+      { status: 'succ', data: @customer.info_service_agent.try{|a| a.to_agent_api}}.to_json
     end
   end
 

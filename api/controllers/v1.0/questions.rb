@@ -28,7 +28,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
         raise "所有参数都不能为空" if @request_params['content'].blank? || @request_params['topic_id'].blank? || @request_params['anonymous'].blank?
         topic = Topic.find(@request_params['topic_id'])
         @question = Question.new(content: @request_params['content'], merchant_id: @merchant.id, topic_id: topic.id, t_sku_id: @request_params['sku_id'])
-        @question.customer_id = @customer.id if @request_params['anonymous'] != "t" # 不匿名时才记录提问者
+        @question.account_id = @customer.id if @request_params['anonymous'] != "t" # 不匿名时才记录提问者
         i = 0
         images = []
         if @request_params['images'].present? # 保存图片
@@ -62,7 +62,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
         raise "回答内容、图片、语音不能都为空" if @request_params['content'].blank? && @request_params['images'].blank? && @request_params['audio'].blank?
         question = Question.find(@request_params['question_id'])
         @answer = Answer.new(content: @request_params['content'], question_id: question.id)
-        @answer.customer_id = @customer.id if @request_params['anonymous'] != "t" # 不匿名时才记录回答者
+        @answer.account_id = @customer.id if @request_params['anonymous'] != "t" # 不匿名时才记录回答者
         i = 0
         images = []
         if @request_params['images'].present? # 保存图片
@@ -164,7 +164,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
       @questions = Question.where(merchant_id: @merchant.id)
       @questions = @questions.where(topic_id: @request_params['topic_id']) if @request_params['topic_id'].present?
       @questions = @questions.where(t_sku_id: @request_params['sku_id']) if @request_params['sku_id'].present?
-      @questions = @questions.where(customer_id: @customer.id) if @request_params['self'] == "t"
+      @questions = @questions.where(account_id: @customer.id) if @request_params['self'] == "t"
       @questions = @questions.where("content like '%#{@request_params['content']}%'") if @request_params['content'].present?
       { status: 'succ', data: @questions.order("updated_at desc").map{|q| q.to_api(@customer)}}.to_json
     end
@@ -241,8 +241,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
       ActiveRecord::Base.transaction do
         raise "问题ID不能为空" if @request_params['answer_id'].blank?
         answer = Answer.find(@request_params['answer_id'])
-        if AnswerLike.where(answer_id: answer.id, customer_id: @customer.id).count == 0
-          AnswerLike.create!(answer_id: answer.id, customer_id: @customer.id)
+        if AnswerLike.where(answer_id: answer.id, account_id: @customer.id).count == 0
+          AnswerLike.create!(answer_id: answer.id, account_id: @customer.id)
         end
       end
 
@@ -260,7 +260,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/questions' do
       ActiveRecord::Base.transaction do
         raise "问题ID不能为空" if @request_params['answer_id'].blank?
         answer = Answer.find(@request_params['answer_id'])
-        if al = AnswerLike.find_by(answer_id: answer.id, customer_id: @customer.id)
+        if al = AnswerLike.find_by(answer_id: answer.id, account_id: @customer.id)
           al.destroy
         end
       end

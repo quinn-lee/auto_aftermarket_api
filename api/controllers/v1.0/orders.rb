@@ -10,7 +10,6 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
   # params
 =begin
   {
-    "dist_share_id": 10, # 分享记录的id，通过别人的分享下单时，需要传输该字段
     "shop_id": 2, # 到店安装时，选择的门店，自选商品时如果没有到店安装的，该项为空
     "contact_info": {"name": "李富元", "mobile": "13917050000"}, # 到店安装时需要填写，
     "delivery_info": {"province": "", "city": "", "district": "", "address": "",
@@ -27,12 +26,14 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           "name": "大保养推荐套餐",
           skus: [
             {
+              "dist_share_id": 10, # 分享记录的id，通过别人的分享下单时，需要传输该字段
               "sku_id": 1,
               "quantity": 1,
               "price": 55,
               "service": {"到店安装": 50} # 自选商品时选择的可选服务，如果没有可选服务项，则该字段为空
             },
             {
+              "dist_share_id": 10, # 分享记录的id，通过别人的分享下单时，需要传输该字段
               "sku_id": 2,
               "quantity": 1,
               "price": 55,
@@ -44,6 +45,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           "name": "自选项目",
           skus: [
             {
+              "dist_share_id": 10, # 分享记录的id，通过别人的分享下单时，需要传输该字段
               "sku_id": 3,
               "quantity": 1,
               "price": 45,
@@ -67,7 +69,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "contact_info can not be null" if @request_params['contact_info'].blank?
         end
         @order = Order.new
-        @order.customer_id = @customer.id
+        @order.account_id = @customer.id
         @order.merchant_id = @merchant.id
         @order.order_date = Time.now
         @order.order_no = @order.gen_order_no
@@ -84,11 +86,11 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           @order.contact_info = @request_params['contact_info'].present? ? @request_params['contact_info'] : @request_params['delivery_info']
         end
         # 记录分享下单关系
-        if @request_params["dist_share_id"].present?
-          @order.dist_share_id = @request_params["dist_share_id"]
-          agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员
-          @order.dist_agent_id = agent.id if (([1, 2].include?agent.role_id) && (agent.app_status == 1)) #是分销员时，记录订单归属的分销员
-        end
+        #if @request_params["dist_share_id"].present?
+        #  @order.dist_share_id = @request_params["dist_share_id"]
+        #  agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员
+        #  @order.dist_agent_id = agent.id if (([1, 2].include?agent.role_id) && (agent.app_status == 1)) #是分销员时，记录订单归属的分销员
+        #end
 
         @order.save!
         if @request_params['order_type'] == "group" # 团购商品
@@ -97,7 +99,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "该团已过期，无法购买" if group.end_time < Time.now
           raise "已超过最大成团人数，无法购买" if group.group_buyers.purchased.count >= group.max_num
           # 记录购买者
-          GroupBuyer.create!(customer_id: @customer.id, group_id: group.id, order_id: @order.id, t_sku_id: group.t_sku_id, group_quantity: 1, status: 1, group_price: group.group_price, group_amount: group.group_price)
+          GroupBuyer.create!(account_id: @customer.id, group_id: group.id, order_id: @order.id, t_sku_id: group.t_sku_id, group_quantity: 1, status: 1, group_price: group.group_price, group_amount: group.group_price)
         elsif @request_params['order_type'] == "seckill" # 秒杀商品
           seckill = Seckill.find(@request_params['seckill_id'])
           raise "该秒杀状态为不可购买" if seckill.status != 1
@@ -105,7 +107,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "该秒杀无剩余商品，无法购买" if seckill.remaining_num < 1
           # 修改剩余可秒杀商品数
           seckill.update!(remaining_num: seckill.remaining_num-1)
-          SeckillBuyer.create!(customer_id: @customer.id, seckill_id: seckill.id, order_id: @order.id, t_sku_id: seckill.t_sku_id, status: 1, seckill_price: seckill.seckill_price, seckill_amount: seckill.seckill_price)
+          SeckillBuyer.create!(account_id: @customer.id, seckill_id: seckill.id, order_id: @order.id, t_sku_id: seckill.t_sku_id, status: 1, seckill_price: seckill.seckill_price, seckill_amount: seckill.seckill_price)
         end
         if @request_params['coupon_receive_id'].present? #使用优惠券
           cr = CouponReceive.find(@request_params['coupon_receive_id'])
@@ -113,7 +115,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           raise "该优惠券已过期，无法使用" if cr.coupon.end_time < Time.now
           cr.update!(status: 1) # 修改领取的优惠券状态为已使用
           # 记录使用的优惠券
-          CouponLog.create!(customer_id: @customer.id, coupon_receive_id: cr.id, order_id: @order.id, order_original_amount: @order.amount, coupon_amount: cr.coupon_money, order_final_amount: @order.pay_amount, status: 0)
+          CouponLog.create!(account_id: @customer.id, coupon_receive_id: cr.id, order_id: @order.id, order_original_amount: @order.amount, coupon_amount: cr.coupon_money, order_final_amount: @order.pay_amount, status: 0)
         end
         @request_params['items'].each do |item|
           item['skus'].each do |sku|
@@ -122,14 +124,19 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
             lack_quantity = sku['quantity'].to_i - (tsku.stock_num < 0 ? 0 : tsku.stock_num) # 需采购的数量
             lack_quantity = lack_quantity < 0 ? 0 : lack_quantity
             tsku.update(stock_num: (tsku.stock_num||0)-sku['quantity'].to_i, available_num: (tsku.available_num||0)-sku['quantity'].to_i)
-            OrderSku.create!(order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'], lack_quantity: lack_quantity )
+            dist_agent_id = nil
+            if sku["dist_share_id"].present?
+              agent = DistShare.agent(sku["dist_share_id"]) #根据分享链，找出最近邻的分销员
+              dist_agent_id = agent.id if ([1, 2].include?agent.role_id) #是分销员时，记录订单归属的分销员
+            end
+            OrderSku.create!(order_id: @order.id, dist_share_id: sku["dist_share_id"], dist_agent_id: dist_agent_id, order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'], lack_quantity: lack_quantity )
           end
         end
       end
       ActiveRecord::Base.transaction do
         if BigDecimal.new(@order.pay_amount.to_s) < BigDecimal.new("0.0001")
           @wi=WxpayInfo.create!({
-            customer_id: @customer.id,
+            account_id: @customer.id,
             order_no: @order.order_no,
             amount: @order.pay_amount,
             expired_time: Time.now+1.hour
@@ -140,7 +147,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           if pay_res["status"]=="succ"
             @wi=WxpayInfo.create!({
               prepay_id: pay_res["info"]["prepay_id"],
-              customer_id: @customer.id,
+              account_id: @customer.id,
               order_no: @order.order_no,
               amount: @order.pay_amount,
               expired_time: Time.now+1.hour
@@ -167,7 +174,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         if pay_res["status"]=="succ"
           @wi=WxpayInfo.create!({
             prepay_id: pay_res["info"]["prepay_id"],
-            customer_id: @customer.id,
+            account_id: @customer.id,
             order_no: @order.order_no,
             amount: @order.pay_amount,
             expired_time: Time.now+1.hour
@@ -321,7 +328,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     api_rescue do
       authenticate
 
-      @orders = Order.where(customer_id: @customer.id).where.not(status: "delete").order("created_at desc")
+      @orders = Order.where(account_id: @customer.id).where.not(status: "delete").order("created_at desc")
       @orders = @orders.where(status: @request_params['status']) if @request_params['status'].present?
       @orders = @orders.where(order_type: @request_params['order_type']) if @request_params['order_type'].present?
       if @request_params['title'].present?
@@ -488,7 +495,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       data << {status: 'favorite', count: @customer.favorites.count}
       data << {status: 'sku_views', count: @customer.sku_views.count > 100 ? 100 : @customer.sku_views.count}
       data << {status: 'coupon', count: @customer.coupon_receives.where(status: 0).count}
-      data << {status: 'to_comment_skus', count: OrderSku.where(comment_status: 0).where("(SELECT orders.customer_id FROM orders WHERE orders.order_no = order_skus.order_no) = #{@customer.id}").count}
+      data << {status: 'to_comment_skus', count: OrderSku.where(comment_status: 0).where("(SELECT orders.account_id FROM orders WHERE orders.status = 'done' and orders.order_no = order_skus.order_no) = #{@customer.id}").count}
       { status: 'succ', data: data}.to_json
     end
   end

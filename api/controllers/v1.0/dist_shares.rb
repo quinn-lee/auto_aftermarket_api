@@ -20,7 +20,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/dist_shares' do
       if @request_params['parent_id'].present?
         DistShare.find(@request_params['parent_id'])
       end
-      @ds = DistShare.create!(customer_id: @customer.id, parent_id: @request_params['parent_id'], activity_id: @request_params['activity_id'], coupon_id: @request_params['coupon_id'], sku_id: @request_params['sku_id'], merchant_id: @merchant.id)
+      @ds = DistShare.create!(account_id: @customer.id, parent_id: @request_params['parent_id'], activity_id: @request_params['activity_id'], coupon_id: @request_params['coupon_id'], sku_id: @request_params['sku_id'], merchant_id: @merchant.id)
       { status: 'succ', data: {dist_share_id: @ds.id}}.to_json
     end
   end

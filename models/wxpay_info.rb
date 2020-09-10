@@ -12,7 +12,12 @@ class WxpayInfo < ActiveRecord::Base
         order.update!(status: "received")
       end
       if order.order_type == "maintenance" #维修保养时，只有一个子订单
-        SubOrder.create!(order_id: order.id, sub_type: "install", order_sku_ids: order_skus.map(&:id))
+        so = SubOrder.create!(order_id: order.id, sub_type: "install", order_sku_ids: order_skus.map(&:id))
+        if order.status == "received"
+          order.update!(status: "appointing") #更新为待预约
+          so.update!(status: "appointing") #更新为待预约
+          order.appoint_subscribe #订阅消息
+        end
       else #根据是否有到店安装的商品进行拆分订单
         install_list = []
         delivery_list = []
