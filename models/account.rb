@@ -130,6 +130,13 @@ class Account < ActiveRecord::Base
     end
   end
 
+  # 对应服务资讯人
+  def info_service_agent
+    if info_service_id.present?
+      Account.find(info_service_id)
+    end
+  end
+
   private
 
   def encrypt_password

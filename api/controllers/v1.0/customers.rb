@@ -55,7 +55,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
             dist_share_id = @request_params["dist_share_id"]
             if @request_params["dist_share_id"].present?
               agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员或找出最早分享客户
-              dist_agent_id = agent.id #记录新用户归属
+              dist_agent_id = agent.id if ([1, 2].include?agent.role_id)#记录新用户归属
+              info_service_id = dist_agent_id
             end
             pwd = RandomCode.generate_token
             email = RandomCode.generate_token
@@ -66,6 +67,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
               merchant_id: @merchant.id,
               dist_share_id: dist_share_id,
               dist_agent_id: dist_agent_id,
+              info_service_id: info_service_id,
               openid: res['openid'],
               unionid: res['unionid'],
               token: "#{Digest::MD5.hexdigest(res['openid'])}#{RandomCode.generate_token}")
@@ -73,7 +75,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
         end
       end
 
-      { status: 'succ', data: {token: @cus.token, role: @cus.role_id, agent: @cus.agent.try{|a| a.to_agent_api}}}.to_json
+      { status: 'succ', data: {token: @cus.token, role: @cus.role_id, agent: @cus.info_service_agent.try{|a| a.to_agent_api}}}.to_json
     end
   end
 
@@ -420,7 +422,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/customers' do
     api_rescue do
       authenticate
 
-      { status: 'succ', data: @customer.agent.try{|a| a.to_agent_api}}.to_json
+      { status: 'succ', data: @customer.info_service_agent.try{|a| a.to_agent_api}}.to_json
     end
   end
 

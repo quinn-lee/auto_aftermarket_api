@@ -1,7 +1,7 @@
 class AgentChange < ActiveRecord::Base
   belongs_to :account,   :class_name => 'Account'
 
-  # 更换分销员通知
+  # 更换专属客服通知
   def change_subscribe
     code,body=WebFunctions.method_url_call("get","https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=#{Settings.wechat.appId}&secret=#{Settings.wechat.appSecret}",{},"JSON")
     if code!="200"
@@ -10,7 +10,7 @@ class AgentChange < ActiveRecord::Base
     else
       res=JSON.parse body
       old_customer = Account.find(old_agent_id)
-      now_customer = Account.find(account.dist_agent_id)
+      now_customer = Account.find(account.info_service_id)
       if res["errcode"].present?
         raise res['errmsg']
       else

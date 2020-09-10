@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 152) do
+ActiveRecord::Schema.define(version: 155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 152) do
     t.integer "dist_agent_id"
     t.integer "app_status"
     t.json "avatar"
+    t.integer "info_service_id"
   end
 
   create_table "activities", force: :cascade do |t|
@@ -264,6 +265,7 @@ ActiveRecord::Schema.define(version: 152) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "account_id"
+    t.string "dist_type"
   end
 
   create_table "dist_settings", force: :cascade do |t|
@@ -373,6 +375,8 @@ ActiveRecord::Schema.define(version: 152) do
     t.integer "lack_quantity", default: 0
     t.integer "t_sku_id"
     t.integer "comment_status", default: 0
+    t.integer "dist_share_id"
+    t.integer "dist_agent_id"
   end
 
   create_table "orders", force: :cascade do |t|

@@ -10,7 +10,6 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
   # params
 =begin
   {
-    "dist_share_id": 10, # 分享记录的id，通过别人的分享下单时，需要传输该字段
     "shop_id": 2, # 到店安装时，选择的门店，自选商品时如果没有到店安装的，该项为空
     "contact_info": {"name": "李富元", "mobile": "13917050000"}, # 到店安装时需要填写，
     "delivery_info": {"province": "", "city": "", "district": "", "address": "",
@@ -27,12 +26,14 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           "name": "大保养推荐套餐",
           skus: [
             {
+              "dist_share_id": 10, # 分享记录的id，通过别人的分享下单时，需要传输该字段
               "sku_id": 1,
               "quantity": 1,
               "price": 55,
               "service": {"到店安装": 50} # 自选商品时选择的可选服务，如果没有可选服务项，则该字段为空
             },
             {
+              "dist_share_id": 10, # 分享记录的id，通过别人的分享下单时，需要传输该字段
               "sku_id": 2,
               "quantity": 1,
               "price": 55,
@@ -44,6 +45,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           "name": "自选项目",
           skus: [
             {
+              "dist_share_id": 10, # 分享记录的id，通过别人的分享下单时，需要传输该字段
               "sku_id": 3,
               "quantity": 1,
               "price": 45,
@@ -84,11 +86,11 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
           @order.contact_info = @request_params['contact_info'].present? ? @request_params['contact_info'] : @request_params['delivery_info']
         end
         # 记录分享下单关系
-        if @request_params["dist_share_id"].present?
-          @order.dist_share_id = @request_params["dist_share_id"]
-          agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员
-          @order.dist_agent_id = agent.id if (([1, 2].include?agent.role_id) && (agent.app_status == 1)) #是分销员时，记录订单归属的分销员
-        end
+        #if @request_params["dist_share_id"].present?
+        #  @order.dist_share_id = @request_params["dist_share_id"]
+        #  agent = DistShare.agent(@request_params["dist_share_id"]) #根据分享链，找出最近邻的分销员
+        #  @order.dist_agent_id = agent.id if (([1, 2].include?agent.role_id) && (agent.app_status == 1)) #是分销员时，记录订单归属的分销员
+        #end
 
         @order.save!
         if @request_params['order_type'] == "group" # 团购商品
@@ -122,7 +124,12 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
             lack_quantity = sku['quantity'].to_i - (tsku.stock_num < 0 ? 0 : tsku.stock_num) # 需采购的数量
             lack_quantity = lack_quantity < 0 ? 0 : lack_quantity
             tsku.update(stock_num: (tsku.stock_num||0)-sku['quantity'].to_i, available_num: (tsku.available_num||0)-sku['quantity'].to_i)
-            OrderSku.create!(order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'], lack_quantity: lack_quantity )
+            dist_agent_id = nil
+            if sku["dist_share_id"].present?
+              agent = DistShare.agent(sku["dist_share_id"]) #根据分享链，找出最近邻的分销员
+              dist_agent_id = agent.id if ([1, 2].include?agent.role_id) #是分销员时，记录订单归属的分销员
+            end
+            OrderSku.create!(dist_share_id: sku["dist_share_id"], dist_agent_id: dist_agent_id, order_no: @order.order_no, name: item['name'], t_sku_id: sku['sku_id'], quantity: sku['quantity'], price: sku['price'], service_fee: sku['service'], lack_quantity: lack_quantity )
           end
         end
       end

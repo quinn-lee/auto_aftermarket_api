@@ -55,7 +55,7 @@ module AutoAftermarketApi
       end
 
       def set_agent_changes_title_and_local
-        @title = "更换分销员"
+        @title = "更换专属客服"
       end
 
       def set_purchases_title
