@@ -1,0 +1,72 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">到店安装预约时间表</h4>
+    </div>
+
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <%= link_to '<< 往前一周', url(:orders, :reservations_gantt, :date => @current_week.prev_week.strftime('%F')), :class => 'btn btn-default' %>
+            <% link_to url(:orders, :reservations_gantt), :class => 'btn btn-default' do %>
+                <%= content_tag :i, nil, :class => 'fa fa-home' %>
+            <% end %>
+            <%= link_to '往后一周 >>', url(:orders, :reservations_gantt, :date => @current_week.next_week.strftime('%F')), :class => 'btn btn-default' %>
+        </div>
+    </div>
+
+    <% 7.times do |i| %>
+        <%= content_tag :div, nil, :id => "container_#{i}" %>
+        <script>
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: '/admin/orders/reservations_gantt?remote=true&date=<%= (@current_week + i.day).strftime('%F') %>',
+                success: function(res){
+                    setOrderReservationsGanttOptions(res, 'container_<%= i %>');
+                }
+            });
+        </script>
+    <% end %>
+</div>
+
+<script>
+    function setOrderReservationsGanttOptions(res, container){
+        Highcharts.setOptions({
+            lang: {
+                months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                shortMonths: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
+                shortWeekdays: ['日', '一', '二', '三', '四', '五', '六']
+            }
+        });
+        Highcharts.ganttChart(container, {
+            chart: {
+                spacing: [10, 0, 15, 0]
+            },
+            time: {
+                useUTC: false,
+                timezoneOffset: 8 * 60 * 60 * 1000
+            },
+            title: {
+                text: res.title
+            },
+            subtitle: {
+                text: res.subtitle
+            },
+            xAxis: {
+//                currentDateIndicator: true,
+                min: res.xAxis.min,
+                max: res.xAxis.max
+            },
+            tooltip: {
+                pointFormat: '<span>订单号: {point.id}</span><br/><span>预约时间: {point.start:%H:%M} ~ {point.end:%H:%M}</span><br/><span>联系人: {point.contact_name}</span><br/><span>联系电话: {point.contact_mobile}</span>'
+            },
+            series: [
+                {
+                    name: '预约订单',
+                    data: res.data
+                }
+            ]
+        });
+    }
+
+</script>

@@ -45,6 +45,8 @@ module AutoAftermarketApi
             { :label => '待发货', :icon => '', :url => url(:orders, :deliveries) },
             { :label => '取消审核', :icon => '', :url => url(:orders, :cancelling) },
             { :label => '预约时间表', :icon => '', :url => url(:orders, :reservations) },
+            { :label => '预约时间表(gantt)', :icon => '', :url => url(:orders, :reservations_gantt) },
+            { :label => '预约时间表(calendar)', :icon => '', :url => url(:orders, :reservations_calendar) },
             { :label => '员工订单统计', :icon => '', :url => '' },
             { :label => '员工佣金统计', :icon => '', :url => '' },
             { :label => '特权折扣', :icon => '', :url => '' }
@@ -99,7 +101,8 @@ module AutoAftermarketApi
         nav_css_demo = {
           :label => 'CSS DEMO', :icon => 'css3', :field => 'nav_css_demo',
           :options => [
-            { :label => '基础样式', :icon => '', :url => url(:css_demo, :index) }
+            { :label => '基础样式', :icon => '', :url => url(:css_demo, :index) },
+            { :label => '预约时间表样式', :icon => '', :url => url(:css_demo, :schedule) }
           ]
         }
 

@@ -1,0 +1,107 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">预约时间表样式</h4>
+    </div>
+
+    <div id="container"></div>
+</div>
+
+<script type="text/javascript">
+    var today = new Date(),
+            day = 1000 * 60 * 60 * 24,
+            hour = 1000 * 60 * 60;
+
+    // Set to 00:00:00:000 today
+    today.setUTCHours(0);
+    today.setUTCMinutes(0);
+    today.setUTCSeconds(0);
+    today.setUTCMilliseconds(0);
+    today = today.getTime();
+
+    Highcharts.setOptions({
+        lang: {
+            months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            shortMonths: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
+            shortWeekdays: ['日', '一', '二', '三', '四', '五', '六']
+        }
+    });
+
+    // THE CHART
+    Highcharts.ganttChart('container', {
+        chart: {
+//            styledMode: true
+        },
+        exporting: {
+
+        },
+        title: {
+            text: '到店安装预约时间表'
+        },
+        subtitle: {
+            text: '2020-09-09'
+        },
+        xAxis: {
+            min: today,
+            max: today + 24 * hour
+        },
+        tooltip: {
+            pointFormat: '<span>订单号: {point.name}</span><br/><span>From: {point.start:%H:%M}</span><br/><span>To: {point.end:%H:%M}</span>'
+        },
+        series: [{
+            name: '预约订单',
+            data: [{
+                name: 'Planning',
+                id: 'planning',
+                start: today,
+                end: today + 20 * hour
+            }, {
+                name: 'Requirements',
+                id: 'requirements',
+                parent: 'planning',
+                start: today,
+                end: today + 5 * hour
+            }, {
+                name: 'Design',
+                id: 'design',
+                dependency: 'requirements',
+                parent: 'planning',
+                start: today + 8 * hour,
+                end: today + 20 * hour
+            }, {
+                name: 'Layout',
+                id: 'layout',
+                parent: 'design',
+                start: today + 8 * hour,
+                end: today + 10 * hour
+            }, {
+                name: 'Graphics',
+                parent: 'design',
+                dependency: 'layout',
+                start: today + 10 * hour,
+                end: today + 20 * hour
+            }, {
+                name: 'Develop',
+                id: 'develop',
+                start: today + 8 * hour,
+                end: today + 22 * hour
+            }, {
+                name: 'Create unit tests',
+                id: 'unit_tests',
+                dependency: 'requirements',
+                parent: 'develop',
+                start: today + 8 * hour,
+                end: today + 9 * hour
+            }, {
+                name: 'Implement',
+                id: 'implement',
+                dependency: 'unit_tests',
+                parent: 'develop',
+                start: today + 8 * hour,
+                end: today + 22 * hour
+            }]
+        }]
+    });
+
+
+</script>
