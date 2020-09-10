@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 158) do
+ActiveRecord::Schema.define(version: 162) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -332,6 +332,31 @@ ActiveRecord::Schema.define(version: 158) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "income_reals", force: :cascade do |t|
+    t.integer "income_id"
+    t.decimal "paid_amount", precision: 12, scale: 2
+    t.date "paid_date"
+    t.string "remark"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "incomes", force: :cascade do |t|
+    t.string "client_name"
+    t.string "client_phone"
+    t.string "contract_no"
+    t.date "contract_date"
+    t.string "subject"
+    t.decimal "contract_amount", precision: 12, scale: 2
+    t.decimal "paid_amount", precision: 12, scale: 2
+    t.date "due_date"
+    t.string "remark"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "labels", force: :cascade do |t|
     t.string "name"
     t.integer "ltype"
@@ -410,6 +435,31 @@ ActiveRecord::Schema.define(version: 158) do
     t.decimal "refund_amount", precision: 10, scale: 2
     t.string "reject_reason"
     t.integer "account_id"
+  end
+
+  create_table "outlay_reals", force: :cascade do |t|
+    t.integer "outlay_id"
+    t.decimal "paid_amount", precision: 12, scale: 2
+    t.date "paid_date"
+    t.string "remark"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "outlays", force: :cascade do |t|
+    t.string "client_name"
+    t.string "client_phone"
+    t.string "contract_no"
+    t.date "contract_date"
+    t.string "subject"
+    t.decimal "contract_amount", precision: 12, scale: 2
+    t.decimal "paid_amount", precision: 12, scale: 2
+    t.date "due_date"
+    t.string "remark"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "page_views", force: :cascade do |t|
