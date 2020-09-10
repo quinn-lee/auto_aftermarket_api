@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">到店安装预约时间表</h4>
+    </div>
+    <div id="container"></div>
+</div>
+
+
+<script>
+  $(function(){
+      loadCalendar();
+  });
+
+  function loadCalendar(container){
+      container = container || '#container';
+      $(container).fullCalendar({
+          monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay,listWeek'
+          },
+          timeFormat: 'H:mm',
+          editable: true,
+          eventLimit: true,
+          navLinks: true,
+          events: {
+              url: '/admin/orders/reservations_calendar?remote=true',
+              type: 'GET'
+          }
+      })
+  }
+</script>

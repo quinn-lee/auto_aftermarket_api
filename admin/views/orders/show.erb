@@ -14,7 +14,7 @@
             <% link_to url(:orders, :done, :id => @order.id), :class => 'btn btn-default' do %>
                 <%= content_tag :i, ' 完成订单', :class => 'fa fa-check' %>
             <% end if @order.status != 'unpaid' && @order.status != 'done' && @order.status != 'cancelled' && @order.status != 'cancelling' %>
-            <%= link_to '返回', url(:orders, :index), :class => 'btn btn-default' %>
+            <%= link_to '返回', 'javascript:history.go(-1);', :class => 'btn btn-default' %>
         </div>
     </div>
 

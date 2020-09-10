@@ -241,4 +241,75 @@ AutoAftermarketApi::Admin.controllers :orders do
     end
     render 'orders/reservations'
   end
+
+  # 到店安装预约时间表 gantt
+  get :reservations_gantt do
+    @current_week = Time.parse(params[:date]) rescue Time.now.beginning_of_week
+    @current_date = Time.parse(params[:date]) rescue Time.now.beginning_of_day
+
+    if params[:remote] == 'true'
+      query = Order.joins(:sub_orders).joins('LEFT JOIN order_reservations on order_reservations.order_no = orders.order_no').
+        where.not('orders.status' => %w[unpaid appointing done delete cancelling cancelled]).
+        where('sub_orders.sub_type' => 'install', 'sub_orders.status' => 'appointed')
+      @result = {
+        # title: '到店安装预约时间表',
+        # subtitle: @current_date.strftime('%F'),
+        date: @current_date.to_i * 1000,
+        xAxis: { min: (@current_date + 8.hours).to_i * 1000 ,max: (@current_date + 24.hours).to_i * 1000 },
+        data: []
+      }
+      orders = query.where('order_reservations.booking_date' => @current_date).
+        select('orders.order_no, orders.contact_info, order_reservations.booking_time_from AS booking_time_from, order_reservations.booking_time_to AS booking_time_to')
+
+      orders.sort_by{|order| order[:start]}.each_with_index do |order, index|
+        @result[:data] << {
+          id: order.order_no,
+          parent: 'total',
+          name: "订单#{index + 1}",
+          start: order.booking_time_from.to_i * 1000,
+          end: order.booking_time_to.to_i * 1000,
+          contact_name: (order.contact_info['name'] rescue nil),
+          contact_mobile: (order.contact_info['mobile'] rescue nil)
+        }
+      end
+      # @result[:data].sort_by!{|order| order[:start] }
+      @result[:data] << { id: 'total', name: "#{orders.length}个订单", collapsed: true }
+      @result.to_json
+    else
+      render :reservations_gantt
+    end
+  end
+
+  # 到店安装预约时间表 calendar
+  get :reservations_calendar do
+    if params[:remote] == 'true'
+      start_date = Time.parse(params[:start]) rescue Time.now.beginning_of_month
+      end_date = Time.parse(params[:end]) rescue start_date + 1.month
+      # 调色盘
+      palette = %w[#e91e63 #59e0c5 #FF5370 #f3c30b #1f2e86 #0D4CFF #AA00FF #FF5722]
+
+      query = Order.joins(:sub_orders).joins('LEFT JOIN order_reservations on order_reservations.order_no = orders.order_no').
+        where.not('orders.status' => %w[unpaid appointing done delete cancelling cancelled]).
+        where('sub_orders.sub_type' => 'install', 'sub_orders.status' => 'appointed')
+      orders = query.where('order_reservations.booking_date BETWEEN ? AND ?', start_date, end_date).
+        select('orders.id, orders.order_no, orders.contact_info, order_reservations.booking_time_from AS booking_time_from, order_reservations.booking_time_to AS booking_time_to')
+
+      @result = []
+      orders.each do |order|
+        name   = order.contact_info['name'] rescue nil
+        mobile = order.contact_info['mobile'] rescue nil
+        @result << {
+          title: "#{name}, #{mobile}, 订单号: #{order.order_no}",
+          start: order.booking_time_from.strftime('%F %T'),
+          end: order.booking_time_to.strftime('%F %T'),
+          color: palette[order.id % palette.length],
+          url: url(:orders, :show, :id => order.id)
+        }
+      end
+      @result.to_json
+    else
+      render :reservations_calendar
+    end
+  end
+
 end
