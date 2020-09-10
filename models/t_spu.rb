@@ -5,6 +5,7 @@ class TSpu < ActiveRecord::Base
   mount_uploaders :details, FileUploader
 
   validates :t_category_id, :title, presence: true
+  validates :dist_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 
   belongs_to :t_category,   :class_name => 'TCategory'
   belongs_to :t_brand,   :class_name => 'TBrand'

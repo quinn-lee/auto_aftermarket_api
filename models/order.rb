@@ -158,7 +158,7 @@ class Order < ActiveRecord::Base
       if account.dist_agent_id.present?
         dist_agent = Account.find(account.dist_agent_id)
         percent = BigDecimal.new(dist_agent.dist_percent.to_s)
-        commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s))
+        commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent/100).to_s))
         # 分销金额>0 并且开启了分销，才插入分销订单数据
         #if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
         if ds.dist_switch
@@ -169,7 +169,7 @@ class Order < ActiveRecord::Base
       if account.info_service_id.present?
         dist_agent = Account.find(account.info_service_id)
         percent = BigDecimal.new((ds.try{|ds| ds.info_service_percent } || 0).to_s)
-        commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent).to_s))
+        commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent/100).to_s))
         # 分销金额>0 并且开启了分销，才插入分销订单数据
         #if commission > BigDecimal.new("0") && dist_orders.blank? && ds.dist_switch
         if ds.dist_switch
@@ -186,7 +186,7 @@ class Order < ActiveRecord::Base
           end
           this_amount = BigDecimal.new(order_sku.price.to_s)*BigDecimal.new(order_sku.quantity.to_s)
           all_amount = order_skus.each.sum{|os| BigDecimal.new(os.price.to_s)*BigDecimal.new(os.quantity.to_s)}
-          commission = BigDecimal.new(sprintf("%.2f", (pay_amount * percent * (this_amount/all_amount)).to_s))
+          commission = BigDecimal.new(sprintf("%.2f", (pay_amount * (percent/100) * (this_amount/all_amount)).to_s))
           # 分销金额>0 并且开启了分销，才插入分销订单数据
           if ds.dist_switch
             DistOrder.create(dist_percent: percent, dist_type: "商品促销人", order_id: id, dist_agent_id: dist_agent.id, sku_info: t_sku.t_spu.t_category.name, account_id: account_id, merchant_id: merchant_id, pay_amount: BigDecimal.new(sprintf("%.2f", (pay_amount*this_amount/all_amount).to_s)), commission: commission, pay_time: pay_time, complete_time: nil)

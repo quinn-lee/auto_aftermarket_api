@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 162) do
+ActiveRecord::Schema.define(version: 163) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -267,6 +267,13 @@ ActiveRecord::Schema.define(version: 162) do
     t.integer "account_id"
     t.string "dist_type"
     t.decimal "dist_percent", precision: 10, scale: 2
+  end
+
+  create_table "dist_roles", force: :cascade do |t|
+    t.string "name"
+    t.decimal "dist_percent", precision: 12, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "dist_settings", force: :cascade do |t|
