@@ -5,6 +5,19 @@
     <div id="container"></div>
 </div>
 
+<style>
+    .fc-state-default.fc-corner-left {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .fc-state-default.fc-corner-right {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    .fc-state-default {
+        background-image: none;
+    }
+</style>
 
 <script>
   $(function(){
@@ -14,11 +27,22 @@
   function loadCalendar(container){
       container = container || '#container';
       $(container).fullCalendar({
-          monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          monthNames: ['一月','二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          monthNamesShort: ['一月','二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          dayNames:['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+          dayNamesShort:['日', '一', '二', '三', '四', '五', '六'],
           header: {
               left: 'prev,next today',
               center: 'title',
-              right: 'month,agendaWeek,agendaDay,listWeek'
+              right: 'month,agendaWeek,agendaDay'
+          },
+          buttonText: {
+              today: '今天',
+              month: '月表',
+              agendaWeek: '周表',
+              listWeek: '周表',
+              agendaDay: '日表',
+              listDay: '日表'
           },
           timeFormat: 'H:mm',
           editable: true,
