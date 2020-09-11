@@ -3,6 +3,7 @@ class CreateDistRoles < ActiveRecord::Migration[5.1]
     create_table :dist_roles do |t|
       t.string :name
       t.decimal :dist_percent, :precision => 12, :scale => 2
+      t.integer :merchant_id
       t.timestamps null: false
     end
   end
