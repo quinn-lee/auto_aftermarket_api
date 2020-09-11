@@ -272,6 +272,7 @@ ActiveRecord::Schema.define(version: 163) do
   create_table "dist_roles", force: :cascade do |t|
     t.string "name"
     t.decimal "dist_percent", precision: 12, scale: 2
+    t.integer "merchant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

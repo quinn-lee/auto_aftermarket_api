@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">分销角色</h4>
+    </div>
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <% link_to url(:dist_settings, :new_dist_role), :class => 'btn btn-default' do %>
+                <%= content_tag :i, nil, :class => 'fa fa-plus' %> 新增分销角色
+            <% end %>
+        </div>
+    </div>
+
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th style="width: 40%;">分销角色名称</th>
+            <th style="width: 40%;">分销比例</th>
+            <th style="width: 15%;"></th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+              <td>客户介绍人</td>
+              <td><%= @dist_setting.dist_percent%>%</td>
+              <td><a href="<%=url(:dist_settings, :new, :from=>'dist_roles') %>" class="pd-setting-ed">修改比例</a></td>
+          </tr>
+          <tr>
+              <td>商品促销人</td>
+              <td><%= @dist_setting.spu_percent%>%</td>
+              <td><a href="<%=url(:dist_settings, :new, :from=>'dist_roles') %>" class="pd-setting-ed">修改比例</a></td>
+          </tr>
+          <tr>
+              <td>服务资讯人</td>
+              <td><%= @dist_setting.info_service_percent%>%</td>
+              <td><a href="<%=url(:dist_settings, :new, :from=>'dist_roles') %>" class="pd-setting-ed">修改比例</a></td>
+          </tr>
+          <% @dist_roles.each do |dr| %>
+            <tr>
+                <td><%=dr.name%></td>
+                <td><%=dr.dist_percent%>%</td>
+                <td>
+                  <a href="<%=url(:dist_settings, :edit_dist_role, :id=>dr.id) %>" class="pd-setting-ed">修改比例</a>
+                  <a href="<%=url(:dist_settings, :destroy_dist_role, :id=>dr.id) %>" class="pd-setting-ed">删除角色</a>
+                </td>
+            </tr>
+          <% end %>
+        </tbody>
+    </table>
+</div>
