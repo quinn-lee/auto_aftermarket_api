@@ -85,7 +85,7 @@ input[type=file].form-control{
 }
 .form-group-bordered-top { border-top: 1px solid #ddd; padding-top: 15px; }
 
-.form-group .input-group .input-group-addon { min-width: 120px; }
+/*.form-group .input-group .input-group-addon { min-width: 120px; }*/
 
 /* .image-preview 图片预览 */
 .image-preview { display: flex; flex-wrap: wrap; }

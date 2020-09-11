@@ -681,7 +681,7 @@ ActiveRecord::Schema.define(version: 163) do
     t.boolean "is_valid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "dist_percent", precision: 10, scale: 2
+    t.decimal "dist_percent"
     t.json "details"
   end
 

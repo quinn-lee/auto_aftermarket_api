@@ -87,6 +87,8 @@ module AutoAftermarketApi
         nav_finance = {
           :label => '财务', :icon => 'table', :field => 'nav_finance',
           :options => [
+            { :label => '应收信息', :icon => '', :url => url(:finance, :incomes)},
+            { :label => '应付信息', :icon => '', :url => url(:finance, :outlays)},
             { :label => '财务对账', :icon => '', :url => ''}
           ]
         }

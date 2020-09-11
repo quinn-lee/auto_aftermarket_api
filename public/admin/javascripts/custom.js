@@ -1,4 +1,5 @@
 $(function(){
+    $('.datePicker').datePicker();
     $('[data-toggle="popover"]').popover();
     // 商品目录手风琴效果
     $('.cat-list a[data-toggle=collapse]').bind('click', function(e){ $('.cat-list .collapse').collapse('hide'); });
@@ -66,6 +67,18 @@ $(function(){
         document.getElementById('filter_submit').disabled = _seq_.length != _len_;
     });
 });
+
+// datetimePicker
+$.fn.datePicker = function(){
+    $(this).datetimepicker(
+        {
+            lang: 'ch',
+            timepicker: false,
+            allowBlank: true,
+            format: 'Y-m-d'
+        }
+    );
+};
 // 加载品牌 + 属性
 function loadCategoryProperties(ele){
     $('.cat-list-sub-item').removeClass('active');
@@ -123,6 +136,41 @@ function responsiveCategoryHidden(ele){
             }
         }
 
+    })
+}
+
+// 加载财务实收信息
+function loadIncomeReals(ele){
+    $('#incomeRealModal .modal-body').html('<div class="loading"><span></span><span></span><span></span><span></span><span></span></div>');
+    $('#incomeRealModal').modal('show');
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/admin/finance/incomes/' + ele.dataset.id + '/load_income_reals?remote=true',
+        success: function(res){
+            if(res.status == 'succ'){
+                $('#incomeRealModal .modal-body').html(res.html);
+            }else{
+                alert(res.reason);
+            }
+        }
+    })
+}
+// 加载财务实付信息
+function loadOutlayReals(ele){
+    $('#outlayRealModal .modal-body').html('<div class="loading"><span></span><span></span><span></span><span></span><span></span></div>');
+    $('#outlayRealModal').modal('show');
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/admin/finance/outlays/' + ele.dataset.id + '/load_outlay_reals?remote=true',
+        success: function(res){
+            if(res.status == 'succ'){
+                $('#outlayRealModal .modal-body').html(res.html);
+            }else{
+                alert(res.reason);
+            }
+        }
     })
 }
 

@@ -1,0 +1,56 @@
+<% if outlay_reals.any? %>
+<table class="table table-condensed table-striped table-bordered-y">
+    <thead>
+    <tr>
+        <th>付款日期</th>
+        <th>付款金额</th>
+        <th>备注</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% outlay_reals.each do |outlay_real| %>
+        <tr>
+            <td><%= outlay_real.paid_date %></td>
+            <td>￥<%= outlay_real.paid_amount %></td>
+            <td><%= link_to truncate(outlay_real.remark, length: 20), 'javascript:void(0);', :title => outlay_real.remark, :data => { :toggle => 'tooltip', :placement => 'top' } if outlay_real.remark.present? %></td>
+            <td>
+                <% link_to url(:finance, :outlay_reals_delete, :id => outlay_real.id) do %>
+                    <%= content_tag :i, nil, :class => 'fa fa-trash' %>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+    </tbody>
+</table>
+<% end %>
+
+<% form_for OutlayReal.new, url(:finance, :outlay_reals_create, :id => outlay.id), :method => :post do |f| %>
+    <div class="row">
+        <div class="col-xs-6 form-group">
+            <label>付款日期<span class="text-red">*</span></label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <%= f.text_field :paid_date, :require => true, :class => 'form-control datePicker' %>
+            </div>
+        </div>
+        <div class="col-xs-6 form-group">
+            <label>付款金额<span class="text-red">*</span></label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-cny"></i></span>
+                <%= f.number_field :paid_amount, :require => true, :min => 0, :step => 0.01, :class => 'form-control' %>
+            </div>
+        </div>
+        <div class="col-xs-12 form-group">
+            <label>备注</label>
+            <%= f.text_field :remark, :class => 'form-control' %>
+        </div>
+    </div>
+    <div align="right">
+        <%= f.submit '新增', :class => 'btn btn-submit' %>
+    </div>
+<% end %>
+<script>
+    $('.datePicker').datePicker();
+    $("[data-toggle='tooltip']").tooltip();
+</script>

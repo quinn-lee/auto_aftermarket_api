@@ -1,0 +1,137 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">应收信息表</h4>
+    </div>
+
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
+                <i class="fa fa-search"></i> 搜索
+            </button>
+            <% link_to url(:finance, :incomes_new), :class => 'btn btn-default' do %>
+                <%= content_tag :i, ' 新增应收信息', :class => 'fa fa-plus-circle' %>
+            <% end %>
+        </div>
+    </div>
+
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th>创建时间</th>
+            <th>客户名称</th>
+            <th>联系电话</th>
+            <th>合同编号</th>
+            <th>合同日期</th>
+            <th>科目</th>
+            <th>应收日期</th>
+            <th>合同金额</th>
+            <th>实收金额</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            <% @incomes.each do |income| %>
+            <tr>
+                <td><%= link_to income.created_at.strftime('%F'), 'javascript:void(0);', :title => income.created_at.strftime('%F %T'), :data => { :toggle => 'tooltip', :placement => 'top' } %></td>
+                <td><%= income.client_name %></td>
+                <td><%= income.client_phone %></td>
+                <td><%= income.contract_no %></td>
+                <td><%= income.contract_date %></td>
+                <td><%= income.subject %></td>
+                <td><%= income.due_date %></td>
+                <td>￥<%= income.contract_amount %></td>
+                <td>￥<%= income.paid_amount %></td>
+                <td><%= link_to '备注', 'javascript:void(0);', :title => income.remark, :data => { :toggle => 'tooltip', :placement => 'top' } if income.remark.present? %></td>
+                <td class="action">
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-gear"></i> <i class="fa fa-angle-down"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <% if income.can_edit? %>
+                            <li>
+                                <% link_to url(:finance, :incomes_edit, :id => income.id) do %>
+                                    <%= content_tag :i, nil, :class => 'fa fa-edit' %> 修改
+                                <% end %>
+                            </li>
+                            <% end %>
+                            <% if income.can_delete? %>
+                            <li>
+                                <% link_to url(:finance, :incomes_delete, :id => income.id) do %>
+                                    <%= content_tag :i, nil, :class => 'fa fa-trash' %> 删除
+                                <% end %>
+                            </li>
+                            <% end %>
+                            <li>
+                                <% link_to 'javascript:void(0);', :onclick => 'loadIncomeReals(this);', :data => { :id => income.id } do %>
+                                    <%= content_tag :i, nil, :class => 'fa fa-info-circle' %> 查看/新增实收记录
+                                <% end %>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+    <%= will_paginate @incomes %>
+</div>
+
+<div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">搜索栏</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <% form_tag request.path, :method => :get do %>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>应收日期从</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <%= text_field_tag :due_date_ge, :value => params[:due_date_ge], :class => 'form-control datePicker' %>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>到</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <%= text_field_tag :due_date_le, :value => params[:due_date_le], :class => 'form-control datePicker' %>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>客户名称</label>
+                            <%= text_field_tag :client_name, :value => params[:client_name], :class => 'form-control' %>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>科目</label>
+                            <%= text_field_tag :subject, :value => params[:subject], :class => 'form-control' %>
+                        </div>
+                    </div>
+
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <%= submit_tag '提交', :class => 'btn btn-submit' %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- income_reals wrapper -->
+<div class="modal modal-custom fade" id="incomeRealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">实收记录</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>

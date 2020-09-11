@@ -1,0 +1,13 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">新增应收信息</h4>
+    </div>
+
+    <% form_for @income, url(:finance, :incomes_create), :method => :post do |f| %>
+        <%= partial 'finance/incomes/form', :locals => { :f => f } %>
+        <div class="form-group-row-btn">
+            <%= link_to '返回', 'javascript:history.go(-1);', :class => 'btn btn-back' %>
+            <%= f.submit '提交', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
+</div>
