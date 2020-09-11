@@ -107,9 +107,9 @@ class Account < ActiveRecord::Base
 
   # 佣金比例
   def dist_percent
-    ds = DistSetting.first
+    ds = DistSetting.first  #TODO 需要加上merchant_id的条件搜索
     if role_id == 1
-      ds.try{|ds| ds.sales_percent } || 0
+      ds.try{|ds| ds.dist_percent } || 0
     elsif role_id == 2
       ds.try{|ds| ds.dist_percent } || 0
     else

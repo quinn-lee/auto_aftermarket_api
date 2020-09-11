@@ -468,7 +468,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
   end
 
   # 取消订单
-  # params {"order_id"=>1}
+  # params {"order_id"=>1, "cancel_reason": "不想要了"}
   # data {"}
   post "/cancel", :provides => [:json] do
     api_rescue do
@@ -476,7 +476,7 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
       ActiveRecord::Base.transaction do
         @order = Order.find(@request_params['order_id'])
         raise "can not cancel status=#{@order.status}" unless @order.can_cancel?
-        @order.update!(status: "cancelling")
+        @order.update!(status: "cancelling", cancel_reason: @request_params['cancel_reason'], cancel_time: Time.now)
       end
 
       { status: 'succ', data: {}}.to_json

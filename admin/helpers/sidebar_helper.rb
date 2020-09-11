@@ -72,6 +72,7 @@ module AutoAftermarketApi
           :label => '分销', :icon => 'link', :field => 'nav_dist',
           :options => [
             { :label => '分销设置', :icon => '', :url => url(:dist_settings, :new) },
+            { :label => '分销角色', :icon => '', :url => url(:dist_settings, :dist_roles) },
             { :label => '营销活动', :icon => '', :url => url(:activities, :index) },
             { :label => '销售/分销员审核', :icon => '', :url => url(:customers, :agents) },
             { :label => '提现申请处理', :icon => '', :url => url(:withdraws, :index ) }

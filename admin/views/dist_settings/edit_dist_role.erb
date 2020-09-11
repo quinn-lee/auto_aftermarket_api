@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">修改分销角色</h4>
+    </div>
+
+    <% form_for @dist_role, url(:dist_settings, :update_dist_role, :id=>@dist_role.id), :method => 'post' do |f| %>
+        <div class="row">
+            <div class="col-xs-12 form-group-row">
+                <label>分销角色名称*</label>
+                <%= f.text_field :name, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label style="height: 18px;">佣金比例*<span style="color: #EC7063;font-size: 12px;">(填写0-100之间的数字)</span></label>
+                <%= f.text_field :dist_percent, :class => 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group-row-btn">
+            <%=f.submit '提交', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
+</div>
