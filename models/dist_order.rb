@@ -14,4 +14,8 @@ class DistOrder < ActiveRecord::Base
       pay_time: pay_time.try{|pt| pt.strftime("%F %T")}
     }
   end
+
+  def dist_owner
+    Account.find(dist_agent_id)
+  end
 end

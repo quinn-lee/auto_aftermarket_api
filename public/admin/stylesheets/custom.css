@@ -281,3 +281,10 @@ table#reservations .popover {  max-width: 320px; }
 .commodity-info-title { flex: 1; }
 .commodity-info-price { width: 100px; text-align: center; }
 .commodity-info-quantity { width: 80px; text-align: center; }
+.dist-owner { width: 15%; text-align: center; }
+.dist-role { width: 10%; text-align: center; }
+.dist-pay-amount { width: 12%; text-align: center; }
+.dist-percent { width: 12%; text-align: center; }
+.dist-amount { width: 12%; text-align: center; }
+.dist-pay-time { width: 15%; text-align: center; }
+.dist-complete-time { width: 15%; text-align: center; }

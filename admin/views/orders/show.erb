@@ -91,6 +91,50 @@
             <% end %>
         </tbody>
     </table>
+
+    <table class="table table-bordered commodity-info-block">
+        <thead>
+            <tr>
+                <th style="width: 100%;">分销信息
+                  <div class="card-toolbar">
+                    <div class="btn-group btn-group-sm">
+                        <% link_to url(:orders, :new_dist_order, :id=>@order.id), :class => 'btn btn-default' do %>
+                            <%= content_tag :i, nil, :class => 'fa fa-plus' %> 新增参与分销员
+                        <% end %>
+                    </div>
+                </div></th>
+
+            </tr>
+        </thead>
+        <tbody>
+          <tr>
+              <td>
+                  <ul class="commodity-info-ul">
+                    <li>
+                        <div class="dist-owner">分销人</div>
+                        <div class="dist-role">分销角色</div>
+                        <div class="dist-pay-amount">参与分销金额</div>
+                        <div class="dist-percent">分销比例</div>
+                        <div class="dist-amount">佣金</div>
+                        <div class="dist-pay-time">订单支付时间</div>
+                        <div class="dist-complete-time">订单完成时间</div>
+                    </li>
+                    <% @order.dist_orders.each do |dist_order| %>
+                    <li>
+                        <div class="dist-owner"><%=dist_order.dist_owner.name%></div>
+                        <div class="dist-role"><%=dist_order.dist_type%></div>
+                        <div class="dist-pay-amount">￥<%=dist_order.pay_amount%></div>
+                        <div class="dist-percent"><%=dist_order.dist_percent%>%</div>
+                        <div class="dist-amount">￥<%=dist_order.commission%></div>
+                        <div class="dist-pay-time"><%=dist_order.pay_time.try{|pt| pt.strftime('%F')}%></div>
+                        <div class="dist-complete-time"><%=dist_order.complete_time.try{|pt| pt.strftime('%F')}%></div>
+                    </li>
+                    <% end %>
+                  </ul>
+              </td>
+          </tr>
+        </tbody>
+    </table>
 </div>
 
 <!--

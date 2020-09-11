@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">新增参与分销员</h4>
+    </div>
+
+    <% form_for @dist_order, url(:orders, :create_dist_order, id: @order.id), :method => 'post' do |f| %>
+        <%=f.hidden_field "merchant_id" %>
+        <%=f.hidden_field "account_id" %>
+        <%=f.hidden_field "order_id" %>
+        <div class="row">
+          <% @dist_roles.each_with_index do |dr, index|%>
+              <div class="col-xs-12 form-group-row">
+                  <label><% if index == 0%>选择分销角色*<% end %></label>
+                  <div class="i-checks pull-left">
+                    <label><%= radio_button_tag :dist_role_id, :value => dr.id, :class => 'form-control' %>  <%=dr.name%>(<%=dr.dist_percent%>%)</label>
+                  </div>
+              </div>
+          <% end %>
+          <div class="col-xs-12 form-group-row">
+              <label>选择参与分销员</label>
+              <%=f.select(:dist_agent_id, :options => current_account.merchant.all_workers.unshift([nil,nil]), :class => "form-control custom-select-value")%>
+          </div>
+          <div class="col-xs-12 form-group-row">
+              <label style="height: 18px;">参与分销金额*</label>
+              <%= f.text_field :pay_amount, value: @order.pay_amount, :class => 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group-row-btn">
+            <%=f.submit '提交', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
+</div>

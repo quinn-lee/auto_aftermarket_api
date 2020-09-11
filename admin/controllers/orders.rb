@@ -94,6 +94,44 @@ AutoAftermarketApi::Admin.controllers :orders do
     end
   end
 
+  # 新增分销信息
+  get :new_dist_order, :with => :id do
+    @order = Order.find(params[:id])
+    @dist_roles = DistRole.all
+    @dist_order = DistOrder.new(order_id: @order.id, merchant_id: @order.merchant_id, account_id: @order.account_id)
+    render 'orders/new_dist_order'
+  end
+
+  # 新增分销信息
+  post :create_dist_order, :with => :id do
+    begin
+      logger.info params
+      @order = Order.find(params[:id])
+      @dist_roles = DistRole.all
+      @dist_order = DistOrder.new(params[:dist_order])
+      raise "请选择分销角色" if params[:dist_role_id].blank?
+      raise "请选择参与分销员" if params[:dist_order][:dist_agent_id].blank?
+      raise "请填写分销金额" if params[:dist_order][:pay_amount].blank?
+      dist_role = DistRole.find(params[:dist_role_id])
+      t_sku = TSku.where(id: @order.order_skus.map(&:t_sku_id)).first
+      percent = dist_role.dist_percent
+      commission = BigDecimal.new(sprintf("%.2f", (params[:dist_order][:pay_amount].to_f * percent/100).to_s))
+      @dist_order.dist_percent = percent
+      @dist_order.dist_type = dist_role.name
+      @dist_order.sku_info = t_sku.t_spu.t_category.name
+      @dist_order.commission = commission
+      @dist_order.pay_time = @order.pay_time
+      @dist_order.complete_time = @order.updated_at if @order.status == 'done'
+      @dist_order.save!
+      flash[:success] = "新增参与分销员成功"
+      redirect(url(:orders, :show, :id=>@order.id))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      render 'orders/new_dist_order'
+    end
+  end
+
   # 采购完成操作
   get :purchased do
     begin
