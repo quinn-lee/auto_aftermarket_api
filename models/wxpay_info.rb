@@ -43,6 +43,10 @@ class WxpayInfo < ActiveRecord::Base
       if order.coupon_log.present?
         order.coupon_log.update!(status: 1)
       end
+
+      # 插入现金流记录
+      # TODO 后续改为对账后插入
+      CashFlow.create!(merchant_id: order.merchant_id, order_id: order.id, subject: "order", transaction_date: Time.now, amount: order.pay_amount)
     end
   end
 end

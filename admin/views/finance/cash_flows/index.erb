@@ -1,0 +1,85 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">现金流量表</h4>
+    </div>
+
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#searchModal">
+                <i class="fa fa-search"></i> 搜索
+            </button>
+            <% link_to url(:finance, :cash_flow_details, :transaction_date_gt => @transaction_date_gt, :transaction_date_lt => @transaction_date_lt), :class => 'btn btn-default' do %>
+                <%= content_tag :i, ' 查看明细', :class => 'fa fa-plus-circle' %>
+            <% end %>
+        </div>
+    </div>
+
+    <table class="table table-condensed table-striped table-bordered-y">
+        <thead>
+        <tr>
+            <th>收入</th>
+            <th>￥<%=@cash_flows.where(subject: ['order', 'income']).each.sum(&:amount).abs%></th>
+            <th>支出</th>
+            <th>￥<%=@cash_flows.where.not(subject: ['order', 'income']).each.sum(&:amount).abs%></th>
+            <th>总计</th>
+            <th>￥<%=@cash_flows.each.sum(&:amount).abs%></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>订单</td>
+                <td><%= @order.present? ? "￥#{@order.total_amount.abs}" : "￥0" %></td>
+                <td>退款</td>
+                <td><%= @refund.present? ? "￥#{@refund.total_amount.abs}" : "￥0" %></td>
+            </tr>
+            <tr>
+                <td>其他实收</td>
+                <td><%= @income.present? ? "￥#{@income.total_amount.abs}" : "￥0" %></td>
+                <td>其他实付</td>
+                <td><%= @outlay.present? ? "￥#{@outlay.total_amount.abs}" : "￥0" %></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>佣金</td>
+                <td><%= @commission.present? ? "￥#{@commission.total_amount.abs}" : "￥0" %></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal modal-custom fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title underline">搜索栏</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <% form_tag request.path, :method => :get do %>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>记账日期从</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <%= text_field_tag :transaction_date_gt, :value => params[:transaction_date_gt], :class => 'form-control datePicker' %>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>到</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <%= text_field_tag :transaction_date_lt, :value => params[:transaction_date_lt], :class => 'form-control datePicker' %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div align="right">
+                        <button type="button" class="btn btn-back" data-dismiss="modal">关闭</button>
+                        <%= submit_tag '提交', :class => 'btn btn-submit' %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

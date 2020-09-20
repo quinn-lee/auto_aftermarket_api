@@ -2,7 +2,7 @@ AutoAftermarketApi::Admin.controllers :finance do
 
   # ===== 记账 Income/IncomeReal =====
   get :incomes do
-    query = Income.all
+    query = Income.where(merchant_id: current_account.merchant_id)
     query = query.where('due_date >= ?', params[:due_date_ge]) if params[:due_date_ge].present?
     query = query.where('due_date <= ?', params[:due_date_le]) if params[:due_date_le].present?
     %w[client_name subject].each do |field|
@@ -21,6 +21,7 @@ AutoAftermarketApi::Admin.controllers :finance do
     # permit_fields = %w[client_name client_phone contract_no contract_date subject contract_amount due_date remark]
     @income = Income.new(params[:income])
     @income.account_id = current_account.id
+    @income.merchant_id = current_account.merchant_id
     if @income.save
       flash[:success] = '新增应收信息成功'
       redirect url(:finance, :incomes)
@@ -88,6 +89,7 @@ AutoAftermarketApi::Admin.controllers :finance do
       @income = Income.find(params[:id])
       @income_real = @income.income_reals.new(params[:income_real])
       @income_real.account_id = current_account.id
+      @income_real.merchant_id = current_account.merchant_id
       @income_real.save!
       flash[:success] = '新增实收信息成功'
       redirect url(:finance, :incomes)
@@ -111,7 +113,7 @@ AutoAftermarketApi::Admin.controllers :finance do
 
   # ===== 结账 Outlay/OutlayReal =====
   get :outlays do
-    query = Outlay.all
+    query = Outlay.where(merchant_id: current_account.merchant_id)
     query = query.where('due_date >= ?', params[:due_date_ge]) if params[:due_date_ge].present?
     query = query.where('due_date <= ?', params[:due_date_le]) if params[:due_date_le].present?
     %w[client_name subject].each do |field|
@@ -130,6 +132,7 @@ AutoAftermarketApi::Admin.controllers :finance do
     # permit_fields = %w[client_name client_phone contract_no contract_date subject contract_amount due_date remark]
     @outlay = Outlay.new(params[:outlay])
     @outlay.account_id = current_account.id
+    @outlay.merchant_id = current_account.merchant_id
     if @outlay.save
       flash[:success] = '新增应付信息成功'
       redirect url(:finance, :outlays)
@@ -197,6 +200,7 @@ AutoAftermarketApi::Admin.controllers :finance do
       @outlay = Outlay.find(params[:id])
       @outlay_real = @outlay.outlay_reals.new(params[:outlay_real])
       @outlay_real.account_id = current_account.id
+      @outlay_real.merchant_id = current_account.merchant_id
       @outlay_real.save!
       flash[:success] = '新增实付信息成功'
       redirect url(:finance, :outlays)
@@ -216,6 +220,38 @@ AutoAftermarketApi::Admin.controllers :finance do
       flash[:error] = e.message
       redirect url(:finance, :outlays)
     end
+  end
+
+  # ===== 现金流量表 CashFlow =====
+  get :cash_flows do
+    @cash_flows = CashFlow.where(merchant_id: current_account.merchant_id)
+    @transaction_date_gt = params[:transaction_date_gt]
+    @transaction_date_lt = params[:transaction_date_lt]
+    @cash_flows = @cash_flows.where('transaction_date >= ?', params[:transaction_date_gt]) if params[:transaction_date_gt].present?
+    @cash_flows = @cash_flows.where('transaction_date <= ?', params[:transaction_date_lt]) if params[:transaction_date_lt].present?
+
+    @cfs = @cash_flows.select("subject, sum(amount) as total_amount").group("subject")
+    @order = @cfs.find_by(subject: "order")
+    @refund = @cfs.find_by(subject: "refund")
+    @income = @cfs.find_by(subject: "income")
+    @outlay = @cfs.find_by(subject: "outlay")
+    @commission = @cfs.find_by(subject: "commission")
+    render 'finance/cash_flows/index'
+  end
+
+  get :cash_flow_details do
+    @cash_flows = CashFlow.where(merchant_id: current_account.merchant_id)
+    @cash_flows = @cash_flows.where('transaction_date >= ?', params[:transaction_date_gt]) if params[:transaction_date_gt].present?
+    @cash_flows = @cash_flows.where('transaction_date <= ?', params[:transaction_date_lt]) if params[:transaction_date_lt].present?
+    @cash_flows = @cash_flows.order(:created_at => :desc).paginate(:page => params[:page], :per_page => 30)
+    render 'finance/cash_flows/cash_flow_details'
+  end
+
+  # ===== 财务对账 ReconciliationDetail =====
+  get :reconciliation_details do
+    @reconciliation_details = ReconciliationDetail.where(merchant_id: current_account.merchant_id)
+    @reconciliation_details = @reconciliation_details.order(:created_at => :desc).paginate(:page => params[:page], :per_page => 30)
+    render 'finance/reconciliation_details/index'
   end
 
 end

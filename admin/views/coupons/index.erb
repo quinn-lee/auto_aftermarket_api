@@ -17,7 +17,7 @@
             <th style="width: 8%;">标题</th>
             <th style="width: 8%;">秒杀描述</th>
             <th style="width: 8%;">类型</th>
-            <th style="width: 12%;">结束时间</th>
+            <th style="width: 12%;">有效时间</th>
             <th style="width: 7%;">金额</th>
             <th style="width: 10%;">使用条件</th>
             <th style="width: 7%;">折扣</th>
@@ -34,9 +34,11 @@
                 <td><%=coupon.title%></td>
                 <td><%=coupon.remarks%></td>
                 <td><%=Coupon::CTYPE[coupon.ctype.to_s]%></td>
-                <td><%=coupon.end_time.try{|et| et.strftime('%Y%m%d %H:%M')}%></br>
+                <td>
+                  <%=coupon.begin_time.try{|bt| bt.strftime('%Y%m%d %H:%M')}%><br/>
+                  <%=coupon.end_time.try{|et| et.strftime('%Y%m%d %H:%M')}%>
                   <% if coupon.end_time < Time.now %>
-                  <span style="color: #3498DB;">(已过期)</span>
+                  </br><span style="color: #3498DB;">(已过期)</span>
                   <% end %>
                 </td>
                 <td><%if coupon.ctype==1%>￥<%=coupon.money%><% end %></td>

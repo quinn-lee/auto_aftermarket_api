@@ -11,6 +11,7 @@ class Order < ActiveRecord::Base
   has_one :coupon_log, :class_name => 'CouponLog', :dependent => :destroy
   has_one :group_buyer, :class_name => 'GroupBuyer', :dependent => :destroy
   has_one :seckill_buyer, :class_name => 'SeckillBuyer', :dependent => :destroy
+  has_many :cash_flows, :class_name => 'CashFlow', :dependent => :destroy
 
   after_save :update_dist_orders
 
@@ -36,7 +37,7 @@ class Order < ActiveRecord::Base
 
   def gen_order_no
     r=ActiveRecord::Base.connection.execute("select nextval('order_no_seq')")
-    "#{r[0]['nextval']}#{Time.now.strftime('%Y%m%d%H%M%S')}"
+    "#{r[0]['nextval']}#{Time.now.strftime('%y%m%d')}"
   end
 
   def can_delete?

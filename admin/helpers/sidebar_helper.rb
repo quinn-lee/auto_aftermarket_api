@@ -90,7 +90,8 @@ module AutoAftermarketApi
           :options => [
             { :label => '应收信息', :icon => '', :url => url(:finance, :incomes)},
             { :label => '应付信息', :icon => '', :url => url(:finance, :outlays)},
-            { :label => '财务对账', :icon => '', :url => ''}
+            { :label => '现金流量表', :icon => '', :url => url(:finance, :cash_flows)},
+            { :label => '财务对账', :icon => '', :url => url(:finance, :reconciliation_details)}
           ]
         }
         nav_miniprogram = {

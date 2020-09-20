@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 163) do
+ActiveRecord::Schema.define(version: 170) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,6 +166,19 @@ ActiveRecord::Schema.define(version: 163) do
     t.datetime "updated_at", null: false
     t.boolean "is_current"
     t.integer "account_id"
+  end
+
+  create_table "cash_flows", force: :cascade do |t|
+    t.integer "merchant_id"
+    t.integer "account_id"
+    t.integer "order_id"
+    t.integer "income_real_id"
+    t.integer "outlay_real_id"
+    t.string "subject"
+    t.date "transaction_date"
+    t.decimal "amount", precision: 12, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "comments", force: :cascade do |t|
@@ -348,6 +361,7 @@ ActiveRecord::Schema.define(version: 163) do
     t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "merchant_id"
   end
 
   create_table "incomes", force: :cascade do |t|
@@ -363,6 +377,7 @@ ActiveRecord::Schema.define(version: 163) do
     t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "merchant_id"
   end
 
   create_table "labels", force: :cascade do |t|
@@ -453,6 +468,7 @@ ActiveRecord::Schema.define(version: 163) do
     t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "merchant_id"
   end
 
   create_table "outlays", force: :cascade do |t|
@@ -468,6 +484,7 @@ ActiveRecord::Schema.define(version: 163) do
     t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "merchant_id"
   end
 
   create_table "page_views", force: :cascade do |t|
@@ -517,6 +534,21 @@ ActiveRecord::Schema.define(version: 163) do
     t.integer "car_year_id"
     t.integer "car_model_id"
     t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reconciliation_details", force: :cascade do |t|
+    t.integer "merchant_id"
+    t.integer "account_id"
+    t.integer "wxpay_info_id"
+    t.datetime "transaction_date"
+    t.string "mch_id"
+    t.string "order_no"
+    t.string "transaction_id"
+    t.string "transaction_type"
+    t.string "transaction_status"
+    t.decimal "amount", precision: 12, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -682,7 +714,7 @@ ActiveRecord::Schema.define(version: 163) do
     t.boolean "is_valid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "dist_percent"
+    t.decimal "dist_percent", precision: 10, scale: 2
     t.json "details"
   end
 
@@ -729,6 +761,7 @@ ActiveRecord::Schema.define(version: 163) do
     t.string "status"
     t.decimal "amount", precision: 10, scale: 2
     t.integer "account_id"
+    t.integer "merchant_id"
   end
 
 end

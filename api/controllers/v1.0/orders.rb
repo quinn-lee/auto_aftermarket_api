@@ -112,7 +112,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         if @request_params['coupon_receive_id'].present? #使用优惠券
           cr = CouponReceive.find(@request_params['coupon_receive_id'])
           raise "该优惠券已使用或已过期，无法使用" if cr.status != 0
-          raise "该优惠券已过期，无法使用" if cr.coupon.end_time < Time.now
+          raise "该优惠券还未开始，无法使用" if cr.coupon.begin_time.present? && cr.coupon.begin_time > Time.now
+          raise "该优惠券已过期，无法使用" if cr.coupon.end_time.present? && cr.coupon.end_time < Time.now
           cr.update!(status: 1) # 修改领取的优惠券状态为已使用
           # 记录使用的优惠券
           CouponLog.create!(account_id: @customer.id, coupon_receive_id: cr.id, order_id: @order.id, order_original_amount: @order.amount, coupon_amount: cr.coupon_money, order_final_amount: @order.pay_amount, status: 0)
@@ -139,7 +140,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
             account_id: @customer.id,
             order_no: @order.order_no,
             amount: @order.pay_amount,
-            expired_time: Time.now+1.hour
+            expired_time: Time.now+1.hour,
+            merchant_id: @merchant.id
           })
           @wi.after_paid
         else
@@ -150,7 +152,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
               account_id: @customer.id,
               order_no: @order.order_no,
               amount: @order.pay_amount,
-              expired_time: Time.now+1.hour
+              expired_time: Time.now+1.hour,
+              merchant_id: @merchant.id
             })
           else
             raise "prepay_id产生失败:#{pay_res["info"]["err_msg"]}"
