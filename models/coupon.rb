@@ -34,6 +34,7 @@ class Coupon < ActiveRecord::Base
       title: title,
       remarks: remarks,
       ctype: CTYPE[ctype.to_s],
+      begin_time: begin_time.try{|bt| bt.strftime("%F %T")},
       end_time: end_time.try{|et| et.strftime("%F %T")},
       money: money,
       full_money: full_money,
