@@ -10,6 +10,110 @@
     <% form_for @sku, url(:spus, :create_sku, :id => @spu.id), :method => 'post', :multipart => true do |f| %>
         <%= f.hidden_field :t_spu_id %>
         <%= f.hidden_field :merchant_id %>
+        <div class="form-container form-container-primary">
+            <div class="cat-title">
+                <h5 class="underline"><i class="fa fa-list"></i> 基本信息</h5>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    <label>商品标题*</label>
+                    <%= f.text_field :title, :required => true, :class => 'form-control' %>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <label>SKU代码*</label>
+                    <%=f.text_field :sku_code, :class => 'form-control' %>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <label>价格*</label>
+                    <%= f.text_field :price, :required => true, :class => 'form-control' %>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <label>库存*</label>
+                    <i class="fa fa-question-circle text-red" data-toggle="tooltip" data-placement="top" title="该商品的实际库存"></i>
+                    <%= f.text_field :stock_num, :required => true, :class => 'form-control' %>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <label>可销售库存*</label>
+                    <i class="fa fa-question-circle text-red" data-toggle="tooltip" data-placement="top" title="某些商品实际库存为0时，还能继续销售，则需要设置该字段=实际库存+n，n为实际库存为0后还能继续销售的个数，n=0代表实际库存为0后不能继续销售"></i>
+                    <%= f.text_field :available_num, :required => true, :class => 'form-control' %>
+                </div>
+                <div class="col-xs-12 form-group">
+                    <label>商品图片*</label>
+                    <div class="image-preview form-control-div">
+                        <div class="img-upload">
+                            <div class="img-upload-mask">
+                                <%= f.file_field :images, :multiple => true, :required => true, :class => 'inbox-file' %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-container form-container-info">
+            <div class="cat-title">
+                <h5 class="underline"><i class="fa fa-wrench"></i> 可选服务</h5>
+            </div>
+            <div class="form-group-row i-checks">
+                <label><%= check_box_tag 'service[]', :value => '到店安装', :checked => params[:service].present? && params[:service].include?('到店安装') %> 到店安装</label>
+                <input type="text" name="到店安装" value="<%=params['到店安装'.to_sym]%>" class="form-control" placeholder="服务费用">
+            </div>
+            <div class="form-group-row i-checks">
+                <label><%=check_box_tag 'service[]', :value => '无需安装', :checked => params[:service].present? && params[:service].include?('无需安装') %> 无需安装</label>
+                <input type="text" name="无需安装" value="<%=params['无需安装'.to_sym]%>" class="form-control" placeholder="服务费用">
+            </div>
+        </div>
+
+        <div class="form-container form-container-danger">
+            <div class="cat-title">
+                <h5 class="underline"><i class="fa fa-shopping-cart"></i> 销售属性</h5>
+            </div>
+            <div class="row">
+                <% @attrs.where(selling: true).each do |tattr|%>
+                        <div class="col-xs-3 form-group">
+                            <label><%= tattr.name %>*</label>
+                            <% attrvalues = TAttrvalue.where(t_attribute_id: tattr.id) %>
+                            <% if attrvalues.count > 0 %>
+                                    <%= select_tag tattr.name, :options => attrvalues.map{|av| "#{av.value}#{tattr.unit}"}, :class => 'form-control' %>
+                            <% else %>
+                                    <%=text_field_tag tattr.name, :value => params[tattr.name.to_sym], :required => true, :class => 'form-control' %>
+                            <% end %>
+                        </div>
+                <% end %>
+            </div>
+        </div>
+
+        <div class="form-container form-container-warning">
+            <div class="cat-title">
+                <h5 class="underline"><i class="fa fa-tags"></i> 描述属性</h5>
+            </div>
+            <div class="row">
+                <% @attrs.where(selling: false).each do |tattr|%>
+                    <div class="col-xs-3 form-group">
+                        <label><%= tattr.name %></label>
+                        <% attrvalues = TAttrvalue.where(t_attribute_id: tattr.id) %>
+                        <% if attrvalues.count > 0 %>
+                            <%= select_tag tattr.name, :options => attrvalues.map(&:value), :class => 'form-control' %>
+                        <% else %>
+                            <%= text_field_tag tattr.name, :value => params[tattr.name.to_sym], :class => 'form-control' %>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+
+        <div class="form-group-btn">
+            <%= link_to '创建其他产品(SPU)', url(:spus, :select_category), :class => 'btn btn-back' %>
+            <%= f.submit '提交并继续添加SKU', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
+
+
+    <!-- 老版本样式, 已不用, 待删除
+    <% form_for @sku, url(:spus, :create_sku, :id => @spu.id), :method => 'post', :multipart => true do |f| %>
+        <%= f.hidden_field :t_spu_id %>
+        <%= f.hidden_field :merchant_id %>
 
         <div class="row">
             <div class="col-xs-12 form-group-row">
@@ -99,4 +203,5 @@
             <%= f.submit '提交并继续添加SKU', :class => 'btn btn-submit' %>
         </div>
     <% end %>
+    -->
 </div>

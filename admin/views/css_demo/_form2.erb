@@ -1,0 +1,48 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">表单基础样式 3 (.form-container)</h4>
+    </div>
+
+    <div class="form-container">
+        <div class="cat-title">
+            <h5 class="underline">基本信息</h5>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 form-group">
+                <label>文本*</label>
+                <i class="fa fa-question-circle text-red" data-toggle="tooltip" data-placement="right" title="一些提示信息"></i>
+                <%= text_field_tag :text, :value => nil, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-6 form-group">
+                <label>选择栏</label>
+                <%= select_tag :select, :options => %w[option1 option2], :class => 'form-control' %>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <% (1..2).each do |i| %>
+        <div class="col-xs-6 ">
+            <div class="form-container">
+                <div class="cat-title">
+                    <h5 class="underline">描述属性 <%= i %></h5>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 form-group">
+                        <label>文本</label>
+                        <%= text_field_tag :text, :value => nil, :class => 'form-control' %>
+                    </div>
+                    <div class="col-xs-6 form-group">
+                        <label>选择栏</label>
+                        <%= select_tag :select, :options => %w[option1 option2], :class => 'form-control' %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% end %>
+    </div>
+
+    <div class="form-group-btn">
+        <button type="submit" class="btn btn-submit">提交</button>
+    </div>
+</div>

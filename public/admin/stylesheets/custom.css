@@ -70,6 +70,25 @@
 }
 
 /* .form-group */
+.form-container {
+    padding: 15px 15px 0;
+    margin-bottom: 15px;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+.form-container:hover { border-color: #aaa; }
+.form-container.form-container-info:hover { border-color: #3498db; }
+.form-container.form-container-info>.cat-title>h5>i { color: #3498db; }
+.form-container.form-container-primary:hover { border-color: #337ab7; }
+.form-container.form-container-primary>.cat-title>h5>i { color: #337ab7; }
+.form-container.form-container-success:hover { border-color: #3c763d; }
+.form-container.form-container-success>.cat-title>h5>i { color: #3c763d; }
+.form-container.form-container-danger:hover { border-color: #e74c3c; }
+.form-container.form-container-danger>.cat-title>h5>i { color: #e74c3c; }
+.form-container.form-container-warning:hover { border-color: #ffb606; }
+.form-container.form-container-warning>.cat-title>h5>i { color: #ffb606; }
+
 .form-group-row { display: flex; align-items: center; margin-bottom: 15px; }
 .form-group-row>label { width: 25%; padding-left: 15px; padding-right: 15px; }
 .form-group-row>.form-control,
