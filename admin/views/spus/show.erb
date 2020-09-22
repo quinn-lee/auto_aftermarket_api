@@ -3,6 +3,15 @@
         <h4 class="underline"><%=@spu.category_desc%>--<%=@spu.t_brand.name if @spu.t_brand%>--<%=@spu.title%></h4>
     </div>
 
+    <div class="card-toolbar">
+        <div class="btn-group btn-group-sm">
+            <%= link_to '返回', url(:spus, :index), :class => 'btn btn-default' %>
+            <% link_to url(:spus, :add_sku, :id => @spu.id), :class => 'btn btn-default' do %>
+                <%= content_tag :i, nil, :class => 'fa fa-plus' %> 添加SKU
+            <% end %>
+        </div>
+    </div>
+
     <table class="table table-condensed table-striped table-bordered-y">
         <thead>
         <tr>
@@ -63,5 +72,5 @@
         <% end %>
         </tbody>
     </table>
-    <%= link_to '返回', url(:spus, :index), :class => 'btn btn-back' %>
+    <%#= link_to '返回', url(:spus, :index), :class => 'btn btn-back' %>
 </div>
