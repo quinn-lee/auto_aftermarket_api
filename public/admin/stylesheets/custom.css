@@ -89,8 +89,9 @@
 .form-container.form-container-warning:hover { border-color: #ffb606; }
 .form-container.form-container-warning>.cat-title>h5>i { color: #ffb606; }
 
+.form-group>label { font-weight: normal }
 .form-group-row { display: flex; align-items: center; margin-bottom: 15px; }
-.form-group-row>label { width: 25%; padding-left: 15px; padding-right: 15px; }
+.form-group-row>label { font-weight: normal; width: 25%; padding-left: 15px; padding-right: 15px; }
 .form-group-row>.form-control,
 .form-group-row>.form-control-div,
 .form-group-row>input[type=file]{ width: 75%; }
@@ -263,7 +264,7 @@ table#reservations .popover {  max-width: 320px; }
 .cat-list-sub>.cat-list-sub-item>a{ padding: 6px 15px; flex: 1; }
 .cat-list-sub>.cat-list-sub-item>.action { padding: 6px 15px; }
 .cat-list-sub-item:hover, .cat-list-sub-item.active { background-color: #fff0f0; }
-.cat-title { display: flex; }
+.cat-title { display: flex; margin-bottom: 5px; }
 .cat-title h5.underline {
     padding-bottom: 5px;
     padding-right: 50px;

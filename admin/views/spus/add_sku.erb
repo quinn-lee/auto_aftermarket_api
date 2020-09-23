@@ -30,12 +30,12 @@
                 </div>
                 <div class="col-xs-3 form-group">
                     <label>库存*</label>
-                    <i class="fa fa-question-circle text-red" data-toggle="tooltip" data-placement="top" title="该商品的实际库存"></i>
+                    <i class="fa fa-question-circle text-danger" data-toggle="tooltip" data-placement="right" title="该商品的实际库存"></i>
                     <%= f.text_field :stock_num, :required => true, :class => 'form-control' %>
                 </div>
                 <div class="col-xs-3 form-group">
                     <label>可销售库存*</label>
-                    <i class="fa fa-question-circle text-red" data-toggle="tooltip" data-placement="top" title="某些商品实际库存为0时，还能继续销售，则需要设置该字段=实际库存+n，n为实际库存为0后还能继续销售的个数，n=0代表实际库存为0后不能继续销售"></i>
+                    <i class="fa fa-question-circle text-danger" data-toggle="tooltip" data-placement="top" title="某些商品实际库存为0时，还能继续销售，则需要设置该字段=实际库存+n，n为实际库存为0后还能继续销售的个数，n=0代表实际库存为0后不能继续销售"></i>
                     <%= f.text_field :available_num, :required => true, :class => 'form-control' %>
                 </div>
                 <div class="col-xs-12 form-group">
