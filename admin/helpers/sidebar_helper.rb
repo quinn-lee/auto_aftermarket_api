@@ -27,7 +27,8 @@ module AutoAftermarketApi
           :label => '员工', :icon => 'user', :field => 'nav_staffs',
           :options => [
             { :label => 'BOSS雷达', :icon => '', :url => '' },
-            { :label => '员工列表', :icon => '', :url => url(:accounts, :index) }
+            { :label => '员工列表', :icon => '', :url => url(:accounts, :index) },
+            { :label => '商户信息设置', :icon => '', :url => url(:accounts, :edit_merchant) }
           ]
         }
         nav_car_data = {
