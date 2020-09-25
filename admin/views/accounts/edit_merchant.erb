@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">商家信息设置</h4>
+    </div>
+
+    <% form_for @merchant, url(:accounts, :update_merchant), :method => 'post' do |f| %>
+        <div class="row">
+            <div class="col-xs-12 form-group-row">
+                <label>商家联系电话*</label>
+                <%= f.text_field :contact_mobile, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group-row">
+                <label>客服微信号*</label>
+                <%= f.text_field :customer_wechat_no, :class => 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group-row-btn">
+            <%=f.submit '提交', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
+</div>

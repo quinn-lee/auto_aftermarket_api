@@ -125,4 +125,26 @@ AutoAftermarketApi::Admin.controllers :accounts do
     end
     redirect url(:accounts, :index)
   end
+
+  get :edit_merchant do
+    @merchant = current_account.merchant
+    render 'accounts/edit_merchant'
+  end
+
+  post :update_merchant do
+    begin
+      @merchant = current_account.merchant
+      if @merchant.update(params[:merchant])
+        flash[:success] = "商家信息设置成功"
+        redirect(url(:accounts, :edit_merchant))
+      else
+        raise "商家信息设置失败"
+      end
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      render 'accounts/edit_merchant'
+    end
+
+  end
 end
