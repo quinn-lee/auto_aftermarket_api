@@ -1,13 +1,30 @@
 AutoAftermarketApi::Admin.controllers :accounts do
 
   get :index do
-    @title = "用户"
+    @title = "员工"
     @accounts = Account.where("role_id > 3")
     @accounts = @accounts.where(role_id: params[:role_id]) if params[:role_id].present?
     @accounts = @accounts.where("name like '%#{params[:name]}%'") if params[:name].present?
     @accounts = @accounts.where("email like '%#{params[:email]}%'") if params[:email].present?
     @accounts = @accounts.order("created_at desc").paginate(page: params[:page], per_page: 30)
     render 'accounts/index'
+  end
+
+  get :dists do
+    @title = "分销"
+    @accounts = Account.where.not(role_id: [3, 4])
+    @accounts = @accounts.where(role_id: params[:role_id]) if params[:role_id].present?
+    @accounts = @accounts.where("name like '%#{params[:name]}%'") if params[:name].present?
+    @accounts = @accounts.where("email like '%#{params[:email]}%'") if params[:email].present?
+    @accounts = @accounts.order("created_at desc").paginate(page: params[:page], per_page: 30)
+    render 'accounts/dists'
+  end
+
+  get :dist_orders, :with => :account_id do
+    @title = "分销"
+    @dist_orders = DistOrder.where(merchant_id: current_account.merchant.id).where(dist_agent_id: params[:account_id])
+    @dist_orders = @dist_orders.order("created_at desc").paginate(page: params[:page], per_page: 30)
+    render 'accounts/dist_orders'
   end
 
   get :new do

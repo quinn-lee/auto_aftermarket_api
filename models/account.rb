@@ -78,11 +78,24 @@ class Account < ActiveRecord::Base
     DistOrder.where(merchant_id: merchant.id).where(dist_agent_id: id)
   end
 
-  # 可提现金额
+  # 申请提现金额
+  def withdraw_applying_money(merchant)
+    Withdraw.where(merchant_id: merchant.id, account_id: id).where(status: 0).each.sum(&:amount)
+  end
+
+  # 已提现金额
+  def withdrawed_money(merchant)
+    Withdraw.where(merchant_id: merchant.id, account_id: id).where(status: 1).each.sum(&:amount)
+  end
+
+  # 总可提现金额
+  def all_withdraw_money(merchant)
+    dist_orders(merchant).where("complete_time <= '#{(Time.now - 7.days).strftime('%F %T')}'").each.sum(&:commission)
+  end
+
+  # 剩余未提现金额
   def can_withdraw_money(merchant)
-    all_withdraw_money = dist_orders(merchant).where("complete_time <= '#{(Time.now - 7.days).strftime('%F %T')}'").each.sum(&:commission)
-    withdrawed_money = Withdraw.where(merchant_id: merchant.id, account_id: id).where.not(status: 2).each.sum(&:amount)
-    all_withdraw_money - withdrawed_money
+    all_withdraw_money(merchant) - withdrawed_money(merchant) - withdraw_applying_money(merchant)
   end
 
   # 上月提现金额
