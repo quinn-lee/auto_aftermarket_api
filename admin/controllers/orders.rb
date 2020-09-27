@@ -371,5 +371,39 @@ AutoAftermarketApi::Admin.controllers :orders do
     end
   end
 
+  get :change_skus, :with => :id do
+    @order = Order.find(params[:id])
+    @sku = TSku.find(params[:sku_id])
+    @order_sku_id = params[:order_sku_id]
+    @order_sku = OrderSku.find(params[:order_sku_id])
+    render 'orders/change_skus'
+  end
+
+  get :update_skus, :with => :id do
+    begin
+      @order = Order.find(params[:id])
+      @sku = TSku.find(params[:sku_id])
+      @order_sku_id = params[:order_sku_id]
+      @new_sku = TSku.find(params[:new_sku_id])
+      @order_sku = OrderSku.find(params[:order_sku_id])
+      ActiveRecord::Base.transaction do
+        raise "商品库存不足，商品替换失败" if @new_sku.available_num < @order_sku.quantity
+        lack_quantity = @order_sku.quantity - (@new_sku.stock_num < 0 ? 0 : @new_sku.stock_num) # 需采购的数量
+        lack_quantity = lack_quantity < 0 ? 0 : lack_quantity
+        @new_sku.update!(stock_num: (@new_sku.stock_num||0)-@order_sku.quantity, available_num: (@new_sku.available_num||0)-@order_sku.quantity)
+        @sku.update!(stock_num: (@sku.stock_num||0)+@order_sku.quantity, available_num: (@sku.available_num||0)+@order_sku.quantity)
+        @order_sku.update!(t_sku_id: @new_sku.id, price: @new_sku.price, lack_quantity: lack_quantity)
+      end
+      flash[:success] = "商品替换成功"
+      redirect(url(:orders, :show, :id=>@order.id))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      render 'orders/change_skus'
+    end
+  end
+
+
+
 
 end

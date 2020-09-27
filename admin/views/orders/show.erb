@@ -70,6 +70,11 @@
                                 </div>
                                 <div class="commodity-info-price">￥<%= order_sku.price %></div>
                                 <div class="commodity-info-quantity">x<%= order_sku.quantity %></div>
+                                <div class="commodity-info-change">
+                                  <% if @order.status != 'delivered' && @order.status != 'done' && @order.status != 'cancelled' && @order.status != 'delete' && @order.status != 'cancelling'%>
+                                    <a href="<%=url(:orders, :change_skus, :id =>@order.id, :sku_id=>order_sku.t_sku.id, :order_sku_id=>order_sku.id) %>" title="选择" class="pd-setting-ed" style="margin-right: 5px;">替换商品</a>
+                                  <% end %>
+                                </div>
                             </li>
                         <% end %>
                     </ul>
