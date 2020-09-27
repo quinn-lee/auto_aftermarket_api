@@ -11,6 +11,9 @@
             <% link_to 'javascript:void(0);', :class => 'btn btn-default', :data => { :toggle => 'modal', :target => '#cancel' } do %>
                 <%= content_tag :i, ' 取消订单', :class => 'fa fa-times' %>
             <% end if @order.status != 'unpaid' && @order.status != 'done' && @order.status != 'cancelled' %>
+            <% link_to url(:orders, :edit_address, :id => @order.id), :class => 'btn btn-default' do %>
+                <%= content_tag :i, ' 修改订单地址', :class => 'fa fa-pencil' %>
+            <% end if @order.sub_orders.find_by(sub_type: "delivery").present? && @order.delivery_info.present? && @order.status != 'delivered' && @order.status != 'done' && @order.status != 'cancelled' && @order.status != 'delete' && @order.status != 'cancelling' %>
             <% link_to url(:orders, :done, :id => @order.id), :class => 'btn btn-default' do %>
                 <%= content_tag :i, ' 完成订单', :class => 'fa fa-check' %>
             <% end if @order.status != 'unpaid' && @order.status != 'done' && @order.status != 'cancelled' && @order.status != 'cancelling' %>

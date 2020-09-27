@@ -1,0 +1,40 @@
+<div class="card">
+    <div class="card-title">
+        <h4 class="underline">修改订单地址</h4>
+    </div>
+
+    <% form_tag url(:orders, :update_address, :id => @order.id), :method => :post do %>
+        <div class="row">
+            <% if @order.delivery_info.present? %>
+            <div class="col-xs-6 form-group-row">
+                <label>省*</label>
+                <%= text_field_tag :province, :value => @order.delivery_info['province'], :class => 'form-control' %>
+            </div>
+            <div class="col-xs-6 form-group-row">
+                <label>市*</label>
+                <%= text_field_tag :city, :value => @order.delivery_info['city'], :class => 'form-control' %>
+            </div>
+            <div class="col-xs-6 form-group-row">
+                <label>区/县*</label>
+                <%= text_field_tag :district, :value => @order.delivery_info['district'], :class => 'form-control' %>
+            </div>
+            <div class="col-xs-6 form-group-row">
+                <label>地址*</label>
+                <%= text_field_tag :address, :value => @order.delivery_info['address'], :class => 'form-control' %>
+            </div>
+            <div class="col-xs-6 form-group-row">
+                <label>收件人*</label>
+                <%= text_field_tag :name, :value => @order.delivery_info['name'], :class => 'form-control' %>
+            </div>
+            <div class="col-xs-6 form-group-row">
+                <label>联系电话*</label>
+                <%= text_field_tag :mobile, :value => @order.delivery_info['mobile'], :class => 'form-control' %>
+            </div>
+            <% end %>
+        </div>
+        <div class="form-group-row-btn">
+            <%= link_to '返回', 'javascript:history.go(-1);', :class => 'btn btn-back' %>
+            <%= submit_tag '提交', :class => 'btn btn-submit' %>
+        </div>
+    <% end %>
+</div>

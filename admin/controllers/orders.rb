@@ -350,4 +350,26 @@ AutoAftermarketApi::Admin.controllers :orders do
     end
   end
 
+  # 修改地址
+  get :edit_address, :with => :id do
+    @order = Order.find(params[:id])
+    render 'orders/edit_address'
+  end
+
+  post :update_address, :with => :id do
+    begin
+      @order = Order.find(params[:id])
+      raise "地址信息不能为空" if params[:province].blank? or params[:city].blank? or params[:address].blank? or params[:name].blank? or params[:mobile].blank?
+      delivery_info = {province: params[:province], city: params[:city], district: params[:district], address: params[:address], name: params[:name], mobile: params[:mobile]}
+      @order.update!(delivery_info: delivery_info)
+      flash[:success] = "地址修改成功"
+      redirect(url(:orders, :show, :id=>@order.id))
+    rescue => e
+      logger.info e.backtrace
+      flash[:error] = e.message
+      render "orders/edit_address"
+    end
+  end
+
+
 end
