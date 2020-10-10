@@ -18,6 +18,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
     "pay_amount": 200,   #支付金额 = 订单实际金额 - 优惠券金额
     "coupon_amount": 100,   #优惠券金额，未使用优惠券时该项为空
     "coupon_receive_id": 1,  #使用的已领取优惠券ID，每个订单只能使用一张优惠券，未使用优惠券时该项为空
+    "user_discount": 0.9, #用户角色折扣
+    "discount_amount": 30, #由于用户角色折扣产生的金额差
     "group_id": 1,  #团购活动ID, order_type=group时，该项必须填写
     "seckill_id": 1,  #秒杀活动ID, order_type=seckill时，该项必须填写
     "order_type": "maintenance", # maintenance->维修保养，purchase->商城自选商品，group->团购，seckill->秒杀
@@ -84,6 +86,9 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/orders' do
         elsif (["purchase", "group", "seckill"].include? @request_params['order_type']) # 自选商品、团购、秒杀
           @order.delivery_info = @request_params['delivery_info']
           @order.contact_info = @request_params['contact_info'].present? ? @request_params['contact_info'] : @request_params['delivery_info']
+        end
+        if @request_params['user_discount'].present?
+          @order.discount_info = [{discount_reason: "经销商折扣", discount: @request_params['user_discount'], discount_amount: @request_params['discount_amount']}]
         end
         # 记录分享下单关系
         #if @request_params["dist_share_id"].present?

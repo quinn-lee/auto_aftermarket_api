@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 171) do
+ActiveRecord::Schema.define(version: 172) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -460,6 +460,7 @@ ActiveRecord::Schema.define(version: 171) do
     t.decimal "refund_amount", precision: 10, scale: 2
     t.string "reject_reason"
     t.integer "account_id"
+    t.jsonb "discount_info", default: []
   end
 
   create_table "outlay_reals", force: :cascade do |t|

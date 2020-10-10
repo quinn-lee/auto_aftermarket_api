@@ -121,7 +121,8 @@ class Order < ActiveRecord::Base
       reservation_time: reservation_time,
       items: items,
       can_cancel: can_cancel?,
-      sub_orders: sub_orders.map(&:to_api)
+      sub_orders: sub_orders.map(&:to_api),
+      discount_info: discount_info
     }
     return h
   end
