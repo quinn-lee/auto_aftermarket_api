@@ -50,7 +50,7 @@ class Coupon < ActiveRecord::Base
       received_num: coupon_receives.count,
       spus: spus,
       status: STATUS[status.to_s],
-      img_path: img_path
+      img_path: img_path.try{|i| i.gsub("public/", "")}
     }
   end
 
