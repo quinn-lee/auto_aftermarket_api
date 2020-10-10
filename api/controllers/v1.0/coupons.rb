@@ -25,7 +25,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/coupons' do
             "spus": [  # 绑定spu 的id列表
                 "1"
             ],
-            "status": "下架"  #状态： 可领取，下架，已结束； 只有状态是可领取的，客户才能领取
+            "status": "下架",  #状态： 可领取，下架，已结束； 只有状态是可领取的，客户才能领取
+            "img_path": "public/uploads/coupon/1.png" #图片位置
         }
     ]
 =end
@@ -55,7 +56,8 @@ AutoAftermarketApi::Api.controllers :'v1.0', :map => 'v1.0/coupons' do
       "spus": [  # 绑定spu 的id列表
           "1"
       ],
-      "status": "下架"  #状态： 可领取，下架，已结束； 只有状态是可领取的，客户才能领取
+      "status": "下架",  #状态： 可领取，下架，已结束； 只有状态是可领取的，客户才能领取
+      "img_path": "public/uploads/coupon/1.png" #图片位置
     }
 =end
   post :show, :provides => [:json] do

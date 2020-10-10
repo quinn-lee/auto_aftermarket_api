@@ -54,3 +54,5 @@ gem 'combine_pdf', '~> 1.0', '>= 1.0.18'
 # pdf generate
 gem 'prawn', '~> 2.3'
 gem 'prawn-table', '~> 0.2.2'
+
+gem 'rmagick'
