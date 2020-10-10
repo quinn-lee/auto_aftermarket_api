@@ -17,6 +17,13 @@
 .btn-submit:hover { color: #fff; background-color: #333; border-color: #333; }
 .btn-back { color: #333; background-color: #fff; border-color: #ccc; padding-left: 20px; padding-right: 20px; }
 .btn-back:hover { color:#333; background-color:#e6e6e6; border-color:#adadad; }
+.btn-default {
+    border: 1px solid;
+    background-color: #f5f5f5;
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) rgba(0,0,0,.25);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+}
 
 /* .card 卡片 */
 .card {
