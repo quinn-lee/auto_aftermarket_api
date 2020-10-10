@@ -39,6 +39,9 @@
                 <ul class="payment-info-ul">
                     <li><span class="dk">订单总价：</span><span class="dv">￥<%= @order.amount %></span></li>
                     <li><span class="dk">优惠券减免：</span><span class="dv">￥<%= @order.coupon_log.present? ? @order.coupon_log.coupon_amount : 0 %></span></li>
+                    <% @order.discount_info.each do |di|%>
+                      <li><span class="dk"><%=di['discount_reason']%>：</span><span class="dv">￥<%= di['discount_amount'] %></span></li>
+                    <% end %>
                     <% if @order.old_pay_amount.present? %>
                         <li><span class="dk">原支付款：</span><span class="dv text-bold text-cancel">￥<%= @order.old_pay_amount %></span></li>
                     <% end %>
