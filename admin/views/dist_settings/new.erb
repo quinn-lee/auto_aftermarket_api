@@ -31,6 +31,11 @@
                 <label style="height: 18px;">服务资讯人 佣金比例*<span style="color: #EC7063;font-size: 12px;">(填写0-100之间的数字)</span></label>
                 <%= f.text_field :info_service_percent, :class => 'form-control' %>
             </div>
+
+            <div class="col-xs-12 form-group-row">
+                <label style="height: 18px;">分销商订单折扣*<span style="color: #EC7063;font-size: 12px;">(填写0-100之间的数字)</span></label>
+                <%= f.text_field :deal_percent, :class => 'form-control' %>
+            </div>
         </div>
         <div class="form-group-row-btn">
             <%=f.submit '提交', :class => 'btn btn-submit' %>

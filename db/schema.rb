@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 172) do
+ActiveRecord::Schema.define(version: 174) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -301,6 +301,7 @@ ActiveRecord::Schema.define(version: 172) do
     t.datetime "updated_at", null: false
     t.decimal "spu_percent", precision: 10, scale: 2
     t.decimal "info_service_percent", precision: 10, scale: 2
+    t.decimal "deal_percent", precision: 10, scale: 2, default: "100.0"
   end
 
   create_table "dist_shares", force: :cascade do |t|
@@ -405,6 +406,7 @@ ActiveRecord::Schema.define(version: 172) do
     t.datetime "updated_at", null: false
     t.string "contact_mobile"
     t.string "customer_wechat_no"
+    t.jsonb "share_image"
   end
 
   create_table "order_reservations", force: :cascade do |t|

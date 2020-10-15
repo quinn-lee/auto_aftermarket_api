@@ -3,15 +3,25 @@
         <h4 class="underline">商家信息设置</h4>
     </div>
 
-    <% form_for @merchant, url(:accounts, :update_merchant), :method => 'post' do |f| %>
+    <% form_for @merchant, url(:accounts, :update_merchant), :method => 'post', :multipart => true do |f| %>
         <div class="row">
-            <div class="col-xs-12 form-group-row">
+            <div class="col-xs-12 form-group">
                 <label>商家联系电话*</label>
                 <%= f.text_field :contact_mobile, :class => 'form-control' %>
             </div>
-            <div class="col-xs-12 form-group-row">
+            <div class="col-xs-12 form-group">
                 <label>客服微信号*</label>
                 <%= f.text_field :customer_wechat_no, :class => 'form-control' %>
+            </div>
+            <div class="col-xs-12 form-group">
+                <label>分享有礼图片*</label>
+                <div class="image-preview form-control-div">
+                    <div class="img-upload">
+                        <div class="img-upload-mask">
+                            <%= f.file_field :share_image, :class => 'inbox-file' %>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="form-group-row-btn">

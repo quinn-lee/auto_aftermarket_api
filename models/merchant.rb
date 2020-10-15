@@ -1,6 +1,9 @@
 # encoding: utf-8
 # 商户表，用于记录商户的小程序相关配置信息
 class Merchant < ActiveRecord::Base
+
+  mount_uploader :share_image, FileUploader
+
   has_many :shops, :class_name => 'Shop', :dependent => :destroy
   has_many :t_spus, :class_name => 'TSpu', :dependent => :destroy
   has_many :t_skus, :class_name => 'TSku', :dependent => :destroy
